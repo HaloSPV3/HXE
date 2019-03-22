@@ -75,6 +75,14 @@ namespace SPV3.CLI
        */
 
       var manifest = (Manifest) Path.Combine(CurrentDirectory, Files.Manifest);
+      
+      /**
+       * This shouldn't be an issue in conventional SPV3 installations; however, for existing/current SPV3 installations
+       * OR installations that weren't conducted by the installer, the manifest will likely not be present. As such, we
+       * have no choice but to skip the verification mechanism.
+       */
+      if (!manifest.Exists()) return;
+
       manifest.Load();
 
       foreach (var package in manifest.Packages)
