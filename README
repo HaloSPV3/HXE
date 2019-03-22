@@ -84,6 +84,9 @@ UPSTREAM & MIRRORS
 The GitHub repository at https://github.com/yumiris/SPV3 serves as the
 official mirror and discussions platform.
 
+For binaries that are automatically compiled from the latest source
+code, review the compressed files at https://open.n2.network/spv3.cli/
+
 PROTOTYPES
 ----------
 
