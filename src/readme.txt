@@ -154,16 +154,22 @@ File type:
                 kernel's auto-detection mechanism. This object permits
                 the retrieval of the last played profile name.
 
-  Override      Represents the SPV3.Overrides.XML file, which is used
-                for debugging purposes by forcefully overriding any
-                imposed or default settings by the loader, HCE,
-                OpenSauce or Chimera.
+  Override      Represents the overrides.XML file, which is used for
+                debugging purposes by forcefully overriding any imposed
+                or default settings by the loader, HCE, OpenSauce or
+                Chimera.
 
   Progress      Represents the savegame.bin file, which contains the
                 player's checkpoint data. This object infers and
                 exposes the mission & difficulty, which in turn can be
                 saved using the Initiation object for campaign
                 resuming.
+
+  OpenSauce     Represents the OS\_Settings.User.xml, which contains
+                the OpenSauce user configuration data. The loader
+                exposes all of the available options as object
+                properties, for programmable editing of the OpenSauce
+                configuration.
   ---------------------------------------------------------------------
 
 Documentation on any of the aforementioned files can be found in the doc

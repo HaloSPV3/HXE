@@ -21,6 +21,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
+using System.Text;
 using System.Xml.Serialization;
 
 namespace SPV3.CLI
@@ -44,7 +45,7 @@ namespace SPV3.CLI
       {
         var serialiser = new XmlSerializer(typeof(Manifest));
         serialiser.Serialize(writer, this);
-        data = System.Text.Encoding.UTF8.GetBytes(writer.ToString());
+        data = Encoding.UTF8.GetBytes(writer.ToString());
       }
 
       using (var inflatedStream = new MemoryStream(data))
@@ -71,7 +72,7 @@ namespace SPV3.CLI
       {
         compressStream.CopyTo(inflatedStream);
         compressStream.Close();
-        data = System.Text.Encoding.UTF8.GetString(inflatedStream.ToArray());
+        data = Encoding.UTF8.GetString(inflatedStream.ToArray());
       }
 
       using (var reader = new StringReader(data))
@@ -123,15 +124,6 @@ namespace SPV3.CLI
       public List<Entry> Entries { get; set; } = new List<Entry>(); // Package entries == directory files
 
       /// <summary>
-      ///   Package entry representing a file on the filesystem or entry in the package.
-      /// </summary>
-      public class Entry
-      {
-        public string Name { get; set; } // Filename with extension relative to dir
-        public long   Size { get; set; } // Bytes length of the entry on filesystem
-      }
-
-      /// <summary>
       ///   Represents the inbound object as a string.
       /// </summary>
       /// <param name="package">
@@ -160,6 +152,15 @@ namespace SPV3.CLI
         {
           Name = name
         };
+      }
+
+      /// <summary>
+      ///   Package entry representing a file on the filesystem or entry in the package.
+      /// </summary>
+      public class Entry
+      {
+        public string Name { get; set; } // Filename with extension relative to dir
+        public long   Size { get; set; } // Bytes length of the entry on filesystem
       }
     }
   }

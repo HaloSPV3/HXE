@@ -19,15 +19,17 @@
  */
 
 using System;
+using System.IO;
 using System.Threading.Tasks;
-using SPV3.CLI.Exceptions;
+using static System.Environment.SpecialFolder;
+using static SPV3.CLI.Names.Files;
 
 namespace SPV3.CLI
 {
   /// <summary>
   ///   SPV3.CLI Program.
   /// </summary>
-  internal class Program
+  internal static class Program
   {
     /// <summary>
     ///   SPV3.CLI entry.
@@ -37,67 +39,117 @@ namespace SPV3.CLI
     /// </param>
     public static void Main(string[] args)
     {
-      void Execute()
-      {
-        try
-        {
-          Task.Run(() => { Kernel.Bootstrap(); }).GetAwaiter().GetResult();
-        }
-        catch (AssetException e)
-        {
-          Console.Error.WriteLine(e.Message);
-        }
-      }
-
-      void Compile(string source, string target)
-      {
-        Task.Run(() => { Compiler.Compile(source, target); }).GetAwaiter().GetResult();
-      }
-
-      void Install(string source, string target)
-      {
-        Task.Run(() => { Installer.Install(source, target); }).GetAwaiter().GetResult();
-      }
-
-      void PlaceholderCommit(string bitmap, string target, string filter)
-      {
-        Task.Run(() => { Placeholder.Commit(bitmap, target, filter); }).GetAwaiter().GetResult();
-      }
-
-      void PlaceholderRevert(string records)
-      {
-        Task.Run(() => { Placeholder.Revert(records); }).GetAwaiter().GetResult();
-      }
-
+      /**
+       * Implicit Loading command.
+       */
       if (args.Length == 0)
       {
-        Execute();
+        Run(Kernel.Bootstrap);
+
         return;
       }
 
-      if (args[0] == "compile" && args.Length >= 3)
+      var command = args[0];
+
+      switch (command)
       {
-        Compile(args.Length == 2 ? Environment.CurrentDirectory : args[1], args[2]);
-        return;
-      }
+        /**
+         * Compilation command.
+         */
 
-      if (args[0] == "install" && args.Length >= 2)
+        case "compile" when args.Length >= 3:
+        {
+          var source = args.Length == 2 ? Environment.CurrentDirectory : args[1];
+          var target = args[2];
+
+          Run(() => { Compiler.Compile(source, target); });
+          return;
+        }
+
+        /**
+         * Installation command.
+         */
+
+        case "install" when args.Length >= 2:
+        {
+          var source = args.Length == 2 ? Environment.CurrentDirectory : args[1];
+          var target = args[2];
+
+          Run(() => { Installer.Install(source, target); });
+          return;
+        }
+
+        /**
+         * Placeholder command.
+         */
+
+        case "placeholder" when args.Length > 1:
+        {
+          switch (args[1])
+          {
+            case "commit" when args.Length >= 4:
+            {
+              var bitmap = args[2];
+              var target = args[3];
+              var filter = args.Length == 4 ? "*.bitmap" : args[4];
+
+              Run(() => { Placeholder.Commit(bitmap, target, filter); });
+              return;
+            }
+            case "revert" when args.Length >= 2:
+            {
+              var records = args[2];
+
+              Run(() => { Placeholder.Revert(records); });
+              return;
+            }
+            default:
+              Console.Error.WriteLine("Invalid placeholder args.");
+              Environment.Exit(3);
+              return;
+          }
+        }
+
+        /**
+         * Dump command.
+         */
+
+        case "dump" when args.Length > 1:
+          switch (args[1])
+          {
+            case "overrides":
+              var overridesPath = Path.Combine(Environment.GetFolderPath(MyDocuments), Overrides);
+
+              Run(() => { new Override {Path = overridesPath}.Save(); });
+              return;
+            case "opensauce":
+              var openSaucePath = Names.Files.OpenSauce;
+
+              Run(() => { new OpenSauce {Path = openSaucePath}.Save(); });
+              return;
+            default:
+              Console.Error.WriteLine("Invalid dump args.");
+              Environment.Exit(4);
+              return;
+          }
+
+        default:
+          Console.Error.WriteLine("Invalid command.");
+          Environment.Exit(2);
+          return;
+      }
+    }
+
+    private static void Run(Action action)
+    {
+      try
       {
-        Install(args.Length == 2 ? Environment.CurrentDirectory : args[1], args[2]);
-        return;
+        Task.Run(action).GetAwaiter().GetResult();
       }
-
-      if (args[0] == "placeholder" && args.Length > 1)
+      catch (Exception e)
       {
-        if (args[1] == "commit" && args.Length >= 4)
-          PlaceholderCommit(args[2], args[3], args.Length == 4 ? "*.bmp" : args[4]);
-        if (args[1] == "revert" && args.Length >= 2)
-          PlaceholderRevert(args[2]);
-
-        return;
+        Console.Error.WriteLine(e.StackTrace);
       }
-
-      Console.Error.WriteLine("Not enough args.");
     }
   }
 }

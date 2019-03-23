@@ -18,6 +18,7 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
+using System;
 using System.IO;
 using SPV3.CLI.Exceptions;
 using static System.Environment;
@@ -75,7 +76,7 @@ namespace SPV3.CLI
        */
 
       var manifest = (Manifest) Path.Combine(CurrentDirectory, Files.Manifest);
-      
+
       /**
        * This shouldn't be an issue in conventional SPV3 installations; however, for existing/current SPV3 installations
        * OR installations that weren't conducted by the installer, the manifest will likely not be present. As such, we
@@ -131,18 +132,58 @@ namespace SPV3.CLI
     /// </summary>
     private static void InvokeOverriding()
     {
-      string GetPath()
+      string GetOverridesPath()
       {
         return Path.Combine(GetFolderPath(ApplicationData), Directories.Data, Files.Overrides);
       }
 
-      var overrides = (Override) GetPath();
+      var overrides = (Override) GetOverridesPath();
+      var openSauce = (OpenSauce) Files.OpenSauce;
 
-      if (!overrides.Exists()) return;
+      if (!overrides.Exists())
+        return;
+
+      /**
+       * The following routine is carried out if the overrides.xml has been found in its designated directory.
+       */
 
       overrides.Load();
       RootInitc.PostProcessing = overrides.OpenSauce.PostProcessing;
       RootInitc.Save();
+
+      if (openSauce.Exists())
+        openSauce.Load();
+
+      openSauce.Camera.FieldOfView                 = overrides.OpenSauce.Fov;
+      openSauce.Camera.IgnoreFOVChangeInCinematics = overrides.OpenSauce.IgnoreCinematicsFov;
+
+      openSauce.Rasterizer.PostProcessing.MotionBlur.Enabled =
+        overrides.OpenSauce.PostProcessing.MotionBlur == PostProcessing.MotionBlurOptions.BuiltIn;
+
+      switch (overrides.OpenSauce.PostProcessing.MotionBlur)
+      {
+        case PostProcessing.MotionBlurOptions.Off:
+          openSauce.Rasterizer.PostProcessing.MotionBlur.BlurAmount = 0;
+          break;
+        case PostProcessing.MotionBlurOptions.BuiltIn:
+          openSauce.Rasterizer.PostProcessing.MotionBlur.BlurAmount = 1;
+          break;
+        case PostProcessing.MotionBlurOptions.PombLow:
+          openSauce.Rasterizer.PostProcessing.MotionBlur.BlurAmount = 2;
+          break;
+        case PostProcessing.MotionBlurOptions.PombHigh:
+          openSauce.Rasterizer.PostProcessing.MotionBlur.BlurAmount = 3;
+          break;
+        default:
+          throw new ArgumentOutOfRangeException();
+      }
+
+      openSauce.Rasterizer.PostProcessing.ExternalEffects.Enabled = overrides.OpenSauce.PostProcessing.External;
+      openSauce.Rasterizer.GBuffer.Enabled                        = overrides.OpenSauce.PostProcessing.GBuffer;
+      openSauce.Rasterizer.ShaderExtensions.Effect.DepthFade      = overrides.OpenSauce.PostProcessing.DepthFade;
+      openSauce.Rasterizer.PostProcessing.Bloom.Enabled           = overrides.OpenSauce.PostProcessing.Bloom;
+
+      openSauce.Save();
     }
 
     /// <summary>

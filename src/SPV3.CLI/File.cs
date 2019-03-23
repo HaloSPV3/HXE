@@ -19,6 +19,7 @@
  */
 
 using System;
+using System.IO;
 using System.Xml.Serialization;
 
 namespace SPV3.CLI
@@ -47,6 +48,14 @@ namespace SPV3.CLI
 
     public string Name { get; set; }
 
+    public void CreateDirectory()
+    {
+      var baseDirectory = System.IO.Path.GetDirectoryName(Path);
+
+      if (!Directory.Exists(baseDirectory))
+        Directory.CreateDirectory(baseDirectory ?? throw new ArgumentNullException());
+    }
+
     public bool Exists()
     {
       return System.IO.File.Exists(Path);
@@ -64,11 +73,13 @@ namespace SPV3.CLI
 
     public void WriteAllText(string contents)
     {
+      CreateDirectory();
       System.IO.File.WriteAllText(Path, contents);
     }
 
     public void WriteAllBytes(byte[] bytes)
     {
+      CreateDirectory();
       System.IO.File.WriteAllBytes(Path, bytes);
     }
 

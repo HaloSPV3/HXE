@@ -161,8 +161,8 @@ namespace SPV3.CLI
     /// </summary>
     public class OpenSauceOverrides
     {
-      public decimal Fov                 { get; set; } // Auto-calculate if value is set to 0.
-      public bool    IgnoreCinematicsFov { get; set; }
+      public long Fov                 { get; set; } // Auto-calculate if value is set to 0.
+      public bool IgnoreCinematicsFov { get; set; }
 
       public HudOverrides   Hud            { get; set; } = new HudOverrides();
       public PostProcessing PostProcessing { get; set; } = new PostProcessing();
