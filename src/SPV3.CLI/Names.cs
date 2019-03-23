@@ -18,6 +18,10 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
+using System.IO;
+using static System.Environment;
+using static System.Environment.SpecialFolder;
+
 namespace SPV3.CLI
 {
   /// <summary>
@@ -37,6 +41,13 @@ namespace SPV3.CLI
       public const string Overrides   = "overrides.xml";
       public const string InstallPath = "install.txt";
       public const string Manifest    = "0x00.bin";
+
+      public static readonly string OpenSauce = Path.Combine(GetFolderPath(MyDocuments),
+        Directories.Games,
+        Directories.Halo,
+        Directories.OpenSauce,
+        "OS_Settings.User.xml"
+      );
     }
 
     /// <summary>
@@ -44,10 +55,11 @@ namespace SPV3.CLI
     /// </summary>
     public static class Directories
     {
-      public const string Profiles = "savegames";
-      public const string Games    = "My Games";
-      public const string Halo     = "Halo CE";
-      public const string Data     = "SPV3";
+      public const string Profiles  = "savegames";
+      public const string Games     = "My Games";
+      public const string Halo      = "Halo CE";
+      public const string Data      = "SPV3";
+      public const string OpenSauce = "OpenSauce";
     }
   }
 }

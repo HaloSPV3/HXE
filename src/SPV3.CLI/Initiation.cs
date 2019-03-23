@@ -20,6 +20,9 @@
 
 using System;
 using System.Text;
+using static SPV3.CLI.Campaign;
+using static SPV3.CLI.PostProcessing;
+using static SPV3.CLI.PostProcessing.ExperimentalPostProcessing;
 
 namespace SPV3.CLI
 {
@@ -29,12 +32,12 @@ namespace SPV3.CLI
   /// </summary>
   public class Initiation : File
   {
-    public bool                CinematicBars   { get; set; } = true;
-    public bool                PlayerAutoaim   { get; set; } = true;
-    public bool                PlayerMagnetism { get; set; } = true;
-    public Campaign.Mission    Mission         { get; set; } = Campaign.Mission.Spv3A10;
-    public Campaign.Difficulty Difficulty      { get; set; } = Campaign.Difficulty.Normal;
-    public PostProcessing      PostProcessing  { get; set; } = new PostProcessing();
+    public bool           CinematicBars   { get; set; } = true;
+    public bool           PlayerAutoaim   { get; set; } = true;
+    public bool           PlayerMagnetism { get; set; } = true;
+    public Mission        Mission         { get; set; } = Mission.Spv3A10;
+    public Difficulty     Difficulty      { get; set; } = Difficulty.Normal;
+    public PostProcessing PostProcessing  { get; set; } = new PostProcessing();
 
     /// <summary>
     ///   Saves object state to the inbound file.
@@ -49,13 +52,13 @@ namespace SPV3.CLI
       {
         switch (Difficulty)
         {
-          case Campaign.Difficulty.Normal:
+          case Difficulty.Normal:
             return "normal";
-          case Campaign.Difficulty.Heroic:
+          case Difficulty.Heroic:
             return "hard";
-          case Campaign.Difficulty.Legendary:
+          case Difficulty.Legendary:
             return "impossible";
-          case Campaign.Difficulty.Noble:
+          case Difficulty.Noble:
             return "easy";
           default:
             throw new ArgumentOutOfRangeException();
@@ -96,13 +99,13 @@ namespace SPV3.CLI
 
         switch (PostProcessing.Mxao)
         {
-          case PostProcessing.MxaoOptions.Off:
+          case MxaoOptions.Off:
             y += 0x0000001;
             break;
-          case PostProcessing.MxaoOptions.Low:
+          case MxaoOptions.Low:
             y += 0x0000002;
             break;
-          case PostProcessing.MxaoOptions.High:
+          case MxaoOptions.High:
             y += 0x0000004;
             break;
           default:
@@ -112,13 +115,13 @@ namespace SPV3.CLI
 
         switch (PostProcessing.Dof)
         {
-          case PostProcessing.DofOptions.Off:
+          case DofOptions.Off:
             y += 0x0000008;
             break;
-          case PostProcessing.DofOptions.Low:
+          case DofOptions.Low:
             y += 0x0000010;
             break;
-          case PostProcessing.DofOptions.High:
+          case DofOptions.High:
             y += 0x0000020;
             break;
           default:
@@ -128,16 +131,16 @@ namespace SPV3.CLI
 
         switch (PostProcessing.MotionBlur)
         {
-          case PostProcessing.MotionBlurOptions.Off:
+          case MotionBlurOptions.Off:
             y += 0x0000040;
             break;
-          case PostProcessing.MotionBlurOptions.BuiltIn:
+          case MotionBlurOptions.BuiltIn:
             y += 0x0000080;
             break;
-          case PostProcessing.MotionBlurOptions.PombLow:
+          case MotionBlurOptions.PombLow:
             y += 0x0000100;
             break;
-          case PostProcessing.MotionBlurOptions.PombHigh:
+          case MotionBlurOptions.PombHigh:
             y += 0x0000200;
             break;
           default:
@@ -147,16 +150,16 @@ namespace SPV3.CLI
 
         switch (PostProcessing.Experimental.ThreeDimensional)
         {
-          case PostProcessing.ExperimentalPostProcessing.ThreeDimensionalOptions.Off:
+          case ThreeDimensionalOptions.Off:
             y += 0x0040000;
             break;
-          case PostProcessing.ExperimentalPostProcessing.ThreeDimensionalOptions.Anaglyphic:
+          case ThreeDimensionalOptions.Anaglyphic:
             y += 0x0080000;
             break;
-          case PostProcessing.ExperimentalPostProcessing.ThreeDimensionalOptions.Interleaving:
+          case ThreeDimensionalOptions.Interleaving:
             y += 0x100000;
             break;
-          case PostProcessing.ExperimentalPostProcessing.ThreeDimensionalOptions.SideBySide:
+          case ThreeDimensionalOptions.SideBySide:
             y += 0x200000;
             break;
           default:
@@ -166,16 +169,16 @@ namespace SPV3.CLI
 
         switch (PostProcessing.Experimental.ColorBlindMode)
         {
-          case PostProcessing.ExperimentalPostProcessing.ColorBlindModeOptions.Off:
+          case ColorBlindModeOptions.Off:
             y += 0x0400000;
             break;
-          case PostProcessing.ExperimentalPostProcessing.ColorBlindModeOptions.Protanopia:
+          case ColorBlindModeOptions.Protanopia:
             y += 0x0800000;
             break;
-          case PostProcessing.ExperimentalPostProcessing.ColorBlindModeOptions.Deuteranopes:
+          case ColorBlindModeOptions.Deuteranopes:
             y += 0x1000000;
             break;
-          case PostProcessing.ExperimentalPostProcessing.ColorBlindModeOptions.Tritanopes:
+          case ColorBlindModeOptions.Tritanopes:
             y += 0x2000000;
             break;
           default:

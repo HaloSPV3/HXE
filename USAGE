@@ -38,14 +38,15 @@ The following table outlines the commands that are necessary for common
 actions. When "n/a" is used, it means that no command and/or argument is
 needed.
 
-  Action              Command              Arguments
-  ------------------- -------------------- --------------------------------------------
-  Execute SPV3        n/a                  n/a
-  Compile SPV3        compile              1: path to folder containing the SPV3 data
-                                           2: path to folder to compile the data to
-  Install SPV3        install              1: path to folder containing SPV3 packages
-                                           2: path to target installation directory
-  Apply Placeholder   placeholder commit   1: path to bitmap placeholder
-                                           2: path to bitmaps directory
-                                           3: bitmaps filter, e.g. \"\*.bitmap\"
-  Restore Bitmaps     placeholder revert   1: path to generated records text file
+  Action               Command              Arguments
+  -------------------- -------------------- --------------------------------------------
+  Execute SPV3         n/a                  n/a
+  Compile SPV3         compile              1: path to folder containing the SPV3 data
+                                            2: path to folder to compile the data to
+  Install SPV3         install              1: path to folder containing SPV3 packages
+                                            2: path to target installation directory
+  Apply Placeholder    placeholder commit   1: path to bitmap placeholder
+                                            2: path to bitmaps directory
+                                            3: bitmaps filter, e.g. \"\*.bitmap\"
+  Restore Bitmaps      placeholder revert   1: path to generated records text file
+  Dump Configuration   dump                 1: opensauce -or- overrides

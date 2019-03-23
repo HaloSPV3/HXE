@@ -78,14 +78,6 @@ namespace SPV3.CLI
     /// </summary>
     public class ExperimentalPostProcessing
     {
-      public enum ThreeDimensionalOptions
-      {
-        Off,
-        Anaglyphic,
-        Interleaving,
-        SideBySide
-      }
-
       public enum ColorBlindModeOptions
       {
         Off,
@@ -94,8 +86,16 @@ namespace SPV3.CLI
         Tritanopes
       }
 
+      public enum ThreeDimensionalOptions
+      {
+        Off,
+        Anaglyphic,
+        Interleaving,
+        SideBySide
+      }
+
       public ThreeDimensionalOptions ThreeDimensional { get; set; } = ThreeDimensionalOptions.Off;
-      public ColorBlindModeOptions ColorBlindMode { get; set; } = ColorBlindModeOptions.Off;
+      public ColorBlindModeOptions   ColorBlindMode   { get; set; } = ColorBlindModeOptions.Off;
     }
   }
 }

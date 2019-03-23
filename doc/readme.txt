@@ -30,6 +30,10 @@ specific to the SPV3 programs:
                                         release procedure of SPV3.2,
                                         including distribution &
                                         installation decisions.
+
+  overridex.txt                         Documentation & instructions on
+                                        overriding configurations, for
+                                        debugging purposes.
   ---------------------------------------------------------------------
 
 FILESYSTEM FILES
@@ -54,4 +58,9 @@ filesystem that SPV3.2 deals with:
                                         lastprof.txt, which is used for
                                         inferring the last used profile
                                         name.
+
+  opensauce.txt                         Documentation on OpenSauce,
+                                        which SPV3 depends on for
+                                        post-processing and other
+                                        goodies.
   ---------------------------------------------------------------------

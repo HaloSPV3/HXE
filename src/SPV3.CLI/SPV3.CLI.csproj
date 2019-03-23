@@ -54,6 +54,7 @@
     <Compile Include="LastProfile.cs" />
     <Compile Include="Manifest.cs" />
     <Compile Include="Names.cs" />
+    <Compile Include="OpenSauce.cs" />
     <Compile Include="Override.cs" />
     <Compile Include="Placeholder.cs" />
     <Compile Include="PostProcessing.cs" />
