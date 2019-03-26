@@ -58,6 +58,7 @@
     <Compile Include="Override.cs" />
     <Compile Include="Placeholder.cs" />
     <Compile Include="PostProcessing.cs" />
+    <Compile Include="Profile.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Progress.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

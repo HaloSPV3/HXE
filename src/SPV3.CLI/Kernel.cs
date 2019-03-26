@@ -103,21 +103,16 @@ namespace SPV3.CLI
     /// </summary>
     private static void ResumeCheckpoint()
     {
-      /**
-       * Gets the filesystem location of the directory containing HCE profiles data.
-       */
-      string GetRoot()
-      {
-        return Path.Combine(GetFolderPath(Personal), Directories.Games, Directories.Halo);
-      }
-
-      var lastprof = (LastProfile) Path.Combine(GetRoot(), Files.LastProfile);
+      var lastprof = (LastProfile) Files.LastProfile;
 
       if (!lastprof.Exists()) return;
 
       lastprof.Load();
 
-      var playerDat = (Progress) Path.Combine(GetRoot(), Directories.Profiles, lastprof.Profile, Files.Progress);
+      var playerDat = (Progress) Path.Combine(
+        Directories.Profiles,
+        lastprof.Profile,
+        Files.Progress);
 
       if (!playerDat.Exists()) return;
 
