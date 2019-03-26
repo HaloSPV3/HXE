@@ -127,7 +127,8 @@ namespace SPV3.CLI
 
       profblam.Video.Resolution.Width  = (ushort) System.Windows.Forms.Screen.PrimaryScreen.Bounds.Width;
       profblam.Video.Resolution.Height = (ushort) System.Windows.Forms.Screen.PrimaryScreen.Bounds.Height;
-      profblam.Video.Gamma             = 0; /* forces gamma to not visually change at all */
+      profblam.Video.FrameRate         = Profile.ProfileVideo.VideoFrameRate.VsyncOff; /* ensure no FPS locking */
+      profblam.Video.Gamma             = 0;                                            /* fixes gamma issues */
 
       profblam.Save();
 
@@ -135,6 +136,7 @@ namespace SPV3.CLI
       Console.Info("Patched video resolution HEIGHT - " + profblam.Video.Resolution.Height);
 
       Console.Info("Fixed gamma intensity correction!");
+      Console.Info("Removed FPS lock! (V-Sync -> OFF)");
     }
 
     /// <summary>
