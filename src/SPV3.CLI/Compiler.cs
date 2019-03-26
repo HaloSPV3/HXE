@@ -18,6 +18,7 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
+using System;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
@@ -86,6 +87,8 @@ namespace SPV3.CLI
 
       foreach (var directory in directories)
       {
+        Console.Debug("Preparing to compile directory - " + directory);
+
         /**
          * We record the package's name on the filesystem to the manifest. This permits the INSTALLER to seek the
          * package within the source directory, and then extract its data to the target directory.
@@ -111,6 +114,8 @@ namespace SPV3.CLI
 
             archive.CreateEntryFromFile(file, fileName);
 
+            Console.Debug("Created archive entry for file - " + file);
+
             /*
              * For the LOADER's asset verification routine, we must create an entry for the file in the manifest. The
              * respective entry must represent the filename and file size on the filesystem. This allows the LOADER to
@@ -122,6 +127,8 @@ namespace SPV3.CLI
               Name = fileName,
               Size = new FileInfo(file).Length
             });
+
+            Console.Debug("Created package entry for file - " + file);
           }
         }
 
@@ -144,10 +151,14 @@ namespace SPV3.CLI
 
         manifest.Packages.Add(package);
 
+        Console.Debug("Added package for the current directory to the manifest.");
+        
         i++;
       }
 
       manifest.Save();
+
+      Console.Debug("Manifest successfully saved. The target directory can now be distributed!");
     }
   }
 }

@@ -47,6 +47,7 @@
   <ItemGroup>
     <Compile Include="Campaign.cs" />
     <Compile Include="Compiler.cs" />
+    <Compile Include="Console.cs" />
     <Compile Include="Exceptions\AssetException.cs" />
     <Compile Include="Executable.cs" />
     <Compile Include="File.cs" />

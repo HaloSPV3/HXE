@@ -87,6 +87,8 @@ namespace SPV3.CLI
 
       manifest.Load();
 
+      Console.Info("Found manifest file - proceeding with data verification ...");
+
       foreach (var package in manifest.Packages)
       foreach (var entry in package.Entries)
       {
@@ -94,8 +96,10 @@ namespace SPV3.CLI
         var expectedSize = entry.Size;
         var actualSize   = new FileInfo(absolutePath).Length;
 
-        if (expectedSize != actualSize)
-          throw new AssetException($"Size mismatch {entry} (expect: {expectedSize}, actual: {actualSize}).");
+        if (expectedSize == actualSize) continue;
+
+        Console.Info($"Size mismatch {entry} (expect: {expectedSize}, actual: {actualSize}).");
+        throw new AssetException($"Size mismatch {entry} (expect: {expectedSize}, actual: {actualSize}).");
       }
     }
 
@@ -111,17 +115,26 @@ namespace SPV3.CLI
 
       lastprof.Load();
 
+      Console.Info("Found lastprof file - proceeding with profile detection ...");
+
       var profblam = (Profile) Path.Combine(Directories.Profiles, lastprof.Profile, Files.Profile);
 
       if (!profblam.Exists()) return;
 
       profblam.Load();
 
+      Console.Info("Found blam.sav file - proceeding with core patches ...");
+
       profblam.Video.Resolution.Width  = (ushort) System.Windows.Forms.Screen.PrimaryScreen.Bounds.Width;
       profblam.Video.Resolution.Height = (ushort) System.Windows.Forms.Screen.PrimaryScreen.Bounds.Height;
       profblam.Video.Gamma             = 0; /* forces gamma to not visually change at all */
-      
+
       profblam.Save();
+
+      Console.Info("Patched video resolution WIDTH  - " + profblam.Video.Resolution.Width);
+      Console.Info("Patched video resolution HEIGHT - " + profblam.Video.Resolution.Height);
+
+      Console.Info("Fixed gamma intensity correction!");
     }
 
     /// <summary>
@@ -135,6 +148,8 @@ namespace SPV3.CLI
 
       lastprof.Load();
 
+      Console.Info("Found lastprof file - proceeding with checkpoint detection ...");
+
       var playerDat = (Progress) Path.Combine(
         Directories.Profiles,
         lastprof.Profile,
@@ -142,10 +157,15 @@ namespace SPV3.CLI
 
       if (!playerDat.Exists()) return;
 
+      Console.Info("Found checkpoint file - proceeding with resuming campaign ...");
+
       playerDat.Load();
       RootInitc.Mission    = playerDat.Mission;
       RootInitc.Difficulty = playerDat.Difficulty;
       RootInitc.Save();
+
+      Console.Info("Resumed campaign MISSION    - " + playerDat.Mission);
+      Console.Info("Resumed campaign DIFFICULTY - " + playerDat.Difficulty);
     }
 
     /// <summary>
@@ -161,8 +181,9 @@ namespace SPV3.CLI
       var overrides = (Override) GetOverridesPath();
       var openSauce = (OpenSauce) Files.OpenSauce;
 
-      if (!overrides.Exists())
-        return;
+      if (!overrides.Exists()) return;
+
+      Console.Info("Found overrides file - proceeding with override preparation ...");
 
       /**
        * The following routine is carried out if the overrides.xml has been found in its designated directory.
@@ -172,8 +193,12 @@ namespace SPV3.CLI
       RootInitc.PostProcessing = overrides.OpenSauce.PostProcessing;
       RootInitc.Save();
 
+      Console.Info("Applied post-processing effects to the initiation file.");
+
       if (openSauce.Exists())
         openSauce.Load();
+
+      Console.Info("Found OpenSauce file - proceeding with OpenSauce overriding ...");
 
       openSauce.Camera.FieldOfView                 = overrides.OpenSauce.Fov;
       openSauce.Camera.IgnoreFOVChangeInCinematics = overrides.OpenSauce.IgnoreCinematicsFov;
@@ -205,6 +230,8 @@ namespace SPV3.CLI
       openSauce.Rasterizer.PostProcessing.Bloom.Enabled           = overrides.OpenSauce.PostProcessing.Bloom;
 
       openSauce.Save();
+
+      Console.Info("OpenSauce configuration has been updated with the overriding values.");
     }
 
     /// <summary>
@@ -223,11 +250,23 @@ namespace SPV3.CLI
 
       var executable = (Executable) GetPath();
 
+      if (!executable.Exists()) return;
+
+      Console.Info("Found HCE executable in the working directory - proceeding to execute it ...");
+
       executable.Debug.Console    = true;
       executable.Debug.Developer  = true;
       executable.Debug.Screenshot = true;
 
+      Console.Info("Debug.Console    = true");
+      Console.Info("Debug.Developer  = true");
+      Console.Info("Debug.Screenshot = true");
+
+      Console.Info("Using the aforementioned start-up parameters when initiating HCE process.");
+
       executable.Start();
+
+      Console.Info("And... we're done!");
     }
   }
 }
