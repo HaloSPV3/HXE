@@ -35,10 +35,10 @@ namespace SPV3.CLI
       System.Console.ForegroundColor = ConsoleColor.Gray;
       System.Console.Write(" ] - ");
 
-      System.Console.ForegroundColor = ConsoleColor.White;
+      System.Console.ForegroundColor = ConsoleColor.Red;
       System.Console.WriteLine(value);
     }
-    
+
     public static void Debug(string value)
     {
       System.Console.ForegroundColor = ConsoleColor.Gray;
