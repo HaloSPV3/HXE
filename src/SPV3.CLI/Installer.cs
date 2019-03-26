@@ -18,6 +18,7 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
+using System;
 using static System.Environment;
 using static System.Environment.SpecialFolder;
 using static System.IO.Compression.ZipFile;
@@ -52,23 +53,34 @@ namespace SPV3.CLI
       var manifest = (Manifest) Combine(source, Files.Manifest);
       manifest.Load();
 
+      Console.Debug("Found manifest file in the source directory - proceeding with installation ...");
+
       /**
        * Installation is the reversal of the COMPILER routine: we get the data back from the DEFLATE packages, through
        * the use of the generated manifest, and inflate it to the provided target directory on the filesystem.
        */
       foreach (var package in manifest.Packages)
       {
+        Console.Debug("Preparing to install entries from package - " + package.Name);
+
         /**
          * To handle reinstall circumstances, and for the sake of being more defensive, we check if the package files
          * already exist on the filesystem. Should they exist, we will proceed with deleting them.
          */
         foreach (var entry in package.Entries)
         {
+          Console.Debug("Checking if entry exists - " + entry.Name);
+
           var file = (File) Combine(target, package.Path, entry.Name);
 
-          if (file.Exists())
-            file.Delete();
+          if (!file.Exists()) continue;
+
+          file.Delete();
+
+          Console.Debug("Deleting discovered file - " + entry.Name);
         }
+
+        Console.Debug("Existing entries on the filesystem have been deleted - preparing to extract package ...");
 
         /**
          * Given that the package filename on the filesystem is expected to match the package's name in the manifest, we
@@ -81,7 +93,11 @@ namespace SPV3.CLI
         var packagePath = Combine(source, package.Name);
         var destination = Combine(target, package.Path);
         ExtractToDirectory(packagePath, destination);
+
+        Console.Debug("Package has been successfully extracted to destination - " + destination);
       }
+
+      Console.Debug("Finished installation of main data - proceeding with post-install routines ...");
 
       /**
        * Delete potential manifest file at the target destination.
