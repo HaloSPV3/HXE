@@ -1,3 +1,23 @@
+<!--
+ Copyright (c) 2019 Emilian Roman
+ 
+ This software is provided 'as-is', without any express or implied
+ warranty. In no event will the authors be held liable for any damages
+ arising from the use of this software.
+ 
+ Permission is granted to anyone to use this software for any purpose,
+ including commercial applications, and to alter it and redistribute it
+ freely, subject to the following restrictions:
+ 
+ 1. The origin of this software must not be misrepresented; you must not
+    claim that you wrote the original software. If you use this software
+    in a product, an acknowledgment in the product documentation would be
+    appreciated but is not required.
+ 2. Altered source versions must be plainly marked as such, and must not be
+    misrepresented as being the original software.
+ 3. This notice may not be removed or altered from any source distribution.
+-->
+
 SPV3 CLI SOURCE CODE
 ====================
 
@@ -170,6 +190,13 @@ File type:
                 exposes all of the available options as object
                 properties, for programmable editing of the OpenSauce
                 configuration.
+
+  Profile       Represents the blam.sav binary, which contains HCE
+                profile information and configuration data. The object
+                permits loading, editing, and saving this data.
+                Additionally, it also automatically forges the hash of
+                the blam.sav upon saving, to ensure that HCE accepts
+                the edited binary.
   ---------------------------------------------------------------------
 
 Documentation on any of the aforementioned files can be found in the doc

@@ -1,3 +1,23 @@
+<!--
+ Copyright (c) 2019 Emilian Roman
+ 
+ This software is provided 'as-is', without any express or implied
+ warranty. In no event will the authors be held liable for any damages
+ arising from the use of this software.
+ 
+ Permission is granted to anyone to use this software for any purpose,
+ including commercial applications, and to alter it and redistribute it
+ freely, subject to the following restrictions:
+ 
+ 1. The origin of this software must not be misrepresented; you must not
+    claim that you wrote the original software. If you use this software
+    in a product, an acknowledgment in the product documentation would be
+    appreciated but is not required.
+ 2. Altered source versions must be plainly marked as such, and must not be
+    misrepresented as being the original software.
+ 3. This notice may not be removed or altered from any source distribution.
+-->
+
 POST-PROCESSING
 ===============
 
@@ -7,7 +27,7 @@ QUALITY LEVELS
 The table below outlines the shader effects that are configurable by the
 user with the following characteristics:
 
-  Shader                Values
+  Shader                Options
   --------------------- -------------------------------------------
   MXAO                  off, low, high
   DOF                   off, low, high
@@ -54,32 +74,32 @@ respective integer representations:
 
   Post-Processing Effect   Option         2\^N Integer (HEX :: DEC)
   ------------------------ -------------- ---------------------------
-  MXAO                     OFF            0x0000001 :: 1
-                           LOW            0x0000002 :: 2
-                           HIGH           0x0000004 :: 4
-  DOF                      OFF            0x0000008 :: 8
-                           LOW            0x0000010 :: 16
-                           HIGH           0x0000020 :: 32
-  Motion Blur              OFF            0x0000040 :: 64
-                           IN-BUILT       0x0000080 :: 128
-                           LOW            0x0000100 :: 256
-                           HIGH           0x0000200 :: 512
-  Dynamic Lens Flares      OFF            0x0000400 :: 1024
-                           ON             0x0000800 :: 2048
-  Volumetric Lighting      OFF            0x0001000 :: 4096
-                           ON             0x0002000 :: 8192
-  Lens Dirt                OFF            0x0004000 :: 16384
-                           ON             0x0008000 :: 32768
-  HUDv5 Visor              OFF            0x0010000 :: 65536
-                           ON             0x0020000 :: 131072
-  3D                       OFF            0x0040000 :: 262144
-                           ANAGLYPH       0x0080000 :: 524288
-                           INTERLEAVING   0x0100000 :: 1048576
-                           SIDE-BY-SIDE   0x0200000 :: 2097152
-  Color Blind Mode         OFF            0x0400000 :: 4194304
-                           PROTANOPIA     0x0800000 :: 8388608
-                           DEUTERANOPES   0x1000000 :: 16777216
-                           TRITANOPES     0x2000000 :: 33554432
+  MXAO                     off            0x0000001 :: 1
+                           low            0x0000002 :: 2
+                           high           0x0000004 :: 4
+  DOF                      off            0x0000008 :: 8
+                           low            0x0000010 :: 16
+                           high           0x0000020 :: 32
+  Motion Blur              off            0x0000040 :: 64
+                           in-built       0x0000080 :: 128
+                           low            0x0000100 :: 256
+                           high           0x0000200 :: 512
+  Dynamic Lens Flares      off            0x0000400 :: 1024
+                           on             0x0000800 :: 2048
+  Volumetric Lighting      off            0x0001000 :: 4096
+                           on             0x0002000 :: 8192
+  Lens Dirt                off            0x0004000 :: 16384
+                           on             0x0008000 :: 32768
+  HUDv5 Visor              off            0x0010000 :: 65536
+                           on             0x0020000 :: 131072
+  3D                       off            0x0040000 :: 262144
+                           anaglyph       0x0080000 :: 524288
+                           interleaving   0x0100000 :: 1048576
+                           side-by-side   0x0200000 :: 2097152
+  Color Blind Mode         off            0x0400000 :: 4194304
+                           protanopia     0x0800000 :: 8388608
+                           deuteranopes   0x1000000 :: 16777216
+                           tritanopes     0x2000000 :: 33554432
 
 ENCODING
 
@@ -124,6 +144,21 @@ Once we have the array of 2\^N numbers that sum up to f1, we can analyse
 it and infer the user's chosen post-processing options back. This
 permits SPV3 to toggle or set each post-processing effect to a specific
 value.
+
+The following code is a Lua snippet that attempts to return the 2\^N
+numbers that sum up to f1:
+
+    function decode(n)
+      local options = {}
+      i = 1
+      while i <= n do
+        if bit.band(i, n) ~= 0 then
+          table.insert(options, i)
+        end
+        i = bit.shl(i, 1)
+      end
+      return options
+    end
 
 DEFINITIONS
 -----------

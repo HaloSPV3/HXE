@@ -37,12 +37,18 @@ namespace SPV3.CLI
       public const string Executable  = "haloce.exe";
       public const string Initiation  = "initc.txt";
       public const string Progress    = "savegame.bin";
-      public const string LastProfile = "lastprof.txt";
+      public const string Profile     = "blam.sav";
       public const string Overrides   = "overrides.xml";
       public const string InstallPath = "install.txt";
       public const string Manifest    = "0x00.bin";
 
-      public static readonly string OpenSauce = Path.Combine(GetFolderPath(MyDocuments),
+      public static readonly string LastProfile = Path.Combine(GetFolderPath(Personal),
+        Directories.Games,
+        Directories.Halo,
+        "lastprof.txt"
+      );
+
+      public static readonly string OpenSauce = Path.Combine(GetFolderPath(Personal),
         Directories.Games,
         Directories.Halo,
         Directories.OpenSauce,
@@ -55,11 +61,16 @@ namespace SPV3.CLI
     /// </summary>
     public static class Directories
     {
-      public const string Profiles  = "savegames";
       public const string Games     = "My Games";
       public const string Halo      = "Halo CE";
       public const string Data      = "SPV3";
       public const string OpenSauce = "OpenSauce";
+
+      public static readonly string Profiles = Path.Combine(GetFolderPath(Personal),
+        Games,
+        Halo,
+        "savegames"
+      );
     }
   }
 }
