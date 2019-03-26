@@ -44,6 +44,7 @@ namespace SPV3.CLI
     public static void Bootstrap()
     {
       VerifyMainAssets();
+      InvokeCoreTweaks();
       ResumeCheckpoint();
       InvokeOverriding();
       InvokeExecutable();
@@ -96,6 +97,31 @@ namespace SPV3.CLI
         if (expectedSize != actualSize)
           throw new AssetException($"Size mismatch {entry} (expect: {expectedSize}, actual: {actualSize}).");
       }
+    }
+
+    /// <summary>
+    ///   Invokes core improvements to the auto-detected profile, such as auto max resolution and gamma fixes. This is
+    ///   NOT done when a profile does not exist/cannot be found!
+    /// </summary>
+    private static void InvokeCoreTweaks()
+    {
+      var lastprof = (LastProfile) Files.LastProfile;
+
+      if (!lastprof.Exists()) return;
+
+      lastprof.Load();
+
+      var profblam = (Profile) Path.Combine(Directories.Profiles, lastprof.Profile, Files.Profile);
+
+      if (!profblam.Exists()) return;
+
+      profblam.Load();
+
+      profblam.Video.Resolution.Width  = (ushort) System.Windows.Forms.Screen.PrimaryScreen.Bounds.Width;
+      profblam.Video.Resolution.Height = (ushort) System.Windows.Forms.Screen.PrimaryScreen.Bounds.Height;
+      profblam.Video.Gamma             = 0; /* forces gamma to not visually change at all */
+      
+      profblam.Save();
     }
 
     /// <summary>
