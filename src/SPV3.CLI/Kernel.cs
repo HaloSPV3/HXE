@@ -162,12 +162,20 @@ namespace SPV3.CLI
       Console.Info("Found checkpoint file - proceeding with resuming campaign ...");
 
       playerDat.Load();
-      RootInitc.Mission    = playerDat.Mission;
-      RootInitc.Difficulty = playerDat.Difficulty;
-      RootInitc.Save();
 
-      Console.Info("Resumed campaign MISSION    - " + playerDat.Mission);
-      Console.Info("Resumed campaign DIFFICULTY - " + playerDat.Difficulty);
+      try
+      {
+        RootInitc.Mission    = playerDat.Mission;
+        RootInitc.Difficulty = playerDat.Difficulty;
+        RootInitc.Save();
+
+        Console.Info("Resumed campaign MISSION    - " + playerDat.Mission);
+        Console.Info("Resumed campaign DIFFICULTY - " + playerDat.Difficulty);
+      }
+      catch (UnauthorizedAccessException e)
+      {
+        Console.Error(e.Message + " -- CAMPAIGN WILL NOT RESUME!");
+      }
     }
 
     /// <summary>
@@ -192,8 +200,16 @@ namespace SPV3.CLI
        */
 
       overrides.Load();
-      RootInitc.PostProcessing = overrides.OpenSauce.PostProcessing;
-      RootInitc.Save();
+
+      try
+      {
+        RootInitc.PostProcessing = overrides.OpenSauce.PostProcessing;
+        RootInitc.Save();
+      }
+      catch (UnauthorizedAccessException e)
+      {
+        Console.Error(e.Message + " -- POST-PROCESSING NOT APPLIED!");
+      }
 
       Console.Info("Applied post-processing effects to the initiation file.");
 
@@ -266,9 +282,15 @@ namespace SPV3.CLI
 
       Console.Info("Using the aforementioned start-up parameters when initiating HCE process.");
 
-      executable.Start();
-
-      Console.Info("And... we're done!");
+      try
+      {
+        executable.Start();
+        Console.Info("And... we're done!");
+      }
+      catch (Exception e)
+      {
+        Console.Error(e.Message);
+      }
     }
   }
 }
