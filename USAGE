@@ -41,8 +41,7 @@ needed.
   Action               Command              Arguments
   -------------------- -------------------- --------------------------------------------
   Execute SPV3         n/a                  n/a
-  Compile SPV3         compile              1: path to folder containing the SPV3 data
-                                            2: path to folder to compile the data to
+  Compile SPV3         compile              1: path to folder to compile the data to
   Install SPV3         install              1: path to target installation directory
   Apply Placeholder    placeholder commit   1: path to bitmap placeholder
                                             2: path to bitmaps directory

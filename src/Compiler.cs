@@ -22,6 +22,8 @@ using System;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
+using static System.Diagnostics.Process;
+using static System.IO.Compression.CompressionLevel;
 using static System.IO.Compression.ZipArchiveMode;
 using static System.IO.Compression.ZipFile;
 using static System.IO.Directory;
@@ -47,6 +49,9 @@ namespace SPV3.CLI
     /// </param>
     public static void Compile(string source, string target)
     {
+      if (!Exists(target))
+        CreateDirectory(target);
+
       /**
        * We declare the manifest file to be in the target directory, because the target directory is expected to be the
        * distributed with the installer.
@@ -101,19 +106,23 @@ namespace SPV3.CLI
         var name    = $"0x{i:x2}.bin";
         var files   = GetFiles(directory, "*.*", TopDirectoryOnly);
         var package = (Manifest.Package) name;
+        var archive = (File) Combine(target, name);
+        
+        if (archive.Exists())
+          archive.Delete();
 
         /**
          * We create an archive & package entry for the files. Note that the path does not need to be declared for the
          * file's entry in the package, because it does not reside within a subdirectory.
          */
 
-        using (var archive = Open(Combine(target, name), Create))
+        using (var deflate = Open(archive.Path, Create))
         {
           foreach (var file in files)
           {
             var fileName = GetFileName(file);
 
-            archive.CreateEntryFromFile(file, fileName);
+            deflate.CreateEntryFromFile(file, fileName, Optimal);
 
             Debug("Created archive entry for file - " + file);
 
@@ -158,10 +167,22 @@ namespace SPV3.CLI
 
         i++;
       }
+      
+      if (manifest.Exists())
+        manifest.Delete();
 
       manifest.Save();
 
       Debug("Manifest successfully saved. The target directory can now be distributed!");
+
+      /**
+       * For subsequent installation convenience, we will make a copy of the current CLI to the target directory.
+       */
+
+      var cli = (File) GetCurrentProcess().MainModule.FileName;
+      cli.CopyTo(target);
+
+      Debug("SPV3.CLI.exe successfully copied. The packages can now be distributed and installed!");
     }
   }
 }
