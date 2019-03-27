@@ -94,14 +94,17 @@ namespace SPV3.CLI
       foreach (var package in manifest.Packages)
       foreach (var entry in package.Entries)
       {
+        if (!entry.Name.Contains(".map"))
+          continue;
+
         var absolutePath = Path.Combine(CurrentDirectory, package.Path, entry.Name);
         var expectedSize = entry.Size;
         var actualSize   = new FileInfo(absolutePath).Length;
 
         if (expectedSize == actualSize) continue;
 
-        Info($"Size mismatch {entry} (expect: {expectedSize}, actual: {actualSize}).");
-        throw new AssetException($"Size mismatch {entry} (expect: {expectedSize}, actual: {actualSize}).");
+        Info($"Size mismatch {entry.Name} (expect: {expectedSize}, actual: {actualSize}).");
+        throw new AssetException($"Size mismatch {entry.Name} (expect: {expectedSize}, actual: {actualSize}).");
       }
     }
 

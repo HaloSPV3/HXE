@@ -108,7 +108,10 @@ namespace SPV3.CLI
         var archive = (File) Combine(target, name);
 
         if (archive.Exists())
+        {
           archive.Delete();
+          Info("Deleted existing archive: " + archive);
+        }
 
         /**
          * We create an archive & package entry for the files. Note that the path does not need to be declared for the
@@ -168,11 +171,14 @@ namespace SPV3.CLI
       }
 
       if (manifest.Exists())
+      {
         manifest.Delete();
+        Info("Deleted existing manifest binary.");
+      }
 
       manifest.Save();
 
-      Debug("Manifest successfully saved. The target directory can now be distributed!");
+      Debug("Manifest successfully saved. The loader can now install and verify the SPV3.2 assets.");
 
       /**
        * For subsequent installation convenience, we will make a copy of the current CLI to the target directory.
@@ -181,7 +187,7 @@ namespace SPV3.CLI
       var cli = (File) GetCurrentProcess().MainModule.FileName;
       cli.CopyTo(target);
 
-      Debug("SPV3.CLI.exe successfully copied. The packages can now be distributed and installed!");
+      Debug("Loader executable has been successfully copied. The packages can now be distributed and installed!");
     }
   }
 }
