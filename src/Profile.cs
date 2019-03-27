@@ -341,7 +341,7 @@ namespace SPV3.CLI
       MouseSensitivityHorizontal = 0x0955,
       MouseSensitivityVertical   = 0x0956,
       VideoResolutionWidth       = 0x0A69,
-      VideoResolutionHeight      = 0xA6B,
+      VideoResolutionHeight      = 0x0A6B,
       VideoRefreshRate           = 0x0A6D,
       VideoFrameRate             = 0x0A70,
       VideoEffectsSpecular       = 0x0A71,

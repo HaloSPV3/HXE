@@ -61,7 +61,7 @@ namespace SPV3.CLI
        */
       if (args.Length == 0)
       {
-        Info("Implicitly invoked 'compile' command.");
+        Info("Implicitly invoked 'load' command.");
 
         Run(Kernel.Bootstrap);
 

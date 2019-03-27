@@ -107,7 +107,7 @@ namespace SPV3.CLI
          * file's entry in the package, because it does not reside within a subdirectory.
          */
 
-        using (var archive = Open(Combine(target, name), Update))
+        using (var archive = Open(Combine(target, name), Create))
         {
           foreach (var file in files)
           {
