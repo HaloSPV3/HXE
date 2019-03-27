@@ -54,6 +54,10 @@ specific to the SPV3 programs:
   overrides.txt                         Documentation & instructions on
                                         overriding configurations, for
                                         debugging purposes.
+
+  distributing.txt                      Documentation & instructions on
+                                        compiling, distributing, and
+                                        installing SPV3.2.
   ---------------------------------------------------------------------
 
 FILESYSTEM FILES
