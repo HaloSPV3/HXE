@@ -24,6 +24,7 @@ using static System.Environment.SpecialFolder;
 using static System.IO.Compression.ZipFile;
 using static System.IO.Directory;
 using static System.IO.Path;
+using static SPV3.CLI.Console;
 using static SPV3.CLI.Names;
 using static SPV3.CLI.Names.Directories;
 using static SPV3.CLI.Names.Files;
@@ -53,7 +54,7 @@ namespace SPV3.CLI
       var manifest = (Manifest) Combine(source, Files.Manifest);
       manifest.Load();
 
-      Console.Debug("Found manifest file in the source directory - proceeding with installation ...");
+      Debug("Found manifest file in the source directory - proceeding with installation ...");
 
       /**
        * Installation is the reversal of the COMPILER routine: we get the data back from the DEFLATE packages, through
@@ -61,7 +62,7 @@ namespace SPV3.CLI
        */
       foreach (var package in manifest.Packages)
       {
-        Console.Debug("Preparing to install entries from package - " + package.Name);
+        Debug("Preparing to install entries from package - " + package.Name);
 
         /**
          * To handle reinstall circumstances, and for the sake of being more defensive, we check if the package files
@@ -69,7 +70,7 @@ namespace SPV3.CLI
          */
         foreach (var entry in package.Entries)
         {
-          Console.Debug("Checking if entry exists - " + entry.Name);
+          Debug("Checking if entry exists - " + entry.Name);
 
           var file = (File) Combine(target, package.Path, entry.Name);
 
@@ -77,10 +78,10 @@ namespace SPV3.CLI
 
           file.Delete();
 
-          Console.Debug("Deleting discovered file - " + entry.Name);
+          Debug("Deleting discovered file - " + entry.Name);
         }
 
-        Console.Debug("Existing entries on the filesystem have been deleted - preparing to extract package ...");
+        Debug("Existing entries on the filesystem have been deleted - preparing to extract package ...");
 
         /**
          * Given that the package filename on the filesystem is expected to match the package's name in the manifest, we
@@ -94,10 +95,10 @@ namespace SPV3.CLI
         var destination = Combine(target, package.Path);
         ExtractToDirectory(packagePath, destination);
 
-        Console.Debug("Package has been successfully extracted to destination - " + destination);
+        Debug("Package has been successfully extracted to destination - " + destination);
       }
 
-      Console.Debug("Finished installation of main data - proceeding with post-install routines ...");
+      Debug("Finished installation of main data - proceeding with post-install routines ...");
 
       /**
        * Delete potential manifest file at the target destination.

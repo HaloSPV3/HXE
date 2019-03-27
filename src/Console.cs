@@ -19,6 +19,7 @@
  */
 
 using System;
+using static System.Console;
 
 namespace SPV3.CLI
 {
@@ -26,47 +27,47 @@ namespace SPV3.CLI
   {
     public static void Error(string value)
     {
-      System.Console.ForegroundColor = ConsoleColor.Gray;
-      System.Console.Write("> [ ");
+      ForegroundColor = ConsoleColor.Gray;
+      Write("> [ ");
 
-      System.Console.ForegroundColor = ConsoleColor.Red;
-      System.Console.Write("!!!!");
+      ForegroundColor = ConsoleColor.Red;
+      Write("!!!!");
 
-      System.Console.ForegroundColor = ConsoleColor.Gray;
-      System.Console.Write(" ] - ");
+      ForegroundColor = ConsoleColor.Gray;
+      Write(" ] - ");
 
-      System.Console.ForegroundColor = ConsoleColor.Red;
-      System.Console.WriteLine(value);
+      ForegroundColor = ConsoleColor.Red;
+      WriteLine(value);
     }
 
     public static void Debug(string value)
     {
-      System.Console.ForegroundColor = ConsoleColor.Gray;
-      System.Console.Write("> [ ");
+      ForegroundColor = ConsoleColor.Gray;
+      Write("> [ ");
 
-      System.Console.ForegroundColor = ConsoleColor.Green;
-      System.Console.Write("DBUG");
+      ForegroundColor = ConsoleColor.Green;
+      Write("DBUG");
 
-      System.Console.ForegroundColor = ConsoleColor.Gray;
-      System.Console.Write(" ] - ");
+      ForegroundColor = ConsoleColor.Gray;
+      Write(" ] - ");
 
-      System.Console.ForegroundColor = ConsoleColor.White;
-      System.Console.WriteLine(value);
+      ForegroundColor = ConsoleColor.White;
+      WriteLine(value);
     }
 
     public static void Info(string value)
     {
-      System.Console.ForegroundColor = ConsoleColor.Gray;
-      System.Console.Write("> [ ");
+      ForegroundColor = ConsoleColor.Gray;
+      Write("> [ ");
 
-      System.Console.ForegroundColor = ConsoleColor.Cyan;
-      System.Console.Write("INFO");
+      ForegroundColor = ConsoleColor.Cyan;
+      Write("INFO");
 
-      System.Console.ForegroundColor = ConsoleColor.Gray;
-      System.Console.Write(" ] - ");
+      ForegroundColor = ConsoleColor.Gray;
+      Write(" ] - ");
 
-      System.Console.ForegroundColor = ConsoleColor.White;
-      System.Console.WriteLine(value);
+      ForegroundColor = ConsoleColor.White;
+      WriteLine(value);
     }
   }
 }

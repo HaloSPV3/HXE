@@ -27,6 +27,7 @@ using static System.IO.Compression.ZipFile;
 using static System.IO.Directory;
 using static System.IO.Path;
 using static System.IO.SearchOption;
+using static SPV3.CLI.Console;
 
 namespace SPV3.CLI
 {
@@ -87,7 +88,7 @@ namespace SPV3.CLI
 
       foreach (var directory in directories)
       {
-        Console.Debug("Preparing to compile directory - " + directory);
+        Debug("Preparing to compile directory - " + directory);
 
         /**
          * We record the package's name on the filesystem to the manifest. This permits the INSTALLER to seek the
@@ -114,7 +115,7 @@ namespace SPV3.CLI
 
             archive.CreateEntryFromFile(file, fileName);
 
-            Console.Debug("Created archive entry for file - " + file);
+            Debug("Created archive entry for file - " + file);
 
             /*
              * For the LOADER's asset verification routine, we must create an entry for the file in the manifest. The
@@ -128,7 +129,7 @@ namespace SPV3.CLI
               Size = new FileInfo(file).Length
             });
 
-            Console.Debug("Created package entry for file - " + file);
+            Debug("Created package entry for file - " + file);
           }
         }
 
@@ -149,18 +150,18 @@ namespace SPV3.CLI
 
         package.Path = directory.Equals(source)
           ? string.Empty
-          : directory.Substring(source.TrimEnd('\\').TrimEnd('/').Length + 1); /* ensure ONLY source path is removed */
+          : directory.Substring(source.TrimEnd('/', '\\').Length + 1);
 
         manifest.Packages.Add(package);
 
-        Console.Debug("Added package for the current directory to the manifest.");
+        Debug("Added package for the current directory to the manifest.");
 
         i++;
       }
 
       manifest.Save();
 
-      Console.Debug("Manifest successfully saved. The target directory can now be distributed!");
+      Debug("Manifest successfully saved. The target directory can now be distributed!");
     }
   }
 }

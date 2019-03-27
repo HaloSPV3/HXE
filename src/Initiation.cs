@@ -21,6 +21,7 @@
 using System;
 using System.Text;
 using static SPV3.CLI.Campaign;
+using static SPV3.CLI.Console;
 using static SPV3.CLI.PostProcessing;
 using static SPV3.CLI.PostProcessing.ExperimentalPostProcessing;
 
@@ -204,7 +205,7 @@ namespace SPV3.CLI
       output.AppendLine($"game_difficulty_set {difficulty}");
       WriteAllText(output.ToString());
       
-      Console.Debug("Successfully applied initc.txt configurations.");
+      Debug("Successfully applied initc.txt configurations.");
     }
 
     /// <summary>
