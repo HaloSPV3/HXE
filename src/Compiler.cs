@@ -147,12 +147,14 @@ namespace SPV3.CLI
          * itself.
          */
 
-        package.Path = directory.Equals(source) ? string.Empty : directory.Substring(source.Length + 1);
+        package.Path = directory.Equals(source)
+          ? string.Empty
+          : directory.Substring(source.TrimEnd('\\').TrimEnd('/').Length + 1); /* ensure ONLY source path is removed */
 
         manifest.Packages.Add(package);
 
         Console.Debug("Added package for the current directory to the manifest.");
-        
+
         i++;
       }
 
