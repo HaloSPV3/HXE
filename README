@@ -29,6 +29,11 @@ Current features include:
     -   (re)installing compressed packages to the filesystem
     -   storing the chosen installation path in a standard file
 
+-    DEVELOPER
+
+    -   ability to apply placeholders to bitmaps for Sapien
+    -   ability to override HCE/Chimera/OpenSauce configurations
+
 USAGE
 -----
 
