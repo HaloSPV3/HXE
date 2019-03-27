@@ -23,6 +23,7 @@ using System.IO;
 using SPV3.CLI.Exceptions;
 using static System.Environment;
 using static System.Environment.SpecialFolder;
+using static SPV3.CLI.Console;
 using static SPV3.CLI.Names;
 
 namespace SPV3.CLI
@@ -87,7 +88,7 @@ namespace SPV3.CLI
 
       manifest.Load();
 
-      Console.Info("Found manifest file - proceeding with data verification ...");
+      Info("Found manifest file - proceeding with data verification ...");
 
       foreach (var package in manifest.Packages)
       foreach (var entry in package.Entries)
@@ -98,7 +99,7 @@ namespace SPV3.CLI
 
         if (expectedSize == actualSize) continue;
 
-        Console.Info($"Size mismatch {entry} (expect: {expectedSize}, actual: {actualSize}).");
+        Info($"Size mismatch {entry} (expect: {expectedSize}, actual: {actualSize}).");
         throw new AssetException($"Size mismatch {entry} (expect: {expectedSize}, actual: {actualSize}).");
       }
     }
@@ -115,7 +116,7 @@ namespace SPV3.CLI
 
       lastprof.Load();
 
-      Console.Info("Found lastprof file - proceeding with profile detection ...");
+      Info("Found lastprof file - proceeding with profile detection ...");
 
       var profblam = (Profile) Path.Combine(Directories.Profiles, lastprof.Profile, Files.Profile);
 
@@ -123,7 +124,7 @@ namespace SPV3.CLI
 
       profblam.Load();
 
-      Console.Info("Found blam.sav file - proceeding with core patches ...");
+      Info("Found blam.sav file - proceeding with core patches ...");
 
       profblam.Video.Resolution.Width  = (ushort) System.Windows.Forms.Screen.PrimaryScreen.Bounds.Width;
       profblam.Video.Resolution.Height = (ushort) System.Windows.Forms.Screen.PrimaryScreen.Bounds.Height;
@@ -132,11 +133,11 @@ namespace SPV3.CLI
 
       profblam.Save();
 
-      Console.Info("Patched video resolution WIDTH  - " + profblam.Video.Resolution.Width);
-      Console.Info("Patched video resolution HEIGHT - " + profblam.Video.Resolution.Height);
+      Info("Patched video resolution WIDTH  - " + profblam.Video.Resolution.Width);
+      Info("Patched video resolution HEIGHT - " + profblam.Video.Resolution.Height);
 
-      Console.Info("Fixed gamma intensity correction!");
-      Console.Info("Removed FPS lock! (V-Sync -> OFF)");
+      Info("Fixed gamma intensity correction!");
+      Info("Removed FPS lock! (V-Sync -> OFF)");
     }
 
     /// <summary>
@@ -150,7 +151,7 @@ namespace SPV3.CLI
 
       lastprof.Load();
 
-      Console.Info("Found lastprof file - proceeding with checkpoint detection ...");
+      Info("Found lastprof file - proceeding with checkpoint detection ...");
 
       var playerDat = (Progress) Path.Combine(
         Directories.Profiles,
@@ -159,7 +160,7 @@ namespace SPV3.CLI
 
       if (!playerDat.Exists()) return;
 
-      Console.Info("Found checkpoint file - proceeding with resuming campaign ...");
+      Info("Found checkpoint file - proceeding with resuming campaign ...");
 
       playerDat.Load();
 
@@ -169,12 +170,12 @@ namespace SPV3.CLI
         RootInitc.Difficulty = playerDat.Difficulty;
         RootInitc.Save();
 
-        Console.Info("Resumed campaign MISSION    - " + playerDat.Mission);
-        Console.Info("Resumed campaign DIFFICULTY - " + playerDat.Difficulty);
+        Info("Resumed campaign MISSION    - " + playerDat.Mission);
+        Info("Resumed campaign DIFFICULTY - " + playerDat.Difficulty);
       }
       catch (UnauthorizedAccessException e)
       {
-        Console.Error(e.Message + " -- CAMPAIGN WILL NOT RESUME!");
+        Error(e.Message + " -- CAMPAIGN WILL NOT RESUME!");
       }
     }
 
@@ -193,7 +194,7 @@ namespace SPV3.CLI
 
       if (!overrides.Exists()) return;
 
-      Console.Info("Found overrides file - proceeding with override preparation ...");
+      Info("Found overrides file - proceeding with override preparation ...");
 
       /**
        * The following routine is carried out if the overrides.xml has been found in its designated directory.
@@ -208,15 +209,15 @@ namespace SPV3.CLI
       }
       catch (UnauthorizedAccessException e)
       {
-        Console.Error(e.Message + " -- POST-PROCESSING NOT APPLIED!");
+        Error(e.Message + " -- POST-PROCESSING NOT APPLIED!");
       }
 
-      Console.Info("Applied post-processing effects to the initiation file.");
+      Info("Applied post-processing effects to the initiation file.");
 
       if (openSauce.Exists())
         openSauce.Load();
 
-      Console.Info("Found OpenSauce file - proceeding with OpenSauce overriding ...");
+      Info("Found OpenSauce file - proceeding with OpenSauce overriding ...");
 
       openSauce.Camera.FieldOfView                 = overrides.OpenSauce.Fov;
       openSauce.Camera.IgnoreFOVChangeInCinematics = overrides.OpenSauce.IgnoreCinematicsFov;
@@ -249,7 +250,7 @@ namespace SPV3.CLI
 
       openSauce.Save();
 
-      Console.Info("OpenSauce configuration has been updated with the overriding values.");
+      Info("OpenSauce configuration has been updated with the overriding values.");
     }
 
     /// <summary>
@@ -270,26 +271,26 @@ namespace SPV3.CLI
 
       if (!executable.Exists()) return;
 
-      Console.Info("Found HCE executable in the working directory - proceeding to execute it ...");
+      Info("Found HCE executable in the working directory - proceeding to execute it ...");
 
       executable.Debug.Console    = true;
       executable.Debug.Developer  = true;
       executable.Debug.Screenshot = true;
 
-      Console.Info("Debug.Console    = true");
-      Console.Info("Debug.Developer  = true");
-      Console.Info("Debug.Screenshot = true");
+      Info("Debug.Console    = true");
+      Info("Debug.Developer  = true");
+      Info("Debug.Screenshot = true");
 
-      Console.Info("Using the aforementioned start-up parameters when initiating HCE process.");
+      Info("Using the aforementioned start-up parameters when initiating HCE process.");
 
       try
       {
         executable.Start();
-        Console.Info("And... we're done!");
+        Info("And... we're done!");
       }
       catch (Exception e)
       {
-        Console.Error(e.Message);
+        Error(e.Message);
       }
     }
   }

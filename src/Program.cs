@@ -24,6 +24,7 @@ using System.Threading.Tasks;
 using static System.Console;
 using static System.Environment.SpecialFolder;
 using static System.Reflection.Assembly;
+using static SPV3.CLI.Console;
 using static SPV3.CLI.Names.Files;
 
 namespace SPV3.CLI
@@ -60,7 +61,7 @@ namespace SPV3.CLI
        */
       if (args.Length == 0)
       {
-        Console.Info("Implicitly invoked 'compile' command.");
+        Info("Implicitly invoked 'compile' command.");
 
         Run(Kernel.Bootstrap);
 
@@ -77,7 +78,7 @@ namespace SPV3.CLI
 
         case "compile" when args.Length >= 3:
         {
-          Console.Info("Explicitly invoked 'compile' command.");
+          Info("Explicitly invoked 'compile' command.");
 
           var source = args.Length == 2 ? Environment.CurrentDirectory : args[1];
           var target = args[2];
@@ -92,7 +93,7 @@ namespace SPV3.CLI
 
         case "install" when args.Length >= 2:
         {
-          Console.Info("Explicitly invoked 'install' command.");
+          Info("Explicitly invoked 'install' command.");
 
           var source = args.Length == 2 ? Environment.CurrentDirectory : args[1];
           var target = args[2];
@@ -107,13 +108,13 @@ namespace SPV3.CLI
 
         case "placeholder" when args.Length > 1:
         {
-          Console.Info("Explicitly invoked 'placeholder' command.");
+          Info("Explicitly invoked 'placeholder' command.");
 
           switch (args[1])
           {
             case "commit" when args.Length >= 4:
             {
-              Console.Info("Explicitly invoked 'commit' argument.");
+              Info("Explicitly invoked 'commit' argument.");
 
               var bitmap = args[2];
               var target = args[3];
@@ -124,7 +125,7 @@ namespace SPV3.CLI
             }
             case "revert" when args.Length >= 2:
             {
-              Console.Info("Explicitly invoked 'revert' argument.");
+              Info("Explicitly invoked 'revert' argument.");
 
               var records = args[2];
 
@@ -132,7 +133,7 @@ namespace SPV3.CLI
               return;
             }
             default:
-              Console.Error("Invalid placeholder args.");
+              Error("Invalid placeholder args.");
               Environment.Exit(3);
               return;
           }
@@ -144,33 +145,33 @@ namespace SPV3.CLI
 
         case "dump" when args.Length > 1:
         {
-          Console.Info("Explicitly invoked 'dump' command.");
+          Info("Explicitly invoked 'dump' command.");
 
           switch (args[1])
           {
             case "overrides":
-              Console.Info("Explicitly invoked 'overrides' argument.");
+              Info("Explicitly invoked 'overrides' argument.");
 
               var overridesPath = Path.Combine(Environment.GetFolderPath(MyDocuments), Overrides);
 
               Run(() => { new Override {Path = overridesPath}.Save(); });
               return;
             case "opensauce":
-              Console.Info("Explicitly invoked 'opensauce' argument.");
+              Info("Explicitly invoked 'opensauce' argument.");
 
               var openSaucePath = Names.Files.OpenSauce;
 
               Run(() => { new OpenSauce {Path = openSaucePath}.Save(); });
               return;
             default:
-              Console.Error("Invalid dump args.");
+              Error("Invalid dump args.");
               Environment.Exit(4);
               return;
           }
         }
 
         default:
-          Console.Error("Invalid command.");
+          Error("Invalid command.");
           Environment.Exit(2);
           return;
       }
@@ -184,8 +185,8 @@ namespace SPV3.CLI
       }
       catch (Exception e)
       {
-        Console.Error(e.Message);
-        Error.WriteLine(e.StackTrace);
+        Error(e.Message);
+        System.Console.Error.WriteLine(e.StackTrace);
       }
     }
   }

@@ -22,6 +22,7 @@ using System;
 using System.IO;
 using System.Linq;
 using static System.Text.Encoding;
+using static SPV3.CLI.Console;
 using static SPV3.CLI.Profile.ProfileAudio;
 using static SPV3.CLI.Profile.ProfileDetails;
 using static SPV3.CLI.Profile.ProfileNetwork;
@@ -169,7 +170,7 @@ namespace SPV3.CLI
         WriteInteger(Offset.AudioVariety,          (int) Audio.Variety);
         WriteInteger(Offset.NetworkConnectionType, (int) Network.Connection);
 
-        Console.Debug("Write enum values to blam.sav values.");
+        Debug("Write enum values to blam.sav values.");
 
         /**
          * The following values are values which can have any integer (within the limits of the data types, of course).
@@ -187,7 +188,7 @@ namespace SPV3.CLI
         WriteInteger(Offset.NetworkPortServer,          Network.Port.Server);
         WriteInteger(Offset.NetworkPortClient,          Network.Port.Client);
 
-        Console.Debug("Write integer values to blam.sav values.");
+        Debug("Write integer values to blam.sav values.");
 
         /*
          * As for the boolean values, we convert them behind the scene to their integer equivalents -- 1 and 0 for true
@@ -199,11 +200,11 @@ namespace SPV3.CLI
         WriteBoolean(Offset.VideoEffectsShadows,     Video.Effects.Shadows);
         WriteBoolean(Offset.VideoEffectsDecals,      Video.Effects.Decals);
 
-        Console.Debug("Write boolean values to blam.sav values.");
+        Debug("Write boolean values to blam.sav values.");
 
         writer.Flush();
 
-        Console.Debug("Flushed data to the binary on the filesystem.");
+        Debug("Flushed data to the binary on the filesystem.");
       }
 
       /**
@@ -215,7 +216,7 @@ namespace SPV3.CLI
        * two writes are required rather than one, and the blam.sav is minuscule in length; hence, the performance
        * impacts absolutely negligible.
        */
-      Console.Debug("Data has been successfully saved - preparing to update the CRC-32 hash ...");
+      Debug("Data has been successfully saved - preparing to update the CRC-32 hash ...");
 
       var hash = GetHash();
 
@@ -226,7 +227,7 @@ namespace SPV3.CLI
         writer.Flush();
       }
 
-      Console.Debug("Hash has been applied to the binary on the filesystem. Saving routine is complete!");
+      Debug("Hash has been applied to the binary on the filesystem. Saving routine is complete!");
     }
 
     /// <summary>
@@ -268,7 +269,7 @@ namespace SPV3.CLI
         Audio.Variety      = (AudioVariety) GetOneByte(Offset.AudioVariety);
         Network.Connection = (NetworkConnection) GetOneByte(Offset.NetworkConnectionType);
 
-        Console.Debug("Assigned enum values from blam.sav values.");
+        Debug("Assigned enum values from blam.sav values.");
 
         Mouse.Sensitivity.Horizontal = GetOneByte(Offset.MouseSensitivityHorizontal);
         Mouse.Sensitivity.Vertical   = GetOneByte(Offset.MouseSensitivityVertical);
@@ -282,19 +283,19 @@ namespace SPV3.CLI
         Network.Port.Server          = GetShort(Offset.NetworkPortServer);
         Network.Port.Client          = GetShort(Offset.NetworkPortClient);
 
-        Console.Debug("Assigned integer values from blam.sav values.");
+        Debug("Assigned integer values from blam.sav values.");
 
         Mouse.InvertVerticalAxis = GetBoolean(Offset.MouseInvertVerticalAxis);
         Video.Effects.Specular   = GetBoolean(Offset.VideoEffectsSpecular);
         Video.Effects.Shadows    = GetBoolean(Offset.VideoEffectsShadows);
         Video.Effects.Decals     = GetBoolean(Offset.VideoEffectsDecals);
 
-        Console.Debug("Assigned boolean values from blam.sav values.");
+        Debug("Assigned boolean values from blam.sav values.");
 
         if ((int) Details.Colour == 0xFF)
           Details.Colour = ColourOptions.White;
 
-        Console.Debug("Applied any necessary fixes. Loading routine is complete!");
+        Debug("Applied any necessary fixes. Loading routine is complete!");
       }
     }
 
