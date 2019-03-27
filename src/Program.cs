@@ -76,12 +76,12 @@ namespace SPV3.CLI
          * Compilation command.
          */
 
-        case "compile" when args.Length >= 3:
+        case "compile" when args.Length >= 2:
         {
           Info("Explicitly invoked 'compile' command.");
 
-          var source = args.Length == 2 ? Environment.CurrentDirectory : args[1];
-          var target = args[2];
+          var source = args.Length == 2 ? Environment.CurrentDirectory : args[2]; /* implicitly use working dir */ 
+          var target = args[1];
 
           Run(() => { Compiler.Compile(source, target); });
           return;
