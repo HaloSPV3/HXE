@@ -18,7 +18,6 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-using System;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
@@ -107,7 +106,7 @@ namespace SPV3.CLI
         var files   = GetFiles(directory, "*.*", TopDirectoryOnly);
         var package = (Manifest.Package) name;
         var archive = (File) Combine(target, name);
-        
+
         if (archive.Exists())
           archive.Delete();
 
@@ -167,7 +166,7 @@ namespace SPV3.CLI
 
         i++;
       }
-      
+
       if (manifest.Exists())
         manifest.Delete();
 

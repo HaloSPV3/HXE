@@ -415,7 +415,7 @@ namespace SPV3.CLI
       public VideoResolution Resolution  { get; set; } = new VideoResolution();
       public VideoEffects    Effects     { get; set; } = new VideoEffects();
       public byte            RefreshRate { get; set; } = 60;                   /* default value */
-      public byte            Gamma       { get; set; } = 0;                    /* unknown value */
+      public byte            Gamma       { get; set; }                         /* unknown value */
       public VideoFrameRate  FrameRate   { get; set; } = VideoFrameRate.Fps30; /* default value */
       public VideoParticles  Particles   { get; set; } = VideoParticles.High;  /* default value */
       public VideoQuality    Quality     { get; set; } = VideoQuality.High;    /* default value */
