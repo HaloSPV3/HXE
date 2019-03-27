@@ -22,24 +22,6 @@ SPV3 CLI SOURCE CODE
 ====================
 
 This section contains the implementation source code for the SPV3 CLI.
-As mentioned in this repository's README, the CLI allows:
-
--   LOADING
-
-    -   automatic HCE/SPV3 player profile detection
-    -   automatic resuming of the SPV3 campaign progress
-    -   automatic detection & launching the HCE executable
-    -   verification of the SPV3 assets/maps/executables
-
--   COMPILING
-
-    -   compressing SPV3 data to re-distributable packages
-    -   generating a manifest for the installer & loader
-
--   INSTALLING
-
-    -   (re)installing compressed packages to the filesystem
-    -   storing the chosen installation path in a standard file
 
 This document serves as a high-level documentation for the source.
 Specific documentation can be found within the source code itself.

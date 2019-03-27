@@ -6,6 +6,9 @@ unify the compiling, installing, configuring, and loading procedures for
 SPV3. The code and documentation here should be considered as the
 official sources for the binaries that will be distributed with SPV3.2.
 
+FEATURES
+--------
+
 Current features include:
 
 -   LOADING
@@ -51,55 +54,6 @@ nutshell:
 
 In the above examples, "src" and "dst" are absolute paths to the
 relevant folders on the filesystem.
-
-COMMUNITY
----------
-
-RELEASE
-
-Documentation on the release of SPV3 is now located in the release.txt
-file, which is located in the doc directory.
-
-BUGS & ISSUES
-
-Feel free to post any issues or suggestions in the GitHub mirror of this
-repository.
-
-REPOSITORY
-----------
-
-SOURCE CODE
-
-The implementation is written in C\#, with the assemblies targeting .NET
-4.5.2. The src directory contains the entire .NET solution and projects.
-
-For documentation on the source code - including implementations &
-architecture - please refer to the readme.txt file located in the
-aforementioned source code directory.
-
-DOCUMENTATION
-
-All major domain documentation resides in the doc directory. Please
-review the readme.txt file in it for an overview of what documentation
-is present there.
-
-UPSTREAM & MIRRORS
-
-The GitHub repository at https://github.com/yumiris/SPV3 serves as the
-official mirror and discussions platform.
-
-For binaries that are automatically compiled from the latest source
-code, review the compressed files at https://open.n2.network/spv3.cli/
-
-PROTOTYPES
-----------
-
-The previous prototypes are now located in the SPV3 Legacy:
-https://github.com/hce-spv3
-
-Please note that as time goes on, the documentation and implementations
-there will become more and more obsolete. The repositories are kept for
-preservation and the occasional reference.
 
 LICENCE
 -------
