@@ -23,6 +23,7 @@ using System.IO;
 using System.Threading.Tasks;
 using static System.Console;
 using static System.Environment.SpecialFolder;
+using static System.Reflection.Assembly;
 using static SPV3.CLI.Names.Files;
 
 namespace SPV3.CLI
@@ -48,6 +49,9 @@ namespace SPV3.CLI
       WriteLine(@"/____/_/     |___//____(_)____/_____/___/   ");
       WriteLine(@"============================================");
       WriteLine(@"The SPV3.CLI Project :: GitHub: YuMiris/SPV3");
+      WriteLine(@"--------------------------------------------");
+      WriteLine(@"Executable has been compiled from build tag:");
+      WriteLine($"{GetEntryAssembly().GetName().Version.Major}");
       WriteLine(@"--------------------------------------------");
       ForegroundColor = ConsoleColor.White;
 
