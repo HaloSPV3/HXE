@@ -183,6 +183,14 @@ in focus, and objects nearer or farther than this range appear out of
 focus or blurred out. Just like any camera or your eye, ADOF enables
 auto-focusing.
 
+MOTION BLUR
+
+> Technique used - Per Object Motion Blur
+
+This effect cause the scene to blur in the direction of camera movement
+and/or object movement. This effect emulates image retention of a camera,
+thereby adding to the realism and perceived smoothness of movements.
+
 DYNAMIC FLARES
 
 > Technique used - Dynamic Pseudo Lens Flares
@@ -192,19 +200,42 @@ scene.
 
 LENS DIRT
 
-> Technique used - Bloom & Lens Dirt
+> Technique used - Fast Blur Based Lens Dirt
 
 Effect that shows subtle dirt/scratch effects on the screen.
 
-EYE ADAPTATION
+Volumetric Lighting
 
-> Technique used - Adaptive Contrast Curve
+> Technique used - Depth Mask Based Screen Space Volumetrics
 
-This effect automatically adjust the scene exposure based on ambient
-light. Unlike commonly used implementations of this effect, the
-adaptation is instant.
+This effect emulates tindal effect due to light scattering through foggy atmosphere.
 
-DEBANDING
+HUDv5 VISOR
+
+> Technique used - Sprite Visualisation, Chromatic Abberation
+
+This effect shows a sprite based holographic visor to compliment the SPV3's
+native HUD. It has a Chromatic Abberation effect for a holographic look
+and also sways according to player movement.
+
+3D <EXPERIMENTAL>
+
+> Technique used - Anaglyph / interleaving / side-by-side
+
+Emulates depth perception of human eyes. Provides an illusion that the game world
+has 3D depth which greatly adds to the relistic experience of the game.
+[NOTE: Requires special hardware to utilise this effect properly]
+
+COLORBLIND MODE <EXPERIMENTAL>
+
+> Technique used - Color Look Up Table
+
+This is an accessibility effect which is designed to help users with color blindness.
+The effect mainly focuses on key Halo gameplay conditions. ie.
+    * The enemy should be distinctly identifiable
+    * Factions should be distinguishable visually
+
+DEBANDING <STUB>
 
 > Technique used - Debanding
 
