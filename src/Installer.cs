@@ -18,7 +18,6 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-using System;
 using static System.Environment;
 using static System.Environment.SpecialFolder;
 using static System.IO.Compression.ZipFile;
@@ -47,6 +46,9 @@ namespace SPV3.CLI
     /// </param>
     public static void Install(string source, string target)
     {
+      if (!Exists(target))
+        CreateDirectory(target);
+
       /**
        * Conventionally, we expect the manifest to be located in the source directory along with the packages. This is
        * assumed by the fact that the COMPILER creates the manifest in the target directory that is provided to it.

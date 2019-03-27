@@ -80,7 +80,7 @@ namespace SPV3.CLI
         {
           Info("Explicitly invoked 'compile' command.");
 
-          var source = args.Length == 2 ? Environment.CurrentDirectory : args[2]; /* implicitly use working dir */ 
+          var source = args.Length == 2 ? Environment.CurrentDirectory : args[2]; /* implicitly use working dir */
           var target = args[1];
 
           Run(() => { Compiler.Compile(source, target); });

@@ -20,6 +20,7 @@
 
 using System;
 using System.IO;
+using System.Windows.Forms;
 using SPV3.CLI.Exceptions;
 using static System.Environment;
 using static System.Environment.SpecialFolder;
@@ -126,8 +127,8 @@ namespace SPV3.CLI
 
       Info("Found blam.sav file - proceeding with core patches ...");
 
-      profblam.Video.Resolution.Width  = (ushort) System.Windows.Forms.Screen.PrimaryScreen.Bounds.Width;
-      profblam.Video.Resolution.Height = (ushort) System.Windows.Forms.Screen.PrimaryScreen.Bounds.Height;
+      profblam.Video.Resolution.Width  = (ushort) Screen.PrimaryScreen.Bounds.Width;
+      profblam.Video.Resolution.Height = (ushort) Screen.PrimaryScreen.Bounds.Height;
       profblam.Video.FrameRate         = Profile.ProfileVideo.VideoFrameRate.VsyncOff; /* ensure no FPS locking */
       profblam.Video.Particles         = Profile.ProfileVideo.VideoParticles.High;
       profblam.Video.Quality           = Profile.ProfileVideo.VideoQuality.High;

@@ -204,7 +204,7 @@ namespace SPV3.CLI
       output.AppendLine($"player_magnetism {magnetism}");
       output.AppendLine($"game_difficulty_set {difficulty}");
       WriteAllText(output.ToString());
-      
+
       Debug("Successfully applied initc.txt configurations.");
     }
 
