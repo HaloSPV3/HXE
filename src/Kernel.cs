@@ -20,12 +20,14 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using SPV3.CLI.Exceptions;
 using static System.Environment;
 using static System.Environment.SpecialFolder;
+using static System.IO.File;
 using static SPV3.CLI.Console;
 using static SPV3.CLI.Names;
 
@@ -47,11 +49,39 @@ namespace SPV3.CLI
     /// </summary>
     public static void Bootstrap()
     {
+      HeuristicInstall();
       VerifyMainAssets();
       InvokeCoreTweaks();
       ResumeCheckpoint();
       InvokeOverriding();
       InvokeExecutable();
+    }
+
+    /// <summary>
+    ///   Heuristically conducts pre-loading installation, if necessary.
+    /// </summary>
+    private static void HeuristicInstall()
+    {
+      /**
+       * If the HCE executable does not exist in the working directory, but the manifest and an initial package exists,
+       * then we can conclude that this is an installation scenario. We can bootstrap the installer to install SPV3 to
+       * the default path.
+       */
+
+      if (Exists("haloce.exe") || !Exists("0x00.bin") || !Exists("0x01.bin")) return;
+      Info("Found manifest & package, but not the HCE executable. Assuming installation environment.");
+
+      var destination = Path.Combine(GetFolderPath(Personal), Directories.Games, "Halo SPV3");
+      Installer.Install(CurrentDirectory, destination);
+
+      var cli = new ProcessStartInfo
+      {
+        FileName         = Path.Combine(destination, "SPV3.CLI.exe"),
+        WorkingDirectory = destination
+      };
+
+      Process.Start(cli);
+      Exit(0);
     }
 
     /// <summary>

@@ -52,6 +52,11 @@ focus only on the assets that are not prone to changing, such as map and
 game data. Implicitly, configurations and other files which are prone to
 changing will be skipped.
 
+Additionally, the Kernel will try to analyse if the directory contains
+installation data (manifest & packages), but not game data. If it
+heuristically infers that the directory contains only installation data,
+then it will proceed to first install SPV3, and then load SPV3.
+
 COMPILER INFORMATION
 --------------------
 
