@@ -47,6 +47,11 @@ The loading procedure, in a nutshell, is as follows:
 All of the steps above are conducted by the Kernel class, which serves
 as the highest-level abstraction of the aforementioned procedure.
 
+The Kernel also filters out which files to be verified. It strives to
+focus only on the assets that are not prone to changing, such as map and
+game data. Implicitly, configurations and other files which are prone to
+changing will be skipped.
+
 COMPILER INFORMATION
 --------------------
 
