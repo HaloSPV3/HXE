@@ -19,7 +19,9 @@
  */
 
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 using SPV3.CLI.Exceptions;
 using static System.Environment;
@@ -58,6 +60,21 @@ namespace SPV3.CLI
     private static void VerifyMainAssets()
     {
       /**
+       * It is preferable to whitelist the type of files we would like to verify. The focus would be to skip any files
+       * which are expected to be changed.
+       *
+       * For example, if SPV3.2 were to be distributed with a configuration file, then changing its contents would
+       * result in an asset verification error. Additionally, changing the CLI executable by updating it could result in
+       * the same error.
+       */
+
+      var whitelist = new List<string>
+      {
+        ".map",      /* map resources */
+        "haloce.exe" /* game executable */
+      };
+
+      /**
        * Through the use of the manifest that was copied to the installation directory, the loader can infer the list of
        * SPV3 files on the filesystem that it must verify. Verification is done through a simple size comparison between
        * the size of the file on the filesystem and the one declared in the manifest.
@@ -94,7 +111,7 @@ namespace SPV3.CLI
       foreach (var package in manifest.Packages)
       foreach (var entry in package.Entries)
       {
-        if (!entry.Name.Contains(".map"))
+        if (!whitelist.Any(entry.Name.Contains)) /* skip verification if current file isn't in the whitelist */
           continue;
 
         var absolutePath = Path.Combine(CurrentDirectory, package.Path, entry.Name);
