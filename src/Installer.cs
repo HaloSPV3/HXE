@@ -83,7 +83,7 @@ namespace SPV3.CLI
           Debug("Deleting discovered file - " + entry.Name);
         }
 
-        Debug("Existing entries on the filesystem have been deleted - preparing to extract package ...");
+        Debug("Any existing entries on the filesystem have been deleted - preparing to extract package ...");
 
         /**
          * Given that the package filename on the filesystem is expected to match the package's name in the manifest, we
