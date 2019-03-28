@@ -42,6 +42,8 @@ namespace SPV3.CLI
     /// </param>
     public static void Main(string[] args)
     {
+      var v = GetEntryAssembly().GetName().Version.Major.ToString("D3");
+
       ForegroundColor = ConsoleColor.Green;
       WriteLine(@"   _____ ____ _    _______  ________    ____");
       WriteLine(@"  / ___// __ \ |  / /__  / / ____/ /   /  _/");
@@ -51,8 +53,7 @@ namespace SPV3.CLI
       WriteLine(@"============================================");
       WriteLine(@"The SPV3.CLI Project :: GitHub: YuMiris/SPV3");
       WriteLine(@"--------------------------------------------");
-      WriteLine(@"Executable has been compiled from build tag:");
-      WriteLine($"{GetEntryAssembly().GetName().Version.Major}");
+      WriteLine($"Executable has been compiled from build: {v}");
       WriteLine(@"--------------------------------------------");
       ForegroundColor = ConsoleColor.White;
 
