@@ -140,7 +140,8 @@ namespace SPV3.CLI
 
         void WriteBoolean(Offset offset, bool data)
         {
-          WriteInteger(offset, data ? 1 : 0);
+          writer.Seek((int) offset - 1, SeekOrigin.Begin);
+          writer.Write(data);
         }
 
         void WriteInteger(Offset offset, int data)
