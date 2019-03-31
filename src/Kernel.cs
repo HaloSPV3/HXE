@@ -177,8 +177,6 @@ namespace SPV3.CLI
 
       Info("Found blam.sav file - proceeding with core patches ...");
 
-      profblam.Video.Resolution.Width  = (ushort) Screen.PrimaryScreen.Bounds.Width;
-      profblam.Video.Resolution.Height = (ushort) Screen.PrimaryScreen.Bounds.Height;
       profblam.Video.FrameRate         = Profile.ProfileVideo.VideoFrameRate.VsyncOff; /* ensure no FPS locking */
       profblam.Video.Particles         = Profile.ProfileVideo.VideoParticles.High;
       profblam.Video.Quality           = Profile.ProfileVideo.VideoQuality.High;
