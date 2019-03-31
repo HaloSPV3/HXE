@@ -159,8 +159,8 @@ namespace SPV3.CLI
 
         public class PostProcessingMotionBlur
         {
-          public bool Enabled    { get; set; } = true;
-          public int  BlurAmount { get; set; } = 1;
+          public bool   Enabled    { get; set; } = true;
+          public double BlurAmount { get; set; } = 1.00;
         }
 
         public class PostProcessingBloom
