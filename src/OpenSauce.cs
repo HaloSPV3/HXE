@@ -187,9 +187,9 @@ namespace SPV3.CLI
 
     public class OpenSauceCamera
     {
-      public long FieldOfView                 { get; set; } = 70;
-      public bool IgnoreFOVChangeInCinematics { get; set; } = true;
-      public bool IgnoreFOVChangeInMainMenu   { get; set; } = true;
+      public double FieldOfView                 { get; set; } = 70.00;
+      public bool   IgnoreFOVChangeInCinematics { get; set; } = true;
+      public bool   IgnoreFOVChangeInMainMenu   { get; set; } = true;
     }
 
     public class OpenSauceNetworking
