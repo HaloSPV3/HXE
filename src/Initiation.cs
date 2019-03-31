@@ -66,138 +66,13 @@ namespace SPV3.CLI
         }
       }
 
-      /**
-       * Converts the PostProcessing properties' values to the f1 variable in the initc.txt file, as specified in the
-       * post-processing.txt documentation.
-       */
-      int GetShaders()
-      {
-        var y = 0x0000000;
-
-        /**
-         * First, we'll handle PPE toggles.
-         */
-
-        y += !PostProcessing.DynamicLensFlares
-          ? 0x0000400
-          : 0x0000800;
-
-        y += !PostProcessing.Volumetrics
-          ? 0x0001000
-          : 0x0002000;
-
-        y += !PostProcessing.LensDirt
-          ? 0x0004000
-          : 0x0008000;
-
-        y += !PostProcessing.HudVisor
-          ? 0x0010000
-          : 0x0020000;
-
-        /**
-         * Now, we'll handle value-based PPEs. 
-         */
-
-        switch (PostProcessing.Mxao)
-        {
-          case MxaoOptions.Off:
-            y += 0x0000001;
-            break;
-          case MxaoOptions.Low:
-            y += 0x0000002;
-            break;
-          case MxaoOptions.High:
-            y += 0x0000004;
-            break;
-          default:
-            y += 0x0000004;
-            break;
-        }
-
-        switch (PostProcessing.Dof)
-        {
-          case DofOptions.Off:
-            y += 0x0000008;
-            break;
-          case DofOptions.Low:
-            y += 0x0000010;
-            break;
-          case DofOptions.High:
-            y += 0x0000020;
-            break;
-          default:
-            y += 0x0000020;
-            break;
-        }
-
-        switch (PostProcessing.MotionBlur)
-        {
-          case MotionBlurOptions.Off:
-            y += 0x0000040;
-            break;
-          case MotionBlurOptions.BuiltIn:
-            y += 0x0000080;
-            break;
-          case MotionBlurOptions.PombLow:
-            y += 0x0000100;
-            break;
-          case MotionBlurOptions.PombHigh:
-            y += 0x0000200;
-            break;
-          default:
-            y += 0x0000200;
-            break;
-        }
-
-        switch (PostProcessing.Experimental.ThreeDimensional)
-        {
-          case ThreeDimensionalOptions.Off:
-            y += 0x0040000;
-            break;
-          case ThreeDimensionalOptions.Anaglyphic:
-            y += 0x0080000;
-            break;
-          case ThreeDimensionalOptions.Interleaving:
-            y += 0x100000;
-            break;
-          case ThreeDimensionalOptions.SideBySide:
-            y += 0x200000;
-            break;
-          default:
-            y += 0x200000;
-            break;
-        }
-
-        switch (PostProcessing.Experimental.ColorBlindMode)
-        {
-          case ColorBlindModeOptions.Off:
-            y += 0x0400000;
-            break;
-          case ColorBlindModeOptions.Protanopia:
-            y += 0x0800000;
-            break;
-          case ColorBlindModeOptions.Deuteranopes:
-            y += 0x1000000;
-            break;
-          case ColorBlindModeOptions.Tritanopes:
-            y += 0x2000000;
-            break;
-          default:
-            throw new ArgumentOutOfRangeException();
-        }
-
-        return y;
-      }
-
       var difficulty = GetDifficulty();
-      var shaders    = GetShaders();
       var mission    = (int) Mission;
       var autoaim    = PlayerAutoaim ? 1 : 0;
       var magnetism  = PlayerMagnetism ? 1 : 0;
       var cinematic  = CinematicBars ? 1 : 0;
 
       var output = new StringBuilder();
-      output.AppendLine($"set f1 = {shaders}");
       output.AppendLine($"set f3 = {mission}");
       output.AppendLine($"set f5 = {cinematic}");
       output.AppendLine($"player_autoaim {autoaim}");
