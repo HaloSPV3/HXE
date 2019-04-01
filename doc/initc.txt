@@ -38,8 +38,6 @@ purpose:
   ---------------------------------------------------------------------
   Variable   Description
   ---------- ----------------------------------------------------------
-  f1         Stores the user-defined post-processing configuration
-
   f3         Stores the integer identifier of the last played mission
              (see MISSIONS)
 
@@ -121,5 +119,4 @@ SPV3 installation directory that is modified by the loader.
 
 In light of the above, writing permissions are necessary to update the
 variables, accordingly. Otherwise, people will either get permissions
-errors or simply not have the campaign resuming & post-processing
-settings work at all.
+errors or simply not have the campaign resuming & patches work at all.

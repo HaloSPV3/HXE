@@ -18,21 +18,23 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
+using System.IO;
+
 namespace SPV3.CLI
 {
   /// <summary>
   ///   Object representing Post-Processing effects.
   /// </summary>
-  public class PostProcessing
+  public class PostProcessing : File
   {
     /// <summary>
     ///   Depth of Field values.
     /// </summary>
     public enum DofOptions
     {
-      Off,
-      Low,
-      High
+      Off  = 0x0,
+      Low  = 0x1,
+      High = 0x2
     }
 
     /// <summary>
@@ -40,10 +42,10 @@ namespace SPV3.CLI
     /// </summary>
     public enum MotionBlurOptions
     {
-      Off,
-      BuiltIn,
-      PombLow,
-      PombHigh
+      Off      = 0x0,
+      BuiltIn  = 0x1,
+      PombLow  = 0x2,
+      PombHigh = 0x3
     }
 
     /// <summary>
@@ -51,9 +53,9 @@ namespace SPV3.CLI
     /// </summary>
     public enum MxaoOptions
     {
-      Off,
-      Low,
-      High
+      Off  = 0x0,
+      Low  = 0x0,
+      High = 0x0
     }
 
     public bool Internal          { get; set; }
@@ -74,28 +76,89 @@ namespace SPV3.CLI
     public ExperimentalPostProcessing Experimental { get; set; } = new ExperimentalPostProcessing();
 
     /// <summary>
+    ///   Saves object state to the inbound file.
+    /// </summary>
+    public void Save()
+    {
+      using (var fs = new FileStream(Path, FileMode.OpenOrCreate, FileAccess.ReadWrite))
+      using (var ms = new MemoryStream(16))
+      using (var bw = new BinaryWriter(ms))
+      {
+        bw.Seek(0x00, SeekOrigin.Begin);
+
+        bw.Write(Internal);                             /* 0x00 */
+        bw.Write(External);                             /* 0x01 */
+        bw.Write(GBuffer);                              /* 0x02 */
+        bw.Write(DepthFade);                            /* 0x03 */
+        bw.Write(Bloom);                                /* 0x04 */
+        bw.Write(DynamicLensFlares);                    /* 0x05 */
+        bw.Write(Volumetrics);                          /* 0x06 */
+        bw.Write(AntiAliasing);                         /* 0x07 */
+        bw.Write(HudVisor);                             /* 0x08 */
+        bw.Write((byte) MotionBlur);                    /* 0x09 */
+        bw.Write((byte) Mxao);                          /* 0x0A */
+        bw.Write((byte) Dof);                           /* 0x0B */
+        bw.Write((byte) Experimental.ThreeDimensional); /* 0x0C */
+        bw.Write((byte) Experimental.ColorBlindMode);   /* 0x0D */
+
+        ms.WriteTo(fs);
+      }
+    }
+
+    /// <summary>
     ///   Experimental overrides for SPV3.
     /// </summary>
     public class ExperimentalPostProcessing
     {
       public enum ColorBlindModeOptions
       {
-        Off,
-        Protanopia,
-        Deuteranopes,
-        Tritanopes
+        Off          = 0x0,
+        Protanopia   = 0x1,
+        Deuteranopes = 0x2,
+        Tritanopes   = 0x3
       }
 
       public enum ThreeDimensionalOptions
       {
-        Off,
-        Anaglyphic,
-        Interleaving,
-        SideBySide
+        Off          = 0x0,
+        Anaglyphic   = 0x1,
+        Interleaving = 0x2,
+        SideBySide   = 0x3
       }
 
       public ThreeDimensionalOptions ThreeDimensional { get; set; } = ThreeDimensionalOptions.Off;
       public ColorBlindModeOptions   ColorBlindMode   { get; set; } = ColorBlindModeOptions.Off;
+    }
+
+    /// <summary>
+    ///   Represents the inbound object as a string.
+    /// </summary>
+    /// <param name="postProcessing">
+    ///   Object to represent as string.
+    /// </param>
+    /// <returns>
+    ///   String representation of the inbound object.
+    /// </returns>
+    public static implicit operator string(PostProcessing postProcessing)
+    {
+      return postProcessing.Path;
+    }
+
+    /// <summary>
+    ///   Represents the inbound string as an object.
+    /// </summary>
+    /// <param name="path">
+    ///   String to represent as object.
+    /// </param>
+    /// <returns>
+    ///   Object representation of the inbound string.
+    /// </returns>
+    public static explicit operator PostProcessing(string path)
+    {
+      return new PostProcessing
+      {
+        Path = path
+      };
     }
   }
 }

@@ -38,7 +38,6 @@ namespace SPV3.CLI
     public bool           PlayerMagnetism { get; set; } = true;
     public Mission        Mission         { get; set; } = Mission.Spv3A10;
     public Difficulty     Difficulty      { get; set; } = Difficulty.Normal;
-    public PostProcessing PostProcessing  { get; set; } = new PostProcessing();
 
     /// <summary>
     ///   Saves object state to the inbound file.
