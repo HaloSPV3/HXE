@@ -148,48 +148,48 @@ file it represents.
 All of the types listed in the following table are inheritors of the
 File type:
 
-  ---------------------------------------------------------------------
-  Object        Description
-  ------------- -------------------------------------------------------
-  Executable    Represents the haloce.exe executable. Permits
-                invocation of the executable on the filesystem. Common
-                HCE executable arguments are exposed as properties.
+  -------------------------------------------------------------------------------------
+  Object           Description
+  ---------------- --------------------------------------------------------------------
+  Executable       Represents the haloce.exe executable. Permits invocation of the
+                   executable on the filesystem. Common HCE executable arguments are
+                   exposed as properties.
 
-  Initiation    Represents the OpenSauce initc.txt file. For more
-                information on the file itself, please refer to
-                doc/initc.txt. This object permits the saving of its
-                properties to initc.txt values, including the mission,
-                difficulty, post-processing settings, and some
-                miscellaneous toggles.
+  Initiation       Represents the OpenSauce initc.txt file. For more information on the
+                   file itself, please refer to doc/initc.txt. This object permits the
+                   saving of its properties to initc.txt values, including the mission,
+                   difficulty, post-processing settings, and some miscellaneous
+                   toggles.
 
-  LastProfile   Represents the lastprof.txt file, which is used in the
-                kernel's auto-detection mechanism. This object permits
-                the retrieval of the last played profile name.
+  LastProfile      Represents the lastprof.txt file, which is used in the kernel's
+                   auto-detection mechanism. This object permits the retrieval of the
+                   last played profile name.
 
-  Override      Represents the overrides.XML file, which is used for
-                debugging purposes by forcefully overriding any imposed
-                or default settings by the loader, HCE, OpenSauce or
-                Chimera.
+  Override         Represents the overrides.XML file, which is used for debugging
+                   purposes by forcefully overriding any imposed or default settings by
+                   the loader, HCE, OpenSauce or Chimera.
 
-  Progress      Represents the savegame.bin file, which contains the
-                player's checkpoint data. This object infers and
-                exposes the mission & difficulty, which in turn can be
-                saved using the Initiation object for campaign
-                resuming.
+  Progress         Represents the savegame.bin file, which contains the player's
+                   checkpoint data. This object infers and exposes the mission &
+                   difficulty, which in turn can be saved using the Initiation object
+                   for campaign resuming.
 
-  OpenSauce     Represents the OS\_Settings.User.xml, which contains
-                the OpenSauce user configuration data. The loader
-                exposes all of the available options as object
-                properties, for programmable editing of the OpenSauce
-                configuration.
+  OpenSauce        Represents the OS\_Settings.User.xml, which contains the OpenSauce
+                   user configuration data. The loader exposes all of the available
+                   options as object properties, for programmable editing of the
+                   OpenSauce configuration.
 
-  Profile       Represents the blam.sav binary, which contains HCE
-                profile information and configuration data. The object
-                permits loading, editing, and saving this data.
-                Additionally, it also automatically forges the hash of
-                the blam.sav upon saving, to ensure that HCE accepts
-                the edited binary.
-  ---------------------------------------------------------------------
+  Profile          Represents the blam.sav binary, which contains HCE profile
+                   information and configuration data. The object permits loading,
+                   editing, and saving this data. Additionally, it also automatically
+                   forges the hash of the blam.sav upon saving, to ensure that HCE
+                   accepts the edited binary.
+
+  PostProcessing   Represents the postprocessing.bin binary, which SPV3 uses to store
+                   the user preferences for its post-processing features. The object
+                   permits loading, editing, and saving this data. Refer to the
+                   doc/shaders.txt for more documentation on the aforementioned binary.
+  -------------------------------------------------------------------------------------
 
 Documentation on any of the aforementioned files can be found in the doc
 directory within this repository.
