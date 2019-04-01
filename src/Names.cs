@@ -54,6 +54,11 @@ namespace SPV3.CLI
         Directories.OpenSauce,
         "OS_Settings.User.xml"
       );
+
+      public static readonly string PostProcessing = Path.Combine(GetFolderPath(ApplicationData),
+        Directories.Data,
+        "postprocessing.bin"
+      );
     }
 
     /// <summary>

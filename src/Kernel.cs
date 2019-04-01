@@ -177,9 +177,9 @@ namespace SPV3.CLI
 
       Info("Found blam.sav file - proceeding with core patches ...");
 
-      profblam.Video.FrameRate         = Profile.ProfileVideo.VideoFrameRate.VsyncOff; /* ensure no FPS locking */
-      profblam.Video.Particles         = Profile.ProfileVideo.VideoParticles.High;
-      profblam.Video.Quality           = Profile.ProfileVideo.VideoQuality.High;
+      profblam.Video.FrameRate = Profile.ProfileVideo.VideoFrameRate.VsyncOff; /* ensure no FPS locking */
+      profblam.Video.Particles = Profile.ProfileVideo.VideoParticles.High;
+      profblam.Video.Quality   = Profile.ProfileVideo.VideoQuality.High;
 
       profblam.Save();
 
@@ -252,8 +252,20 @@ namespace SPV3.CLI
 
       try
       {
-        RootInitc.PostProcessing = overrides.OpenSauce.PostProcessing;
-        RootInitc.Save();
+        var postProcessing = (PostProcessing) Files.PostProcessing;
+
+        postProcessing.Internal                      = overrides.OpenSauce.PostProcessing.Internal;
+        postProcessing.External                      = overrides.OpenSauce.PostProcessing.External;
+        postProcessing.GBuffer                       = overrides.OpenSauce.PostProcessing.GBuffer;
+        postProcessing.DepthFade                     = overrides.OpenSauce.PostProcessing.DepthFade;
+        postProcessing.Bloom                         = overrides.OpenSauce.PostProcessing.Bloom;
+        postProcessing.LensDirt                      = overrides.OpenSauce.PostProcessing.LensDirt;
+        postProcessing.DynamicLensFlares             = overrides.OpenSauce.PostProcessing.DynamicLensFlares;
+        postProcessing.Volumetrics                   = overrides.OpenSauce.PostProcessing.Volumetrics;
+        postProcessing.Experimental.ThreeDimensional = overrides.OpenSauce.PostProcessing.Experimental.ThreeDimensional;
+        postProcessing.Experimental.ColorBlindMode   = overrides.OpenSauce.PostProcessing.Experimental.ColorBlindMode;
+
+        postProcessing.Save();
       }
       catch (UnauthorizedAccessException e)
       {

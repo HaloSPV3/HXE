@@ -95,6 +95,7 @@ namespace SPV3.CLI
             Mxao              = deserialised.OpenSauce.PostProcessing.Mxao,
             Volumetrics       = deserialised.OpenSauce.PostProcessing.Volumetrics,
             Dof               = deserialised.OpenSauce.PostProcessing.Dof,
+            HudVisor          = deserialised.OpenSauce.PostProcessing.HudVisor,
 
             Experimental = new PostProcessing.ExperimentalPostProcessing
             {

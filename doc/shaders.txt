@@ -39,126 +39,39 @@ user with the following characteristics:
   3D                    off, anaglyph, interleaving, side-by-side
   Color Blind Mode      off, protanopia, deuteranopes, tritanopes
 
-GLOBAL VARIABLE
----------------
+CONFIGURATION
+-------------
 
-When the user configures the post-processing effects, the settings are
-encoded into a single integer that is assigned to the f1 global
-variable. This allows SPV3 to infer the settings by decoding back the
-settings, and thus tweak its post-processing effects to adhere to the
-user's preferences.
+The post-processing configuration is stored at the following path:
 
-  Variable   Description
-  ---------- -------------------------------------------------------
-  f1         Stores the user-defined post-processing configuration
+    %APPDATA%\SPV3\postprocessing.bin
 
-This section specifies the encoding and decoding mechanisms which will
-allow the user's post-processing settings to be saved as a single
-integer to the initc.txt, and be loaded by SPV3 from the initc.txt,
-accordingly.
+The 16-byte long binary file represents each post-processing option in a
+single byte, with the following layout:
 
-For the encoding and decoding to work, we must settle on a standard that
-formally identifies each post-processing option. An option, in this
-context, is defined as a specific value of a specific shader.
+  Offset   Post-Processing Effect   Type
+  -------- ------------------------ ------
+  0x0      Internal                 B
+  0x1      External                 B
+  0x2      GBuffer                  B
+  0x3      Depth Fade               B
+  0x4      Bloom                    B
+  0x5      Dynamic Lens Flares      B
+  0x6      Volumetrics              B
+  0x7      Anti Aliasing            B
+  0x8      HUD Visor                B
+  0x9      Motion Blur              I
+  0xA      MXAU                     I
+  0xB      DOF                      I
+  0xC      Three Dimensional        I
+  0xD      Color BlindMode          I
 
-The standard is to represent each option as a power of two. This permits
-all of the user's chosen options to be summed together, and the total
-value will always represent an unique configuration. Because of this
-unique value, the powers of two we infer back from the number are
-guaranteed to represent the user's choices.
+-   B - Boolean (0 for off; 1 for on)
+-   I - Integer (0 for off, 1..3 for levels)
 
-INTEGERS
-
-The following table showcases all of the available options, and their
-respective integer representations:
-
-  Post-Processing Effect   Option         2\^N Integer (HEX :: DEC)
-  ------------------------ -------------- ---------------------------
-  MXAO                     off            0x0000001 :: 1
-                           low            0x0000002 :: 2
-                           high           0x0000004 :: 4
-  DOF                      off            0x0000008 :: 8
-                           low            0x0000010 :: 16
-                           high           0x0000020 :: 32
-  Motion Blur              off            0x0000040 :: 64
-                           in-built       0x0000080 :: 128
-                           low            0x0000100 :: 256
-                           high           0x0000200 :: 512
-  Dynamic Lens Flares      off            0x0000400 :: 1024
-                           on             0x0000800 :: 2048
-  Volumetric Lighting      off            0x0001000 :: 4096
-                           on             0x0002000 :: 8192
-  Lens Dirt                off            0x0004000 :: 16384
-                           on             0x0008000 :: 32768
-  HUDv5 Visor              off            0x0010000 :: 65536
-                           on             0x0020000 :: 131072
-  3D                       off            0x0040000 :: 262144
-                           anaglyph       0x0080000 :: 524288
-                           interleaving   0x0100000 :: 1048576
-                           side-by-side   0x0200000 :: 2097152
-  Color Blind Mode         off            0x0400000 :: 4194304
-                           protanopia     0x0800000 :: 8388608
-                           deuteranopes   0x1000000 :: 16777216
-                           tritanopes     0x2000000 :: 33554432
-
-ENCODING
-
-Encoding of the user configuration is done by summing up the integers
-that represent the user's chosen options.
-
-For example, let's assume that the user settles on the following
-configuration:
-
--   MXAO: Low
--   DOF: High
--   Motion Blur: In-built
--   Dynamic Lens Flares: On
--   Volumetric Lighting: On
--   Lens Dirt: On
--   HUDv5 Visor: Off
--   3D: Anaglyph
--   Color Blind Mode: Protanopia
-
-With reference to the table above, we can represent the configuration
-with the following integers:
-
-    { 2, 32, 128, 2048, 8192, 32768, 65536, 524288, 8388608 }
-
-Now, we can sum all of these numbers and assign the total value to the
-f1 variable in the initc.txt file:
-
-    set f1 = 9021602
-
-DECODING
-
-Decoding is the inverse of the encoding procedure, i.e. representing the
-loaded f1 variable as a sum of 2\^N numbers.
-
-In light of the above documentation, let's assume that f1 = 9021602. The
-needed code in SPV3 depends on the scripting language that will be used;
-however, the final output must be the aforementioned array:
-
-    { 2, 32, 128, 2048, 8192, 32768, 65536, 524288, 8388608 }
-
-Once we have the array of 2\^N numbers that sum up to f1, we can analyse
-it and infer the user's chosen post-processing options back. This
-permits SPV3 to toggle or set each post-processing effect to a specific
-value.
-
-The following code is a Lua snippet that attempts to return the 2\^N
-numbers that sum up to f1:
-
-    function decode(n)
-      local options = {}
-      i = 1
-      while i <= n do
-        if bit.band(i, n) ~= 0 then
-          table.insert(options, i)
-        end
-        i = bit.shl(i, 1)
-      end
-      return options
-    end
+The values are represented using integers 0 to 4. Depending on the
+post-processing effect, each integer represents either an option or a
+toggle. 0 always means off.
 
 DEFINITIONS
 -----------
@@ -188,8 +101,9 @@ MOTION BLUR
 > Technique used - Per Object Motion Blur
 
 This effect cause the scene to blur in the direction of camera movement
-and/or object movement. This effect emulates image retention of a camera,
-thereby adding to the realism and perceived smoothness of movements.
+and/or object movement. This effect emulates image retention of a
+camera, thereby adding to the realism and perceived smoothness of
+movements.
 
 DYNAMIC FLARES
 
@@ -208,32 +122,34 @@ Volumetric Lighting
 
 > Technique used - Depth Mask Based Screen Space Volumetrics
 
-This effect emulates tindal effect due to light scattering through foggy atmosphere.
+This effect emulates tindal effect due to light scattering through foggy
+atmosphere.
 
 HUDv5 VISOR
 
 > Technique used - Sprite Visualisation, Chromatic Abberation
 
-This effect shows a sprite based holographic visor to compliment the SPV3's
-native HUD. It has a Chromatic Abberation effect for a holographic look
-and also sways according to player movement.
+This effect shows a sprite based holographic visor to compliment the
+SPV3's native HUD. It has a Chromatic Abberation effect for a
+holographic look and also sways according to player movement.
 
 3D <EXPERIMENTAL>
 
 > Technique used - Anaglyph / interleaving / side-by-side
 
-Emulates depth perception of human eyes. Provides an illusion that the game world
-has 3D depth which greatly adds to the relistic experience of the game.
-[NOTE: Requires special hardware to utilise this effect properly]
+Emulates depth perception of human eyes. Provides an illusion that the
+game world has 3D depth which greatly adds to the relistic experience of
+the game. \[NOTE: Requires special hardware to utilise this effect
+properly\]
 
 COLORBLIND MODE <EXPERIMENTAL>
 
 > Technique used - Color Look Up Table
 
-This is an accessibility effect which is designed to help users with color blindness.
-The effect mainly focuses on key Halo gameplay conditions. ie.
-    * The enemy should be distinctly identifiable
-    * Factions should be distinguishable visually
+This is an accessibility effect which is designed to help users with
+color blindness. The effect mainly focuses on key Halo gameplay
+conditions. ie. \* The enemy should be distinctly identifiable \*
+Factions should be distinguishable visually
 
 DEBANDING <STUB>
 
