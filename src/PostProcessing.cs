@@ -84,7 +84,7 @@ namespace SPV3.CLI
       using (var ms = new MemoryStream(16))
       using (var bw = new BinaryWriter(ms))
       {
-        bw.Seek(0x00, SeekOrigin.Begin);
+        bw.BaseStream.Seek(0x00, SeekOrigin.Begin);
 
         bw.Write(Internal);                             /* 0x00 */
         bw.Write(External);                             /* 0x01 */
@@ -106,28 +106,32 @@ namespace SPV3.CLI
     }
 
     /// <summary>
-    ///   Experimental overrides for SPV3.
+    ///   Loads object state from the inbound file.
     /// </summary>
-    public class ExperimentalPostProcessing
+    public void Load()
     {
-      public enum ColorBlindModeOptions
+      using (var fs = new FileStream(Path, FileMode.Open, FileAccess.Read))
+      using (var ms = new MemoryStream(16))
+      using (var br = new BinaryReader(ms))
       {
-        Off          = 0x0,
-        Protanopia   = 0x1,
-        Deuteranopes = 0x2,
-        Tritanopes   = 0x3
-      }
+        fs.CopyTo(ms);
+        br.BaseStream.Seek(0x00, SeekOrigin.Begin);
 
-      public enum ThreeDimensionalOptions
-      {
-        Off          = 0x0,
-        Anaglyphic   = 0x1,
-        Interleaving = 0x2,
-        SideBySide   = 0x3
+        Internal                      = br.ReadBoolean();                                                   /* 0x00 */
+        External                      = br.ReadBoolean();                                                   /* 0x01 */
+        GBuffer                       = br.ReadBoolean();                                                   /* 0x02 */
+        DepthFade                     = br.ReadBoolean();                                                   /* 0x03 */
+        Bloom                         = br.ReadBoolean();                                                   /* 0x04 */
+        DynamicLensFlares             = br.ReadBoolean();                                                   /* 0x05 */
+        Volumetrics                   = br.ReadBoolean();                                                   /* 0x06 */
+        AntiAliasing                  = br.ReadBoolean();                                                   /* 0x07 */
+        HudVisor                      = br.ReadBoolean();                                                   /* 0x08 */
+        MotionBlur                    = (MotionBlurOptions) br.ReadByte();                                  /* 0x09 */
+        Mxao                          = (MxaoOptions) br.ReadByte();                                        /* 0x0A */
+        Dof                           = (DofOptions) br.ReadByte();                                         /* 0x0B */
+        Experimental.ThreeDimensional = (ExperimentalPostProcessing.ThreeDimensionalOptions) br.ReadByte(); /* 0x0C */
+        Experimental.ColorBlindMode   = (ExperimentalPostProcessing.ColorBlindModeOptions) br.ReadByte();   /* 0x0D */
       }
-
-      public ThreeDimensionalOptions ThreeDimensional { get; set; } = ThreeDimensionalOptions.Off;
-      public ColorBlindModeOptions   ColorBlindMode   { get; set; } = ColorBlindModeOptions.Off;
     }
 
     /// <summary>
@@ -159,6 +163,31 @@ namespace SPV3.CLI
       {
         Path = path
       };
+    }
+
+    /// <summary>
+    ///   Experimental overrides for SPV3.
+    /// </summary>
+    public class ExperimentalPostProcessing
+    {
+      public enum ColorBlindModeOptions
+      {
+        Off          = 0x0,
+        Protanopia   = 0x1,
+        Deuteranopes = 0x2,
+        Tritanopes   = 0x3
+      }
+
+      public enum ThreeDimensionalOptions
+      {
+        Off          = 0x0,
+        Anaglyphic   = 0x1,
+        Interleaving = 0x2,
+        SideBySide   = 0x3
+      }
+
+      public ThreeDimensionalOptions ThreeDimensional { get; set; } = ThreeDimensionalOptions.Off;
+      public ColorBlindModeOptions   ColorBlindMode   { get; set; } = ColorBlindModeOptions.Off;
     }
   }
 }
