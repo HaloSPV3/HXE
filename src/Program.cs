@@ -92,12 +92,12 @@ namespace SPV3.CLI
          * Installation command.
          */
 
-        case "install" when args.Length >= 2:
+        case "install" when args.Length >= 1:
         {
           Info("Explicitly invoked 'install' command.");
 
           var source = args.Length == 2 ? Environment.CurrentDirectory : args[2]; /* allow non-working dir paths */
-          var target = args[1];
+          var target = args.Length == 1 ? Path.Combine(Environment.GetFolderPath(ApplicationData), "SPV3") : args[1];
 
           Run(() => { Installer.Install(source, target); });
           return;
