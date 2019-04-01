@@ -23,7 +23,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Windows.Forms;
 using SPV3.CLI.Exceptions;
 using static System.Environment;
 using static System.Environment.SpecialFolder;
