@@ -22,6 +22,7 @@ using System.IO;
 
 namespace SPV3.CLI
 {
+  /// <inheritdoc />
   /// <summary>
   ///   Object representing Post-Processing effects.
   /// </summary>
@@ -58,6 +59,11 @@ namespace SPV3.CLI
       High = 0x0
     }
 
+    /// <summary>
+    ///   Binary file length.
+    /// </summary>
+    private const int Length = 0x10;
+
     public bool Internal          { get; set; }
     public bool External          { get; set; }
     public bool GBuffer           { get; set; }
@@ -81,25 +87,26 @@ namespace SPV3.CLI
     public void Save()
     {
       using (var fs = new FileStream(Path, FileMode.OpenOrCreate, FileAccess.ReadWrite))
-      using (var ms = new MemoryStream(16))
+      using (var ms = new MemoryStream(Length))
       using (var bw = new BinaryWriter(ms))
       {
         bw.BaseStream.Seek(0x00, SeekOrigin.Begin);
 
-        bw.Write(Internal);                             /* 0x00 */
-        bw.Write(External);                             /* 0x01 */
-        bw.Write(GBuffer);                              /* 0x02 */
-        bw.Write(DepthFade);                            /* 0x03 */
-        bw.Write(Bloom);                                /* 0x04 */
-        bw.Write(DynamicLensFlares);                    /* 0x05 */
-        bw.Write(Volumetrics);                          /* 0x06 */
-        bw.Write(AntiAliasing);                         /* 0x07 */
-        bw.Write(HudVisor);                             /* 0x08 */
-        bw.Write((byte) MotionBlur);                    /* 0x09 */
-        bw.Write((byte) Mxao);                          /* 0x0A */
-        bw.Write((byte) Dof);                           /* 0x0B */
-        bw.Write((byte) Experimental.ThreeDimensional); /* 0x0C */
-        bw.Write((byte) Experimental.ColorBlindMode);   /* 0x0D */
+        bw.Write(Internal);                                  /* 0x00 */
+        bw.Write(External);                                  /* 0x01 */
+        bw.Write(GBuffer);                                   /* 0x02 */
+        bw.Write(DepthFade);                                 /* 0x03 */
+        bw.Write(Bloom);                                     /* 0x04 */
+        bw.Write(DynamicLensFlares);                         /* 0x05 */
+        bw.Write(Volumetrics);                               /* 0x06 */
+        bw.Write(AntiAliasing);                              /* 0x07 */
+        bw.Write(HudVisor);                                  /* 0x08 */
+        bw.Write((byte) MotionBlur);                         /* 0x09 */
+        bw.Write((byte) Mxao);                               /* 0x0A */
+        bw.Write((byte) Dof);                                /* 0x0B */
+        bw.Write((byte) Experimental.ThreeDimensional);      /* 0x0C */
+        bw.Write((byte) Experimental.ColorBlindMode);        /* 0x0D */
+        bw.Write(new byte[Length - bw.BaseStream.Position]); /* pad */
 
         ms.WriteTo(fs);
       }
@@ -111,7 +118,7 @@ namespace SPV3.CLI
     public void Load()
     {
       using (var fs = new FileStream(Path, FileMode.Open, FileAccess.Read))
-      using (var ms = new MemoryStream(16))
+      using (var ms = new MemoryStream(Length))
       using (var br = new BinaryReader(ms))
       {
         fs.CopyTo(ms);
