@@ -13,7 +13,6 @@ Current features include:
 
 -   LOADING
 
-    -   automatic full resolution & gamma correction patch
     -   automatic resuming of the SPV3 campaign progress
     -   automatic HCE/SPV3 player profile detection
     -   automatic detection & launching the HCE executable
