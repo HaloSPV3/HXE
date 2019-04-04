@@ -39,7 +39,7 @@ actions. When "n/a" is used, it means that no command and/or argument is
 needed.
 
   Action               Command              Arguments
-  -------------------- -------------------- --------------------------------------------
+  -------------------- -------------------- ------------------------------------------
   Execute SPV3         n/a                  n/a
   Compile SPV3         compile              1: path to folder to compile the data to
   Install SPV3         install              1: path to target installation directory
@@ -49,3 +49,4 @@ needed.
   Restore Bitmaps      placeholder revert   1: path to generated records text file
   Dump Configuration   dump                 1: opensauce -or- overrides
   Update SPV3.CLI      update commit        n/a
+  Check for Update     update verify        n/a

@@ -58,6 +58,9 @@ specific to the SPV3 programs:
   distributing.txt                      Documentation & instructions on
                                         compiling, distributing, and
                                         installing SPV3.2.
+
+  update.txt                            Documentation & instructions on
+                                        updating the SPV3.CLI loader.
   ---------------------------------------------------------------------
 
 FILESYSTEM FILES
