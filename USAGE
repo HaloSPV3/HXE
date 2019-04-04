@@ -48,3 +48,4 @@ needed.
                                             3: bitmaps filter, e.g. \"\*.bitmap\"
   Restore Bitmaps      placeholder revert   1: path to generated records text file
   Dump Configuration   dump                 1: opensauce -or- overrides
+  Update SPV3.CLI      update commit        n/a

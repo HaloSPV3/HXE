@@ -73,6 +73,26 @@ namespace SPV3.CLI
 
       switch (command)
       {
+        case "update" when args.Length >= 2:
+        {
+          Info("Explicitly invoked 'update' command.");
+
+          switch (args[1])
+          {
+            case "commit":
+              Info("Explicitly invoked 'commit' argument.");
+              Update.Commit();
+              return;
+
+            case "finish":
+              Info("Explicitly invoked 'finish' argument.");
+              Update.Finish();
+              return;
+          }
+
+          return;
+        }
+
         /**
          * Compilation command.
          */
