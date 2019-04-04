@@ -80,7 +80,7 @@ namespace SPV3.CLI
 
           file.Delete();
 
-          Debug("Deleting discovered file - " + entry.Name);
+          Debug("Deleted discovered file - " + entry.Name);
         }
 
         Debug("Any existing entries on the filesystem have been deleted - preparing to extract package ...");
