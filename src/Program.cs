@@ -81,12 +81,12 @@ namespace SPV3.CLI
           {
             case "commit":
               Info("Explicitly invoked 'commit' argument.");
-              Update.Commit();
+              Run(Update.Commit);
               return;
 
             case "finish":
               Info("Explicitly invoked 'finish' argument.");
-              Update.Finish();
+              Run(Update.Finish);
               return;
           }
 
