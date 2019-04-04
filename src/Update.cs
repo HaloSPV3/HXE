@@ -27,6 +27,7 @@ using static System.Environment;
 using static System.IO.Compression.ZipFile;
 using static System.IO.File;
 using static System.IO.Path;
+using static SPV3.CLI.Console;
 
 namespace SPV3.CLI
 {
@@ -68,20 +69,32 @@ namespace SPV3.CLI
          */
 
         {
+          Info("Deleting existing data...");
+
           var files       = new List<string> {"COPYRIGHT", "USAGE", "README"};
           var directories = new List<string> {"Release", "Debug"};
 
           foreach (var file in files)
           {
-            if (Exists(file))
-              Delete(file);
+            Debug("Checking if file exists - " + file);
+
+            if (!Exists(file)) continue;
+
+            Delete(file);
+            Debug("Deleted existing file - " + file);
           }
 
           foreach (var directory in directories)
           {
-            if (Directory.Exists(directory))
-              Directory.Delete(directory, true);
+            Debug("Checking if directory exists - " + directory);
+
+            if (!Directory.Exists(directory)) continue;
+
+            Directory.Delete(directory, true);
+            Debug("Deleted existing directory - " + directory);
           }
+
+          Info("Finished deleting existing data!");
         }
 
         /**
@@ -95,9 +108,14 @@ namespace SPV3.CLI
           var source = new Uri(Base + hash + Archive);
           var target = Combine(GetFolderPath(SpecialFolder.ApplicationData), hash);
 
+          Info("Inferred latest binary. Currently downloading...");
+          Debug(hash);
+
           client.DownloadFile(source, target);
           ExtractToDirectory(target, CurrentDirectory);
           Delete(target);
+
+          Info("Downloaded and extracted the latest binary!");
         }
 
         /**
@@ -116,8 +134,17 @@ namespace SPV3.CLI
           var current  = GetCurrentProcess().MainModule.FileName;
           var obsolete = Combine(CurrentDirectory, ".SPV3.CLI.exe");
 
-          Move(current, obsolete);
-          Move(source,  target);
+          if (Exists(obsolete))
+            Delete(obsolete);
+
+          Move(current, obsolete); /* ./SPV3.CLI.exe       => ./.SPV3.CLI.exe */
+          Move(source,  target);   /* ./Debug/SPV3.CLI.exe => ./SPV3.CLI.exe  */
+
+          Directory.Delete("Debug",   true);
+          Directory.Delete("Release", true);
+
+          Info("Finalising update...");
+
           Start(target, "update finish");
           Exit(0);
         }
