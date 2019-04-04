@@ -59,6 +59,10 @@ namespace SPV3.CLI
         Directories.Data,
         "postprocessing.bin"
       );
+
+      public static readonly string UpdateVersion = Path.Combine(GetFolderPath(ApplicationData),
+        Directories.Data,
+        "updateversion.bin");
     }
 
     /// <summary>

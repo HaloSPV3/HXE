@@ -71,6 +71,10 @@ namespace SPV3.CLI
 
       var command = args[0];
 
+      /**
+       * Updating command.
+       */
+
       switch (command)
       {
         case "update" when args.Length >= 2:
@@ -87,6 +91,11 @@ namespace SPV3.CLI
             case "finish":
               Info("Explicitly invoked 'finish' argument.");
               Run(Update.Finish);
+              return;
+
+            case "verify":
+              Info("Explicitly invoked 'verify' argument.");
+              Run(Update.Verify);
               return;
           }
 
