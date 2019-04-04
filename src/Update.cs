@@ -94,8 +94,8 @@ namespace SPV3.CLI
         var localHash  = Encoding.Unicode.GetString(br.ReadBytes(80));
         var newVersion = !remoteHash.Equals(localHash);
 
-        Info("Inferred local hash  - " + localHash);
-        Info("New version is found - " + (newVersion ? "YES" : "NO"));
+        Info("Current cached local hash - " + localHash);
+        Info("New executables available - " + (newVersion ? "YES" : "NO"));
       }
     }
 
