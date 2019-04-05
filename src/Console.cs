@@ -69,5 +69,20 @@ namespace SPV3.CLI
       ForegroundColor = ConsoleColor.White;
       WriteLine(value);
     }
+
+    public static void Warn(string value)
+    {
+      ForegroundColor = ConsoleColor.Gray;
+      Write("> [ ");
+
+      ForegroundColor = ConsoleColor.Yellow;
+      Write("WARN");
+
+      ForegroundColor = ConsoleColor.Gray;
+      Write(" ] - ");
+
+      ForegroundColor = ConsoleColor.Yellow;
+      WriteLine(value);
+    }
   }
 }
