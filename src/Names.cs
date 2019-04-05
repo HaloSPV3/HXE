@@ -38,7 +38,6 @@ namespace SPV3.CLI
       public const string Initiation  = "initc.txt";
       public const string Progress    = "savegame.bin";
       public const string Profile     = "blam.sav";
-      public const string Overrides   = "overrides.xml";
       public const string InstallPath = "install.txt";
       public const string Manifest    = "0x00.bin";
 
@@ -54,6 +53,10 @@ namespace SPV3.CLI
         Directories.OpenSauce,
         "OS_Settings.User.xml"
       );
+
+      public static readonly string Overrides = Path.Combine(GetFolderPath(ApplicationData),
+        Directories.Data,
+        "overrides.xml");
 
       public static readonly string PostProcessing = Path.Combine(GetFolderPath(ApplicationData),
         Directories.Data,
