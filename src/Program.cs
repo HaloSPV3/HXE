@@ -61,10 +61,9 @@ namespace SPV3.CLI
       {
         if (Update.Verify())
         {
-          Warn(@"------------------------------------------------");
-          Warn(@"An update is available is available to download!");
-          Warn(@"Invoke '.\SPV3.CLI.exe update commit' to update.");
-          Warn(@"------------------------------------------------");
+          Warn(@"---------------------------------------");
+          Warn(@"Loader update is available to download!");
+          Warn(@"----------------------------------------");
         }
       }
       catch (Exception e)
@@ -106,17 +105,6 @@ namespace SPV3.CLI
             case "finish":
               Info("Explicitly invoked 'finish' argument.");
               Run(Update.Finish);
-              return;
-
-            case "verify":
-              Info("Explicitly invoked 'verify' argument.");
-
-              void Verify()
-              {
-                Info("New executables available - " + (Update.Verify() ? "YES" : "NO"));
-              }
-
-              Run(Verify);
               return;
           }
 

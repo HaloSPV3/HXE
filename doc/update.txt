@@ -6,16 +6,12 @@ This documentation outlines the self-updating mechanism of the loader.
 USAGE
 -----
 
-Depending on whether you want to update the CLI, or simply check if an
-update is available, you can use the following commands.
-
-To check if an update is available:
-
-    .\SPV3.CLI.exe update verify
-
 To update the loader to the latest build:
 
     .\SPV3.CLI.exe update commit
+
+Verification for new updates is conducted automatically each time
+the loader is executed.
 
 INFORMATION
 -----------

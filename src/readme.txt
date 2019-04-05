@@ -166,9 +166,7 @@ The update mechanism also permits for mere verification of whether an
 update is available or not. This is accomplished by caching the hash to
 a binary on the filesystem when an update is committed.
 
-Verification is carried out using:
-
-    .\SPV3.CLI.exe update verify
+Verification is carried out automatically on the loader start-up.
 
 FILESYSTEM OBJECTS
 ------------------
