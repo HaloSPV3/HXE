@@ -58,7 +58,7 @@ namespace SPV3.CLI
       using (var reader = new StreamReader(stream ?? throw new WebException("Could not resolve request.")))
       {
         var hash = reader.ReadToEnd().TrimEnd('\n'); /* normalise hash */
-        Info("Inferred hash from server - " + hash);
+        Debug("Inferred hash from server - " + hash);
         return hash;
       }
     }
@@ -66,7 +66,7 @@ namespace SPV3.CLI
     /// <summary>
     ///   Verifies if a new update exists.
     /// </summary>
-    public static void Verify()
+    public static bool Verify()
     {
       /**
        * The update mechanism works by comparing the locally stored hash versus the one returned by the remote server.
@@ -79,7 +79,7 @@ namespace SPV3.CLI
       if (!Exists(Names.Files.UpdateVersion))
       {
         Info("Update version not found. Update is recommended!");
-        return;
+        return true;
       }
 
       var remoteHash = GetHash();
@@ -94,8 +94,8 @@ namespace SPV3.CLI
         var localHash  = Encoding.Unicode.GetString(br.ReadBytes(80));
         var newVersion = !remoteHash.Equals(localHash);
 
-        Info("Current cached local hash - " + localHash);
-        Info("New executables available - " + (newVersion ? "YES" : "NO"));
+        Debug("Current cached local hash - " + localHash);
+        return newVersion;
       }
     }
 

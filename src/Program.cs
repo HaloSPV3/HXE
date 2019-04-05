@@ -95,7 +95,13 @@ namespace SPV3.CLI
 
             case "verify":
               Info("Explicitly invoked 'verify' argument.");
-              Run(Update.Verify);
+
+              void Verify()
+              {
+                Info("New executables available - " + (Update.Verify() ? "YES" : "NO"));
+              }
+
+              Run(Verify);
               return;
           }
 
