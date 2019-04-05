@@ -57,6 +57,21 @@ namespace SPV3.CLI
       WriteLine(@"--------------------------------------------");
       ForegroundColor = ConsoleColor.White;
 
+      try
+      {
+        if (Update.Verify())
+        {
+          Warn(@"------------------------------------------------");
+          Warn(@"An update is available is available to download!");
+          Warn(@"Invoke '.\SPV3.CLI.exe update commit' to update.");
+          Warn(@"------------------------------------------------");
+        }
+      }
+      catch (Exception e)
+      {
+        Info(e.Message);
+      }
+
       /**
        * Implicit Loading command.
        */
