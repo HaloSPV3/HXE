@@ -105,6 +105,11 @@ namespace SPV3.CLI
             case "finish":
               Info("Explicitly invoked 'finish' argument.");
               Run(Update.Finish);
+              
+              Warn("---------------------------------------");
+              Warn("Update has been successfully completed!");
+              Warn("---------------------------------------");
+              
               return;
           }
 
