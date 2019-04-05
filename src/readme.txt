@@ -143,7 +143,10 @@ SELF-UPDATE INFORMATION
 
 The loader includes a self-update mechanism, which is invoked using:
 
-    .\SPV3.CLI.exe update commit
+    .\SPV3.CLI.exe --auto-update
+
+Otherwise, the update is carried out interactively, by having the
+user prompted on whether they want to update or not.
 
 The update is comprised of the following steps:
 

@@ -20,6 +20,7 @@
 
 using System;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using static System.Console;
 using static System.Environment.SpecialFolder;
@@ -57,168 +58,195 @@ namespace SPV3.CLI
       WriteLine(@"--------------------------------------------");
       ForegroundColor = ConsoleColor.White;
 
-      try
+      /**
+       * The CLI provides both an interactive and automatic update mechanism. Using --auto-update, the loader will
+       * automatically update itself when necessary. Without the argument, the user will be prompted to choose whether
+       * to update the loader now or not.
+       *
+       * Once that's out of the way, the --auto-update will be removed from the array of arguments, as it's no longer
+       * needed in subsequent invocations throughout the CLI.
+       */
+
+      void HandleUpdate()
       {
-        if (Update.Verify())
+        try
         {
-          Warn(@"---------------------------------------");
-          Warn(@"Loader update is available to download!");
-          Warn(@"----------------------------------------");
+          if (Update.Verify())
+          {
+            Warn(@"Loader update is available to download!");
+
+            if (args.Contains("--auto-update"))
+            {
+              Warn(@"Will automatically conduct auto-update!");
+              Update.Commit();
+            }
+            else
+            {
+              Warn(@"Would you like to conduct update? [y/n]");
+              if (ReadLine() == "y")
+                Update.Commit();
+            }
+          }
         }
-      }
-      catch (Exception e)
-      {
-        Info(e.Message);
+        catch (Exception e)
+        {
+          Info(e.Message);
+        }
+
+        args = args.Where(val => val != "--auto-update").ToArray();
       }
 
       /**
-       * Implicit Loading command.
-       */
-      if (args.Length == 0)
-      {
-        Info("Implicitly invoked 'load' command.");
-
-        Run(Kernel.Bootstrap);
-
-        return;
-      }
-
-      var command = args[0];
-
-      /**
-       * Updating command.
+       * Commands are invoked either explicitly or implicitly. The only implicitly invoked command is the loading one,
+       * and it's done when there are no commands being passed to the CLI.
        */
 
-      switch (command)
+      void HandleInvoke()
       {
-        case "update" when args.Length >= 2:
+        /**
+         * Implicit Loading command.
+         */
+        if (args.Length == 0)
         {
-          Info("Explicitly invoked 'update' command.");
+          Info("Implicitly invoked 'load' command.");
 
-          switch (args[1])
+          Run(Kernel.Bootstrap);
+
+          return;
+        }
+
+        var command = args[0];
+
+        /**
+         * Updating command.
+         */
+
+        switch (command)
+        {
+          case "update" when args.Length >= 2:
           {
-            case "commit":
-              Info("Explicitly invoked 'commit' argument.");
-              Run(Update.Commit);
-              return;
+            Info("Explicitly invoked 'update' command.");
 
-            case "finish":
-              Info("Explicitly invoked 'finish' argument.");
-              Run(Update.Finish);
-              
-              Warn("---------------------------------------");
-              Warn("Update has been successfully completed!");
-              Warn("---------------------------------------");
-              
-              return;
-          }
-
-          return;
-        }
-
-        /**
-         * Compilation command.
-         */
-
-        case "compile" when args.Length >= 2:
-        {
-          Info("Explicitly invoked 'compile' command.");
-
-          var source = args.Length == 2 ? Environment.CurrentDirectory : args[2]; /* implicitly use working dir */
-          var target = args[1];
-
-          Run(() => { Compiler.Compile(source, target); });
-          return;
-        }
-
-        /**
-         * Installation command.
-         */
-
-        case "install" when args.Length >= 1:
-        {
-          Info("Explicitly invoked 'install' command.");
-
-          var source = args.Length == 2 ? Environment.CurrentDirectory : args[2]; /* allow non-working dir paths */
-          var target = args.Length == 1 ? Path.Combine(Environment.GetFolderPath(ApplicationData), "SPV3") : args[1];
-
-          Run(() => { Installer.Install(source, target); });
-          return;
-        }
-
-        /**
-         * Placeholder command.
-         */
-
-        case "placeholder" when args.Length > 1:
-        {
-          Info("Explicitly invoked 'placeholder' command.");
-
-          switch (args[1])
-          {
-            case "commit" when args.Length >= 4:
+            switch (args[1])
             {
-              Info("Explicitly invoked 'commit' argument.");
+              case "finish":
+                Info("Explicitly invoked 'finish' argument.");
+                Run(Update.Finish);
+                Warn("Update has been successfully completed!");
 
-              var bitmap = args[2];
-              var target = args[3];
-              var filter = args.Length == 4 ? "*.bitmap" : args[4];
-
-              Run(() => { Placeholder.Commit(bitmap, target, filter); });
-              return;
+                return;
             }
-            case "revert" when args.Length >= 2:
-            {
-              Info("Explicitly invoked 'revert' argument.");
 
-              var records = args[2];
-
-              Run(() => { Placeholder.Revert(records); });
-              return;
-            }
-            default:
-              Error("Invalid placeholder args.");
-              Environment.Exit(3);
-              return;
+            return;
           }
-        }
 
-        /**
-         * Dump command.
-         */
+          /**
+           * Compilation command.
+           */
 
-        case "dump" when args.Length > 1:
-        {
-          Info("Explicitly invoked 'dump' command.");
-
-          switch (args[1])
+          case "compile" when args.Length >= 2:
           {
-            case "overrides":
-              Info("Explicitly invoked 'overrides' argument.");
+            Info("Explicitly invoked 'compile' command.");
 
-              var overridesPath = Path.Combine(Environment.GetFolderPath(MyDocuments), Overrides);
+            var source = args.Length == 2 ? Environment.CurrentDirectory : args[2]; /* implicitly use working dir */
+            var target = args[1];
 
-              Run(() => { new Override {Path = overridesPath}.Save(); });
-              return;
-            case "opensauce":
-              Info("Explicitly invoked 'opensauce' argument.");
-
-              var openSaucePath = Names.Files.OpenSauce;
-
-              Run(() => { new OpenSauce {Path = openSaucePath}.Save(); });
-              return;
-            default:
-              Error("Invalid dump args.");
-              Environment.Exit(4);
-              return;
+            Run(() => { Compiler.Compile(source, target); });
+            return;
           }
-        }
 
-        default:
-          Error("Invalid command.");
-          Environment.Exit(2);
-          return;
+          /**
+           * Installation command.
+           */
+
+          case "install" when args.Length >= 1:
+          {
+            Info("Explicitly invoked 'install' command.");
+
+            var source = args.Length == 2 ? Environment.CurrentDirectory : args[2]; /* allow non-working dir paths */
+            var target = args.Length == 1 ? Path.Combine(Environment.GetFolderPath(ApplicationData), "SPV3") : args[1];
+
+            Run(() => { Installer.Install(source, target); });
+            return;
+          }
+
+          /**
+           * Placeholder command.
+           */
+
+          case "placeholder" when args.Length > 1:
+          {
+            Info("Explicitly invoked 'placeholder' command.");
+
+            switch (args[1])
+            {
+              case "commit" when args.Length >= 4:
+              {
+                Info("Explicitly invoked 'commit' argument.");
+
+                var bitmap = args[2];
+                var target = args[3];
+                var filter = args.Length == 4 ? "*.bitmap" : args[4];
+
+                Run(() => { Placeholder.Commit(bitmap, target, filter); });
+                return;
+              }
+              case "revert" when args.Length >= 2:
+              {
+                Info("Explicitly invoked 'revert' argument.");
+
+                var records = args[2];
+
+                Run(() => { Placeholder.Revert(records); });
+                return;
+              }
+              default:
+                Error("Invalid placeholder args.");
+                Environment.Exit(3);
+                return;
+            }
+          }
+
+          /**
+           * Dump command.
+           */
+
+          case "dump" when args.Length > 1:
+          {
+            Info("Explicitly invoked 'dump' command.");
+
+            switch (args[1])
+            {
+              case "overrides":
+                Info("Explicitly invoked 'overrides' argument.");
+
+                var overridesPath = Path.Combine(Environment.GetFolderPath(MyDocuments), Overrides);
+
+                Run(() => { new Override {Path = overridesPath}.Save(); });
+                return;
+              case "opensauce":
+                Info("Explicitly invoked 'opensauce' argument.");
+
+                var openSaucePath = Names.Files.OpenSauce;
+
+                Run(() => { new OpenSauce {Path = openSaucePath}.Save(); });
+                return;
+              default:
+                Error("Invalid dump args.");
+                Environment.Exit(4);
+                return;
+            }
+          }
+
+          default:
+            Error("Invalid command.");
+            Environment.Exit(2);
+            return;
+        }
       }
+
+      HandleUpdate();
+      HandleInvoke();
     }
 
     private static void Run(Action action)

@@ -6,9 +6,9 @@ This documentation outlines the self-updating mechanism of the loader.
 USAGE
 -----
 
-To update the loader to the latest build:
+Updating is conducted interactively. To do so automatically, invoke:
 
-    .\SPV3.CLI.exe update commit
+    .\SPV3.CLI.exe --auto-update
 
 Verification for new updates is conducted automatically each time
 the loader is executed.
