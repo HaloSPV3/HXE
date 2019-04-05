@@ -82,7 +82,11 @@ namespace SPV3.CLI
       Write(" ] - ");
 
       ForegroundColor = ConsoleColor.Yellow;
+      var decoration = new string('-', value.Length);
+
+      WriteLine(decoration);
       WriteLine(value);
+      WriteLine(decoration);
     }
   }
 }
