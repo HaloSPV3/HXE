@@ -51,7 +51,7 @@ namespace SPV3.CLI
       WriteLine(@" ___/ / ____/| |/ /___/ // /___/ /____/ /   ");
       WriteLine(@"/____/_/     |___//____(_)____/_____/___/   ");
       WriteLine(@"============================================");
-      WriteLine(@"The SPV3.CLI Project :: GitHub: YuMiris/SPV3");
+      WriteLine(@"The SPV3.CLI .:. github.com/yumiris/spv3.cli");
       WriteLine(@"--------------------------------------------");
       WriteLine($"Executable has been compiled from build: {v}");
       WriteLine(@"--------------------------------------------");
