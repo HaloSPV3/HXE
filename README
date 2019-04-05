@@ -42,7 +42,6 @@ nutshell:
     .\SPV3.exe                     # verifies, resumes & runs SPV3
 
     .\SPV3.exe update commit       # updates the loader executable
-    .\SPV3.exe update verify       # verifies if new update exists
 
     .\SPV3.exe dump overrides      # writes overrides xml template
     .\SPV3.exe dump opensauce      # writes opensauce xml template
