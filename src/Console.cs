@@ -27,66 +27,50 @@ namespace SPV3.CLI
   {
     public static void Error(string value)
     {
-      ForegroundColor = ConsoleColor.Gray;
-      Write("> [ ");
+      var decoration = new string('*', value.Length);
 
-      ForegroundColor = ConsoleColor.Red;
-      Write("!!!!");
-
-      ForegroundColor = ConsoleColor.Gray;
-      Write(" ] - ");
-
-      ForegroundColor = ConsoleColor.Red;
-      WriteLine(value);
+      Output("!!!!", ConsoleColor.Red, decoration);
+      Output("!!!!", ConsoleColor.Red, value);
+      Output("!!!!", ConsoleColor.Red, decoration);
     }
 
     public static void Debug(string value)
     {
-      ForegroundColor = ConsoleColor.Gray;
-      Write("> [ ");
-
-      ForegroundColor = ConsoleColor.Green;
-      Write("DBUG");
-
-      ForegroundColor = ConsoleColor.Gray;
-      Write(" ] - ");
-
-      ForegroundColor = ConsoleColor.White;
-      WriteLine(value);
+      Output("DBUG", ConsoleColor.Green, value, ConsoleColor.White);
     }
 
     public static void Info(string value)
     {
-      ForegroundColor = ConsoleColor.Gray;
-      Write("> [ ");
-
-      ForegroundColor = ConsoleColor.Cyan;
-      Write("INFO");
-
-      ForegroundColor = ConsoleColor.Gray;
-      Write(" ] - ");
-
-      ForegroundColor = ConsoleColor.White;
-      WriteLine(value);
+      Output("INFO", ConsoleColor.Cyan, value, ConsoleColor.White);
     }
 
     public static void Warn(string value)
     {
+      var decoration = new string('-', value.Length);
+
+      Output("WARN", ConsoleColor.Yellow, decoration);
+      Output("WARN", ConsoleColor.Yellow, value);
+      Output("WARN", ConsoleColor.Yellow, decoration);
+    }
+
+    private static void Output(string prefix, ConsoleColor color, string message)
+    {
+      Output(prefix, color, message, color);
+    }
+
+    private static void Output(string prefix, ConsoleColor color, string message, ConsoleColor messageColor)
+    {
       ForegroundColor = ConsoleColor.Gray;
       Write("> [ ");
 
-      ForegroundColor = ConsoleColor.Yellow;
-      Write("WARN");
+      ForegroundColor = color;
+      Write(prefix);
 
       ForegroundColor = ConsoleColor.Gray;
       Write(" ] - ");
 
-      ForegroundColor = ConsoleColor.Yellow;
-      var decoration = new string('-', value.Length);
-
-      WriteLine(decoration);
-      WriteLine(value);
-      WriteLine(decoration);
+      ForegroundColor = messageColor;
+      WriteLine(message);
     }
   }
 }
