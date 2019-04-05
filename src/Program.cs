@@ -58,6 +58,8 @@ namespace SPV3.CLI
       WriteLine(@"--------------------------------------------");
       ForegroundColor = ConsoleColor.White;
 
+      Directory.CreateDirectory(Path.Combine(Environment.GetFolderPath(ApplicationData), Names.Directories.Data));
+
       /**
        * The CLI provides both an interactive and automatic update mechanism. Using --auto-update, the loader will
        * automatically update itself when necessary. Without the argument, the user will be prompted to choose whether

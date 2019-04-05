@@ -231,12 +231,7 @@ namespace SPV3.CLI
     /// </summary>
     private static void InvokeOverriding()
     {
-      string GetOverridesPath()
-      {
-        return Path.Combine(GetFolderPath(ApplicationData), Directories.Data, Files.Overrides);
-      }
-
-      var overrides = (Override) GetOverridesPath();
+      var overrides = (Override) Files.Overrides;
       var openSauce = (OpenSauce) Files.OpenSauce;
 
       if (!overrides.Exists()) return;
