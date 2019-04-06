@@ -182,9 +182,9 @@ namespace SPV3.CLI
 
       profblam.Save();
 
-      Info("Patched video resolution WIDTH  - " + profblam.Video.Resolution.Width);
-      Info("Patched video resolution HEIGHT - " + profblam.Video.Resolution.Height);
-      Info("Removed FPS lock! (V-Sync -> OFF)");
+      Info("Patched video frame rate - " + profblam.Video.FrameRate);
+      Info("Patched video quality    - " + profblam.Video.Particles);
+      Info("Patched video texture    - " + profblam.Video.Quality);
     }
 
     /// <summary>
