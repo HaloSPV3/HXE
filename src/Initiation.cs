@@ -69,7 +69,10 @@ namespace SPV3.CLI
       var magnetism  = PlayerMagnetism ? 1 : 0;
       var cinematic  = CinematicBars ? 1 : 0;
 
+      const int unlock31 = 0x8; /* unlock value for 3.1 */
+
       var output = new StringBuilder();
+      output.AppendLine($"set f1 {unlock31}");
       output.AppendLine($"set f3 {mission}");
       output.AppendLine($"set f5 {cinematic}");
       output.AppendLine($"player_autoaim {autoaim}");
