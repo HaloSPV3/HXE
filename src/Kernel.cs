@@ -75,6 +75,13 @@ namespace SPV3.CLI
 
         Warn(@"Loader update is available to download!");
 
+        using (var reader = new StringReader(Update.Logs()))
+        {
+          string line;
+          while ((line = reader.ReadLine()) != null)
+            Logs("> " + line);
+        }
+
         if (_configuration.AutoUpdate)
         {
           Warn(@"Will automatically conduct auto-update!");

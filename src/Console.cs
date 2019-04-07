@@ -44,6 +44,11 @@ namespace SPV3.CLI
       Output("INFO", ConsoleColor.Cyan, value, ConsoleColor.White);
     }
 
+    public static void Logs(string value)
+    {
+      Output("LOGS", ConsoleColor.Magenta, value);
+    }
+
     public static void Warn(string value)
     {
       var decoration = new string('-', value.Length);
