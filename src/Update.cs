@@ -21,6 +21,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Text;
 using static System.Diagnostics.Process;
@@ -57,9 +58,28 @@ namespace SPV3.CLI
       using (var stream = response.GetResponseStream())
       using (var reader = new StreamReader(stream ?? throw new WebException("Could not resolve request.")))
       {
-        var hash = reader.ReadToEnd().TrimEnd('\n'); /* normalise hash */
+        var hash = reader.ReadLine()?.TrimEnd('\n'); /* normalise hash */
         Debug("Inferred hash from server - " + hash);
         return hash;
+      }
+    }
+
+    /// <summary>
+    ///   Retrieves logs from the remote server.
+    /// </summary>
+    /// <returns>
+    ///   String containing the latest logs from the server.
+    /// </returns>
+    public static string Logs()
+    {
+      Info("Preparing request for latest logs...");
+      Info("Retrieved the latest 16 change logs.");
+
+      using (var response = WebRequest.Create(Header).GetResponse())
+      using (var stream = response.GetResponseStream())
+      using (var reader = new StreamReader(stream ?? throw new WebException("Could not resolve request.")))
+      {
+        return reader.ReadToEnd().Split(NewLine.ToCharArray(), 2).Skip(1).FirstOrDefault();
       }
     }
 
