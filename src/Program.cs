@@ -43,59 +43,61 @@ namespace SPV3.CLI
     /// </param>
     public static void Main(string[] args)
     {
-      var v = GetEntryAssembly().GetName().Version.Major.ToString("D3");
+      var configuration = new Configuration();
 
-      ForegroundColor = ConsoleColor.Green;
-      WriteLine(@"   _____ ____ _    _______  ________    ____");
-      WriteLine(@"  / ___// __ \ |  / /__  / / ____/ /   /  _/");
-      WriteLine(@"  \__ \/ /_/ / | / / /_ < / /   / /    / /  ");
-      WriteLine(@" ___/ / ____/| |/ /___/ // /___/ /____/ /   ");
-      WriteLine(@"/____/_/     |___//____(_)____/_____/___/   ");
-      WriteLine(@"============================================");
-      WriteLine(@"The SPV3.CLI .:. github.com/yumiris/spv3.cli");
-      WriteLine(@"--------------------------------------------");
-      WriteLine($"Executable has been compiled from build: {v}");
-      WriteLine(@"--------------------------------------------");
-      ForegroundColor = ConsoleColor.White;
-
-      Directory.CreateDirectory(Path.Combine(Environment.GetFolderPath(ApplicationData), Names.Directories.Data));
+      InitiateData(); /* startup data initiation       */
+      OutputBanner(); /* startup ascii output          */
+      HandleConfig(); /* startup configuration options */
+      HandleInvoke(); /* startup command invocations   */
 
       /**
-       * The CLI provides both an interactive and automatic update mechanism. Using --auto-update, the loader will
-       * automatically update itself when necessary. Without the argument, the user will be prompted to choose whether
-       * to update the loader now or not.
-       *
-       * Once that's out of the way, the --auto-update will be removed from the array of arguments, as it's no longer
-       * needed in subsequent invocations throughout the CLI.
+       * Displays the ASCII art, key information, and build version.
        */
 
-      void HandleUpdate()
+      void OutputBanner()
       {
-        try
-        {
-          if (Update.Verify())
-          {
-            Warn(@"Loader update is available to download!");
+        var v = GetEntryAssembly().GetName().Version.Major.ToString("D3");
 
-            if (args.Contains("--auto-update"))
-            {
-              Warn(@"Will automatically conduct auto-update!");
-              Update.Commit();
-            }
-            else
-            {
-              Warn(@"Would you like to conduct update? [y/n]");
-              if (ReadLine() == "y")
-                Update.Commit();
-            }
-          }
-        }
-        catch (Exception e)
-        {
-          Info(e.Message);
-        }
+        ForegroundColor = ConsoleColor.Green;
+        WriteLine(@"   _____ ____ _    _______  ________    ____");
+        WriteLine(@"  / ___// __ \ |  / /__  / / ____/ /   /  _/");
+        WriteLine(@"  \__ \/ /_/ / | / / /_ < / /   / /    / /  ");
+        WriteLine(@" ___/ / ____/| |/ /___/ // /___/ /____/ /   ");
+        WriteLine(@"/____/_/     |___//____(_)____/_____/___/   ");
+        WriteLine(@"============================================");
+        WriteLine(@"The SPV3.CLI .:. github.com/yumiris/spv3.cli");
+        WriteLine(@"--------------------------------------------");
+        WriteLine($"Executable has been compiled from build: {v}");
+        WriteLine(@"--------------------------------------------");
+        ForegroundColor = ConsoleColor.White;
+      }
 
-        args = args.Where(val => val != "--auto-update").ToArray();
+      /**
+       * Conduct data initiation on each start-up.
+       */
+
+      void InitiateData()
+      {
+        Directory.CreateDirectory(Path.Combine(Environment.GetFolderPath(ApplicationData), Names.Directories.Data));
+      }
+
+      /**
+       * Handle start-up kernel configurations, which are conventionally prefixed with double hyphens.
+       */
+
+      void HandleConfig()
+      {
+        /**
+         * The CLI provides both an interactive and automatic update mechanism. Using --auto-update, the loader will
+         * automatically update itself when necessary. Without the argument, the user will be prompted to choose whether
+         * to update the loader now or not.
+         *
+         * Once that's out of the way, the --auto-update will be removed from the array of arguments, as it's no longer
+         * needed in subsequent invocations throughout the CLI.
+         */
+
+        configuration.AutoUpdate = args.Contains("--auto-update");
+        args                     = args.Where(val => val != "--auto-update").ToArray();
       }
 
       /**
@@ -111,8 +113,7 @@ namespace SPV3.CLI
         if (args.Length == 0)
         {
           Info("Implicitly invoked 'load' command.");
-
-          Run(Kernel.Bootstrap);
+          Run(new Kernel(configuration).Bootstrap);
 
           return;
         }
@@ -246,9 +247,6 @@ namespace SPV3.CLI
             return;
         }
       }
-
-      HandleUpdate();
-      HandleInvoke();
     }
 
     private static void Run(Action action)
