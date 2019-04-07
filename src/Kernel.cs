@@ -35,28 +35,20 @@ namespace SPV3.CLI
   /// <summary>
   ///   Class used for bootstrapping the SPV3 loading procedure.
   /// </summary>
-  public class Kernel
+  public static class Kernel
   {
-    private static Configuration _configuration = new Configuration();
-
     /**
      * Inic.txt can be located across multiple locationns on the filesystem; however, SPSV3 only deals with the one in
      * the working directory -- hence the name!
      */
     private static readonly Initiation RootInitc = (Initiation) Path.Combine(CurrentDirectory, Files.Initiation);
 
-    public Kernel(Configuration configuration)
-    {
-      _configuration = configuration;
-    }
-
     /// <summary>
     ///   Invokes the SPV3 loading procedure.
     /// </summary>
-    public void Bootstrap()
+    public static void Bootstrap()
     {
       HeuristicInstall();
-      HandleNewUpdates();
       VerifyMainAssets();
       InvokeCoreTweaks();
       ResumeCheckpoint();
@@ -65,45 +57,9 @@ namespace SPV3.CLI
     }
 
     /// <summary>
-    ///   Conducts updates on the CLI, either automatically or manually based on the provided configuration object.
-    /// </summary>
-    private void HandleNewUpdates()
-    {
-      try
-      {
-        if (!Update.Verify()) return;
-
-        Warn(@"Loader update is available to download!");
-
-        using (var reader = new StringReader(Update.Logs()))
-        {
-          string line;
-          while ((line = reader.ReadLine()) != null)
-            Logs("> " + line);
-        }
-
-        if (_configuration.AutoUpdate)
-        {
-          Warn(@"Will automatically conduct auto-update!");
-          Update.Commit();
-        }
-        else
-        {
-          Warn(@"Would you like to conduct update? [y/n]");
-          if (System.Console.ReadLine() == "y")
-            Update.Commit();
-        }
-      }
-      catch (Exception e)
-      {
-        Info(e.Message);
-      }
-    }
-
-    /// <summary>
     ///   Heuristically conducts pre-loading installation, if necessary.
     /// </summary>
-    private void HeuristicInstall()
+    private static void HeuristicInstall()
     {
       /**
        * If the HCE executable does not exist in the working directory, but the manifest and an initial package exists,
@@ -130,7 +86,7 @@ namespace SPV3.CLI
     /// <summary>
     ///   Invokes the SPV3.2 data verification routines.
     /// </summary>
-    private void VerifyMainAssets()
+    private static void VerifyMainAssets()
     {
       /**
        * It is preferable to whitelist the type of files we would like to verify. The focus would be to skip any files
@@ -202,7 +158,7 @@ namespace SPV3.CLI
     ///   Invokes core improvements to the auto-detected profile, such as auto max resolution and gamma fixes. This is
     ///   NOT done when a profile does not exist/cannot be found!
     /// </summary>
-    private void InvokeCoreTweaks()
+    private static void InvokeCoreTweaks()
     {
       var lastprof = (LastProfile) Files.LastProfile;
 
@@ -234,7 +190,7 @@ namespace SPV3.CLI
     /// <summary>
     ///   Invokes the profile & campaign auto-detection mechanism.
     /// </summary>
-    private void ResumeCheckpoint()
+    private static void ResumeCheckpoint()
     {
       var lastprof = (LastProfile) Files.LastProfile;
 
@@ -273,7 +229,7 @@ namespace SPV3.CLI
     /// <summary>
     ///   Overrides OpenSauce, Chimera & HCE/SPV3 configurations for debugging/testing purposes.
     /// </summary>
-    private void InvokeOverriding()
+    private static void InvokeOverriding()
     {
       var overrides = (Override) Files.Overrides;
       var openSauce = (OpenSauce) Files.OpenSauce;
@@ -354,7 +310,7 @@ namespace SPV3.CLI
     /// <summary>
     ///   Invokes the HCE executable.
     /// </summary>
-    private void InvokeExecutable()
+    private static void InvokeExecutable()
     {
       /**
        * Gets the path of the HCE executable on the filesystem, which conventionally should be the working directory of

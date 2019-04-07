@@ -43,11 +43,9 @@ namespace SPV3.CLI
     /// </param>
     public static void Main(string[] args)
     {
-      var configuration = new Configuration();
-
       InitiateData(); /* startup data initiation       */
       OutputBanner(); /* startup ascii output          */
-      HandleConfig(); /* startup configuration options */
+      HandleUpdate(); /* startup update verification   */
       HandleInvoke(); /* startup command invocations   */
 
       /**
@@ -82,22 +80,47 @@ namespace SPV3.CLI
       }
 
       /**
-       * Handle start-up kernel configurations, which are conventionally prefixed with double hyphens.
+       * The CLI provides both an interactive and automatic update mechanism. Using --auto-update, the loader will
+       * automatically update itself when necessary. Without the argument, the user will be prompted to choose whether
+       * to update the loader now or not.
+       *
+       * Once that's out of the way, the --auto-update will be removed from the array of arguments, as it's no longer
+       * needed in subsequent invocations throughout the CLI.
        */
 
-      void HandleConfig()
+      void HandleUpdate()
       {
-        /**
-         * The CLI provides both an interactive and automatic update mechanism. Using --auto-update, the loader will
-         * automatically update itself when necessary. Without the argument, the user will be prompted to choose whether
-         * to update the loader now or not.
-         *
-         * Once that's out of the way, the --auto-update will be removed from the array of arguments, as it's no longer
-         * needed in subsequent invocations throughout the CLI.
-         */
+        try
+        {
+          if (!Update.Verify()) return;
 
-        configuration.AutoUpdate = args.Contains("--auto-update");
-        args                     = args.Where(val => val != "--auto-update").ToArray();
+          Warn(@"Loader update is available to download!");
+
+          using (var reader = new StringReader(Update.Logs()))
+          {
+            string line;
+            while ((line = reader.ReadLine()) != null)
+              Logs("> " + line);
+          }
+
+          if (args.Contains("--auto-update"))
+          {
+            Warn(@"Will automatically conduct auto-update!");
+            Update.Commit();
+          }
+          else
+          {
+            Warn(@"Would you like to conduct update? [y/n]");
+            if (ReadLine() == "y")
+              Update.Commit();
+          }
+        }
+        catch (Exception e)
+        {
+          Info(e.Message);
+        }
+
+        args = args.Where(val => val != "--auto-update").ToArray();
       }
 
       /**
@@ -113,7 +136,7 @@ namespace SPV3.CLI
         if (args.Length == 0)
         {
           Info("Implicitly invoked 'load' command.");
-          Run(new Kernel(configuration).Bootstrap);
+          Run(Kernel.Bootstrap);
 
           return;
         }
