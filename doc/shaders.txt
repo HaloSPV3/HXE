@@ -51,23 +51,23 @@ single byte, with the following layout:
 
   Offset   Post-Processing Effect   Type
   -------- ------------------------ ------
-  0x0      Internal                 B
-  0x1      External                 B
-  0x2      GBuffer                  B
-  0x3      Depth Fade               B
-  0x4      Bloom                    B
-  0x5      Dynamic Lens Flares      B
-  0x6      Volumetrics              B
-  0x7      Anti Aliasing            B
-  0x8      HUD Visor                B
-  0x9      Motion Blur              I
-  0xA      MXAU                     I
-  0xB      DOF                      I
-  0xC      Three Dimensional        I
-  0xD      Color BlindMode          I
+  0x0      Internal                 T
+  0x1      External                 T
+  0x2      GBuffer                  T
+  0x3      Depth Fade               T
+  0x4      Bloom                    T
+  0x5      Dynamic Lens Flares      T
+  0x6      Volumetrics              T
+  0x7      Anti Aliasing            T
+  0x8      HUD Visor                T
+  0x9      Motion Blur              V
+  0xA      MXAU                     V
+  0xB      DOF                      V
+  0xC      Three Dimensional        V
+  0xD      Color BlindMode          V
 
--   B - Boolean (0 for off; 1 for on)
--   I - Integer (0 for off, 1..3 for levels)
+-   T - Toggle (0 for off; 1 for on)
+-   V - Value  (0 for off, 1..3 for levels)
 
 The values are represented using integers 0 to 4. Depending on the
 post-processing effect, each integer represents either an option or a
