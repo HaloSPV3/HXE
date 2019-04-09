@@ -102,7 +102,7 @@ namespace SPV3.CLI
          * [0x0000 - 0x1005] [0x1FFC - 0x2000]
          *         |                 |
          *         |                 + - hash data (4 bytes)
-         *        + -------------------- main data (8188 bytes)
+         *         + ------------------- main data (8188 bytes)
          *
          * With the available data, we conduct a basic cyclic redundancy check operation on it, using the aforementioned
          * look-up table. This provides us with the CRC-32 for the main data in the blam.sav binary.
@@ -217,6 +217,7 @@ namespace SPV3.CLI
        * two writes are required rather than one, and the blam.sav is minuscule in length; hence, the performance
        * impacts absolutely negligible.
        */
+
       Debug("Data has been successfully saved - preparing to update the CRC-32 hash ...");
 
       var hash = GetHash();
