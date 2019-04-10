@@ -29,10 +29,6 @@ namespace SPV3.CLI
   /// </summary>
   public class Progress : File
   {
-    /**
-     * TODO: Read mission & difficulty data from the provided binary!
-     */
-
     public Campaign.Mission    Mission    { get; set; } = Campaign.Mission.Spv3A10;
     public Campaign.Difficulty Difficulty { get; set; } = Campaign.Difficulty.Normal;
 
@@ -44,6 +40,7 @@ namespace SPV3.CLI
       /**
        * Infers the difficulty and returns the Campaign.Difficulty representation.
        */
+
       Campaign.Difficulty GetDifficulty(BinaryReader reader)
       {
         reader.BaseStream.Seek(0x1E2, SeekOrigin.Begin);
@@ -66,6 +63,7 @@ namespace SPV3.CLI
       /**
        * Infers the difficulty and returns the Campaign.Difficulty mission.
        */
+
       Campaign.Mission GetMission(BinaryReader reader)
       {
         var bytes = new byte[32];
