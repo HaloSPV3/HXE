@@ -18,6 +18,10 @@ Current features include:
     -   automatic detection & launching the HCE executable
     -   verification of the SPV3 assets/maps/executables
 
+-   UPDATING
+
+    -   automatic self-update of the loader executable
+
 -   COMPILING
 
     -   compressing SPV3 data to re-distributable packages
