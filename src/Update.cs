@@ -20,10 +20,12 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
+using SPV3.CLI.Exceptions;
 using static System.Diagnostics.Process;
 using static System.Environment;
 using static System.IO.Compression.ZipFile;
@@ -124,7 +126,40 @@ namespace SPV3.CLI
     /// </summary>
     public static void Finish()
     {
-      Delete(Combine(CurrentDirectory, ".SPV3.CLI.exe"));
+      Directory.Delete("Debug",   true);
+      Directory.Delete("Release", true);
+      Exit(0);
+    }
+
+    public static void Install()
+    {
+      var files  = new List<string> {Binary};
+      var target = GetDirectoryName(CurrentDirectory); /* ../ */
+
+      if (target == null)
+        throw new DirectoryNotFoundException("Could not infer target directory.");
+
+      foreach (var file in files)
+      {
+        var src = (File) Combine(CurrentDirectory, file);
+        var dst = (File) Combine(target,           file);
+
+        if (dst.Exists())
+          dst.Delete();
+
+        Move(src, dst);
+      }
+
+      Delete(Combine(target, "0x00"));
+
+      Start(new ProcessStartInfo
+      {
+        FileName         = Combine(target, Binary),
+        Arguments        = "update finish",
+        WorkingDirectory = target
+      });
+
+      Exit(0);
     }
 
     /// <summary>
@@ -179,7 +214,7 @@ namespace SPV3.CLI
        * the update verification routine to match the hash on the remote server with the locally stored one.
        */
 
-      void Conduct()
+      void Receive()
       {
         using (var client = new WebClient())
         {
@@ -206,40 +241,22 @@ namespace SPV3.CLI
         }
       }
 
-      /**
-       * This part is the interesting one. Given that the new executable resides in a subdirectory that was in the
-       * downloaded archive, we have to replace the current executable with it. We can't delete the current executable
-       * because it's running. However, our workaround is to:
-       *
-       * 1.  rename the current executable to a different filename; and
-       * 2.  rename the new executable to replace the current one; and
-       * 3.  instruct the new executable to delete the current executable.
-       */
-
-      void CleanUp()
+      void Install()
       {
-        var source   = (File) Combine(CurrentDirectory, Type, Binary);
-        var obsolete = (File) Combine(CurrentDirectory, ".SPV3.CLI.exe");
-        var current  = (File) Combine(CurrentDirectory, GetCurrentProcess().MainModule.FileName);
+        Move(Combine(CurrentDirectory, GetCurrentProcess().MainModule.FileName), "0x00");
 
-        if (obsolete.Exists())
-          obsolete.Delete();
-
-        Move(current, obsolete); /* ./SPV3.CLI.exe       => ./.SPV3.CLI.exe */
-        Move(source,  current);  /* ./Debug/SPV3.CLI.exe => ./SPV3.CLI.exe  */
-
-        Directory.Delete("Debug",   true);
-        Directory.Delete("Release", true);
-
-        Info("Finalising update...");
-
-        Start(current, "update finish");
-        Exit(0);
+        Start(new ProcessStartInfo
+        {
+          FileName         = Combine(CurrentDirectory, Type, Binary),
+          Arguments        = "update install",
+          WorkingDirectory = Combine(CurrentDirectory, Type)
+        });
       }
 
       Prepare();
-      Conduct();
-      CleanUp();
+      Receive();
+      Install();
+      Exit(0);
     }
   }
 }

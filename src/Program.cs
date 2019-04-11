@@ -155,10 +155,16 @@ namespace SPV3.CLI
 
             switch (args[1])
             {
+              case "install":
+                Info("Explicitly invoked 'install' argument.");
+                Run(Update.Install);
+                Warn("Update has been successfully installed!");
+
+                return;
               case "finish":
                 Info("Explicitly invoked 'finish' argument.");
                 Run(Update.Finish);
-                Warn("Update has been successfully completed!");
+                Warn("Update has been successfully finished!");
 
                 return;
             }

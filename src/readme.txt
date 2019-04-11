@@ -145,8 +145,8 @@ The loader includes a self-update mechanism, which is invoked using:
 
     .\SPV3.CLI.exe --auto-update
 
-Otherwise, the update is carried out interactively, by having the
-user prompted on whether they want to update or not.
+Otherwise, the update is carried out interactively, by having the user
+prompted on whether they want to update or not.
 
 The update is comprised of the following steps:
 
@@ -156,14 +156,12 @@ The update is comprised of the following steps:
 2.  infer the latest hash, and download the relevant archive to the
     application data; and
 
-3.  extract the contents of the archive to the current directory, and
-    rename the current executable; and
+3.  extract the contents of the archive to the current directory; and
 
-4.  instruct the new executable to delete the old (i.e. currently
-    running), then end the current process; and
+4.  rename the current loader executable to a temporary name; and
 
-5.  allow the new executable to carry out the aforementioned
-    instructions, thus finishing the update routine.
+5.  have the new loader move its own files to the current directory, and
+    then delete the old executable binary.
 
 The update mechanism also permits for mere verification of whether an
 update is available or not. This is accomplished by caching the hash to
@@ -181,9 +179,9 @@ file it represents.
 All of the types listed in the following table are inheritors of the
 File type:
 
-  ----------------------------------------------------------------------
+  ---------------------------------------------------------------------
   Object           Description
-  ---------------- -----------------------------------------------------
+  ---------------- ----------------------------------------------------
   Executable       Represents the haloce.exe executable. Permits
                    invocation of the executable on the filesystem.
                    Common HCE executable arguments are exposed as
@@ -215,8 +213,8 @@ File type:
   OpenSauce        Represents the OS\_Settings.User.xml, which contains
                    the OpenSauce user configuration data. The loader
                    exposes all of the available options as object
-                   properties, for programmable editing of the OpenSauce
-                   configuration.
+                   properties, for programmable editing of the
+                   OpenSauce configuration.
 
   Profile          Represents the blam.sav binary, which contains HCE
                    profile information and configuration data. The
@@ -227,11 +225,11 @@ File type:
 
   PostProcessing   Represents the postprocessing.bin binary, which SPV3
                    uses to store the user preferences for its
-                   post-processing features. The object permits loading,
-                   editing, and saving this data. Refer to the
+                   post-processing features. The object permits
+                   loading, editing, and saving this data. Refer to the
                    doc/shaders.txt for more documentation on the
                    aforementioned binary.
-  ----------------------------------------------------------------------
+  ---------------------------------------------------------------------
 
 Documentation on any of the aforementioned files can be found in the doc
 directory within this repository.
