@@ -32,7 +32,7 @@ Current features include:
     -   (re)installing compressed packages to the filesystem
     -   storing the chosen installation path in a standard file
 
--    DEVELOPER
+-   DEVELOPER
 
     -   ability to apply placeholders to bitmaps for Sapien
     -   ability to override HCE/Chimera/OpenSauce configurations
@@ -62,6 +62,16 @@ nutshell:
 
 In the above examples, "src" and "dst" are absolute paths to the
 relevant folders on the filesystem.
+
+SOURCES
+-------
+
+Source code and binaries are officially provided at the following
+sources:
+
+-   https://cgit.n2.network/spv3.cli - upstream source code
+-   https://dist.n2.network/spv3.cli - compiled executables
+-   https://github.com/yumiris/spv3.cli - mirror repository
 
 LICENCE
 -------
