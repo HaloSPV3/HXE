@@ -38,8 +38,8 @@ namespace SPV3.CLI
   /// </summary>
   public static class Update
   {
-    private const string Header  = @"https://open.n2.network/spv3.cli/HEADER.txt"; /* File declaring latest revision. */
-    private const string Base    = @"https://open.n2.network/spv3.cli/";           /* Base URL for compiled archives. */
+    private const string Header  = @"https://dist.n2.network/spv3.cli/HEADER.txt"; /* File declaring latest revision. */
+    private const string Base    = @"https://dist.n2.network/spv3.cli/";           /* Base URL for compiled archives. */
     private const string Archive = @"/bin.zip";                                    /* Archive with compiled binaries. */
     private const string Binary  = @"SPV3.CLI.exe";                                /* Binary in the compiled archive. */
     private const string Type    = @"Release";                                     /* Compiled binary release type.   */
