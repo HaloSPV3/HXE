@@ -384,7 +384,7 @@ namespace SPV3.CLI
     /// <summary>
     ///   File-driven kernel configuration object.
     /// </summary>
-    private class Configuration : File
+    public class Configuration : File
     {
       /// <summary>
       ///   Binary file length.
