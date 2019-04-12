@@ -25,7 +25,6 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
-using SPV3.CLI.Exceptions;
 using static System.Diagnostics.Process;
 using static System.Environment;
 using static System.IO.Compression.ZipFile;
@@ -131,6 +130,12 @@ namespace SPV3.CLI
       Exit(0);
     }
 
+    /// <summary>
+    ///   Installs data from the downloaded update to the base directory.
+    /// </summary>
+    /// <exception cref="DirectoryNotFoundException">
+    ///   Could not infer target directory.
+    /// </exception>
     public static void Install()
     {
       var files  = new List<string> {Binary};
@@ -167,6 +172,11 @@ namespace SPV3.CLI
     /// </summary>
     public static void Commit()
     {
+      Prepare(); /* remove existing files */
+      Receive(); /* retrieve latest files */
+      Install(); /* install latest update */
+      Exit(0);
+
       /**
        * We first conduct the pre-update clean-up, which consists of removing any files and directories that will be
        * extracted from the archive that will eventually be downloaded.
@@ -252,11 +262,6 @@ namespace SPV3.CLI
           WorkingDirectory = Combine(CurrentDirectory, Type)
         });
       }
-
-      Prepare();
-      Receive();
-      Install();
-      Exit(0);
     }
   }
 }
