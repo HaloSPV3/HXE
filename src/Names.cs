@@ -66,6 +66,10 @@ namespace SPV3.CLI
       public static readonly string UpdateVersion = Path.Combine(GetFolderPath(ApplicationData),
         Directories.Data,
         "updateversion.bin");
+
+      public static readonly string Kernel = Path.Combine(GetFolderPath(ApplicationData),
+        Directories.Data,
+        "kernel.bin");
     }
 
     /// <summary>

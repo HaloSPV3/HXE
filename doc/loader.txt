@@ -99,3 +99,23 @@ important to keep that distinction in mind in the SPV3 domain's context:
 To see how difficulties are stored in the savegame.bin and initc.txt,
 please refer to the savegame.txt and initc.txt documentation,
 respectively.
+
+CONFIGURATION
+-------------
+
+The kernel's loading procedure can be configured by editing the
+following binary file:
+
+    %APPDATA%\SPV3\kernel.bin
+
+The following table showcases the properties, offsets, and possible
+values:
+
+  Property                 Offset   Values
+  ------------------------ -------- ---------------------
+  Skip Heuristic Install   0x01     0x0 = off; 0x1 = on
+  Skip Verify MainAssets   0x02     0x0 = off; 0x1 = on
+  Skip Invoke CoreTweaks   0x03     0x0 = off; 0x1 = on
+  Skip Resume Checkpoint   0x04     0x0 = off; 0x1 = on
+  Skip Invoke Overriding   0x05     0x0 = off; 0x1 = on
+  Skip Invoke Executable   0x06     0x0 = off; 0x1 = on

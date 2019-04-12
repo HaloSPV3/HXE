@@ -23,6 +23,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
+using System.Windows.Forms.VisualStyles;
 using SPV3.CLI.Exceptions;
 using static System.Environment;
 using static System.Environment.SpecialFolder;
@@ -48,12 +50,42 @@ namespace SPV3.CLI
     /// </summary>
     public static void Bootstrap()
     {
-      HeuristicInstall();
-      VerifyMainAssets();
-      InvokeCoreTweaks();
-      ResumeCheckpoint();
-      InvokeOverriding();
-      InvokeExecutable();
+      var configuration = (Configuration) Files.Kernel;
+
+      if (!configuration.Exists())
+        configuration.Save(); /* gracefully new configuration */
+
+      configuration.Load();
+
+      if (!configuration.SkipHeuristicInstall)
+        HeuristicInstall();
+      else
+        Info("Skipping Kernel.HeuristicInstall");
+
+      if (!configuration.SkipVerifyMainAssets)
+        VerifyMainAssets();
+      else
+        Info("Skipping Kernel.VerifyMainAssets");
+
+      if (!configuration.SkipInvokeCoreTweaks)
+        InvokeCoreTweaks();
+      else
+        Info("Skipping Kernel.InvokeCoreTweaks");
+
+      if (!configuration.SkipResumeCheckpoint)
+        ResumeCheckpoint();
+      else
+        Info("Skipping Kernel.ResumeCheckpoint");
+
+      if (!configuration.SkipInvokeOverriding)
+        InvokeOverriding();
+      else
+        Info("Skipping Kernel.InvokeOverriding");
+
+      if (!configuration.SkipInvokeExecutable)
+        InvokeExecutable();
+      else
+        Info("Skipping Kernel.InvokeExecutable");
     }
 
     /// <summary>
@@ -345,6 +377,100 @@ namespace SPV3.CLI
       catch (Exception e)
       {
         Error(e.Message);
+      }
+    }
+
+    /// <inheritdoc />
+    /// <summary>
+    ///   File-driven kernel configuration object.
+    /// </summary>
+    private class Configuration : File
+    {
+      /// <summary>
+      ///   Binary file length.
+      /// </summary>
+      private const int Length = 0x100;
+
+      public bool SkipHeuristicInstall { get; set; } = true;
+      public bool SkipVerifyMainAssets { get; set; } = true;
+      public bool SkipInvokeCoreTweaks { get; set; } = true;
+      public bool SkipResumeCheckpoint { get; set; } = true;
+      public bool SkipInvokeOverriding { get; set; } = true;
+      public bool SkipInvokeExecutable { get; set; } = true;
+
+      /// <summary>
+      ///   Loads object state from the inbound file.
+      /// </summary>
+      public void Load()
+      {
+        using (var fs = new FileStream(Path, FileMode.Open))
+        using (var ms = new MemoryStream(0x10))
+        using (var br = new BinaryReader(ms))
+        {
+          fs.CopyTo(ms);
+          br.BaseStream.Seek(0x00, SeekOrigin.Begin);
+
+          SkipHeuristicInstall = br.ReadBoolean(); /* 0x00 */
+          SkipVerifyMainAssets = br.ReadBoolean(); /* 0x01 */
+          SkipInvokeCoreTweaks = br.ReadBoolean(); /* 0x02 */
+          SkipResumeCheckpoint = br.ReadBoolean(); /* 0x03 */
+          SkipInvokeOverriding = br.ReadBoolean(); /* 0x04 */
+          SkipInvokeExecutable = br.ReadBoolean(); /* 0x05 */
+        }
+      }
+
+      /// <summary>
+      ///   Saves object state to the inbound file.
+      /// </summary>
+      public void Save()
+      {
+        using (var fs = new FileStream(Path, FileMode.Create))
+        using (var ms = new MemoryStream(16))
+        using (var bw = new BinaryWriter(ms))
+        {
+          bw.BaseStream.Seek(0x00, SeekOrigin.Begin);
+
+          bw.Write(SkipHeuristicInstall);                      /* 0x00 */
+          bw.Write(SkipVerifyMainAssets);                      /* 0x01 */
+          bw.Write(SkipInvokeCoreTweaks);                      /* 0x02 */
+          bw.Write(SkipResumeCheckpoint);                      /* 0x03 */
+          bw.Write(SkipInvokeOverriding);                      /* 0x04 */
+          bw.Write(SkipInvokeExecutable);                      /* 0x05 */
+          bw.Write(new byte[Length - bw.BaseStream.Position]); /* pad */
+
+          ms.WriteTo(fs);
+        }
+      }
+
+      /// <summary>
+      ///   Represents the inbound object as a string.
+      /// </summary>
+      /// <param name="configuration">
+      ///   Object to represent as string.
+      /// </param>
+      /// <returns>
+      ///   String representation of the inbound object.
+      /// </returns>
+      public static implicit operator string(Configuration configuration)
+      {
+        return configuration.Path;
+      }
+
+      /// <summary>
+      ///   Represents the inbound string as an object.
+      /// </summary>
+      /// <param name="path">
+      ///   String to represent as object.
+      /// </param>
+      /// <returns>
+      ///   Object representation of the inbound string.
+      /// </returns>
+      public static explicit operator Configuration(string path)
+      {
+        return new Configuration
+        {
+          Path = path
+        };
       }
     }
   }
