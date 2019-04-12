@@ -53,7 +53,7 @@ namespace SPV3.CLI
       var configuration = (Configuration) Files.Kernel;
 
       if (!configuration.Exists())
-        configuration.Save(); /* gracefully new configuration */
+        configuration.Save(); /* gracefully create new configuration */
 
       configuration.Load();
 
@@ -436,7 +436,7 @@ namespace SPV3.CLI
           bw.Write(SkipResumeCheckpoint);                      /* 0x03 */
           bw.Write(SkipInvokeOverriding);                      /* 0x04 */
           bw.Write(SkipInvokeExecutable);                      /* 0x05 */
-          bw.Write(new byte[Length - bw.BaseStream.Position]); /* pad */
+          bw.Write(new byte[Length - bw.BaseStream.Position]); /* pad  */
 
           ms.WriteTo(fs);
         }

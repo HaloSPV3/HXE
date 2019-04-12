@@ -63,7 +63,10 @@ namespace SPV3.CLI
         WriteLine(@" ___/ / ____/| |/ /___/ // /___/ /____/ /   ");
         WriteLine(@"/____/_/     |___//____(_)____/_____/___/   ");
         WriteLine(@"============================================");
-        WriteLine(@"The SPV3.CLI .:. github.com/yumiris/spv3.cli");
+        WriteLine(@"The SPV3 CLI ~ Automatic loader for HCE/SPV3");
+        WriteLine(@"--------------------------------------------");
+        WriteLine(@"source  ::  https://cgit.n2.network/spv3.cli");
+        WriteLine(@"binary  ::  https://dist.n2.network/spv3.cli");
         WriteLine(@"--------------------------------------------");
         WriteLine($"Executable has been compiled from build: {v}");
         WriteLine(@"--------------------------------------------");
