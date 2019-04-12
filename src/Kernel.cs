@@ -391,12 +391,12 @@ namespace SPV3.CLI
       /// </summary>
       private const int Length = 0x100;
 
-      public bool SkipHeuristicInstall { get; set; } = true;
-      public bool SkipVerifyMainAssets { get; set; } = true;
-      public bool SkipInvokeCoreTweaks { get; set; } = true;
-      public bool SkipResumeCheckpoint { get; set; } = true;
-      public bool SkipInvokeOverriding { get; set; } = true;
-      public bool SkipInvokeExecutable { get; set; } = true;
+      public bool SkipHeuristicInstall { get; set; }
+      public bool SkipVerifyMainAssets { get; set; }
+      public bool SkipInvokeCoreTweaks { get; set; }
+      public bool SkipResumeCheckpoint { get; set; }
+      public bool SkipInvokeOverriding { get; set; }
+      public bool SkipInvokeExecutable { get; set; }
 
       /// <summary>
       ///   Loads object state from the inbound file.
