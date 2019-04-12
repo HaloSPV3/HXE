@@ -57,6 +57,9 @@ installation data (manifest & packages), but not game data. If it
 heuristically infers that the directory contains only installation data,
 then it will proceed to first install SPV3, and then load SPV3.
 
+Configuration of the kernel can be done by editing the relevant binary
+file. Please refer to doc/loader.txt for further information.
+
 COMPILER INFORMATION
 --------------------
 
