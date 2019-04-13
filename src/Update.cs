@@ -31,6 +31,7 @@ using static System.IO.Compression.ZipFile;
 using static System.IO.File;
 using static System.IO.Path;
 using static SPV3.CLI.Console;
+using static SPV3.CLI.Exit.Code;
 
 namespace SPV3.CLI
 {
@@ -127,7 +128,7 @@ namespace SPV3.CLI
     {
       Directory.Delete("Debug",   true);
       Directory.Delete("Release", true);
-      Exit(0);
+      Exit.WithCode(SuccessUpdate);
     }
 
     /// <summary>
@@ -164,7 +165,7 @@ namespace SPV3.CLI
         WorkingDirectory = target
       });
 
-      Exit(0);
+      Exit.WithCode(SuccessUpdate);
     }
 
     /// <summary>
@@ -175,7 +176,7 @@ namespace SPV3.CLI
       Prepare(); /* remove existing files */
       Receive(); /* retrieve latest files */
       Install(); /* install latest update */
-      Exit(0);
+      Exit.WithCode(SuccessUpdate);
 
       /**
        * We first conduct the pre-update clean-up, which consists of removing any files and directories that will be

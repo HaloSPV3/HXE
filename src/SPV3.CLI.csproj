@@ -51,6 +51,7 @@
     <Compile Include="Console.cs" />
     <Compile Include="Exceptions\AssetException.cs" />
     <Compile Include="Executable.cs" />
+    <Compile Include="Exit.cs" />
     <Compile Include="File.cs" />
     <Compile Include="Initiation.cs" />
     <Compile Include="Installer.cs" />
