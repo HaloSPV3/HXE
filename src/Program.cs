@@ -26,6 +26,7 @@ using static System.Console;
 using static System.Environment.SpecialFolder;
 using static System.Reflection.Assembly;
 using static SPV3.CLI.Console;
+using static SPV3.CLI.Exit.Code;
 using static SPV3.CLI.Names.Files;
 
 namespace SPV3.CLI
@@ -237,7 +238,7 @@ namespace SPV3.CLI
               }
               default:
                 Error("Invalid placeholder args.");
-                Environment.Exit(3);
+                Exit.WithCode(InvalidArgument);
                 return;
             }
           }
@@ -268,14 +269,14 @@ namespace SPV3.CLI
                 return;
               default:
                 Error("Invalid dump args.");
-                Environment.Exit(4);
+                Exit.WithCode(InvalidArgument);
                 return;
             }
           }
 
           default:
             Error("Invalid command.");
-            Environment.Exit(2);
+            Exit.WithCode(InvalidCommand);
             return;
         }
       }
@@ -291,6 +292,7 @@ namespace SPV3.CLI
       {
         Error(e.Message);
         System.Console.Error.WriteLine(e.StackTrace);
+        Exit.WithCode(Exit.Code.Exception);
       }
     }
   }

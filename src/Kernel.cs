@@ -112,7 +112,6 @@ namespace SPV3.CLI
       };
 
       Process.Start(cli);
-      Exit(0);
     }
 
     /// <summary>
