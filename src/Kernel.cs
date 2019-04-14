@@ -368,15 +368,8 @@ namespace SPV3.CLI
 
       Info("Using the aforementioned start-up parameters when initiating HCE process.");
 
-      try
-      {
-        executable.Start();
-        Info("And... we're done!");
-      }
-      catch (Exception e)
-      {
-        Error(e.Message);
-      }
+      executable.Start();
+      Info("And... we're done!");
     }
 
     /// <inheritdoc />
