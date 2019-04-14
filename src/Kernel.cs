@@ -354,7 +354,7 @@ namespace SPV3.CLI
 
       var executable = (Executable) GetPath();
 
-      if (!executable.Exists()) return;
+      if (!executable.Exists()) throw new FileNotFoundException("Could not find HCE executable.");
 
       Info("Found HCE executable in the working directory - proceeding to execute it ...");
 
