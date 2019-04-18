@@ -24,6 +24,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
 using SPV3.CLI.Exceptions;
 using static System.Environment;
@@ -202,15 +203,19 @@ namespace SPV3.CLI
 
       Info("Found blam.sav file - proceeding with core patches ...");
 
-      profblam.Video.FrameRate = Profile.ProfileVideo.VideoFrameRate.VsyncOff; /* ensure no FPS locking */
-      profblam.Video.Particles = Profile.ProfileVideo.VideoParticles.High;
-      profblam.Video.Quality   = Profile.ProfileVideo.VideoQuality.High;
+      profblam.Video.Resolution.Width  = (ushort) Screen.PrimaryScreen.Bounds.Width;
+      profblam.Video.Resolution.Height = (ushort) Screen.PrimaryScreen.Bounds.Height;
+      profblam.Video.FrameRate         = Profile.ProfileVideo.VideoFrameRate.VsyncOff; /* ensure no FPS locking */
+      profblam.Video.Particles         = Profile.ProfileVideo.VideoParticles.High;
+      profblam.Video.Quality           = Profile.ProfileVideo.VideoQuality.High;
 
       profblam.Save();
 
-      Info("Patched video frame rate - " + profblam.Video.FrameRate);
-      Info("Patched video quality    - " + profblam.Video.Particles);
-      Info("Patched video texture    - " + profblam.Video.Quality);
+      Info("Patched video resolution width  - " + profblam.Video.Resolution.Width );
+      Info("Patched video resolution height - " + profblam.Video.Resolution.Height);
+      Info("Patched video frame rate        - " + profblam.Video.FrameRate);
+      Info("Patched video quality           - " + profblam.Video.Particles);
+      Info("Patched video texture           - " + profblam.Video.Quality);
     }
 
     /// <summary>
