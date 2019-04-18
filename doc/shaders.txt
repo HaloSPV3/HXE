@@ -78,20 +78,21 @@ single byte, with the following layout:
 
   Offset   Post-Processing Effect   Type
   -------- ------------------------ ------
-  0x0      Internal                 T
-  0x1      External                 T
-  0x2      GBuffer                  T
-  0x3      Depth Fade               T
-  0x4      Bloom                    T
-  0x5      Dynamic Lens Flares      T
-  0x6      Volumetrics              T
-  0x7      Anti Aliasing            T
-  0x8      HUD Visor                T
-  0x9      Motion Blur              V
-  0xA      MXAU                     V
-  0xB      DOF                      V
-  0xC      Three Dimensional        V
-  0xD      Color BlindMode          V
+  0x00     Internal                 T
+  0x01     External                 T
+  0x02     GBuffer                  T
+  0x03     DepthFade                T
+  0x04     Bloom                    T
+  0x05     Lens Dirt                T
+  0x06     Dynamic Lens Flares      T
+  0x07     Volumetrics              T
+  0x08     Anti Aliasing            T
+  0x09     HUD Visor                T
+  0x0A     Motion Blur              V
+  0x0B     MXAO                     V
+  0x0C     DOF                      V
+  0x0D     Three Dimensional        V
+  0x0E     Colour Blind Mode        V
 
 -   T - Toggle (0 for off; 1 for on)
 -   V - Value (0 for off, 1..3 for levels)
