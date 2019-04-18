@@ -17,6 +17,7 @@ Current features include:
     -   automatic HCE/SPV3 player profile detection
     -   automatic detection & launching the HCE executable
     -   verification of the SPV3 assets/maps/executables
+    -   patching of post-processing user configurations
 
 -   UPDATING
 
@@ -35,7 +36,6 @@ Current features include:
 -   DEVELOPER
 
     -   ability to apply placeholders to bitmaps for Sapien
-    -   ability to override HCE/Chimera/OpenSauce configurations
 
 USAGE
 -----

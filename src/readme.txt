@@ -37,7 +37,10 @@ The loading procedure, in a nutshell, is as follows:
 2.  resume of the SPV3 campaign, through heuristic detection of the
     player's profile and inference of the mission & difficulty; and
 
-3.  invoke of the HCE executable within the working directory, with
+3.  find the post-processing settings on the filesystem, infer the
+    integer that represents them, and save it to the initc file; and
+
+4.  invoke of the HCE executable within the working directory, with
     arguments being passed onto the invoked executable process.
 
 All of the steps above are conducted by the Kernel class, which serves
