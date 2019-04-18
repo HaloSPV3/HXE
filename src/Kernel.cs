@@ -78,6 +78,9 @@ namespace SPV3.CLI
       else
         Info("Skipping Kernel.ResumeCheckpoint");
 
+      if (!configuration.SkipSetShadersConfig)
+        SetShadersConfig();
+
       if (!configuration.SkipInvokeExecutable)
         InvokeExecutable();
       else
@@ -211,7 +214,7 @@ namespace SPV3.CLI
 
       profblam.Save();
 
-      Info("Patched video resolution width  - " + profblam.Video.Resolution.Width );
+      Info("Patched video resolution width  - " + profblam.Video.Resolution.Width);
       Info("Patched video resolution height - " + profblam.Video.Resolution.Height);
       Info("Patched video frame rate        - " + profblam.Video.FrameRate);
       Info("Patched video quality           - " + profblam.Video.Particles);
@@ -254,6 +257,36 @@ namespace SPV3.CLI
       catch (UnauthorizedAccessException e)
       {
         Error(e.Message + " -- CAMPAIGN WILL NOT RESUME!");
+      }
+    }
+
+    /// <summary>
+    ///   Applies the post-processing settings.
+    /// </summary>
+    private static void SetShadersConfig()
+    {
+      try
+      {
+        var pp = (PostProcessing) Files.PostProcessing;
+
+        if (!pp.Exists())
+          pp.Save();
+
+        pp.Load();
+
+        RootInitc.PostProcessing = pp;
+        RootInitc.Save();
+
+        Info("Applied PP settings for MXAO        - " + RootInitc.PostProcessing.Mxao);
+        Info("Applied PP settings for DOF         - " + RootInitc.PostProcessing.Dof);
+        Info("Applied PP settings for Motion Blur - " + RootInitc.PostProcessing.MotionBlur);
+        Info("Applied PP settings for Lens Flares - " + RootInitc.PostProcessing.DynamicLensFlares);
+        Info("Applied PP settings for Volumetrics - " + RootInitc.PostProcessing.Volumetrics);
+        Info("Applied PP settings for Lens Dirt   - " + RootInitc.PostProcessing.LensDirt);
+      }
+      catch (UnauthorizedAccessException e)
+      {
+        Error(e.Message + " -- POST PROCESSING WILL NOT BE APPLIED!");
       }
     }
 
@@ -307,6 +340,7 @@ namespace SPV3.CLI
       public bool SkipVerifyMainAssets { get; set; }
       public bool SkipInvokeCoreTweaks { get; set; }
       public bool SkipResumeCheckpoint { get; set; }
+      public bool SkipSetShadersConfig { get; set; }
       public bool SkipInvokeExecutable { get; set; }
 
       /// <summary>
@@ -325,7 +359,8 @@ namespace SPV3.CLI
           SkipVerifyMainAssets = br.ReadBoolean(); /* 0x01 */
           SkipInvokeCoreTweaks = br.ReadBoolean(); /* 0x02 */
           SkipResumeCheckpoint = br.ReadBoolean(); /* 0x03 */
-          SkipInvokeExecutable = br.ReadBoolean(); /* 0x04 */
+          SkipSetShadersConfig = br.ReadBoolean(); /* 0x04 */
+          SkipInvokeExecutable = br.ReadBoolean(); /* 0x05 */
         }
       }
 
@@ -344,7 +379,8 @@ namespace SPV3.CLI
           bw.Write(SkipVerifyMainAssets);                      /* 0x01 */
           bw.Write(SkipInvokeCoreTweaks);                      /* 0x02 */
           bw.Write(SkipResumeCheckpoint);                      /* 0x03 */
-          bw.Write(SkipInvokeExecutable);                      /* 0x04 */
+          bw.Write(SkipSetShadersConfig);                      /* 0x04 */
+          bw.Write(SkipInvokeExecutable);                      /* 0x05 */
           bw.Write(new byte[Length - bw.BaseStream.Position]); /* pad  */
 
           ms.WriteTo(fs);
