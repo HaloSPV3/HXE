@@ -75,9 +75,9 @@ namespace SPV3.CLI
     public bool AntiAliasing      { get; set; }
     public bool HudVisor          { get; set; }
 
-    public MotionBlurOptions MotionBlur { get; set; } = MotionBlurOptions.PombHigh;
-    public MxaoOptions       Mxao       { get; set; } = MxaoOptions.High;
-    public DofOptions        Dof        { get; set; } = DofOptions.High;
+    public MotionBlurOptions MotionBlur { get; set; } = MotionBlurOptions.Off;
+    public MxaoOptions       Mxao       { get; set; } = MxaoOptions.Off;
+    public DofOptions        Dof        { get; set; } = DofOptions.Off;
 
     public ExperimentalPostProcessing Experimental { get; set; } = new ExperimentalPostProcessing();
 
