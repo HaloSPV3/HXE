@@ -99,16 +99,16 @@ namespace SPV3.CLI
             lf                      && vol                   && ld)
           return 4;
 
-        if (mxao == MxaoOptions.Low && dof == DofOptions.High && mb == MotionBlurOptions.PombLow
-            && lf                   && vol                    && ld)
+        if (mxao == MxaoOptions.Low && dof == DofOptions.High && mb == MotionBlurOptions.PombLow &&
+            lf                      && vol                    && ld)
           return 5;
 
-        if (mxao == MxaoOptions.High && dof == DofOptions.High && mb == MotionBlurOptions.PombLow
-            && lf                    && vol                    && ld)
+        if (mxao == MxaoOptions.High && dof == DofOptions.High && mb == MotionBlurOptions.PombLow &&
+            lf                    && vol                    && ld)
           return 6;
 
-        if (mxao == MxaoOptions.High && dof == DofOptions.High && mb == MotionBlurOptions.PombHigh
-            && lf                    && vol                    && ld)
+        if (mxao == MxaoOptions.High && dof == DofOptions.High && mb == MotionBlurOptions.PombHigh &&
+            lf                    && vol                    && ld)
           return 7;
 
         return 0;
