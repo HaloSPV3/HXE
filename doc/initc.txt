@@ -38,8 +38,8 @@ purpose:
   ---------------------------------------------------------------------
   Variable   Description
   ---------- ----------------------------------------------------------
-  f1         Legacy locking mechanism. Setting this variable to 0x8
-             unlocks the SPV3.1 maps
+  f1         Post-processing settings for SPV3. Refer to shaders.txt
+             for the relevant values
 
   f3         Stores the integer identifier of the last played mission
              (see MISSIONS)
