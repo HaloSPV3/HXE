@@ -40,7 +40,7 @@ namespace SPV3.CLI
   public static class Kernel
   {
     /**
-     * Inic.txt can be located across multiple locationns on the filesystem; however, SPSV3 only deals with the one in
+     * Inic.txt can be located across multiple locations on the filesystem; however, SPV3 only deals with the one in
      * the working directory -- hence the name!
      */
     private static readonly Initiation RootInitc = (Initiation) Path.Combine(CurrentDirectory, Files.Initiation);
@@ -76,11 +76,6 @@ namespace SPV3.CLI
         ResumeCheckpoint();
       else
         Info("Skipping Kernel.ResumeCheckpoint");
-
-      if (!configuration.SkipInvokeOverriding)
-        InvokeOverriding();
-      else
-        Info("Skipping Kernel.InvokeOverriding");
 
       if (!configuration.SkipInvokeExecutable)
         InvokeExecutable();
@@ -258,87 +253,6 @@ namespace SPV3.CLI
     }
 
     /// <summary>
-    ///   Overrides OpenSauce, Chimera & HCE/SPV3 configurations for debugging/testing purposes.
-    /// </summary>
-    private static void InvokeOverriding()
-    {
-      var overrides = (Override) Files.Overrides;
-      var openSauce = (OpenSauce) Files.OpenSauce;
-
-      if (!overrides.Exists()) return;
-
-      Info("Found overrides file - proceeding with override preparation ...");
-
-      /**
-       * The following routine is carried out if the overrides.xml has been found in its designated directory.
-       */
-
-      overrides.Load();
-
-      try
-      {
-        var postProcessing = (PostProcessing) Files.PostProcessing;
-
-        postProcessing.Internal                      = overrides.OpenSauce.PostProcessing.Internal;
-        postProcessing.External                      = overrides.OpenSauce.PostProcessing.External;
-        postProcessing.GBuffer                       = overrides.OpenSauce.PostProcessing.GBuffer;
-        postProcessing.DepthFade                     = overrides.OpenSauce.PostProcessing.DepthFade;
-        postProcessing.Bloom                         = overrides.OpenSauce.PostProcessing.Bloom;
-        postProcessing.LensDirt                      = overrides.OpenSauce.PostProcessing.LensDirt;
-        postProcessing.DynamicLensFlares             = overrides.OpenSauce.PostProcessing.DynamicLensFlares;
-        postProcessing.Volumetrics                   = overrides.OpenSauce.PostProcessing.Volumetrics;
-        postProcessing.Experimental.ThreeDimensional = overrides.OpenSauce.PostProcessing.Experimental.ThreeDimensional;
-        postProcessing.Experimental.ColorBlindMode   = overrides.OpenSauce.PostProcessing.Experimental.ColorBlindMode;
-
-        postProcessing.Save();
-      }
-      catch (UnauthorizedAccessException e)
-      {
-        Error(e.Message + " -- POST-PROCESSING NOT APPLIED!");
-      }
-
-      Info("Applied post-processing effects to the initiation file.");
-
-      if (openSauce.Exists())
-        openSauce.Load();
-
-      Info("Found OpenSauce file - proceeding with OpenSauce overriding ...");
-
-      openSauce.Camera.FieldOfView                 = overrides.OpenSauce.Fov;
-      openSauce.Camera.IgnoreFOVChangeInCinematics = overrides.OpenSauce.IgnoreCinematicsFov;
-
-      openSauce.Rasterizer.PostProcessing.MotionBlur.Enabled =
-        overrides.OpenSauce.PostProcessing.MotionBlur == PostProcessing.MotionBlurOptions.BuiltIn;
-
-      switch (overrides.OpenSauce.PostProcessing.MotionBlur)
-      {
-        case PostProcessing.MotionBlurOptions.Off:
-          openSauce.Rasterizer.PostProcessing.MotionBlur.BlurAmount = 0;
-          break;
-        case PostProcessing.MotionBlurOptions.BuiltIn:
-          openSauce.Rasterizer.PostProcessing.MotionBlur.BlurAmount = 1;
-          break;
-        case PostProcessing.MotionBlurOptions.PombLow:
-          openSauce.Rasterizer.PostProcessing.MotionBlur.BlurAmount = 2;
-          break;
-        case PostProcessing.MotionBlurOptions.PombHigh:
-          openSauce.Rasterizer.PostProcessing.MotionBlur.BlurAmount = 3;
-          break;
-        default:
-          throw new ArgumentOutOfRangeException();
-      }
-
-      openSauce.Rasterizer.PostProcessing.ExternalEffects.Enabled = overrides.OpenSauce.PostProcessing.External;
-      openSauce.Rasterizer.GBuffer.Enabled                        = overrides.OpenSauce.PostProcessing.GBuffer;
-      openSauce.Rasterizer.ShaderExtensions.Effect.DepthFade      = overrides.OpenSauce.PostProcessing.DepthFade;
-      openSauce.Rasterizer.PostProcessing.Bloom.Enabled           = overrides.OpenSauce.PostProcessing.Bloom;
-
-      openSauce.Save();
-
-      Info("OpenSauce configuration has been updated with the overriding values.");
-    }
-
-    /// <summary>
     ///   Invokes the HCE executable.
     /// </summary>
     private static void InvokeExecutable()
@@ -347,6 +261,7 @@ namespace SPV3.CLI
        * Gets the path of the HCE executable on the filesystem, which conventionally should be the working directory of
        * the loader, given that the loader is bundled with the rest of the SPV3.2 data.
        */
+
       string GetPath()
       {
         return Path.Combine(CurrentDirectory, Files.Executable);
@@ -387,7 +302,6 @@ namespace SPV3.CLI
       public bool SkipVerifyMainAssets { get; set; }
       public bool SkipInvokeCoreTweaks { get; set; }
       public bool SkipResumeCheckpoint { get; set; }
-      public bool SkipInvokeOverriding { get; set; }
       public bool SkipInvokeExecutable { get; set; }
 
       /// <summary>
@@ -406,8 +320,7 @@ namespace SPV3.CLI
           SkipVerifyMainAssets = br.ReadBoolean(); /* 0x01 */
           SkipInvokeCoreTweaks = br.ReadBoolean(); /* 0x02 */
           SkipResumeCheckpoint = br.ReadBoolean(); /* 0x03 */
-          SkipInvokeOverriding = br.ReadBoolean(); /* 0x04 */
-          SkipInvokeExecutable = br.ReadBoolean(); /* 0x05 */
+          SkipInvokeExecutable = br.ReadBoolean(); /* 0x04 */
         }
       }
 
@@ -426,8 +339,7 @@ namespace SPV3.CLI
           bw.Write(SkipVerifyMainAssets);                      /* 0x01 */
           bw.Write(SkipInvokeCoreTweaks);                      /* 0x02 */
           bw.Write(SkipResumeCheckpoint);                      /* 0x03 */
-          bw.Write(SkipInvokeOverriding);                      /* 0x04 */
-          bw.Write(SkipInvokeExecutable);                      /* 0x05 */
+          bw.Write(SkipInvokeExecutable);                      /* 0x04 */
           bw.Write(new byte[Length - bw.BaseStream.Position]); /* pad  */
 
           ms.WriteTo(fs);
