@@ -13,6 +13,7 @@ Current features include:
 
 -   LOADING
 
+    -   compatible wrapper around the HCE executable
     -   automatic resuming of the SPV3 campaign progress
     -   automatic HCE/SPV3 player profile detection
     -   automatic detection & launching the HCE executable
@@ -43,24 +44,11 @@ USAGE
 The USAGE document goes into detail on how to use the SPV3 CLI. In a
 nutshell:
 
-    .\SPV3.exe                     # verifies, resumes & runs SPV3
+    # automatically loads SPV3 in 720p window
+    .\SPV3.CLI.exe -window -vidmode 1280,720,60
 
-    .\SPV3.exe dump opensauce      # writes opensauce xml template
-    .\SPV3.exe compile "dst"       # compile current folder to dst
-    .\SPV3.exe install "dst"       # installs packages data to dst
-
-    .\SPV3.exe placeholder commit "plc" "dst" "flt"
-                                    |     |     |
-      path for placeholder bitmap - +     |     |
-      absolute path to bmp folder ------- +     |
-      filter, e.g. *.nrml*.bitmap ------------- +
-
-    .\SPV3.exe placeholder revert "rcd"
-                                    |
-         path to the records file - +
-
-In the above examples, "src" and "dst" are absolute paths to the
-relevant folders on the filesystem.
+    # installs SPV3 to C:\SPV3
+    .\SPV3.CLI.exe /install "C:\SPV3"
 
 SOURCES
 -------

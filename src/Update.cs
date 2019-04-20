@@ -161,7 +161,7 @@ namespace SPV3.CLI
       Start(new ProcessStartInfo
       {
         FileName         = Combine(target, Binary),
-        Arguments        = "update finish",
+        Arguments        = "/update finish",
         WorkingDirectory = target
       });
 
@@ -259,7 +259,7 @@ namespace SPV3.CLI
         Start(new ProcessStartInfo
         {
           FileName         = Combine(CurrentDirectory, Type, Binary),
-          Arguments        = "update install",
+          Arguments        = "/update install",
           WorkingDirectory = Combine(CurrentDirectory, Type)
         });
       }
