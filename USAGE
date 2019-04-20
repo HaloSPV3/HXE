@@ -1,6 +1,11 @@
 USAGE INSTRUCTIONS
 ==================
 
+At the most basic level, use it *exactly* how you would use the HCE
+executable. Double click it, or pass any HCE parameters into it.
+
+------------------------------------------------------------------------
+
 The SPV3 CLI supports arguments for both its own purposes, and for the
 HCE executable. In fact, the SPV3 CLI can be used as a wrapper around
 the HCE executable, without the need for any additional/different
