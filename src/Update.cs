@@ -98,7 +98,7 @@ namespace SPV3.CLI
 
       Info("Checking if existing update version binary exists on the filesystem...");
 
-      if (!Exists(Names.Files.UpdateVersion))
+      if (!Exists(Paths.Files.UpdateVersion))
       {
         Info("Update version not found. Update is recommended!");
         return true;
@@ -106,7 +106,7 @@ namespace SPV3.CLI
 
       var remoteHash = GetHash();
 
-      using (var fs = new FileStream(Names.Files.UpdateVersion, FileMode.Open, FileAccess.Read))
+      using (var fs = new FileStream(Paths.Files.UpdateVersion, FileMode.Open, FileAccess.Read))
       using (var ms = new MemoryStream(80))
       using (var br = new BinaryReader(ms))
       {
@@ -241,7 +241,7 @@ namespace SPV3.CLI
 
           Info("Downloaded and extracted the latest binary!");
 
-          using (var fs = new FileStream(Names.Files.UpdateVersion, FileMode.OpenOrCreate))
+          using (var fs = new FileStream(Paths.Files.UpdateVersion, FileMode.OpenOrCreate))
           using (var ms = new MemoryStream())
           using (var bw = new BinaryWriter(ms))
           {
