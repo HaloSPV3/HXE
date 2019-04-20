@@ -20,16 +20,11 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Windows.Forms;
-using System.Windows.Forms.VisualStyles;
 using SPV3.CLI.Exceptions;
 using static System.Environment;
-using static System.Environment.SpecialFolder;
-using static System.IO.File;
 using static SPV3.CLI.Console;
 using static SPV3.CLI.Paths;
 
@@ -49,7 +44,7 @@ namespace SPV3.CLI
     /// <summary>
     ///   Invokes the SPV3 loading procedure.
     /// </summary>
-    public static void Bootstrap()
+    public static void Bootstrap(Executable executable)
     {
       var configuration = (Configuration) Files.Kernel;
 
@@ -57,11 +52,6 @@ namespace SPV3.CLI
         configuration.Save(); /* gracefully create new configuration */
 
       configuration.Load();
-
-      if (!configuration.SkipHeuristicInstall)
-        HeuristicInstall();
-      else
-        Info("Skipping Kernel.HeuristicInstall");
 
       if (!configuration.SkipVerifyMainAssets)
         VerifyMainAssets();
@@ -82,35 +72,9 @@ namespace SPV3.CLI
         SetShadersConfig();
 
       if (!configuration.SkipInvokeExecutable)
-        InvokeExecutable();
+        InvokeExecutable(executable);
       else
         Info("Skipping Kernel.InvokeExecutable");
-    }
-
-    /// <summary>
-    ///   Heuristically conducts pre-loading installation, if necessary.
-    /// </summary>
-    private static void HeuristicInstall()
-    {
-      /**
-       * If the HCE executable does not exist in the working directory, but the manifest and an initial package exists,
-       * then we can conclude that this is an installation scenario. We can bootstrap the installer to install SPV3 to
-       * the default path.
-       */
-
-      if (Exists("haloce.exe") || !Exists("0x00.bin") || !Exists("0x01.bin")) return;
-      Info("Found manifest & package, but not the HCE executable. Assuming installation environment.");
-
-      var destination = Path.Combine(GetFolderPath(Personal), Directories.Games, "Halo SPV3");
-      Installer.Install(CurrentDirectory, destination);
-
-      var cli = new ProcessStartInfo
-      {
-        FileName         = Path.Combine(destination, "SPV3.CLI.exe"),
-        WorkingDirectory = destination
-      };
-
-      Process.Start(cli);
     }
 
     /// <summary>
@@ -293,35 +257,35 @@ namespace SPV3.CLI
     /// <summary>
     ///   Invokes the HCE executable.
     /// </summary>
-    private static void InvokeExecutable()
+    private static void InvokeExecutable(Executable executable)
     {
-      /**
-       * Gets the path of the HCE executable on the filesystem, which conventionally should be the working directory of
-       * the loader, given that the loader is bundled with the rest of the SPV3.2 data.
-       */
+      Info("Attempting to start executable with the following parameters:");
 
-      string GetPath()
-      {
-        return Path.Combine(CurrentDirectory, Files.Executable);
-      }
+      if (executable.Video.Width > 0)
+        Info("+   Video.Width      - " + executable.Video.Width);
+      if (executable.Video.Height > 0)
+        Info("+   Video.Height     - " + executable.Video.Height);
 
-      var executable = (Executable) GetPath();
+      if (executable.Video.Refresh > 0)
+        Info("+   Video.Refresh    - " + executable.Video.Refresh);
 
-      if (!executable.Exists()) throw new FileNotFoundException("Could not find HCE executable.");
+      if (executable.Video.Adapter > 0)
+        Info("+   Video.Adapter    - " + executable.Video.Adapter);
 
-      Info("Found HCE executable in the working directory - proceeding to execute it ...");
+      if (executable.Video.Window)
+        Info("+   Video.Window     - " + executable.Video.Window);
 
-      executable.Debug.Console    = true;
-      executable.Debug.Developer  = true;
-      executable.Debug.Screenshot = true;
+      if (executable.Debug.Console)
+        Info("+   Debug.Console    - " + executable.Debug.Console);
 
-      Info("Debug.Console    = true");
-      Info("Debug.Developer  = true");
-      Info("Debug.Screenshot = true");
+      if (executable.Debug.Developer)
+        Info("+   Debug.Developer  - " + executable.Debug.Developer);
 
-      Info("Using the aforementioned start-up parameters when initiating HCE process.");
+      if (executable.Debug.Developer)
+        Info("+   Debug.Screenshot - " + executable.Debug.Developer);
 
       executable.Start();
+
       Info("And... we're done!");
     }
 
@@ -336,7 +300,6 @@ namespace SPV3.CLI
       /// </summary>
       private const int Length = 0x100;
 
-      public bool SkipHeuristicInstall { get; set; }
       public bool SkipVerifyMainAssets { get; set; }
       public bool SkipInvokeCoreTweaks { get; set; }
       public bool SkipResumeCheckpoint { get; set; }
@@ -355,12 +318,11 @@ namespace SPV3.CLI
           fs.CopyTo(ms);
           br.BaseStream.Seek(0x00, SeekOrigin.Begin);
 
-          SkipHeuristicInstall = br.ReadBoolean(); /* 0x00 */
-          SkipVerifyMainAssets = br.ReadBoolean(); /* 0x01 */
-          SkipInvokeCoreTweaks = br.ReadBoolean(); /* 0x02 */
-          SkipResumeCheckpoint = br.ReadBoolean(); /* 0x03 */
-          SkipSetShadersConfig = br.ReadBoolean(); /* 0x04 */
-          SkipInvokeExecutable = br.ReadBoolean(); /* 0x05 */
+          SkipVerifyMainAssets = br.ReadBoolean(); /* 0x00 */
+          SkipInvokeCoreTweaks = br.ReadBoolean(); /* 0x01 */
+          SkipResumeCheckpoint = br.ReadBoolean(); /* 0x02 */
+          SkipSetShadersConfig = br.ReadBoolean(); /* 0x03 */
+          SkipInvokeExecutable = br.ReadBoolean(); /* 0x04 */
         }
       }
 
@@ -375,12 +337,11 @@ namespace SPV3.CLI
         {
           bw.BaseStream.Seek(0x00, SeekOrigin.Begin);
 
-          bw.Write(SkipHeuristicInstall);                      /* 0x00 */
-          bw.Write(SkipVerifyMainAssets);                      /* 0x01 */
-          bw.Write(SkipInvokeCoreTweaks);                      /* 0x02 */
-          bw.Write(SkipResumeCheckpoint);                      /* 0x03 */
-          bw.Write(SkipSetShadersConfig);                      /* 0x04 */
-          bw.Write(SkipInvokeExecutable);                      /* 0x05 */
+          bw.Write(SkipVerifyMainAssets);                      /* 0x00 */
+          bw.Write(SkipInvokeCoreTweaks);                      /* 0x01 */
+          bw.Write(SkipResumeCheckpoint);                      /* 0x02 */
+          bw.Write(SkipSetShadersConfig);                      /* 0x03 */
+          bw.Write(SkipInvokeExecutable);                      /* 0x04 */
           bw.Write(new byte[Length - bw.BaseStream.Position]); /* pad  */
 
           ms.WriteTo(fs);

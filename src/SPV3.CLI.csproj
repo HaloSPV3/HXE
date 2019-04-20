@@ -58,6 +58,7 @@
     <Compile Include="Kernel.cs" />
     <Compile Include="LastProfile.cs" />
     <Compile Include="Manifest.cs" />
+    <Compile Include="Options.cs" />
     <Compile Include="Paths.cs" />
     <Compile Include="OpenSauce.cs" />
     <Compile Include="Placeholder.cs" />

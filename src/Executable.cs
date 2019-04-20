@@ -57,7 +57,10 @@ namespace SPV3.CLI
         if (Video.Window) args.Append("-window ");
 
         if (Video.Width > 0 && Video.Height > 0 && Video.Refresh > 0)
-          args.Append($"-vidmode {Video.Width},{Video.Height},{Video.Refresh}");
+          args.Append($"-vidmode {Video.Width},{Video.Height},{Video.Refresh} ");
+
+        if (Video.Adapter > 1)
+          args.Append($"-adapter {Video.Adapter}");
 
         return args.ToString();
       }
@@ -109,6 +112,7 @@ namespace SPV3.CLI
       public int  Width   { get; set; }
       public int  Height  { get; set; }
       public int  Refresh { get; set; }
+      public int  Adapter { get; set; }
     }
   }
 }
