@@ -31,7 +31,7 @@ using static System.Environment;
 using static System.Environment.SpecialFolder;
 using static System.IO.File;
 using static SPV3.CLI.Console;
-using static SPV3.CLI.Names;
+using static SPV3.CLI.Paths;
 
 namespace SPV3.CLI
 {

@@ -27,7 +27,7 @@ using static System.Environment.SpecialFolder;
 using static System.Reflection.Assembly;
 using static SPV3.CLI.Console;
 using static SPV3.CLI.Exit.Code;
-using static SPV3.CLI.Names.Files;
+using static SPV3.CLI.Paths.Files;
 
 namespace SPV3.CLI
 {
@@ -80,7 +80,7 @@ namespace SPV3.CLI
 
       void InitiateData()
       {
-        Directory.CreateDirectory(Path.Combine(Environment.GetFolderPath(ApplicationData), Names.Directories.Data));
+        Directory.CreateDirectory(Path.Combine(Environment.GetFolderPath(ApplicationData), Paths.Directories.Data));
       }
 
       /**
@@ -256,7 +256,7 @@ namespace SPV3.CLI
               case "opensauce":
                 Info("Explicitly invoked 'opensauce' argument.");
 
-                var openSaucePath = Names.Files.OpenSauce;
+                var openSaucePath = Paths.Files.OpenSauce;
 
                 Run(() => { new OpenSauce {Path = openSaucePath}.Save(); });
                 return;

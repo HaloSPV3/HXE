@@ -27,7 +27,7 @@ namespace SPV3.CLI
   /// <summary>
   ///   Lists all of the files & directories on the filesystem that SPV3 deals with.
   /// </summary>
-  public static class Names
+  public static class Paths
   {
     /// <summary>
     ///   Files on the filesystem that SPV3 reads/writes.

@@ -24,9 +24,9 @@ using static System.IO.Compression.ZipFile;
 using static System.IO.Directory;
 using static System.IO.Path;
 using static SPV3.CLI.Console;
-using static SPV3.CLI.Names;
-using static SPV3.CLI.Names.Directories;
-using static SPV3.CLI.Names.Files;
+using static SPV3.CLI.Paths;
+using static SPV3.CLI.Paths.Directories;
+using static SPV3.CLI.Paths.Files;
 
 namespace SPV3.CLI
 {
