@@ -154,35 +154,30 @@ namespace SPV3.CLI
     /// </summary>
     private static void InvokeCoreTweaks()
     {
-      var lastprof = (LastProfile) Files.LastProfile;
+      try
+      {
+        var profile = Profile.Detect();
 
-      if (!lastprof.Exists()) return;
+        Info("Auto-loaded HCE profile. Proceeding to apply core tweaks ...");
 
-      lastprof.Load();
+        profile.Video.Resolution.Width  = (ushort) Screen.PrimaryScreen.Bounds.Width;
+        profile.Video.Resolution.Height = (ushort) Screen.PrimaryScreen.Bounds.Height;
+        profile.Video.FrameRate         = Profile.ProfileVideo.VideoFrameRate.VsyncOff; /* ensure no FPS locking */
+        profile.Video.Particles         = Profile.ProfileVideo.VideoParticles.High;
+        profile.Video.Quality           = Profile.ProfileVideo.VideoQuality.High;
 
-      Info("Found lastprof file - proceeding with profile detection ...");
+        profile.Save();
 
-      var profblam = (Profile) Path.Combine(Directories.Profiles, lastprof.Profile, Files.Profile);
-
-      if (!profblam.Exists()) return;
-
-      profblam.Load();
-
-      Info("Found blam.sav file - proceeding with core patches ...");
-
-      profblam.Video.Resolution.Width  = (ushort) Screen.PrimaryScreen.Bounds.Width;
-      profblam.Video.Resolution.Height = (ushort) Screen.PrimaryScreen.Bounds.Height;
-      profblam.Video.FrameRate         = Profile.ProfileVideo.VideoFrameRate.VsyncOff; /* ensure no FPS locking */
-      profblam.Video.Particles         = Profile.ProfileVideo.VideoParticles.High;
-      profblam.Video.Quality           = Profile.ProfileVideo.VideoQuality.High;
-
-      profblam.Save();
-
-      Info("Patched video resolution width  - " + profblam.Video.Resolution.Width);
-      Info("Patched video resolution height - " + profblam.Video.Resolution.Height);
-      Info("Patched video frame rate        - " + profblam.Video.FrameRate);
-      Info("Patched video quality           - " + profblam.Video.Particles);
-      Info("Patched video texture           - " + profblam.Video.Quality);
+        Info("Patched video resolution width  - " + profile.Video.Resolution.Width);
+        Info("Patched video resolution height - " + profile.Video.Resolution.Height);
+        Info("Patched video frame rate        - " + profile.Video.FrameRate);
+        Info("Patched video quality           - " + profile.Video.Particles);
+        Info("Patched video texture           - " + profile.Video.Quality);
+      }
+      catch (Exception e)
+      {
+        Error(e.Message + " -- CORE TWEAKS WILL NOT BE APPLIED.");
+      }
     }
 
     /// <summary>
