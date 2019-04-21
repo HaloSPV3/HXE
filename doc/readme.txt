@@ -68,9 +68,6 @@ specific to the SPV3 programs:
                                         compiling, distributing, and
                                         installing SPV3.2.
 
-  update.txt                            Documentation & instructions on
-                                        updating the SPV3.CLI loader.
-
   exit.txt                              Documentation on the exit codes
                                         that the CLI returns when its
                                         process ends.
