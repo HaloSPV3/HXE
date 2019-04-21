@@ -25,8 +25,8 @@ ARGUMENTS
 
 Arguments are categorised into two types:
 
--   parameters: passed onto the HCE/SPV3 executable (prefixed with /)
--   commands: instructs the loader to do something (prefixed with -)
+-   parameters: passed onto the Halo CE executable (prefixed with -)
+-   commands: instructs the loader to do something (prefixed with /)
 
 Providing no command will result in HCE being automatically loaded. If
 you provide only parameters, then the loader will automatically load HCE
