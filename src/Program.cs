@@ -84,21 +84,6 @@ namespace SPV3.CLI
           Compiler.Compile(CurrentDirectory, s);
           Exit.WithCode(Success);
         }))
-        .Add("update=", "Updates the loader", s =>
-        {
-          switch (s)
-          {
-            case "commit":
-              Run(Update.Commit);
-              break;
-            case "install":
-              Run(Update.Install);
-              break;
-            case "finish":
-              Run(Update.Finish);
-              break;
-          }
-        })
         .Add("console",    "Loads HCE with console mode",       s => hce.Debug.Console = true)
         .Add("devmode",    "Loads HCE with developer mode",     s => hce.Debug.Developer = true)
         .Add("screenshot", "Loads HCE with screenshot ability", s => hce.Debug.Screenshot = true)
@@ -119,7 +104,6 @@ namespace SPV3.CLI
       var input = options.Parse(args);
 
       if (!input.Contains("load")    &&
-          !input.Contains("update")  &&
           !input.Contains("install") &&
           !input.Contains("compile"))
         Run(() => { Kernel.Bootstrap(hce); });

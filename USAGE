@@ -50,4 +50,3 @@ COMMANDS
   /load                           Initiates HCE/SPV3
   /install "C:\path\to\target"    Installs SPV3 to destination
   /compile "C:\path\to\target"    Compiles SPV3 to destination
-  /update commit/install/finish   Updates the CLI executable
