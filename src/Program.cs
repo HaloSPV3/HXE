@@ -69,36 +69,33 @@ namespace SPV3.CLI
       var hce = (Executable) Paths.Files.Executable;
 
       var options = new OptionSet()
-        .Add("load", "Initiates HCE/SPV3", s => Run(() =>
-        {
-          Kernel.Bootstrap(hce);
-          Exit.WithCode(Success);
-        }))
-        .Add("install=", "Installs SPV3 to destination", s => Run(() =>
-        {
-          Installer.Install(CurrentDirectory, s);
-          Exit.WithCode(Success);
-        }))
-        .Add("compile=", "Compiles SPV3 to destination", s => Run(() =>
-        {
-          Compiler.Compile(CurrentDirectory, s);
-          Exit.WithCode(Success);
-        }))
-        .Add("console",    "Loads HCE with console mode",       s => hce.Debug.Console = true)
-        .Add("devmode",    "Loads HCE with developer mode",     s => hce.Debug.Developer = true)
-        .Add("screenshot", "Loads HCE with screenshot ability", s => hce.Debug.Screenshot = true)
-        .Add("window",     "Loads HCE in window mode",          s => hce.Video.Window = true)
-        .Add("adapter=",   "Loads HCE on monitor X",            s => hce.Video.Adapter = Parse(s))
-        .Add("vidmode=", "Loads HCE with video mode", s =>
-        {
-          var a = s.Split(',');
+        .Add("load", "Initiates HCE/SPV3",
+          s => Run(() => { Kernel.Bootstrap(hce); }))
+        .Add("install=", "Installs SPV3 to destination",
+          s => Run(() => { Installer.Install(CurrentDirectory, s); }))
+        .Add("compile=", "Compiles SPV3 to destination",
+          s => Run(() => { Compiler.Compile(CurrentDirectory, s); }))
+        .Add("console", "Loads HCE with console mode",
+          s => hce.Debug.Console = true)
+        .Add("devmode", "Loads HCE with developer mode",
+          s => hce.Debug.Developer = true)
+        .Add("screenshot", "Loads HCE with screenshot ability",
+          s => hce.Debug.Screenshot = true)
+        .Add("window", "Loads HCE in window mode",
+          s => hce.Video.Window = true)
+        .Add("adapter=", "Loads HCE on monitor X",
+          s => hce.Video.Adapter = Parse(s))
+        .Add("vidmode=", "Loads HCE with video mode",
+          s =>
+          {
+            var a = s.Split(',');
 
-          if (a.Length != 3) return;
+            if (a.Length != 3) return;
 
-          hce.Video.Width   = Parse(a[0]);
-          hce.Video.Height  = Parse(a[1]);
-          hce.Video.Refresh = Parse(a[2]);
-        });
+            hce.Video.Width   = Parse(a[0]);
+            hce.Video.Height  = Parse(a[1]);
+            hce.Video.Refresh = Parse(a[2]);
+          });
 
       options.WriteOptionDescriptions(Out);
       var input = options.Parse(args);
@@ -114,6 +111,7 @@ namespace SPV3.CLI
       try
       {
         Task.Run(action).GetAwaiter().GetResult();
+        Exit.WithCode(Success);
       }
       catch (Exception e)
       {
