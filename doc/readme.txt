@@ -25,8 +25,21 @@ This section serves as documentation for the fundamental domain entities
 & logic of SPV3. For documentation on the implementations & source code,
 please review the readme.txt file in the src directory.
 
-SPV3 INFORMATION
-----------------
+MISCELLANEOUS
+-------------
+
+The following table outlines the documentation that's not related to the
+SPV3 domain or filesystem files.
+
+  ---------------------------------------------------------------------
+  Documentation                         Description
+  ------------------------------------- -------------------------------
+  developer.txt                         Documentation for developers
+                                        who would use the CLI in their
+                                        non-SPV3.2 projects.
+
+  V3 INFORMATION                        
+  ---------------------------------------------------------------------
 
 The following table outlines the documentation focusing on information
 specific to the SPV3 programs:
