@@ -68,10 +68,10 @@ The USAGE document goes into detail on how to use the SPV3 CLI. In a
 nutshell:
 
     # automatically loads SPV3 in 720p window
-    .\SPV3.CLI.exe -window -vidmode 1280,720,60
+    .\SPV3.exe -window -vidmode 1280,720,60
 
     # installs SPV3 to C:\SPV3
-    .\SPV3.CLI.exe /install "C:\SPV3"
+    .\SPV3.exe /install "C:\SPV3"
 
 SOURCES
 -------
