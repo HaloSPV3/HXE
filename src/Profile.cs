@@ -314,7 +314,7 @@ namespace SPV3.CLI
     /// </exception>
     public static Profile Detect()
     {
-      var lastprof = (LastProfile) Paths.Files.LastProfile;
+      var lastprof = (LastProfile) System.IO.Path.Combine(Paths.Directories.HCE, Paths.Files.LastProfile);
 
       if (!lastprof.Exists())
         throw new FileNotFoundException("Cannot detect profile - lastprof.txt does not exist.");

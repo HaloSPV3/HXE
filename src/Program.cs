@@ -24,9 +24,7 @@ using System.Threading.Tasks;
 using Mono.Options;
 using static System.Console;
 using static System.Environment;
-using static System.Environment.SpecialFolder;
 using static System.Int32;
-using static System.IO.Path;
 using static System.Reflection.Assembly;
 using static SPV3.CLI.Console;
 using static SPV3.CLI.Exit.Code;
@@ -64,7 +62,7 @@ namespace SPV3.CLI
       WriteLine(@"--------------------------------------------");
       ForegroundColor = ConsoleColor.White;
 
-      Directory.CreateDirectory(Combine(GetFolderPath(ApplicationData), Paths.Directories.Data));
+      Directory.CreateDirectory(Paths.Directories.SPV3);
 
       var hce = (Executable) Paths.Files.Executable;
 
