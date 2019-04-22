@@ -18,11 +18,42 @@
  3. This notice may not be removed or altered from any source distribution.
 -->
 
-LOADER
-======
+HCE EXECUTABLE
+==============
 
-The loader is the core component of the SPV3.2 launcher, which is
-responsible for:
+The SPV3 CLI is a wrapper around the HCE executable, which means that:
+
+-   the CLI ultimately loads the HCE executable after conducting its
+    verification, patches, and other routines; and
+-   any arguments passed onto the CLI that are compatible with HCE will
+    result in HCE invoked with the aforementioned arguments;
+
+ARGUMENTS
+---------
+
+Refer to the USAGE document for the list of HCE arguments that the
+CLI  supports.
+
+DETECTION
+---------
+
+The CLI attempts to detect the HCE executable on the filesystem, by
+heuristically inferring its path from:
+
+1.  the working directory of the running CLI process; then
+2.  the default installation path in Program Files (x86); then
+3.  the installation path specified in the relevant registry keys; then
+4.  the installation path specified in the SPV3 installation text file.
+
+On each attempt, the loader checks if the executable exists at the
+claimed path. If it finds the executable, then it will load it
+accordingly.
+
+LOADER KERNEL
+=============
+
+The kernel is the core component of the SPV3 CLI, which is responsible
+for:
 
 1.  verifying the main assets, e.g. maps & executables; and
 2.  determining the player's campaign progress for resuming; and

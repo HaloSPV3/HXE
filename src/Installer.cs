@@ -119,7 +119,7 @@ namespace SPV3.CLI
 
       new File
       {
-        Path = Combine(Directories.SPV3, InstallPath)
+        Path = Installation
       }.WriteAllText(target);
     }
   }

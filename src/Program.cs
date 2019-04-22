@@ -64,7 +64,7 @@ namespace SPV3.CLI
 
       Directory.CreateDirectory(Paths.Directories.SPV3);
 
-      var hce = (Executable) Paths.Files.Executable;
+      var hce = Executable.Detect();
 
       var options = new OptionSet()
         .Add("load", "Initiates HCE/SPV3",
