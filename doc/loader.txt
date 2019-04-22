@@ -32,7 +32,7 @@ ARGUMENTS
 ---------
 
 Refer to the USAGE document for the list of HCE arguments that the
-CLI  supports.
+CLI supports.
 
 DETECTION
 ---------
