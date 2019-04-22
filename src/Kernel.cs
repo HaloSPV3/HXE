@@ -59,12 +59,12 @@ namespace SPV3.CLI
         Info("Skipping Kernel.VerifyMainAssets");
 
       if (!configuration.SkipInvokeCoreTweaks)
-        InvokeCoreTweaks();
+        InvokeCoreTweaks(executable);
       else
         Info("Skipping Kernel.InvokeCoreTweaks");
 
       if (!configuration.SkipResumeCheckpoint)
-        ResumeCheckpoint();
+        ResumeCheckpoint(executable);
       else
         Info("Skipping Kernel.ResumeCheckpoint");
 
@@ -152,11 +152,27 @@ namespace SPV3.CLI
     ///   Invokes core improvements to the auto-detected profile, such as auto max resolution and gamma fixes. This is
     ///   NOT done when a profile does not exist/cannot be found!
     /// </summary>
-    private static void InvokeCoreTweaks()
+    /// <param name="executable"></param>
+    private static void InvokeCoreTweaks(Executable executable)
     {
       try
       {
-        var profile = Profile.Detect();
+        var lastprof = (LastProfile) Path.Combine(executable.Profile.Path, Files.LastProfile);
+
+        if (!lastprof.Exists()) return;
+
+        lastprof.Load();
+
+        var profile = (Profile) Path.Combine(
+          executable.Profile.Path,
+          Directories.Profiles,
+          lastprof.Profile,
+          Files.Profile
+        );
+
+        if (!profile.Exists()) return;
+
+        profile.Load();
 
         Info("Auto-loaded HCE profile. Proceeding to apply core tweaks ...");
 
@@ -165,6 +181,9 @@ namespace SPV3.CLI
         profile.Video.FrameRate         = Profile.ProfileVideo.VideoFrameRate.VsyncOff; /* ensure no FPS locking */
         profile.Video.Particles         = Profile.ProfileVideo.VideoParticles.High;
         profile.Video.Quality           = Profile.ProfileVideo.VideoQuality.High;
+        profile.Video.Effects.Specular  = true;
+        profile.Video.Effects.Shadows   = true;
+        profile.Video.Effects.Decals    = true;
 
         profile.Save();
 
@@ -173,6 +192,9 @@ namespace SPV3.CLI
         Info("Patched video frame rate        - " + profile.Video.FrameRate);
         Info("Patched video quality           - " + profile.Video.Particles);
         Info("Patched video texture           - " + profile.Video.Quality);
+        Info("Patched video effect - specular - " + profile.Video.Effects.Specular);
+        Info("Patched video effect - shadows  - " + profile.Video.Effects.Shadows);
+        Info("Patched video effect - decals   - " + profile.Video.Effects.Decals);
       }
       catch (Exception e)
       {
@@ -183,9 +205,9 @@ namespace SPV3.CLI
     /// <summary>
     ///   Invokes the profile & campaign auto-detection mechanism.
     /// </summary>
-    private static void ResumeCheckpoint()
+    private static void ResumeCheckpoint(Executable executable)
     {
-      var lastprof = (LastProfile) Files.LastProfile;
+      var lastprof = (LastProfile) Path.Combine(executable.Profile.Path, Files.LastProfile);
 
       if (!lastprof.Exists()) return;
 
@@ -194,9 +216,11 @@ namespace SPV3.CLI
       Info("Found lastprof file - proceeding with checkpoint detection ...");
 
       var playerDat = (Progress) Path.Combine(
+        executable.Profile.Path,
         Directories.Profiles,
         lastprof.Profile,
-        Files.Progress);
+        Files.Progress
+      );
 
       if (!playerDat.Exists()) return;
 

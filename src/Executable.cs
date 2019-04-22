@@ -121,7 +121,7 @@ namespace SPV3.CLI
 
     public class ProfileOptions
     {
-      public string Path { get; set; } = Paths.Directories.Profiles;
+      public string Path { get; set; } = Paths.Directories.HCE;
     }
   }
 }
