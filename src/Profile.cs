@@ -314,14 +314,22 @@ namespace SPV3.CLI
     /// </exception>
     public static Profile Detect()
     {
-      var lastprof = (LastProfile) System.IO.Path.Combine(Paths.Directories.HCE, Paths.Files.LastProfile);
+      var lastprof = (LastProfile) System.IO.Path.Combine(
+        Paths.Directories.HCE,
+        Paths.Files.LastProfile
+      );
 
       if (!lastprof.Exists())
         throw new FileNotFoundException("Cannot detect profile - lastprof.txt does not exist.");
 
       lastprof.Load();
 
-      var profile = (Profile) System.IO.Path.Combine(Paths.Directories.Profiles, lastprof.Profile, Paths.Files.Profile);
+      var profile = (Profile) System.IO.Path.Combine(
+        Paths.Directories.HCE,
+        Paths.Directories.Profiles,
+        lastprof.Profile,
+        Paths.Files.Profile
+      );
 
       if (!profile.Exists())
         throw new FileNotFoundException("Cannot load detected profile - its blam.sav does not exist.");
