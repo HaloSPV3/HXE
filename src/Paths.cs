@@ -43,6 +43,7 @@ namespace SPV3.CLI
 
       public static readonly string Installation  = Path.Combine(Directories.SPV3, "install.txt");
       public static readonly string Configuration = Path.Combine(Directories.SPV3, "loader.bin");
+      public static readonly string Exception     = Path.Combine(Directories.SPV3, "exception.log");
     }
 
     /// <summary>

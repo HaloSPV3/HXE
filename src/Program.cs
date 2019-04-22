@@ -117,6 +117,7 @@ namespace SPV3.CLI
       {
         Error(e.Message);
         System.Console.Error.WriteLine(e.StackTrace);
+        System.IO.File.WriteAllText(Paths.Files.Exception, e.ToString());
         Exit.WithCode(Exit.Code.Exception);
       }
     }
