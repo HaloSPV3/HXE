@@ -279,6 +279,9 @@ namespace SPV3.CLI
       if (executable.Debug.Developer)
         Info("+   Debug.Screenshot - " + executable.Debug.Developer);
 
+      if (!string.IsNullOrWhiteSpace(executable.Profile.Path))
+        Info("+   Profile.Path     - " + executable.Profile.Path);
+
       executable.Start();
 
       Info("And... we're done!");

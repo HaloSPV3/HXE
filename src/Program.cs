@@ -85,6 +85,8 @@ namespace SPV3.CLI
           s => hce.Video.Window = true)
         .Add("adapter=", "Loads HCE on monitor X",
           s => hce.Video.Adapter = Parse(s))
+        .Add("path=", "Loads HCE with custom profile path",
+          s => hce.Profile.Path = s)
         .Add("vidmode=", "Loads HCE with video mode",
           s =>
           {
