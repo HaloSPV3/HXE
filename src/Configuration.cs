@@ -58,6 +58,7 @@ namespace SPV3.CLI
           bw.Write(Kernel.SkipResumeCheckpoint);
           bw.Write(Kernel.SkipSetShadersConfig);
           bw.Write(Kernel.SkipInvokeExecutable);
+          bw.Write(Kernel.SkipPatchLargeAAware);
         }
 
         /* padding */
@@ -116,6 +117,7 @@ namespace SPV3.CLI
           Kernel.SkipResumeCheckpoint = br.ReadBoolean();
           Kernel.SkipSetShadersConfig = br.ReadBoolean();
           Kernel.SkipInvokeExecutable = br.ReadBoolean();
+          Kernel.SkipPatchLargeAAware = br.ReadBoolean();
         }
 
         /* padding */
@@ -187,6 +189,7 @@ namespace SPV3.CLI
       public bool SkipResumeCheckpoint { get; set; }
       public bool SkipSetShadersConfig { get; set; }
       public bool SkipInvokeExecutable { get; set; }
+      public bool SkipPatchLargeAAware { get; set; }
     }
 
     public class PostProcessingConfiguration

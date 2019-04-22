@@ -73,6 +73,11 @@ namespace SPV3.CLI
       else
         Info("Skipping Kernel.SkipSetShadersConfig");
 
+      if (!configuration.Kernel.SkipPatchLargeAAware)
+        PatchLargeAAware(executable);
+      else
+        Info("Skipping Kernel.SkipPatchLargeAAware");
+
       if (!configuration.Kernel.SkipInvokeExecutable)
         InvokeExecutable(executable);
       else
@@ -265,6 +270,30 @@ namespace SPV3.CLI
       catch (UnauthorizedAccessException e)
       {
         Error(e.Message + " -- POST PROCESSING WILL NOT BE APPLIED!");
+      }
+    }
+
+    /// <summary>
+    ///   Patches HCE executable for Large Address Aware.
+    /// </summary>
+    private static void PatchLargeAAware(Executable executable)
+    {
+      try
+      {
+        Info("Attempting LAA patching on the HCE executable ...");
+
+        using (var fs = new FileStream(executable.Path, FileMode.Open, FileAccess.ReadWrite))
+        using (var bw = new BinaryWriter(fs))
+        {
+          fs.Position = 0x136;
+          bw.Write((byte) 0x2F);
+        }
+
+        Info("Successfully conducted LAA patching on the HCE executable!");
+      }
+      catch (Exception e)
+      {
+        Error(e.Message + " -- LAA PATCH WILL NOT BE APPLIED!");
       }
     }
 
