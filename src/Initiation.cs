@@ -22,7 +22,7 @@ using System;
 using System.Text;
 using static SPV3.CLI.Campaign;
 using static SPV3.CLI.Console;
-using static SPV3.CLI.PostProcessing;
+using static SPV3.CLI.Configuration.PostProcessingConfiguration;
 
 namespace SPV3.CLI
 {
@@ -32,12 +32,14 @@ namespace SPV3.CLI
   /// </summary>
   public class Initiation : File
   {
-    public bool           CinematicBars   { get; set; } = true;
-    public bool           PlayerAutoaim   { get; set; } = true;
-    public bool           PlayerMagnetism { get; set; } = true;
-    public Mission        Mission         { get; set; } = Mission.Spv3A10;
-    public Difficulty     Difficulty      { get; set; } = Difficulty.Normal;
-    public PostProcessing PostProcessing  { get; set; } = new PostProcessing();
+    public bool       CinematicBars   { get; set; } = true;
+    public bool       PlayerAutoaim   { get; set; } = true;
+    public bool       PlayerMagnetism { get; set; } = true;
+    public Mission    Mission         { get; set; } = Mission.Spv3A10;
+    public Difficulty Difficulty      { get; set; } = Difficulty.Normal;
+
+    public Configuration.PostProcessingConfiguration PostProcessing { get; set; } =
+      new Configuration.PostProcessingConfiguration();
 
     /// <summary>
     ///   Saves object state to the inbound file.

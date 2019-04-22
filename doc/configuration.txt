@@ -1,0 +1,58 @@
+<!--
+ Copyright (c) 2019 Emilian Roman
+ 
+ This software is provided 'as-is', without any express or implied
+ warranty. In no event will the authors be held liable for any damages
+ arising from the use of this software.
+ 
+ Permission is granted to anyone to use this software for any purpose,
+ including commercial applications, and to alter it and redistribute it
+ freely, subject to the following restrictions:
+ 
+ 1. The origin of this software must not be misrepresented; you must not
+    claim that you wrote the original software. If you use this software
+    in a product, an acknowledgment in the product documentation would be
+    appreciated but is not required.
+ 2. Altered source versions must be plainly marked as such, and must not be
+    misrepresented as being the original software.
+ 3. This notice may not be removed or altered from any source distribution.
+-->
+
+CONFIGURATION
+=============
+
+Kernel and post-processing settings are stored at the following path:
+
+    %APPDATA%\SPV3\loader.bin
+
+KERNEL
+------
+
+  Offset   Property
+  -------- --------------------------
+  0x10     Skip: Verify Main Assets
+  0x11     Skip: Invoke Core Tweaks
+  0x12     Skip: Resume Checkpoint
+  0x13     Skip: Set ShadersConfig
+  0x14     Skip: Invoke Executable
+
+POST-PROCESSING
+---------------
+
+  Offset   Property
+  -------- -----------------------------
+  0x40     Toggle: Internal
+  0x41     Toggle: External
+  0x42     Toggle: GBuffer
+  0x43     Toggle: Depth Fade
+  0x44     Toggle: Bloom
+  0x45     Toggle: Lens Dirt
+  0x46     Toggle: Dynamic Lens Flares
+  0x47     Toggle: Volumetrics
+  0x48     Toggle: Anti Aliasing
+  0x49     Toggle: HUD Visor
+  0x4A     Set: Motion Blur
+  0x4B     Set: MXAO
+  0x4C     Set: DOF
+  0x4D     Set: Three Dimensional
+  0x4E     Set: Colour Blind Mode
