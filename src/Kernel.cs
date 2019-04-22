@@ -46,32 +46,34 @@ namespace SPV3.CLI
     /// </summary>
     public static void Bootstrap(Executable executable)
     {
-      var configuration = (Configuration) Files.Kernel;
+      var configuration = (Configuration) Files.Configuration;
 
       if (!configuration.Exists())
         configuration.Save(); /* gracefully create new configuration */
 
       configuration.Load();
 
-      if (!configuration.SkipVerifyMainAssets)
+      if (!configuration.Kernel.SkipVerifyMainAssets)
         VerifyMainAssets();
       else
         Info("Skipping Kernel.VerifyMainAssets");
 
-      if (!configuration.SkipInvokeCoreTweaks)
+      if (!configuration.Kernel.SkipInvokeCoreTweaks)
         InvokeCoreTweaks(executable);
       else
         Info("Skipping Kernel.InvokeCoreTweaks");
 
-      if (!configuration.SkipResumeCheckpoint)
+      if (!configuration.Kernel.SkipResumeCheckpoint)
         ResumeCheckpoint(executable);
       else
         Info("Skipping Kernel.ResumeCheckpoint");
 
-      if (!configuration.SkipSetShadersConfig)
-        SetShadersConfig();
+      if (!configuration.Kernel.SkipSetShadersConfig)
+        SetShadersConfig(configuration);
+      else
+        Info("Skipping Kernel.SkipSetShadersConfig");
 
-      if (!configuration.SkipInvokeExecutable)
+      if (!configuration.Kernel.SkipInvokeExecutable)
         InvokeExecutable(executable);
       else
         Info("Skipping Kernel.InvokeExecutable");
@@ -246,18 +248,11 @@ namespace SPV3.CLI
     /// <summary>
     ///   Applies the post-processing settings.
     /// </summary>
-    private static void SetShadersConfig()
+    private static void SetShadersConfig(Configuration configuration)
     {
       try
       {
-        var pp = (PostProcessing) Files.PostProcessing;
-
-        if (!pp.Exists())
-          pp.Save();
-
-        pp.Load();
-
-        RootInitc.PostProcessing = pp;
+        RootInitc.PostProcessing = configuration.PostProcessing;
         RootInitc.Save();
 
         Info("Applied PP settings for MXAO        - " + RootInitc.PostProcessing.Mxao);
@@ -309,97 +304,6 @@ namespace SPV3.CLI
       executable.Start();
 
       Info("And... we're done!");
-    }
-
-    /// <inheritdoc />
-    /// <summary>
-    ///   File-driven kernel configuration object.
-    /// </summary>
-    public class Configuration : File
-    {
-      /// <summary>
-      ///   Binary file length.
-      /// </summary>
-      private const int Length = 0x100;
-
-      public bool SkipVerifyMainAssets { get; set; }
-      public bool SkipInvokeCoreTweaks { get; set; }
-      public bool SkipResumeCheckpoint { get; set; }
-      public bool SkipSetShadersConfig { get; set; }
-      public bool SkipInvokeExecutable { get; set; }
-
-      /// <summary>
-      ///   Loads object state from the inbound file.
-      /// </summary>
-      public void Load()
-      {
-        using (var fs = new FileStream(Path, FileMode.Open))
-        using (var ms = new MemoryStream(0x10))
-        using (var br = new BinaryReader(ms))
-        {
-          fs.CopyTo(ms);
-          br.BaseStream.Seek(0x00, SeekOrigin.Begin);
-
-          SkipVerifyMainAssets = br.ReadBoolean(); /* 0x00 */
-          SkipInvokeCoreTweaks = br.ReadBoolean(); /* 0x01 */
-          SkipResumeCheckpoint = br.ReadBoolean(); /* 0x02 */
-          SkipSetShadersConfig = br.ReadBoolean(); /* 0x03 */
-          SkipInvokeExecutable = br.ReadBoolean(); /* 0x04 */
-        }
-      }
-
-      /// <summary>
-      ///   Saves object state to the inbound file.
-      /// </summary>
-      public void Save()
-      {
-        using (var fs = new FileStream(Path, FileMode.Create))
-        using (var ms = new MemoryStream(16))
-        using (var bw = new BinaryWriter(ms))
-        {
-          bw.BaseStream.Seek(0x00, SeekOrigin.Begin);
-
-          bw.Write(SkipVerifyMainAssets);                      /* 0x00 */
-          bw.Write(SkipInvokeCoreTweaks);                      /* 0x01 */
-          bw.Write(SkipResumeCheckpoint);                      /* 0x02 */
-          bw.Write(SkipSetShadersConfig);                      /* 0x03 */
-          bw.Write(SkipInvokeExecutable);                      /* 0x04 */
-          bw.Write(new byte[Length - bw.BaseStream.Position]); /* pad  */
-
-          ms.WriteTo(fs);
-        }
-      }
-
-      /// <summary>
-      ///   Represents the inbound object as a string.
-      /// </summary>
-      /// <param name="configuration">
-      ///   Object to represent as string.
-      /// </param>
-      /// <returns>
-      ///   String representation of the inbound object.
-      /// </returns>
-      public static implicit operator string(Configuration configuration)
-      {
-        return configuration.Path;
-      }
-
-      /// <summary>
-      ///   Represents the inbound string as an object.
-      /// </summary>
-      /// <param name="path">
-      ///   String to represent as object.
-      /// </param>
-      /// <returns>
-      ///   Object representation of the inbound string.
-      /// </returns>
-      public static explicit operator Configuration(string path)
-      {
-        return new Configuration
-        {
-          Path = path
-        };
-      }
     }
   }
 }
