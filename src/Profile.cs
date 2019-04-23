@@ -198,6 +198,8 @@ namespace SPV3.CLI
         WriteBoolean(Offset.VideoEffectsSpecular,    Video.Effects.Specular);
         WriteBoolean(Offset.VideoEffectsShadows,     Video.Effects.Shadows);
         WriteBoolean(Offset.VideoEffectsDecals,      Video.Effects.Decals);
+        WriteBoolean(Offset.AudioEAX,                Audio.EAX);
+        WriteBoolean(Offset.AudioHWA,                Audio.HWA);
 
         Info("Truncating CRC32 checksum from memory stream");
 
@@ -291,12 +293,14 @@ namespace SPV3.CLI
         Video.Effects.Specular   = GetBoolean(Offset.VideoEffectsSpecular);
         Video.Effects.Shadows    = GetBoolean(Offset.VideoEffectsShadows);
         Video.Effects.Decals     = GetBoolean(Offset.VideoEffectsDecals);
+        Audio.EAX                = GetBoolean(Offset.AudioEAX);
+        Audio.HWA                = GetBoolean(Offset.AudioHWA);
 
         Info("Applying any necessary fixes");
 
         if ((int) Details.Colour == 0xFF)
           Details.Colour = ColourOptions.White;
-        
+
         Info("Profile deserialisation routine is complete");
       }
     }
@@ -393,6 +397,8 @@ namespace SPV3.CLI
       AudioVolumeMaster          = 0x0B79,
       AudioVolumeEffects         = 0x0B7A,
       AudioVolumeMusic           = 0x0B7B,
+      AudioEAX                   = 0x0B7C,
+      AudioHWA                   = 0x0B7D,
       AudioQuality               = 0x0B7E,
       AudioVariety               = 0x0B80,
       NetworkConnectionType      = 0x0FC1,
@@ -497,6 +503,8 @@ namespace SPV3.CLI
       public AudioVolume  Volume  { get; set; } = new AudioVolume();
       public AudioQuality Quality { get; set; } = AudioQuality.Normal; /* default value */
       public AudioVariety Variety { get; set; } = AudioVariety.High;   /* default value */
+      public bool         EAX     { get; set; } = false;
+      public bool         HWA     { get; set; } = false;
 
       public class AudioVolume
       {
