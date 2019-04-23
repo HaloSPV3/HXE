@@ -25,6 +25,7 @@ using System.Text;
 using Microsoft.Win32;
 using static System.IO.File;
 using static System.IO.Path;
+using static SPV3.CLI.Console;
 
 namespace SPV3.CLI
 {
@@ -138,26 +139,39 @@ namespace SPV3.CLI
         /**
          * Arguments for debugging purposes. 
          */
-        if (Debug.Console) args.Append("-console ");
-        if (Debug.Developer) args.Append("-devmode -screenshot ");
-        if (Debug.Screenshot) args.Append("-screenshot ");
+        if (Debug.Console)
+          ApplyArgument(args, "-console ");
+
+        if (Debug.Developer)
+          ApplyArgument(args, "-devmode ");
+
+        if (Debug.Screenshot)
+          ApplyArgument(args, "-screenshot ");
 
         /**
          * Arguments for video overrides.
          */
-        if (Video.Window) args.Append("-window ");
+
+        if (Video.Window)
+          ApplyArgument(args, "-window ");
 
         if (Video.Width > 0 && Video.Height > 0 && Video.Refresh > 0)
-          args.Append($"-vidmode {Video.Width},{Video.Height},{Video.Refresh} ");
+          ApplyArgument(args, $"-vidmode {Video.Width},{Video.Height},{Video.Refresh} ");
 
         if (Video.Adapter > 1)
-          args.Append($"-adapter {Video.Adapter}");
+          ApplyArgument(args, $"-adapter {Video.Adapter} ");
+
+        /**
+         * Argument for custom profile path.
+         */
 
         if (!string.IsNullOrWhiteSpace(Profile.Path))
-          args.Append($"-path {GetFullPath(Profile.Path)}");
+          ApplyArgument(args, $"-path {GetFullPath(Profile.Path)} ");
 
         return args.ToString();
       }
+
+      Info("Starting process for HCE executable");
 
       Process.Start(new ProcessStartInfo
       {
@@ -166,6 +180,14 @@ namespace SPV3.CLI
                            throw new DirectoryNotFoundException("Failed to infer process working directory."),
         Arguments = GetArguments()
       });
+
+      Info("Successfully started HCE executable");
+    }
+
+    private static void ApplyArgument(StringBuilder args, string arg)
+    {
+      args.Append(arg);
+      Debug("Appending argument: " + arg);
     }
 
     /// <summary>

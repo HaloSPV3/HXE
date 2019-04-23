@@ -130,9 +130,11 @@ namespace SPV3.CLI
       output.AppendLine($"player_autoaim {autoaim}");
       output.AppendLine($"player_magnetism {magnetism}");
       output.AppendLine($"game_difficulty_set {difficulty}");
-      WriteAllText(output.ToString());
 
-      Debug("Successfully applied initc.txt configurations.");
+      Info("Saving initiation data to the initc.txt file");
+      WriteAllText(output.ToString());
+      Info("Successfully applied initc.txt configurations");
+      Debug("Initiation data: \n\n" + ReadAllText());
     }
 
     /// <summary>
