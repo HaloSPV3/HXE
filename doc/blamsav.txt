@@ -179,6 +179,10 @@ ascending presence in the blam.sav binary:
             quality - variety          0x0B80 (+0x002)   uint8    low         0x000
                                                                   medium      0x001
                                                                   high        0x002
+            enhance - eax              0x0B7C            bool     off         0x000
+                                                                  on          0x001
+            enhance - hwa              0x0B7D            bool     off         0x000
+                                                                  on          0x001
   NETWORK   connection type            0x0FC1 (+0x441)   uint8    dial-up     0x000
                                                                   dsl-low     0x001
                                                                   dsl-avg     0x002
