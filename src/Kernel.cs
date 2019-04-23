@@ -134,10 +134,10 @@ namespace SPV3.CLI
        */
       if (!manifest.Exists()) return;
 
+      Info("Deserialising found manifest file");
       manifest.Load();
 
-      Info("Found manifest file - proceeding with data verification ...");
-
+      Info("Verifying assets recorded in the manifest file");
       foreach (var package in manifest.Packages)
       foreach (var entry in package.Entries)
       {
@@ -168,6 +168,7 @@ namespace SPV3.CLI
 
         if (!lastprof.Exists()) return;
 
+        Info("Deserialising found lastprof file");
         lastprof.Load();
 
         var profile = (Profile) Path.Combine(
@@ -179,10 +180,10 @@ namespace SPV3.CLI
 
         if (!profile.Exists()) return;
 
+        Info("Deserialising inferred HCE profile");
         profile.Load();
 
-        Info("Auto-loaded HCE profile. Proceeding to apply core tweaks ...");
-
+        Info("Applying profile video settings");
         profile.Video.Resolution.Width  = (ushort) Screen.PrimaryScreen.Bounds.Width;
         profile.Video.Resolution.Height = (ushort) Screen.PrimaryScreen.Bounds.Height;
         profile.Video.FrameRate         = Profile.ProfileVideo.VideoFrameRate.VsyncOff; /* ensure no FPS locking */
@@ -192,20 +193,21 @@ namespace SPV3.CLI
         profile.Video.Effects.Shadows   = true;
         profile.Video.Effects.Decals    = true;
 
+        Info("Saving profile data to the filesystem");
         profile.Save();
 
-        Info("Patched video resolution width  - " + profile.Video.Resolution.Width);
-        Info("Patched video resolution height - " + profile.Video.Resolution.Height);
-        Info("Patched video frame rate        - " + profile.Video.FrameRate);
-        Info("Patched video quality           - " + profile.Video.Particles);
-        Info("Patched video texture           - " + profile.Video.Quality);
-        Info("Patched video effect - specular - " + profile.Video.Effects.Specular);
-        Info("Patched video effect - shadows  - " + profile.Video.Effects.Shadows);
-        Info("Patched video effect - decals   - " + profile.Video.Effects.Decals);
+        Debug("Patched video resolution width  - " + profile.Video.Resolution.Width);
+        Debug("Patched video resolution height - " + profile.Video.Resolution.Height);
+        Debug("Patched video frame rate        - " + profile.Video.FrameRate);
+        Debug("Patched video quality           - " + profile.Video.Particles);
+        Debug("Patched video texture           - " + profile.Video.Quality);
+        Debug("Patched video effect - specular - " + profile.Video.Effects.Specular);
+        Debug("Patched video effect - shadows  - " + profile.Video.Effects.Shadows);
+        Debug("Patched video effect - decals   - " + profile.Video.Effects.Decals);
       }
       catch (Exception e)
       {
-        Error(e.Message + " -- CORE TWEAKS WILL NOT BE APPLIED.");
+        Error(e.Message + " -- CORE TWEAKS WILL NOT BE APPLIED");
       }
     }
 
@@ -214,39 +216,40 @@ namespace SPV3.CLI
     /// </summary>
     private static void ResumeCheckpoint(Executable executable)
     {
-      var lastprof = (LastProfile) Path.Combine(executable.Profile.Path, Files.LastProfile);
-
-      if (!lastprof.Exists()) return;
-
-      lastprof.Load();
-
-      Info("Found lastprof file - proceeding with checkpoint detection ...");
-
-      var playerDat = (Progress) Path.Combine(
-        executable.Profile.Path,
-        Directories.Profiles,
-        lastprof.Profile,
-        Files.Progress
-      );
-
-      if (!playerDat.Exists()) return;
-
-      Info("Found checkpoint file - proceeding with resuming campaign ...");
-
-      playerDat.Load();
-
       try
       {
+        var lastprof = (LastProfile) Path.Combine(executable.Profile.Path, Files.LastProfile);
+
+        if (!lastprof.Exists()) return;
+
+        Info("Deserialising found lastprof file");
+        lastprof.Load();
+
+        var playerDat = (Progress) Path.Combine(
+          executable.Profile.Path,
+          Directories.Profiles,
+          lastprof.Profile,
+          Files.Progress
+        );
+
+        if (!playerDat.Exists()) return;
+
+        Info("Deserialising inferred progress binary");
+        playerDat.Load();
+
+        Info("Updating the initiation file with campaign progress");
         RootInitc.Mission    = playerDat.Mission;
         RootInitc.Difficulty = playerDat.Difficulty;
+
+        Info("Saving campaign progress to the initiation file");
         RootInitc.Save();
 
-        Info("Resumed campaign MISSION    - " + playerDat.Mission);
-        Info("Resumed campaign DIFFICULTY - " + playerDat.Difficulty);
+        Debug("Resumed campaign mission    - " + playerDat.Mission);
+        Debug("Resumed campaign difficulty - " + playerDat.Difficulty);
       }
       catch (UnauthorizedAccessException e)
       {
-        Error(e.Message + " -- CAMPAIGN WILL NOT RESUME!");
+        Error(e.Message + " -- CAMPAIGN WILL NOT RESUME");
       }
     }
 
@@ -257,7 +260,10 @@ namespace SPV3.CLI
     {
       try
       {
+        Info("Updating the initiation file with the post-processing settings");
         RootInitc.PostProcessing = configuration.PostProcessing;
+
+        Info("Saving post-processing settings to the initiation file");
         RootInitc.Save();
 
         Info("Applied PP settings for MXAO        - " + RootInitc.PostProcessing.Mxao);
@@ -269,7 +275,7 @@ namespace SPV3.CLI
       }
       catch (UnauthorizedAccessException e)
       {
-        Error(e.Message + " -- POST PROCESSING WILL NOT BE APPLIED!");
+        Error(e.Message + " -- POST PROCESSING WILL NOT BE APPLIED");
       }
     }
 
@@ -280,8 +286,7 @@ namespace SPV3.CLI
     {
       try
       {
-        Info("Attempting LAA patching on the HCE executable ...");
-
+        Info("Patching HCE executable with LAA flag");
         using (var fs = new FileStream(executable.Path, FileMode.Open, FileAccess.ReadWrite))
         using (var bw = new BinaryWriter(fs))
         {
@@ -289,11 +294,11 @@ namespace SPV3.CLI
           bw.Write((byte) 0x2F);
         }
 
-        Info("Successfully conducted LAA patching on the HCE executable!");
+        Info("Applied LAA patch to the HCE executable");
       }
       catch (Exception e)
       {
-        Error(e.Message + " -- LAA PATCH WILL NOT BE APPLIED!");
+        Error(e.Message + " -- LAA PATCH WILL NOT BE APPLIED");
       }
     }
 
@@ -302,37 +307,7 @@ namespace SPV3.CLI
     /// </summary>
     private static void InvokeExecutable(Executable executable)
     {
-      Info("Attempting to start executable with the following parameters:");
-
-      if (executable.Video.Width > 0)
-        Info("+   Video.Width      - " + executable.Video.Width);
-      if (executable.Video.Height > 0)
-        Info("+   Video.Height     - " + executable.Video.Height);
-
-      if (executable.Video.Refresh > 0)
-        Info("+   Video.Refresh    - " + executable.Video.Refresh);
-
-      if (executable.Video.Adapter > 0)
-        Info("+   Video.Adapter    - " + executable.Video.Adapter);
-
-      if (executable.Video.Window)
-        Info("+   Video.Window     - " + executable.Video.Window);
-
-      if (executable.Debug.Console)
-        Info("+   Debug.Console    - " + executable.Debug.Console);
-
-      if (executable.Debug.Developer)
-        Info("+   Debug.Developer  - " + executable.Debug.Developer);
-
-      if (executable.Debug.Developer)
-        Info("+   Debug.Screenshot - " + executable.Debug.Developer);
-
-      if (!string.IsNullOrWhiteSpace(executable.Profile.Path))
-        Info("+   Profile.Path     - " + executable.Profile.Path);
-
       executable.Start();
-
-      Info("And... we're done!");
     }
   }
 }

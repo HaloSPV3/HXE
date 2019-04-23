@@ -54,7 +54,7 @@ namespace SPV3.CLI
        * of the blam.sav data.
        */
 
-      byte[] GetHash()
+      byte[] GetHash(byte[] data)
       {
         /**
          * This look-up table has been generated from the standard 0xEDB88320 polynomial, which results in hashes that
@@ -112,10 +112,7 @@ namespace SPV3.CLI
          * in the blam.sav binary.
          */
 
-        var mainData = ReadAllBytes();
-        Array.Resize(ref mainData, 8192 - 4);
-
-        var hashData = BitConverter.GetBytes(~mainData.Aggregate(0xFFFFFFFF, (checksumRegister, currentByte) =>
+        var hashData = BitConverter.GetBytes(~data.Aggregate(0xFFFFFFFF, (checksumRegister, currentByte) =>
           crcTable[(checksumRegister & 0xFF) ^ Convert.ToByte(currentByte)] ^ (checksumRegister >> 8)));
 
         for (var i = 0; i < hashData.Length; i++)
@@ -129,7 +126,9 @@ namespace SPV3.CLI
        * one go to the binary on the filesystem.
        */
 
-      using (var writer = new BinaryWriter(System.IO.File.Open(Path, FileMode.Open)))
+      using (var fs = new FileStream(Path, FileMode.Open, FileAccess.ReadWrite))
+      using (var ms = new MemoryStream(8192))
+      using (var bw = new BinaryWriter(ms))
       {
         /**
          * This method is a simple wrapper around WriteInteger: it converts a boolean to its integer equivalent:
@@ -140,23 +139,26 @@ namespace SPV3.CLI
 
         void WriteBoolean(Offset offset, bool data)
         {
-          writer.Seek((int) offset - 1, SeekOrigin.Begin);
-          writer.Write(data);
+          ms.Position = (int) offset - 1;
+          bw.Write(data);
         }
 
         void WriteInteger(Offset offset, int data)
         {
-          writer.Seek((int) offset - 1, SeekOrigin.Begin);
-          writer.Write(data);
+          ms.Position = (int) offset - 1;
+          bw.Write(data);
         }
+
+        fs.Position = 0;
+        fs.CopyTo(ms);
 
         /**
          * The name is stored in UTF-16; hence, we rely on the Unicode class to encode the string to a byte array for
          * writing the profile name in the binary.
          */
 
-        writer.Seek((int) Offset.ProfileName, SeekOrigin.Begin);
-        writer.Write(Unicode.GetBytes(Details.Name));
+        ms.Position = (int) Offset.ProfileName;
+        bw.Write(Unicode.GetBytes(Details.Name));
 
         /**
          * First, we'll take care of the enum options. Storing them is rather straightforward: we cast their values to
@@ -170,8 +172,6 @@ namespace SPV3.CLI
         WriteInteger(Offset.AudioQuality,          (int) Audio.Quality);
         WriteInteger(Offset.AudioVariety,          (int) Audio.Variety);
         WriteInteger(Offset.NetworkConnectionType, (int) Network.Connection);
-
-        Debug("Write enum values to blam.sav values.");
 
         /**
          * The following values are values which can have any integer (within the limits of the data types, of course).
@@ -189,8 +189,6 @@ namespace SPV3.CLI
         WriteInteger(Offset.NetworkPortServer,          Network.Port.Server);
         WriteInteger(Offset.NetworkPortClient,          Network.Port.Client);
 
-        Debug("Write integer values to blam.sav values.");
-
         /*
          * As for the boolean values, we convert them behind the scene to their integer equivalents -- 1 and 0 for true
          * and false, respectively.
@@ -201,35 +199,33 @@ namespace SPV3.CLI
         WriteBoolean(Offset.VideoEffectsShadows,     Video.Effects.Shadows);
         WriteBoolean(Offset.VideoEffectsDecals,      Video.Effects.Decals);
 
-        Debug("Write boolean values to blam.sav values.");
+        Info("Truncating CRC32 checksum from memory stream");
 
-        writer.Flush();
+        ms.SetLength(ms.Length - 4);
 
-        Debug("Flushed data to the binary on the filesystem.");
+        Info("Calculating new CRC32 checksum");
+
+        var hash = GetHash(ms.ToArray());
+
+        Debug("New CRC32 hash - 0x" + BitConverter.ToString(hash).Replace("-", string.Empty));
+
+        Info("Appending new CRC32 checksum to memory stream");
+
+        ms.SetLength(ms.Length + 4);
+        ms.Position = (int) Offset.BinaryCrc32Hash;
+        bw.Write(hash);
+
+        Info("Clearing contents of the profile filesystem binary");
+
+        fs.SetLength(0);
+
+        Info("Copying profile data in memory to the binary file");
+
+        ms.Position = 0;
+        ms.CopyTo(fs);
+
+        Info("Saved profile data to the binary on the filesystem");
       }
-
-      /**
-       * We must dispose the previous writer object, before reading the data back from the binary. Once we've read the
-       * written data back to memory, we can calculate the forged CRC-32 hash for it, and then write it back to the
-       * blam.sav binary.
-       *
-       * Indeed, this could have all been carried out in memory from the get-go; however, the only difference is that
-       * two writes are required rather than one, and the blam.sav is minuscule in length; hence, the performance
-       * impacts absolutely negligible.
-       */
-
-      Debug("Data has been successfully saved - preparing to update the CRC-32 hash ...");
-
-      var hash = GetHash();
-
-      using (var writer = new BinaryWriter(System.IO.File.Open(Path, FileMode.Open)))
-      {
-        writer.Seek((int) Offset.BinaryCrc32Hash, SeekOrigin.Begin);
-        writer.Write(hash);
-        writer.Flush();
-      }
-
-      Debug("Hash has been applied to the binary on the filesystem. Saving routine is complete!");
     }
 
     /// <summary>
@@ -262,7 +258,11 @@ namespace SPV3.CLI
           return reader.ReadBytes(count);
         }
 
+        Info("Assigning profile name from blam.sav value");
+
         Details.Name = Unicode.GetString(GetBytes(Offset.ProfileName, 22)).TrimEnd('\0');
+
+        Info("Assigning enum values from blam.sav values");
 
         Details.Colour     = (ColourOptions) GetOneByte(Offset.ProfileColour);
         Video.FrameRate    = (VideoFrameRate) GetOneByte(Offset.VideoFrameRate);
@@ -271,7 +271,7 @@ namespace SPV3.CLI
         Audio.Variety      = (AudioVariety) GetOneByte(Offset.AudioVariety);
         Network.Connection = (NetworkConnection) GetOneByte(Offset.NetworkConnectionType);
 
-        Debug("Assigned enum values from blam.sav values.");
+        Info("Assigning integer values from blam.sav values");
 
         Mouse.Sensitivity.Horizontal = GetOneByte(Offset.MouseSensitivityHorizontal);
         Mouse.Sensitivity.Vertical   = GetOneByte(Offset.MouseSensitivityVertical);
@@ -285,19 +285,19 @@ namespace SPV3.CLI
         Network.Port.Server          = GetShort(Offset.NetworkPortServer);
         Network.Port.Client          = GetShort(Offset.NetworkPortClient);
 
-        Debug("Assigned integer values from blam.sav values.");
+        Info("Assigning boolean values from blam.sav values");
 
         Mouse.InvertVerticalAxis = GetBoolean(Offset.MouseInvertVerticalAxis);
         Video.Effects.Specular   = GetBoolean(Offset.VideoEffectsSpecular);
         Video.Effects.Shadows    = GetBoolean(Offset.VideoEffectsShadows);
         Video.Effects.Decals     = GetBoolean(Offset.VideoEffectsDecals);
 
-        Debug("Assigned boolean values from blam.sav values.");
+        Info("Applying any necessary fixes");
 
         if ((int) Details.Colour == 0xFF)
           Details.Colour = ColourOptions.White;
-
-        Debug("Applied any necessary fixes. Loading routine is complete!");
+        
+        Info("Profile deserialisation routine is complete");
       }
     }
 
