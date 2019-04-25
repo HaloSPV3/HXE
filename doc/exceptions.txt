@@ -21,7 +21,7 @@
 EXCEPTIONS
 ==========
 
-The CLI will capture any unhandled exception and:
+HXE will capture any unhandled exception and:
 
 -   output the stack trace to the console for the user to read; and
 -   exit the process with a non-zer code (see doc/exit.txt); and
@@ -29,6 +29,6 @@ The CLI will capture any unhandled exception and:
 
 The file that last exception is saved to is located at:
 
-    %APPDATA%\SPV3\exception.log
+    %APPDATA%\HXE\exception.log
 
 You should send this file to yumiris in case of emergencies.

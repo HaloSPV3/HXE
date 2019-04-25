@@ -21,7 +21,7 @@
 using System;
 using static System.Console;
 
-namespace SPV3.CLI
+namespace HXE
 {
   public static class Console
   {

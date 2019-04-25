@@ -21,15 +21,10 @@
 using System;
 using System.IO;
 using System.Linq;
-using static System.Text.Encoding;
-using static SPV3.CLI.Console;
-using static SPV3.CLI.Profile.ProfileAudio;
-using static SPV3.CLI.Profile.ProfileDetails;
-using static SPV3.CLI.Profile.ProfileNetwork;
-using static SPV3.CLI.Profile.ProfileVideo;
+using System.Text;
 using Convert = System.Convert;
 
-namespace SPV3.CLI
+namespace HXE
 {
   /// <inheritdoc />
   /// <summary>
@@ -78,7 +73,7 @@ namespace SPV3.CLI
          */
 
         ms.Position = (int) Offset.ProfileName;
-        bw.Write(Unicode.GetBytes(Details.Name));
+        bw.Write(Encoding.Unicode.GetBytes(Details.Name));
 
         /**
          * First, we'll take care of the enum options. Storing them is rather straightforward: we cast their values to
@@ -138,32 +133,32 @@ namespace SPV3.CLI
          * ... we can write the contents to filesystem and expect HCE to accept both the data and the new hash.
          */
 
-        Info("Truncating CRC32 checksum from memory stream");
+        Console.Info("Truncating CRC32 checksum from memory stream");
 
         ms.SetLength(ms.Length - 4);
 
-        Info("Calculating new CRC32 checksum");
+        Console.Info("Calculating new CRC32 checksum");
 
         var hash = GetHash(ms.ToArray());
 
-        Debug("New CRC32 hash - 0x" + BitConverter.ToString(hash).Replace("-", string.Empty));
+        Console.Debug("New CRC32 hash - 0x" + BitConverter.ToString(hash).Replace("-", string.Empty));
 
-        Info("Appending new CRC32 checksum to memory stream");
+        Console.Info("Appending new CRC32 checksum to memory stream");
 
         ms.SetLength(ms.Length + 4);
         ms.Position = (int) Offset.BinaryCrc32Hash;
         bw.Write(hash);
 
-        Info("Clearing contents of the profile filesystem binary");
+        Console.Info("Clearing contents of the profile filesystem binary");
 
         fs.SetLength(0);
 
-        Info("Copying profile data in memory to the binary file");
+        Console.Info("Copying profile data in memory to the binary file");
 
         ms.Position = 0;
         ms.CopyTo(fs);
 
-        Info("Saved profile data to the binary on the filesystem");
+        Console.Info("Saved profile data to the binary on the filesystem");
 
         /**
          * This method returns a forged CRC-32 hash which can be written to the end of the blam.sav binary. This allows
@@ -262,20 +257,20 @@ namespace SPV3.CLI
           return reader.ReadBytes(count);
         }
 
-        Info("Assigning profile name from blam.sav value");
+        Console.Info("Assigning profile name from blam.sav value");
 
-        Details.Name = Unicode.GetString(GetBytes(Offset.ProfileName, 22)).TrimEnd('\0');
+        Details.Name = Encoding.Unicode.GetString(GetBytes(Offset.ProfileName, 22)).TrimEnd('\0');
 
-        Info("Assigning enum values from blam.sav values");
+        Console.Info("Assigning enum values from blam.sav values");
 
-        Details.Colour     = (ColourOptions) GetOneByte(Offset.ProfileColour);
-        Video.FrameRate    = (VideoFrameRate) GetOneByte(Offset.VideoFrameRate);
-        Video.Particles    = (VideoParticles) GetOneByte(Offset.VideoQualityParticles);
-        Video.Quality      = (VideoQuality) GetOneByte(Offset.VideoQualityTextures);
-        Audio.Variety      = (AudioVariety) GetOneByte(Offset.AudioVariety);
-        Network.Connection = (NetworkConnection) GetOneByte(Offset.NetworkConnectionType);
+        Details.Colour     = (ProfileDetails.ColourOptions) GetOneByte(Offset.ProfileColour);
+        Video.FrameRate    = (ProfileVideo.VideoFrameRate) GetOneByte(Offset.VideoFrameRate);
+        Video.Particles    = (ProfileVideo.VideoParticles) GetOneByte(Offset.VideoQualityParticles);
+        Video.Quality      = (ProfileVideo.VideoQuality) GetOneByte(Offset.VideoQualityTextures);
+        Audio.Variety      = (ProfileAudio.AudioVariety) GetOneByte(Offset.AudioVariety);
+        Network.Connection = (ProfileNetwork.NetworkConnection) GetOneByte(Offset.NetworkConnectionType);
 
-        Info("Assigning integer values from blam.sav values");
+        Console.Info("Assigning integer values from blam.sav values");
 
         Mouse.Sensitivity.Horizontal = GetOneByte(Offset.MouseSensitivityHorizontal);
         Mouse.Sensitivity.Vertical   = GetOneByte(Offset.MouseSensitivityVertical);
@@ -289,7 +284,7 @@ namespace SPV3.CLI
         Network.Port.Server          = GetShort(Offset.NetworkPortServer);
         Network.Port.Client          = GetShort(Offset.NetworkPortClient);
 
-        Info("Assigning boolean values from blam.sav values");
+        Console.Info("Assigning boolean values from blam.sav values");
 
         Mouse.InvertVerticalAxis = GetBoolean(Offset.MouseInvertVerticalAxis);
         Video.Effects.Specular   = GetBoolean(Offset.VideoEffectsSpecular);
@@ -298,12 +293,12 @@ namespace SPV3.CLI
         Audio.EAX                = GetBoolean(Offset.AudioEAX);
         Audio.HWA                = GetBoolean(Offset.AudioHWA);
 
-        Info("Applying any necessary fixes");
+        Console.Info("Applying any necessary fixes");
 
         if ((int) Details.Colour == 0xFF)
-          Details.Colour = ColourOptions.White;
+          Details.Colour = ProfileDetails.ColourOptions.White;
 
-        Info("Profile deserialisation routine is complete");
+        Console.Info("Profile deserialisation routine is complete");
       }
     }
 

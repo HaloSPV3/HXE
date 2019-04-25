@@ -21,8 +21,9 @@
 using System;
 using System.IO;
 using System.Xml.Serialization;
+using static System.IO.Path;
 
-namespace SPV3.CLI
+namespace HXE
 {
   /// <summary>
   ///   Object defining domain rules for a file on the filesystem, and exposing common file manipulation & management
@@ -42,7 +43,7 @@ namespace SPV3.CLI
           throw new ArgumentOutOfRangeException(nameof(value), "File path exceeds 255 chars.");
 
         _path = value;
-        Name  = System.IO.Path.GetFileName(_path);
+        Name  = GetFileName(_path);
       }
     }
 
@@ -50,7 +51,7 @@ namespace SPV3.CLI
 
     public void CreateDirectory()
     {
-      var baseDirectory = System.IO.Path.GetDirectoryName(Path);
+      var baseDirectory = GetDirectoryName(Path);
 
       if (!Directory.Exists(baseDirectory))
         Directory.CreateDirectory(baseDirectory ?? throw new ArgumentNullException());
@@ -68,7 +69,7 @@ namespace SPV3.CLI
 
     public void CopyTo(string target)
     {
-      System.IO.File.Copy(Path, System.IO.Path.Combine(target, Name));
+      System.IO.File.Copy(Path, Combine(target, Name));
     }
 
     public void WriteAllText(string contents)

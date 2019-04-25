@@ -18,16 +18,17 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-using System;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
 using Microsoft.Win32;
+using static System.Environment;
 using static System.IO.File;
 using static System.IO.Path;
-using static SPV3.CLI.Console;
+using static HXE.Console;
+using static Microsoft.Win32.RegistryKey;
 
-namespace SPV3.CLI
+namespace HXE
 {
   /// <inheritdoc />
   /// <summary>
@@ -48,7 +49,7 @@ namespace SPV3.CLI
        */
 
       {
-        var currentPath = Combine(Environment.CurrentDirectory, hce);
+        var currentPath = Combine(CurrentDirectory, hce);
 
         if (System.IO.File.Exists(currentPath))
           return (Executable) currentPath;
@@ -80,7 +81,7 @@ namespace SPV3.CLI
         const string registryLocation = @"SOFTWARE\Microsoft\Microsoft Games\Halo CE";
         const string registryIdentity = @"EXE Path";
 
-        using (var view = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64))
+        using (var view = OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64))
         using (var key = view.OpenSubKey(registryLocation))
         {
           var path = key?.GetValue(registryIdentity);
@@ -93,7 +94,7 @@ namespace SPV3.CLI
           }
         }
 
-        using (var view = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry32))
+        using (var view = OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry32))
         using (var key = view.OpenSubKey(registryLocation))
         {
           var path = key?.GetValue(registryIdentity);

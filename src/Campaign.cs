@@ -18,7 +18,7 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-namespace SPV3.CLI
+namespace HXE
 {
   /// <summary>
   ///   Object representation of the SPV3.2 campaign attributes.

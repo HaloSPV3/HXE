@@ -22,27 +22,30 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Windows.Forms;
-using SPV3.CLI.Exceptions;
+using HXE.Exceptions;
 using static System.Environment;
-using static SPV3.CLI.Console;
-using static SPV3.CLI.Paths;
+using static System.IO.Path;
+using static System.Windows.Forms.Screen;
+using static HXE.Console;
+using static HXE.Paths;
+using static HXE.Paths.Files;
+using static HXE.Profile.ProfileVideo;
 
-namespace SPV3.CLI
+namespace HXE
 {
   /// <summary>
-  ///   Class used for bootstrapping the SPV3 loading procedure.
+  ///   Class used for bootstrapping the HCE loading procedure.
   /// </summary>
   public static class Kernel
   {
     /**
-     * Inic.txt can be located across multiple locations on the filesystem; however, SPV3 only deals with the one in
+     * Inic.txt can be located across multiple locations on the filesystem; however, HCE only deals with the one in
      * the working directory -- hence the name!
      */
-    private static readonly Initiation RootInitc = (Initiation) Path.Combine(CurrentDirectory, Files.Initiation);
+    private static readonly Initiation RootInitc = (Initiation) Combine(CurrentDirectory, Files.Initiation);
 
     /// <summary>
-    ///   Invokes the SPV3 loading procedure.
+    ///   Invokes the HCE loading procedure.
     /// </summary>
     public static void Bootstrap(Executable executable)
     {
@@ -85,7 +88,7 @@ namespace SPV3.CLI
     }
 
     /// <summary>
-    ///   Invokes the SPV3.2 data verification routines.
+    ///   Invokes the HCE data verification routines.
     /// </summary>
     private static void VerifyMainAssets()
     {
@@ -93,8 +96,8 @@ namespace SPV3.CLI
        * It is preferable to whitelist the type of files we would like to verify. The focus would be to skip any files
        * which are expected to be changed.
        *
-       * For example, if SPV3.2 were to be distributed with a configuration file, then changing its contents would
-       * result in an asset verification error. Additionally, changing the CLI executable by updating it could result in
+       * For example, if HCE were to be distributed with a configuration file, then changing its contents would
+       * result in an asset verification error. Additionally, changing HXE executable by updating it could result in
        * the same error.
        */
 
@@ -106,7 +109,7 @@ namespace SPV3.CLI
 
       /**
        * Through the use of the manifest that was copied to the installation directory, the loader can infer the list of
-       * SPV3 files on the filesystem that it must verify. Verification is done through a simple size comparison between
+       * HCE files on the filesystem that it must verify. Verification is done through a simple size comparison between
        * the size of the file on the filesystem and the one declared in the manifest.
        *
        * This routine relies on combining...
@@ -117,7 +120,7 @@ namespace SPV3.CLI
        *
        * ... to determine the absolute path of the file on the filesystem:
        * 
-       * X:\Installations\SPV3\gallery\Content\editbox1024.PNG
+       * X:\Installations\HCE\gallery\Content\editbox1024.PNG
        * |----------+---------|-------+-------|-------+-------|
        *            |                 |               |
        *            |                 |               + - File on the filesystem
@@ -125,10 +128,10 @@ namespace SPV3.CLI
        *            + ----------------------------------- Working directory
        */
 
-      var manifest = (Manifest) Path.Combine(CurrentDirectory, Files.Manifest);
+      var manifest = (Manifest) Combine(CurrentDirectory, Files.Manifest);
 
       /**
-       * This shouldn't be an issue in conventional SPV3 installations; however, for existing/current SPV3 installations
+       * This shouldn't be an issue in conventional HCE installations; however, for existing/current SPV3 installations
        * OR installations that weren't conducted by the installer, the manifest will likely not be present. As such, we
        * have no choice but to skip the verification mechanism.
        */
@@ -144,7 +147,7 @@ namespace SPV3.CLI
         if (!whitelist.Any(entry.Name.Contains)) /* skip verification if current file isn't in the whitelist */
           continue;
 
-        var absolutePath = Path.Combine(CurrentDirectory, package.Path, entry.Name);
+        var absolutePath = Combine(CurrentDirectory, package.Path, entry.Name);
         var expectedSize = entry.Size;
         var actualSize   = new FileInfo(absolutePath).Length;
 
@@ -164,14 +167,14 @@ namespace SPV3.CLI
     {
       try
       {
-        var lastprof = (LastProfile) Path.Combine(executable.Profile.Path, Files.LastProfile);
+        var lastprof = (LastProfile) Combine(executable.Profile.Path, Files.LastProfile);
 
         if (!lastprof.Exists()) return;
 
         Info("Deserialising found lastprof file");
         lastprof.Load();
 
-        var profile = (Profile) Path.Combine(
+        var profile = (Profile) Combine(
           executable.Profile.Path,
           Directories.Profiles,
           lastprof.Profile,
@@ -184,11 +187,11 @@ namespace SPV3.CLI
         profile.Load();
 
         Info("Applying profile video settings");
-        profile.Video.Resolution.Width  = (ushort) Screen.PrimaryScreen.Bounds.Width;
-        profile.Video.Resolution.Height = (ushort) Screen.PrimaryScreen.Bounds.Height;
-        profile.Video.FrameRate         = Profile.ProfileVideo.VideoFrameRate.VsyncOff; /* ensure no FPS locking */
-        profile.Video.Particles         = Profile.ProfileVideo.VideoParticles.High;
-        profile.Video.Quality           = Profile.ProfileVideo.VideoQuality.High;
+        profile.Video.Resolution.Width  = (ushort) PrimaryScreen.Bounds.Width;
+        profile.Video.Resolution.Height = (ushort) PrimaryScreen.Bounds.Height;
+        profile.Video.FrameRate         = VideoFrameRate.VsyncOff; /* ensure no FPS locking */
+        profile.Video.Particles         = VideoParticles.High;
+        profile.Video.Quality           = VideoQuality.High;
         profile.Video.Effects.Specular  = true;
         profile.Video.Effects.Shadows   = true;
         profile.Video.Effects.Decals    = true;
@@ -218,14 +221,14 @@ namespace SPV3.CLI
     {
       try
       {
-        var lastprof = (LastProfile) Path.Combine(executable.Profile.Path, Files.LastProfile);
+        var lastprof = (LastProfile) Combine(executable.Profile.Path, Files.LastProfile);
 
         if (!lastprof.Exists()) return;
 
         Info("Deserialising found lastprof file");
         lastprof.Load();
 
-        var playerDat = (Progress) Path.Combine(
+        var playerDat = (Progress) Combine(
           executable.Profile.Path,
           Directories.Profiles,
           lastprof.Profile,

@@ -21,9 +21,9 @@
 DEVELOPER DOCUMENTATION
 =======================
 
-The SPV3 CLI permits you to import it into your own .NET 4.5.\* project
-and rely on its functionality. This documentation outlines the various
-ways its library can be used.
+HXE permits you to import it into your own .NET 4.5.\* project and rely
+on its functionality. This documentation outlines the various ways its
+library can be used.
 
 PROFILE EDITING
 ---------------
@@ -50,7 +50,8 @@ snippet provides a robust example of how to use the API:
         // profile likely does not exist
     }
 
-The tables below outline all of the exposed properties, categorised into three types:
+The tables below outline all of the exposed properties, categorised into
+three types:
 
 -   options: enum-based properties, e.g. colours, network types
 

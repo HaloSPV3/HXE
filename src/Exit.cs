@@ -18,9 +18,9 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-using System;
+using static System.Environment;
 
-namespace SPV3.CLI
+namespace HXE
 {
   /// <summary>
   ///   Object for permitting enum-identified process existing.
@@ -28,7 +28,7 @@ namespace SPV3.CLI
   public static class Exit
   {
     /// <summary>
-    ///   Available exit codes for the CLI.
+    ///   Available exit codes for HXE.
     /// </summary>
     public enum Code
     {
@@ -46,7 +46,7 @@ namespace SPV3.CLI
     /// </param>
     public static void WithCode(Code code)
     {
-      Environment.Exit((int) code);
+      Exit((int) code);
     }
   }
 }

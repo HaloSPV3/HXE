@@ -1,5 +1,5 @@
-THE SPV3 CLI
-============
+HALO XE (HXE)
+=============
 
 What is it? In a nutshell, it's...
 
@@ -28,10 +28,10 @@ How do you use it? You can...
 
 ------------------------------------------------------------------------
 
-This repository contains the source for the SPV3 CLI, which seeks to
-unify the compiling, installing, configuring, and loading procedures for
-SPV3. The code and documentation here should be considered as the
-official sources for the binaries that will be distributed with SPV3.2.
+This repository contains the source for HXE, which seeks to unify the
+compiling, installing, configuring, and loading procedures for SPV3. The
+code and documentation here should be considered as the official sources
+for the binaries that will be distributed with SPV3.2.
 
 FEATURES
 --------
@@ -64,14 +64,13 @@ Current features include:
 USAGE
 -----
 
-The USAGE document goes into detail on how to use the SPV3 CLI. In a
-nutshell:
+The USAGE document goes into detail on how to use HXE. In a nutshell:
 
     # automatically loads SPV3 in 720p window
-    .\SPV3.exe -window -vidmode 1280,720,60
+    .\haloxe.exe -window -vidmode 1280,720,60
 
     # installs SPV3 to C:\SPV3
-    .\SPV3.exe /install "C:\SPV3"
+    .\haloxe.exe /install "C:\SPV3"
 
 SOURCES
 -------

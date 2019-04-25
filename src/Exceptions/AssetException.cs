@@ -21,7 +21,7 @@
 using System;
 using System.Runtime.Serialization;
 
-namespace SPV3.CLI.Exceptions
+namespace HXE.Exceptions
 {
   [Serializable]
   public class AssetException : Exception
