@@ -24,6 +24,8 @@ using System.Text;
 using static System.Environment;
 using static System.IO.Directory;
 using static System.IO.File;
+using static System.IO.SearchOption;
+using static HXE.Console;
 
 namespace HXE
 {
@@ -43,25 +45,49 @@ namespace HXE
     /// <param name="placeholder">
     ///   Placeholder bitmap to replace normal bitmaps with.
     /// </param>
-    /// <param name="target">
+    /// <param name="directory">
     ///   Target directory containing the files which should be replaced with the placeholder.
     /// </param>
     /// <param name="filter">
     ///   Regex filter the files which should be handled in the target directory.
     /// </param>
-    public static void Commit(string placeholder, string target, string filter)
+    public static void Commit(string placeholder, string directory, string filter)
     {
-      var files  = GetFiles(target, filter, SearchOption.AllDirectories);
-      var record = new StringBuilder();
+      Info("Retrieving list of all files matching the inbound criteria");
 
-      foreach (var file in files)
+      Debug("Placeholder - " + placeholder);
+      Debug("Directory   - " + directory);
+      Debug("Filter      - " + filter);
+
+      var files      = GetFiles(directory, filter, AllDirectories);
+      var record     = new StringBuilder();
+      var recordFile = Path.Combine(CurrentDirectory, Guid.NewGuid() + ".txt");
+
+      Info("Proceeding to replace original bitmaps with placeholders");
+
+      foreach (var source in files)
       {
-        System.IO.File.Move(file, file + Extension);
-        Copy(placeholder, file);
-        record.AppendLine(file);
+        var target = source + Extension;
+
+        if (System.IO.File.Exists(target))
+        {
+          Info("Skipping file as backup already exists - " + source);
+          continue;
+        }
+
+        Info("Backing up bitmap and replacing it with target - " + source);
+
+        System.IO.File.Move(source, target);
+        Copy(placeholder, source);
+        record.AppendLine(source);
       }
 
-      WriteAllText(Path.Combine(CurrentDirectory, Guid.NewGuid() + ".txt"), record.ToString());
+      Info("Recording data to filesystem - " + recordFile);
+
+      WriteAllText(recordFile, record.ToString());
+
+      Info("Data has been recorded to the filesystem");
+      Debug(ReadAllText(recordFile));
     }
 
     /// <summary>
@@ -72,6 +98,8 @@ namespace HXE
     /// </param>
     public static void Revert(string records)
     {
+      Info("Retrieving list of bitmaps from provided records file - " + records);
+
       using (var reader = new StringReader(ReadAllText(records)))
       {
         string line;
@@ -80,14 +108,21 @@ namespace HXE
           line = reader.ReadLine();
           if (line == null) continue;
 
+          Info("Attempting to restore bitmap - " + line);
+
           var target = line;
           var source = target + Extension;
 
           if (System.IO.File.Exists(target))
+          {
+            Info("Deleting existing placeholder - " + target);
             System.IO.File.Delete(target);
+          }
 
-          if (System.IO.File.Exists(source))
-            System.IO.File.Move(source, target);
+          if (!System.IO.File.Exists(source)) continue;
+
+          Info("Restoring bitmap to original path - " + source);
+          System.IO.File.Move(source, target);
         } while (line != null);
       }
     }
