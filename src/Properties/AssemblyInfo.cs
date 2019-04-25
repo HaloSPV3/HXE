@@ -24,11 +24,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("SPV3.CLI")]
-[assembly: AssemblyDescription("CLI front-end for SPV3.")]
+[assembly: AssemblyTitle("A HCE wrapper and SPV3.2 loader")]
+[assembly: AssemblyDescription("A HCE wrapper and SPV3.2 loader")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Yu:Miris")]
-[assembly: AssemblyProduct("SPV3.CLI")]
+[assembly: AssemblyProduct("HXE")]
 [assembly: AssemblyCopyright("Copyright © 2019 Emilian Roman")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

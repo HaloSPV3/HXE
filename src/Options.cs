@@ -162,15 +162,14 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Globalization;
 using System.IO;
+using System.Runtime.Serialization;
+using System.Security.Permissions;
+using System.Text;
+using System.Text.RegularExpressions;
 #if PCL
 using System.Reflection;
 #else
-using System.Runtime.Serialization;
-using System.Security.Permissions;
 #endif
-using System.Text;
-using System.Text.RegularExpressions;
-
 #if LINQ
 using System.Linq;
 #endif
@@ -188,7 +187,7 @@ using MessageLocalizerConverter = System.Converter<string, string>;
 #if NDESK_OPTIONS
 namespace NDesk.Options
 #else
-namespace Mono.Options
+namespace HXE
 #endif
 {
 	static class StringCoda {
@@ -637,7 +636,7 @@ namespace Mono.Options
 #if !PCL || NETSTANDARD1_3
 		public static IEnumerable<string> GetArgumentsFromFile (string file)
 		{
-			return GetArguments (File.OpenText (file), true);
+			return GetArguments (System.IO.File.OpenText (file), true);
 		}
 #endif
 
@@ -1609,7 +1608,7 @@ namespace Mono.Options
 
 #if !PCL || NETSTANDARD1_3
 		public CommandSet(string suite, MessageLocalizerConverter localizer = null)
-			: this(suite, Console.Out, Console.Error, localizer)
+			: this(suite, System.Console.Out, System.Console.Error, localizer)
 		{
 		}
 #endif

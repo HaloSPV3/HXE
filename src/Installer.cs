@@ -21,11 +21,10 @@
 using static System.IO.Compression.ZipFile;
 using static System.IO.Directory;
 using static System.IO.Path;
-using static SPV3.CLI.Console;
-using static SPV3.CLI.Paths;
-using static SPV3.CLI.Paths.Files;
+using static HXE.Console;
+using static HXE.Paths.Files;
 
-namespace SPV3.CLI
+namespace HXE
 {
   /// <summary>
   ///   Installs packages to the filesystem.
@@ -50,7 +49,7 @@ namespace SPV3.CLI
        * Conventionally, we expect the manifest to be located in the source directory along with the packages. This is
        * assumed by the fact that the COMPILER creates the manifest in the target directory that is provided to it.
        */
-      var manifest = (Manifest) Combine(source, Files.Manifest);
+      var manifest = (Manifest) Combine(source, Paths.Files.Manifest);
       manifest.Load();
 
       Debug("Found manifest file in the source directory - proceeding with installation ...");
@@ -113,10 +112,10 @@ namespace SPV3.CLI
 
       /**
        * Store the installation path in a text file that other applications can rely on for inferring the location where
-       * SPV3 is installed.
+       * HCE is installed.
        */
 
-      CreateDirectory(Directories.SPV3);
+      CreateDirectory(Paths.Directories.HXE);
 
       new File
       {

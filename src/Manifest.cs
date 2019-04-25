@@ -21,10 +21,10 @@
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
-using System.Text;
 using System.Xml.Serialization;
+using static System.Text.Encoding;
 
-namespace SPV3.CLI
+namespace HXE
 {
   /// <summary>
   ///   Manifest created by the compiler and parsed by the installer & loader.
@@ -45,7 +45,7 @@ namespace SPV3.CLI
       {
         var serialiser = new XmlSerializer(typeof(Manifest));
         serialiser.Serialize(writer, this);
-        data = Encoding.UTF8.GetBytes(writer.ToString());
+        data = UTF8.GetBytes(writer.ToString());
       }
 
       using (var inflatedStream = new MemoryStream(data))
@@ -72,7 +72,7 @@ namespace SPV3.CLI
       {
         compressStream.CopyTo(inflatedStream);
         compressStream.Close();
-        data = Encoding.UTF8.GetString(inflatedStream.ToArray());
+        data = UTF8.GetString(inflatedStream.ToArray());
       }
 
       using (var reader = new StringReader(data))

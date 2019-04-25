@@ -35,7 +35,7 @@ SPV3 domain or filesystem files.
   Documentation                         Description
   ------------------------------------- -------------------------------
   developer.txt                         Documentation for developers
-                                        who would use the CLI in their
+                                        who would use HXE in their
                                         non-SPV3.2 projects.
 
   V3 INFORMATION                        
@@ -72,7 +72,7 @@ specific to the SPV3 programs:
                                         installing SPV3.2.
 
   exit.txt                              Documentation on the exit codes
-                                        that the CLI returns when its
+                                        that HXE returns when its
                                         process ends.
   ---------------------------------------------------------------------
 

@@ -22,10 +22,10 @@ using System;
 using System.IO;
 using System.Text;
 using static System.Environment;
+using static System.IO.Directory;
 using static System.IO.File;
-using static System.IO.Path;
 
-namespace SPV3.CLI
+namespace HXE
 {
   /// <summary>
   ///   Object representing a Placeholder bitmap on the filesystem.
@@ -51,17 +51,17 @@ namespace SPV3.CLI
     /// </param>
     public static void Commit(string placeholder, string target, string filter)
     {
-      var files  = Directory.GetFiles(target, filter, SearchOption.AllDirectories);
+      var files  = GetFiles(target, filter, SearchOption.AllDirectories);
       var record = new StringBuilder();
 
       foreach (var file in files)
       {
-        Move(file, file + Extension);
+        System.IO.File.Move(file, file + Extension);
         Copy(placeholder, file);
         record.AppendLine(file);
       }
 
-      WriteAllText(Combine(CurrentDirectory, Guid.NewGuid() + ".txt"), record.ToString());
+      WriteAllText(Path.Combine(CurrentDirectory, Guid.NewGuid() + ".txt"), record.ToString());
     }
 
     /// <summary>
@@ -83,11 +83,11 @@ namespace SPV3.CLI
           var target = line;
           var source = target + Extension;
 
-          if (Exists(target))
-            Delete(target);
+          if (System.IO.File.Exists(target))
+            System.IO.File.Delete(target);
 
-          if (Exists(source))
-            Move(source, target);
+          if (System.IO.File.Exists(source))
+            System.IO.File.Move(source, target);
         } while (line != null);
       }
     }

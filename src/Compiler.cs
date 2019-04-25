@@ -28,9 +28,10 @@ using static System.IO.Compression.ZipFile;
 using static System.IO.Directory;
 using static System.IO.Path;
 using static System.IO.SearchOption;
-using static SPV3.CLI.Console;
+using static HXE.Console;
+using static HXE.Paths.Files;
 
-namespace SPV3.CLI
+namespace HXE
 {
   /// <summary>
   ///   Conducts core and data compilation to manifest and compressed packages.
@@ -41,7 +42,7 @@ namespace SPV3.CLI
     ///   Compiles the data in the source directory to packages and a manifest in the target directory.
     /// </summary>
     /// <param name="source">
-    ///   Source directory, expected to contain SPV3 data such as the executables and maps.
+    ///   Source directory, expected to contain HCE data such as the executables and maps.
     /// </param>
     /// <param name="target">
     ///   Target directory, which is expected to be distributed to the end-user.
@@ -148,9 +149,9 @@ namespace SPV3.CLI
          * We MUST declare the RELATIVE path as the value, by inferring the relative path from the absolute path
          * which belongs to the source directory.
          *
-         * X:\Development\SPV3                 - source absolute path
-         * X:\Development\SPV3\content\Gallery - current directory path
-         *                    |--------------| - relative path to source
+         * X:\Development\HCE                 - source absolute path
+         * X:\Development\HCE\content\Gallery - current directory path
+         *                   |---------------| - relative path to source
          * 
          * With the above diagram in mind, we can essentially remove the source path portion (and trailing slash)
          * from the full absolute path, and thus declare the relative path as the package's path.

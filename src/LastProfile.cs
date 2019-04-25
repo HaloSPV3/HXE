@@ -18,7 +18,7 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-namespace SPV3.CLI
+namespace HXE
 {
   /// <inheritdoc />
   /// <summary>

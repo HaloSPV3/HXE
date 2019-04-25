@@ -21,8 +21,7 @@
 LOADER KERNEL
 =============
 
-The kernel is the core component of the SPV3 CLI, which is responsible
-for:
+The kernel is the core component of HXE, which is responsible for:
 
 1.  verifying the main assets, e.g. maps & executables; and
 2.  determining the player's campaign progress for resuming; and

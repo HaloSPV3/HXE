@@ -23,7 +23,7 @@ CONFIGURATION
 
 Kernel and post-processing settings are stored at the following path:
 
-    %APPDATA%\SPV3\loader.bin
+    %APPDATA%\HXE\loader.bin
 
 Currently, the binary stores the following properties:
 

@@ -20,10 +20,13 @@
 
 using System.IO;
 using System.Text;
-using static SPV3.CLI.Configuration.PostProcessingConfiguration;
-using static SPV3.CLI.Configuration.PostProcessingConfiguration.ExperimentalPostProcessing;
+using static System.IO.FileAccess;
+using static System.IO.FileMode;
+using static HXE.Configuration.PostProcessingConfiguration;
+using static HXE.Configuration.PostProcessingConfiguration.ExperimentalPostProcessing;
+using static HXE.Paths.Files;
 
-namespace SPV3.CLI
+namespace HXE
 {
   /// <summary>
   ///   Represents the loader configuration.
@@ -35,7 +38,7 @@ namespace SPV3.CLI
 
     public void Save()
     {
-      using (var fs = new FileStream(Paths.Files.Configuration, FileMode.OpenOrCreate, FileAccess.Write))
+      using (var fs = new FileStream(Paths.Files.Configuration, OpenOrCreate, Write))
       using (var ms = new MemoryStream(256))
       using (var bw = new BinaryWriter(ms))
       {
@@ -98,7 +101,7 @@ namespace SPV3.CLI
 
     public void Load()
     {
-      using (var fs = new FileStream(Paths.Files.Configuration, FileMode.Open, FileAccess.Read))
+      using (var fs = new FileStream(Paths.Files.Configuration, Open, Read))
       using (var ms = new MemoryStream(256))
       using (var br = new BinaryReader(ms))
       {
@@ -241,7 +244,7 @@ namespace SPV3.CLI
       public ExperimentalPostProcessing Experimental      { get; set; } = new ExperimentalPostProcessing();
 
       /// <summary>
-      ///   Experimental overrides for SPV3.
+      ///   Experimental overrides for HCE.
       /// </summary>
       public class ExperimentalPostProcessing
       {

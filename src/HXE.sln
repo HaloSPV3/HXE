@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SPV3.CLI", ".\SPV3.CLI.csproj", "{ACAA5D9F-B23D-43E1-B2DF-8C03230975A1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HXE", "HXE.csproj", "{ACAA5D9F-B23D-43E1-B2DF-8C03230975A1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

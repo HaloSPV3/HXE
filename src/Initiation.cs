@@ -20,11 +20,11 @@
 
 using System;
 using System.Text;
-using static SPV3.CLI.Campaign;
-using static SPV3.CLI.Console;
-using static SPV3.CLI.Configuration.PostProcessingConfiguration;
+using static HXE.Configuration.PostProcessingConfiguration;
+using static HXE.Configuration.PostProcessingConfiguration.DofOptions;
+using static HXE.Configuration.PostProcessingConfiguration.MxaoOptions;
 
-namespace SPV3.CLI
+namespace HXE
 {
   /// <inheritdoc />
   /// <summary>
@@ -35,8 +35,8 @@ namespace SPV3.CLI
     public bool       CinematicBars   { get; set; } = true;
     public bool       PlayerAutoaim   { get; set; } = true;
     public bool       PlayerMagnetism { get; set; } = true;
-    public Mission    Mission         { get; set; } = Mission.Spv3A10;
-    public Difficulty Difficulty      { get; set; } = Difficulty.Normal;
+    public Campaign.Mission    Mission         { get; set; } = Campaign.Mission.Spv3A10;
+    public Campaign.Difficulty Difficulty      { get; set; } = Campaign.Difficulty.Normal;
 
     public Configuration.PostProcessingConfiguration PostProcessing { get; set; } =
       new Configuration.PostProcessingConfiguration();
@@ -54,13 +54,13 @@ namespace SPV3.CLI
       {
         switch (Difficulty)
         {
-          case Difficulty.Normal:
+          case Campaign.Difficulty.Normal:
             return "normal";
-          case Difficulty.Heroic:
+          case Campaign.Difficulty.Heroic:
             return "hard";
-          case Difficulty.Legendary:
+          case Campaign.Difficulty.Legendary:
             return "impossible";
-          case Difficulty.Noble:
+          case Campaign.Difficulty.Noble:
             return "easy";
           default:
             throw new ArgumentOutOfRangeException();
@@ -131,10 +131,10 @@ namespace SPV3.CLI
       output.AppendLine($"player_magnetism {magnetism}");
       output.AppendLine($"game_difficulty_set {difficulty}");
 
-      Info("Saving initiation data to the initc.txt file");
+      Console.Info("Saving initiation data to the initc.txt file");
       WriteAllText(output.ToString());
-      Info("Successfully applied initc.txt configurations");
-      Debug("Initiation data: \n\n" + ReadAllText());
+      Console.Info("Successfully applied initc.txt configurations");
+      Console.Debug("Initiation data: \n\n" + ReadAllText());
     }
 
     /// <summary>

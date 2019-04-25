@@ -21,8 +21,8 @@
 EXIT CODES
 ==========
 
-The CLI process returns various exit codes depending on what causes it
-to exit. The following table outlines the available exit codes, and what
+HXE process returns various exit codes depending on what causes it to
+exit. The following table outlines the available exit codes, and what
 they represent:
 
   Integer   Description
@@ -35,6 +35,6 @@ they represent:
 These codes can be used by calling applications to infer whether an
 operation has succeeded or not, and respond accordingly.
 
-For example, if the CLI exits with a code representing an exception
-being thrown, then the calling application should display the relevant
-logs to the end-user.
+For example, if HXE exits with a code representing an exception being
+thrown, then the calling application should display the relevant logs to
+the end-user.

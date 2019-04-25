@@ -20,58 +20,58 @@
 
 using System;
 using System.IO;
+using System.Reflection;
 using System.Threading.Tasks;
-using Mono.Options;
 using static System.Console;
 using static System.Environment;
-using static System.Int32;
-using static System.Reflection.Assembly;
-using static SPV3.CLI.Console;
-using static SPV3.CLI.Exit.Code;
+using static System.IO.File;
+using static HXE.Console;
+using static HXE.Exit;
 
-namespace SPV3.CLI
+namespace HXE
 {
   /// <summary>
-  ///   SPV3.CLI Program.
+  ///   HXE Program.
   /// </summary>
   internal static class Program
   {
     /// <summary>
-    ///   SPV3.CLI entry.
+    ///   HXE entry.
     /// </summary>
     /// <param name="args">
-    ///   Arguments for the CLI.
+    ///   Arguments for HXE.
     /// </param>
     public static void Main(string[] args)
     {
-      var v = GetEntryAssembly().GetName().Version.Major.ToString("D3");
+      var v = Assembly.GetEntryAssembly().GetName().Version.Major.ToString("D3");
 
       ForegroundColor = ConsoleColor.Green;
-      WriteLine(@"   _____ ____ _    _______  ________    ____");
-      WriteLine(@"  / ___// __ \ |  / /__  / / ____/ /   /  _/");
-      WriteLine(@"  \__ \/ /_/ / | / / /_ < / /   / /    / /  ");
-      WriteLine(@" ___/ / ____/| |/ /___/ // /___/ /____/ /   ");
-      WriteLine(@"/____/_/     |___//____(_)____/_____/___/   ");
-      WriteLine(@"============================================");
-      WriteLine(@"The SPV3 CLI ~ Automatic loader for HCE/SPV3");
-      WriteLine(@"--------------------------------------------");
-      WriteLine(@"source  ::  https://cgit.n2.network/spv3.cli");
-      WriteLine(@"binary  ::  https://dist.n2.network/spv3.cli");
-      WriteLine(@"--------------------------------------------");
-      WriteLine($"Executable has been compiled from build: {v}");
-      WriteLine(@"--------------------------------------------");
+      WriteLine(@" _    ___   ________ ");
+      WriteLine(@"| |  | \ \ / /  ____|");
+      WriteLine(@"| |__| |\ V /| |__   ");
+      WriteLine(@"|  __  | > < |  __|  ");
+      WriteLine(@"| |  | |/ . \| |____ ");
+      WriteLine(@"|_|  |_/_/ \_\______| ~ Halo XE");
+      WriteLine(@"===============================");
+      WriteLine(@"A HCE wrapper and SPV3.2 loader");
+      WriteLine(@"-------------------------------");
+      WriteLine(@"src https://cgit.n2.network/hxe");
+      WriteLine(@"bin https://dist.n2.network/hxe");
+      WriteLine(@"-------------------------------");
+      WriteLine($"Current binary build number {v}");
+      WriteLine(@"-------------------------------");
       ForegroundColor = ConsoleColor.White;
 
-      Directory.CreateDirectory(Paths.Directories.SPV3);
+      Directory.CreateDirectory(Paths.Directories.HXE);
 
       var hce = Executable.Detect();
 
       var options = new OptionSet()
         .Add("load", "Initiates HCE/SPV3",
           s => Run(() => { Kernel.Bootstrap(hce); }))
-        .Add("install=", "Installs SPV3 to destination",
+        .Add("install=", "Installs HCE/SPV3 to destination",
           s => Run(() => { Installer.Install(CurrentDirectory, s); }))
-        .Add("compile=", "Compiles SPV3 to destination",
+        .Add("compile=", "Compiles HCE/SPV3 to destination",
           s => Run(() => { Compiler.Compile(CurrentDirectory, s); }))
         .Add("console", "Loads HCE with console mode",
           s => hce.Debug.Console = true)
@@ -82,7 +82,7 @@ namespace SPV3.CLI
         .Add("window", "Loads HCE in window mode",
           s => hce.Video.Window = true)
         .Add("adapter=", "Loads HCE on monitor X",
-          s => hce.Video.Adapter = Parse(s))
+          s => hce.Video.Adapter = int.Parse(s))
         .Add("path=", "Loads HCE with custom profile path",
           s => hce.Profile.Path = s)
         .Add("vidmode=", "Loads HCE with video mode",
@@ -92,9 +92,9 @@ namespace SPV3.CLI
 
             if (a.Length != 3) return;
 
-            hce.Video.Width   = Parse(a[0]);
-            hce.Video.Height  = Parse(a[1]);
-            hce.Video.Refresh = Parse(a[2]);
+            hce.Video.Width   = int.Parse(a[0]);
+            hce.Video.Height  = int.Parse(a[1]);
+            hce.Video.Refresh = int.Parse(a[2]);
           });
 
       options.WriteOptionDescriptions(Out);
@@ -111,14 +111,14 @@ namespace SPV3.CLI
       try
       {
         Task.Run(action).GetAwaiter().GetResult();
-        Exit.WithCode(Success);
+        WithCode(Code.Success);
       }
       catch (Exception e)
       {
         Error(e.Message);
         System.Console.Error.WriteLine(e.StackTrace);
-        System.IO.File.WriteAllText(Paths.Files.Exception, e.ToString());
-        Exit.WithCode(Exit.Code.Exception);
+        WriteAllText(Paths.Files.Exception, e.ToString());
+        WithCode(Code.Exception);
       }
     }
   }

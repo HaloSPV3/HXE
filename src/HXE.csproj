@@ -7,8 +7,8 @@
     <ProjectGuid>{ACAA5D9F-B23D-43E1-B2DF-8C03230975A1}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SPV3.CLI</RootNamespace>
-    <AssemblyName>SPV3</AssemblyName>
+    <RootNamespace>HXE</RootNamespace>
+    <AssemblyName>haloxe</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

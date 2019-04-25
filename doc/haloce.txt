@@ -21,11 +21,11 @@
 HCE EXECUTABLE
 ==============
 
-The SPV3 CLI is a wrapper around the HCE executable, which means that:
+HXE is a wrapper around the HCE executable, which means that:
 
--   the CLI ultimately loads the HCE executable after conducting its
+-   HXE ultimately loads the HCE executable after conducting its
     verification, patches, and other routines; and
--   any arguments passed onto the CLI that are compatible with HCE will
+-   any arguments passed onto HXE that are compatible with HCE will
     result in HCE invoked with the aforementioned arguments;
 
 PATCHING
@@ -37,13 +37,13 @@ Large Address Aware can be enabled by applying value 0x2F at offset
 ARGUMENTS
 ---------
 
-Refer to the USAGE document for the list of HCE arguments that the CLI
+Refer to the USAGE document for the list of HCE arguments that HXE
 supports.
 
 DETECTION
 ---------
 
-The CLI attempts to detect the HCE executable on the filesystem, by
+HXE attempts to detect the HCE executable on the filesystem, by
 heuristically inferring its path from:
 
 1.  the working directory of the running CLI process; then

@@ -18,11 +18,11 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-using System.IO;
 using static System.Environment;
-using static System.Environment.SpecialFolder;
+using static System.IO.Path;
+using static HXE.Paths.Directories;
 
-namespace SPV3.CLI
+namespace HXE
 {
   /// <summary>
   ///   Lists all of the files & directories on the filesystem that SPV3 deals with.
@@ -41,9 +41,9 @@ namespace SPV3.CLI
       public const string Manifest    = "0x00.bin";
       public const string LastProfile = "lastprof.txt";
 
-      public static readonly string Installation  = Path.Combine(Directories.SPV3, "install.txt");
-      public static readonly string Configuration = Path.Combine(Directories.SPV3, "loader.bin");
-      public static readonly string Exception     = Path.Combine(Directories.SPV3, "exception.log");
+      public static readonly string Installation  = Combine(Directories.HXE, "install.txt");
+      public static readonly string Configuration = Combine(Directories.HXE, "loader.bin");
+      public static readonly string Exception     = Combine(Directories.HXE, "exception.log");
     }
 
     /// <summary>
@@ -53,10 +53,10 @@ namespace SPV3.CLI
     {
       public const string Profiles = "savegames";
 
-      public static readonly  string SPV3     = Path.Combine(GetFolderPath(ApplicationData), "SPV3");
+      public static readonly  string HXE      = Combine(GetFolderPath(SpecialFolder.ApplicationData), "HXE");
       private static readonly string Personal = GetFolderPath(SpecialFolder.Personal);
-      private static readonly string Games    = Path.Combine(Personal, "My Games");
-      public static readonly  string HCE      = Path.Combine(Games,    "Halo CE");
+      private static readonly string Games    = Combine(Personal, "My Games");
+      public static readonly  string HCE      = Combine(Games,    "Halo CE");
     }
   }
 }

@@ -23,7 +23,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Xml.Serialization;
 
-namespace SPV3.CLI
+namespace HXE
 {
   /// <summary>
   ///   Object representing an OpenSauce user configuration.

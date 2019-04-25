@@ -80,5 +80,5 @@ The programs will attempt to achieve compatibility by:
     handle with barely any problems.
 
 All of the programs target the 4.5.\* versions of the .NET Frameworks,
-thereby letting both WINE and Mono run at least the CLI versions of the
+thereby letting both WINE and Mono run at least HXE versions of the
 programs.

@@ -18,10 +18,10 @@
  3. This notice may not be removed or altered from any source distribution.
 -->
 
-SPV3 CLI SOURCE CODE
-====================
+HXE SOURCE CODE
+===============
 
-This section contains the implementation source code for the SPV3 CLI.
+This section contains the implementation source code for HXE.
 
 This document serves as a high-level documentation for the source.
 Specific documentation can be found within the source code itself.
