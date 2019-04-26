@@ -37,10 +37,10 @@ namespace HXE
     /// <summary>
     ///   Extension used for backed up bitmaps.
     /// </summary>
-    private const string Extension = ".bbkp";
+    private const string Extension = ".original";
 
     /// <summary>
-    ///   Replaces the filtered files in the target directory with the placeholder file.
+    ///   Replaces the filtered bitmaps in the target directory with the placeholder bitmap.
     /// </summary>
     /// <param name="placeholder">
     ///   Placeholder bitmap to replace normal bitmaps with.
@@ -49,17 +49,19 @@ namespace HXE
     ///   Target directory containing the files which should be replaced with the placeholder.
     /// </param>
     /// <param name="filter">
-    ///   Regex filter the files which should be handled in the target directory.
+    ///   Optional filter for the bitmaps which should be handled in the target directory.
     /// </param>
-    public static void Commit(string placeholder, string directory, string filter)
+    public static void Commit(string placeholder, string directory, string filter = null)
     {
+      filter = filter ?? string.Empty;
+
       Info("Retrieving list of all files matching the inbound criteria");
 
       Debug("Placeholder - " + placeholder);
       Debug("Directory   - " + directory);
       Debug("Filter      - " + filter);
 
-      var files      = GetFiles(directory, filter, AllDirectories);
+      var files      = GetFiles(directory, $"*{filter}*.bitmap", AllDirectories);
       var record     = new StringBuilder();
       var recordFile = Path.Combine(CurrentDirectory, Guid.NewGuid() + ".txt");
 
