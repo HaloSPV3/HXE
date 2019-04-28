@@ -122,13 +122,13 @@ namespace HXE
           var target = line;
           var source = target + Extension;
 
+          if (!System.IO.File.Exists(source)) continue;
+
           if (System.IO.File.Exists(target))
           {
             Info("Deleting existing placeholder - " + target);
             System.IO.File.Delete(target);
           }
-
-          if (!System.IO.File.Exists(source)) continue;
 
           Info("Restoring bitmap to original path - " + source);
           System.IO.File.Move(source, target);
