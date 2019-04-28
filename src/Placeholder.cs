@@ -84,12 +84,19 @@ namespace HXE
         record.AppendLine(source);
       }
 
-      Info("Recording data to filesystem - " + recordFile);
+      if (record.Length > 0)
+      {
+        Info("Recording data to filesystem - " + recordFile);
 
-      WriteAllText(recordFile, record.ToString());
+        WriteAllText(recordFile, record.ToString());
 
-      Info("Data has been recorded to the filesystem");
-      Debug(ReadAllText(recordFile));
+        Info("Data has been recorded to the filesystem");
+        Debug(ReadAllText(recordFile));
+      }
+      else
+      {
+        Info("No bitmaps have been replaced.");
+      }
     }
 
     /// <summary>
