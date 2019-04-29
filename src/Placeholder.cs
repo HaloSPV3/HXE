@@ -18,10 +18,7 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-using System;
-using System.IO;
-using System.Text;
-using static System.Environment;
+using System.Windows.Forms;
 using static System.IO.Directory;
 using static System.IO.File;
 using static System.IO.SearchOption;
@@ -61,9 +58,7 @@ namespace HXE
       Debug("Directory   - " + directory);
       Debug("Filter      - " + filter);
 
-      var files      = GetFiles(directory, $"*{filter}*.bitmap", AllDirectories);
-      var record     = new StringBuilder();
-      var recordFile = Path.Combine(CurrentDirectory, Guid.NewGuid() + ".txt");
+      var files = GetFiles(directory, $"*{filter}*.bitmap", AllDirectories);
 
       Info("Proceeding to replace original bitmaps with placeholders");
 
@@ -81,58 +76,34 @@ namespace HXE
 
         System.IO.File.Move(source, target);
         Copy(placeholder, source);
-        record.AppendLine(source);
-      }
-
-      if (record.Length > 0)
-      {
-        Info("Recording data to filesystem - " + recordFile);
-
-        WriteAllText(recordFile, record.ToString());
-
-        Info("Data has been recorded to the filesystem");
-        Debug(ReadAllText(recordFile));
-      }
-      else
-      {
-        Info("No bitmaps have been replaced.");
       }
     }
 
     /// <summary>
     ///   Restores bitmaps based on the provided records file.
     /// </summary>
-    /// <param name="records">
+    /// <param name="directory">
     ///   Records text file created by the commit method.
     /// </param>
-    public static void Revert(string records)
+    public static void Revert(string directory)
     {
-      Info("Retrieving list of bitmaps from provided records file - " + records);
+      Info("Retrieving list of bitmaps from provided directory - " + directory);
+      var files = GetFiles(directory, "*.bitmap" + Extension, AllDirectories);
 
-      using (var reader = new StringReader(ReadAllText(records)))
+      Info("Proceeding to restore original bitmaps from their backups");
+
+      foreach (var source in files)
       {
-        string line;
-        do
+        var target = source.Remove(source.Length - Extension.Length, Extension.Length);
+
+        if (System.IO.File.Exists(target))
         {
-          line = reader.ReadLine();
-          if (line == null) continue;
+          Info("Removing what's assumed to be placeholder file - " + target);
+          System.IO.File.Delete(target);
+        }
 
-          Info("Attempting to restore bitmap - " + line);
-
-          var target = line;
-          var source = target + Extension;
-
-          if (!System.IO.File.Exists(source)) continue;
-
-          if (System.IO.File.Exists(target))
-          {
-            Info("Deleting existing placeholder - " + target);
-            System.IO.File.Delete(target);
-          }
-
-          Info("Restoring bitmap to original path - " + source);
-          System.IO.File.Move(source, target);
-        } while (line != null);
+        Info("Restoring bitmap to original path - " + target);
+        System.IO.File.Move(source, target);
       }
     }
   }
