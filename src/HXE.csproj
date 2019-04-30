@@ -61,7 +61,6 @@
     <Compile Include="Options.cs" />
     <Compile Include="Paths.cs" />
     <Compile Include="OpenSauce.cs" />
-    <Compile Include="Placeholder.cs" />
     <Compile Include="Profile.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Progress.cs" />
