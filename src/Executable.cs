@@ -23,7 +23,6 @@ using System.IO;
 using System.Text;
 using Microsoft.Win32;
 using static System.Environment;
-using static System.IO.File;
 using static System.IO.Path;
 using static HXE.Console;
 using static Microsoft.Win32.RegistryKey;
