@@ -23,13 +23,14 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using HXE.Exceptions;
+using HXE.HCE;
 using HXE.SPV3;
 using static System.Environment;
 using static System.IO.Path;
 using static System.Windows.Forms.Screen;
 using static HXE.Console;
 using static HXE.Paths;
-using static HXE.Profile.ProfileVideo;
+using static HXE.HCE.Profile.ProfileVideo;
 
 namespace HXE
 {
