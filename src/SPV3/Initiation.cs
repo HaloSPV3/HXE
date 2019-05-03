@@ -29,12 +29,13 @@ namespace HXE.SPV3
   /// </summary>
   public class Initiation : File
   {
-    public bool                CinematicBars   { get; set; } = true;
-    public bool                PlayerAutoaim   { get; set; } = true;
-    public bool                PlayerMagnetism { get; set; } = true;
-    public Campaign.Mission    Mission         { get; set; } = Campaign.Mission.Spv3A10;
-    public Campaign.Difficulty Difficulty      { get; set; } = Campaign.Difficulty.Normal;
-    public bool                Unlock          { get; set; } = false;
+    public bool                CinematicBars      { get; set; } = true;
+    public bool                PlayerAutoaim      { get; set; } = true;
+    public bool                PlayerMagnetism    { get; set; } = true;
+    public bool                DrawTeamMatesNames { get; set; } = true;
+    public Campaign.Mission    Mission            { get; set; } = Campaign.Mission.Spv3A10;
+    public Campaign.Difficulty Difficulty         { get; set; } = Campaign.Difficulty.Normal;
+    public bool                Unlock             { get; set; }
 
     public PostProcessing PostProcessing { get; set; } =
       new PostProcessing();
@@ -122,11 +123,12 @@ namespace HXE.SPV3
         return 0;
       }
 
-      var difficulty = GetDifficulty();
-      var mission    = (int) Mission;
-      var autoaim    = PlayerAutoaim ? 1 : 0;
-      var magnetism  = PlayerMagnetism ? 1 : 0;
-      var cinematic  = CinematicBars ? 1 : 0;
+      var difficulty      = GetDifficulty();
+      var mission         = (int) Mission;
+      var autoaim         = PlayerAutoaim ? 1 : 0;
+      var magnetism       = PlayerMagnetism ? 1 : 0;
+      var cinematic       = CinematicBars ? 1 : 0;
+      var teammates_names = DrawTeamMatesNames ? 1 : 0;
 
       var output = new StringBuilder();
       output.AppendLine($"set f1 {(Unlock ? 8 : GetPostProcessing())}");
@@ -135,6 +137,7 @@ namespace HXE.SPV3
       output.AppendLine($"player_autoaim {autoaim}");
       output.AppendLine($"player_magnetism {magnetism}");
       output.AppendLine($"game_difficulty_set {difficulty}");
+      output.AppendLine($"set multiplayer_draw_teammates_names {teammates_names}");
 
       Console.Info("Saving initiation data to the initc.txt file");
       WriteAllText(output.ToString());
