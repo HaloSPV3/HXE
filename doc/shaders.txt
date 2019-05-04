@@ -68,6 +68,11 @@ permutations:
   7       HIGH   HIGH   HIGH           ON             ON            ON
   8       OFF    OFF    OFF            OFF            OFF           OFF
 
+For disabling the HUD Visor, the following command is used in the initc
+file:
+
+    set multiplayer_draw_teammates_names 1
+
 BINARY
 
 Refer to doc/configuration.txt for information on how the
