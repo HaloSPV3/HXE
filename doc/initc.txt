@@ -52,10 +52,6 @@ The syntax used for declaring the global variables is the following:
 
     set f3 = 16
 
-An additional, non-f variable is also used:
-
-    multiplayer_draw_teammates_names
-
 MISSIONS
 
 The table below outlines the values that can be assigned to f3,
