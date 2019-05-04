@@ -120,6 +120,11 @@ namespace HXE.SPV3
             && lf && vol && ld)
           return 7;
 
+        if (mxao  == PostProcessing.MxaoOptions.Off && dof == PostProcessing.DofOptions.Off &&
+            mb    == PostProcessing.MotionBlurOptions.Off
+            && lf == false && vol == false && ld == false)
+          return 8;
+
         return 0;
       }
 
