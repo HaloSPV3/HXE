@@ -42,6 +42,7 @@ namespace HXE
     /// <param name="args">
     ///   Arguments for HXE.
     /// </param>
+    [STAThread]
     public static void Main(string[] args)
     {
       var bn = Assembly.GetEntryAssembly().GetName().Version.Major.ToString("D4");
@@ -68,6 +69,13 @@ namespace HXE
       var hce = Executable.Detect();
 
       var options = new OptionSet()
+        .Add("config", "Opens configuration GUI",
+          s =>
+          {
+            new System.Windows.Application().Run(new Settings());
+            Exit(0);
+          }
+        )
         .Add("load", "Initiates HCE/SPV3",
           s => Run(() => { Kernel.Bootstrap(hce); }))
         .Add("install=", "Installs HCE/SPV3 to destination",
@@ -101,7 +109,7 @@ namespace HXE
       options.WriteOptionDescriptions(Out);
       var input = options.Parse(args);
 
-      if (!input.Contains("load")    &&
+      if (!input.Contains("load")   &&
           !input.Contains("install") &&
           !input.Contains("compile"))
         Run(() => { Kernel.Bootstrap(hce); });
