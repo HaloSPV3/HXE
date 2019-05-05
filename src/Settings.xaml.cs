@@ -16,6 +16,8 @@ namespace HXE
       if (!_configuration.Exists())
         _configuration.Save();
 
+      Console.Info("Loading kernel settings ...");
+
       _configuration.Load();
 
       EnableSpv3KernelMode.IsChecked = _configuration.Kernel.EnableSpv3KernelMode;
@@ -26,10 +28,14 @@ namespace HXE
       SkipSetShadersConfig.IsChecked = _configuration.Kernel.SkipSetShadersConfig;
       SkipInvokeExecutable.IsChecked = _configuration.Kernel.SkipInvokeExecutable;
       SkipPatchLargeAAware.IsChecked = _configuration.Kernel.SkipPatchLargeAAware;
+
+      PrintConfiguration();
     }
 
     private void Save(object sender, RoutedEventArgs e)
     {
+      Console.Info("Saving kernel settings ...");
+      
       _configuration.Kernel.EnableSpv3KernelMode = EnableSpv3KernelMode.IsChecked == true;
       _configuration.Kernel.EnableSpv3LegacyMode = EnableSpv3LegacyMode.IsChecked == true;
       _configuration.Kernel.SkipVerifyMainAssets = SkipVerifyMainAssets.IsChecked == true;
@@ -41,7 +47,21 @@ namespace HXE
 
       _configuration.Save();
 
+      PrintConfiguration();
+
       Exit.WithCode(Exit.Code.Success);
+    }
+
+    private void PrintConfiguration()
+    {
+      Console.Debug("Kernel.EnableSpv3KernelMode - " + _configuration.Kernel.EnableSpv3KernelMode);
+      Console.Debug("Kernel.EnableSpv3LegacyMode - " + _configuration.Kernel.EnableSpv3LegacyMode);
+      Console.Debug("Kernel.SkipVerifyMainAssets - " + _configuration.Kernel.SkipVerifyMainAssets);
+      Console.Debug("Kernel.SkipInvokeCoreTweaks - " + _configuration.Kernel.SkipInvokeCoreTweaks);
+      Console.Debug("Kernel.SkipResumeCheckpoint - " + _configuration.Kernel.SkipResumeCheckpoint);
+      Console.Debug("Kernel.SkipSetShadersConfig - " + _configuration.Kernel.SkipSetShadersConfig);
+      Console.Debug("Kernel.SkipInvokeExecutable - " + _configuration.Kernel.SkipInvokeExecutable);
+      Console.Debug("Kernel.SkipPatchLargeAAware - " + _configuration.Kernel.SkipPatchLargeAAware);
     }
 
     private void Cancel(object sender, RoutedEventArgs e)
