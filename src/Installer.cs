@@ -53,7 +53,7 @@ namespace HXE
       var manifest = (Manifest) Combine(source, Paths.Files.Manifest);
       manifest.Load();
 
-      Debug("Found manifest file in the source directory - proceeding with installation ...");
+      Info("Found manifest file in the source directory - proceeding with installation ...");
 
       /**
        * Installation is the reversal of the COMPILER routine: we get the data back from the DEFLATE packages, through
@@ -62,7 +62,7 @@ namespace HXE
 
       foreach (var package in manifest.Packages)
       {
-        Debug("Preparing to install entries from package - " + package.Name);
+        Info("Preparing to install entries from package - " + package.Name);
 
         /**
          * To handle reinstall circumstances, and for the sake of being more defensive, we check if the package files
@@ -71,18 +71,18 @@ namespace HXE
 
         foreach (var entry in package.Entries)
         {
-          Debug("Checking if entry exists - " + entry.Name);
+          Info("Checking if entry exists - " + entry.Name);
 
           var file = (File) Combine(target, package.Path, entry.Name);
 
           if (!file.Exists()) continue;
 
-          Debug("Deleting discovered file - " + entry.Name);
+          Info("Deleting discovered file - " + entry.Name);
 
           file.Delete();
         }
 
-        Debug("Any existing entries on the filesystem have been deleted - preparing to extract package");
+        Info("Any existing entries on the filesystem have been deleted - preparing to extract package");
 
         /**
          * Given that the package filename on the filesystem is expected to match the package's name in the manifest, we
@@ -96,7 +96,7 @@ namespace HXE
         var packagePath = Combine(source, package.Name);
         var destination = Combine(target, package.Path);
 
-        Debug("Extracting package to destination - " + destination);
+        Info("Extracting package to destination - " + destination);
 
         ExtractToDirectory(packagePath, destination);
       }
