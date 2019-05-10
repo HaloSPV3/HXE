@@ -92,7 +92,7 @@ namespace HXE
 
       foreach (var directory in directories)
       {
-        Debug("Preparing to compile directory - " + directory);
+        Info("Preparing to compile directory - " + directory);
 
         /**
          * We record the package's name on the filesystem to the manifest. This permits the INSTALLER to seek the
@@ -124,7 +124,7 @@ namespace HXE
           {
             var fileName = GetFileName(file);
 
-            Debug("Creating archive entry for file - " + file);
+            Info("Creating archive entry for file - " + file);
 
             deflate.CreateEntryFromFile(file, fileName, Optimal);
 
@@ -187,7 +187,7 @@ namespace HXE
       var cli = (File) GetCurrentProcess().MainModule.FileName;
       cli.CopyTo(target);
 
-      Debug("Loader executable has been successfully copied. The packages can now be distributed and installed!");
+      Info("Loader executable has been successfully copied. The packages can now be distributed and installed!");
     }
   }
 }
