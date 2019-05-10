@@ -210,6 +210,11 @@ namespace HXE
         Info("Deserialising inferred HCE profile");
         profile.Load();
 
+        foreach (var availableProfile in Profile.List(executable.Profile.Path))
+          Debug(availableProfile.Details.Name.Equals(profile.Details.Name)
+            ? $"Available profile: {availableProfile.Details.Name} << SELECTED PROFILE"
+            : $"Available profile: {availableProfile.Details.Name}");
+
         Info("Applying profile video settings");
         profile.Video.Resolution.Width  = (ushort) PrimaryScreen.Bounds.Width;
         profile.Video.Resolution.Height = (ushort) PrimaryScreen.Bounds.Height;

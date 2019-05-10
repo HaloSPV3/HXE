@@ -361,8 +361,12 @@ namespace HXE.HCE
 
       var profiles = new List<Profile>();
 
-      foreach (var profile in Directory.GetFiles(directory, "blam.sav", AllDirectories))
-        profiles.Add((Profile) profile);
+      foreach (var current in Directory.GetFiles(directory, "blam.sav", AllDirectories))
+      {
+        var profile = (Profile) current;
+        profile.Load();
+        profiles.Add(profile);
+      }
 
       return profiles;
     }
