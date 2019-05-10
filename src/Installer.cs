@@ -18,6 +18,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
+using System.Threading;
+using System.Threading.Tasks;
 using static System.IO.Compression.ZipFile;
 using static System.IO.Directory;
 using static System.IO.Path;
@@ -98,10 +100,24 @@ namespace HXE
 
         Info("Extracting package to destination - " + destination);
 
-        ExtractToDirectory(packagePath, destination);
+        /**
+         * While the task is running, we inform the user that is indeed running by updating the console.
+         */
+
+        var task = new Task(() => { ExtractToDirectory(packagePath, destination); });
+
+        task.Start();
+
+        Wait("Installing ...");
+
+        while (!task.IsCompleted)
+        {
+          System.Console.Write(".");
+          Thread.Sleep(1000);
+        }
       }
 
-      Debug("Finished installation of main data - proceeding with post-install routines");
+      Info("Proceeding with post-install routines");
 
       /**
        * Delete potential manifest file at the target destination.
@@ -125,6 +141,8 @@ namespace HXE
       {
         Path = Installation
       }.WriteAllText(target);
+
+      Done("Installation routine is finished. The extracted assets can now be used!");
     }
   }
 }
