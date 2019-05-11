@@ -22,6 +22,7 @@ using System;
 using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
+using System.Windows;
 using HXE.HCE;
 using static System.Console;
 using static System.Environment;
@@ -46,18 +47,36 @@ namespace HXE
     [STAThread]
     public static void Main(string[] args)
     {
-      var bn = Assembly.GetEntryAssembly()?.GetName().Version.Major.ToString("D4");
+      DisplayBanner();     /* impress our users */
+      InvokeProgram(args); /* burn baby burn */
+    }
 
-      ForegroundColor = ConsoleColor.Green;
-      WriteLine(Banner);
-      WriteLine(BannerBuildNumber, bn);
-      WriteLine(BannerBuildSource, bn);
-      WriteLine(new string('-', BannerBuildSource.Length + 1));
-      ForegroundColor = ConsoleColor.White;
-
+    /// <summary>
+    ///   Console API to the HXE kernel, installer and compiler.
+    /// </summary>
+    /// <param name="args">
+    ///   --config            Opens configuration GUI
+    ///   --load              Initiates HCE/SPV3
+    ///   --install=VALUE     Installs HCE/SPV3   to destination
+    ///   --compile=VALUE     Compiles HCE/SPV3   to destination
+    ///   --console           Loads HCE           with console    mode
+    ///   --devmode           Loads HCE           with developer  mode
+    ///   --screenshot        Loads HCE           with screenshot ability
+    ///   --window            Loads HCE in window mode
+    ///   --nogamma           Loads HCE           without gamma overriding
+    ///   --adapter=VALUE     Loads HCE           on monitor    X
+    ///   --path=VALUE        Loads HCE           with custom   profile path
+    ///   --vidmode=VALUE     Loads HCE           with video    mode
+    /// </param>
+    private static void InvokeProgram(string[] args)
+    {
       Directory.CreateDirectory(Paths.Directories.HXE);
 
       var hce = new Executable();
+
+      /**
+       * Implicit verification for legal HCE installations.
+       */
 
       try
       {
@@ -73,7 +92,7 @@ namespace HXE
         .Add("config", "Opens configuration GUI",
           s =>
           {
-            new System.Windows.Application().Run(new Settings());
+            new Application().Run(new Settings());
             Exit(0);
           }
         )
@@ -113,26 +132,52 @@ namespace HXE
 
       var input = options.Parse(args);
 
+      /**
+       * Implicitly invoke the HXE kernel when no install/compile/load command is passed.
+       */
+
       if (!input.Contains("load")    &&
           !input.Contains("install") &&
           !input.Contains("compile"))
         Run(() => { Kernel.Bootstrap(hce); });
+
+      /**
+       * This method is used for running code asynchronously and catching exceptions at the highest level.
+       */
+
+      void Run(Action action)
+      {
+        try
+        {
+          Task.Run(action).GetAwaiter().GetResult();
+          WithCode(Code.Success);
+        }
+        catch (Exception e)
+        {
+          Error(e.Message);
+          System.Console.Error.WriteLine("\n\n" + e.StackTrace);
+          WriteAllText(Paths.Files.Exception, e.ToString());
+          WithCode(Code.Exception);
+        }
+      }
     }
 
-    private static void Run(Action action)
+    /// <summary>
+    ///   Renders a dynamic banner which is both pleasing to the eye and informative.
+    /// </summary>
+    private static void DisplayBanner()
     {
-      try
-      {
-        Task.Run(action).GetAwaiter().GetResult();
-        WithCode(Code.Success);
-      }
-      catch (Exception e)
-      {
-        Error(e.Message);
-        System.Console.Error.WriteLine("\n\n" + e.StackTrace);
-        WriteAllText(Paths.Files.Exception, e.ToString());
-        WithCode(Code.Exception);
-      }
+      var bn = Assembly.GetEntryAssembly()?.GetName().Version.Major.ToString("D4");
+
+      var bannerLineDecorations = new string('-', BannerBuildSource.Length + 1);
+
+      ForegroundColor = ConsoleColor.Green; /* the colour of the one */
+      WriteLine(Banner);                    /* ascii art and usage */
+      WriteLine(BannerBuildNumber, bn);     /* reference build */
+      WriteLine(bannerLineDecorations);     /* separator */
+      WriteLine(BannerBuildSource, bn);     /* reference link */
+      WriteLine(bannerLineDecorations);     /* separator */
+      ForegroundColor = ConsoleColor.White; /* end banner */
     }
   }
 }
