@@ -28,6 +28,7 @@ using static System.Environment;
 using static System.IO.File;
 using static HXE.Console;
 using static HXE.Exit;
+using static HXE.Properties.Resources;
 
 namespace HXE
 {
@@ -45,23 +46,13 @@ namespace HXE
     [STAThread]
     public static void Main(string[] args)
     {
-      var bn = Assembly.GetEntryAssembly().GetName().Version.Major.ToString("D4");
+      var bn = Assembly.GetEntryAssembly()?.GetName().Version.Major.ToString("D4");
 
       ForegroundColor = ConsoleColor.Green;
-      WriteLine(@" _    ___   ________ ");
-      WriteLine(@"| |  | \ \ / /  ____|");
-      WriteLine(@"| |__| |\ V /| |__   ");
-      WriteLine(@"|  __  | > < |  __|  ");
-      WriteLine(@"| |  | |/ . \| |____ ");
-      WriteLine(@"|_|  |_/_/ \_\______| :: Halo XE");
-      WriteLine(@"================================");
-      WriteLine(@"A HCE wrapper and SPV3.2 loader.");
-      WriteLine(@"--------------------------------");
-      WriteLine(@"src: https://cgit.n2.network/hxe");
-      WriteLine(@"bin: https://dist.n2.network/hxe");
-      WriteLine(@"--------------------------------");
-      WriteLine($"Current binary build number {bn}");
-      WriteLine(@"--------------------------------");
+      WriteLine(Banner);
+      WriteLine(BannerBuildNumber, bn);
+      WriteLine(BannerBuildSource, bn);
+      WriteLine(new string('-', BannerBuildSource.Length + 1));
       ForegroundColor = ConsoleColor.White;
 
       Directory.CreateDirectory(Paths.Directories.HXE);
@@ -120,8 +111,6 @@ namespace HXE
               hce.Video.Refresh = ushort.Parse(a[2]);
           });
 
-      Help("HXE can be invoked with the following arguments\n\n");
-      options.WriteOptionDescriptions(Out);
       var input = options.Parse(args);
 
       if (!input.Contains("load")    &&
@@ -140,7 +129,7 @@ namespace HXE
       catch (Exception e)
       {
         Error(e.Message);
-        System.Console.Error.WriteLine(e.StackTrace);
+        System.Console.Error.WriteLine("\n\n" + e.StackTrace);
         WriteAllText(Paths.Files.Exception, e.ToString());
         WithCode(Code.Exception);
       }
