@@ -81,7 +81,7 @@
     <Compile Include="SPV3\Progress.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\banner.txt" />
+    <EmbeddedResource Include="Assets\banner.txt" />
     <Content Include="Assets\icon.ico" />
     <Page Include="Settings.xaml" />
   </ItemGroup>
