@@ -120,6 +120,7 @@ namespace HXE
               hce.Video.Refresh = ushort.Parse(a[2]);
           });
 
+      Help("HXE can be invoked with the following arguments\n\n");
       options.WriteOptionDescriptions(Out);
       var input = options.Parse(args);
 
