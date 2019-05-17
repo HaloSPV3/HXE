@@ -24,6 +24,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using static System.IO.SearchOption;
+using static HXE.Console;
 using static HXE.Paths;
 
 namespace HXE.HCE
@@ -135,32 +136,30 @@ namespace HXE.HCE
          * ... we can write the contents to filesystem and expect HCE to accept both the data and the new hash.
          */
 
-        Console.Info("Truncating CRC32 checksum from memory stream");
+        Info("Truncating CRC32 checksum from memory stream");
 
         ms.SetLength(ms.Length - 4);
 
-        Console.Info("Calculating new CRC32 checksum");
+        Info("Calculating new CRC32 checksum");
 
         var hash = GetHash(ms.ToArray());
 
-        Console.Debug("New CRC32 hash - 0x" + BitConverter.ToString(hash).Replace("-", string.Empty));
-
-        Console.Info("Appending new CRC32 checksum to memory stream");
+        Debug("New CRC32 hash - 0x" + BitConverter.ToString(hash).Replace("-", string.Empty));
 
         ms.SetLength(ms.Length + 4);
         ms.Position = (int) Offset.BinaryCrc32Hash;
         bw.Write(hash);
 
-        Console.Info("Clearing contents of the profile filesystem binary");
+        Info("Clearing contents of the profile filesystem binary");
 
         fs.SetLength(0);
 
-        Console.Info("Copying profile data in memory to the binary file");
+        Info("Copying profile data in memory to the binary file");
 
         ms.Position = 0;
         ms.CopyTo(fs);
 
-        Console.Info("Saved profile data to the binary on the filesystem");
+        Info("Saved profile data to the binary on the filesystem");
 
         /**
          * This method returns a forged CRC-32 hash which can be written to the end of the blam.sav binary. This allows
@@ -259,21 +258,14 @@ namespace HXE.HCE
           return reader.ReadBytes(count);
         }
 
-        Console.Info("Assigning profile name from blam.sav value");
-
         Details.Name = Encoding.Unicode.GetString(GetBytes(Offset.ProfileName, 22)).TrimEnd('\0');
 
-        Console.Info("Assigning enum values from blam.sav values");
-
-        Details.Colour     = (ProfileDetails.ColourOptions) GetOneByte(Offset.ProfileColour);
-        Video.FrameRate    = (ProfileVideo.VideoFrameRate) GetOneByte(Offset.VideoFrameRate);
-        Video.Particles    = (ProfileVideo.VideoParticles) GetOneByte(Offset.VideoQualityParticles);
-        Video.Quality      = (ProfileVideo.VideoQuality) GetOneByte(Offset.VideoQualityTextures);
-        Audio.Variety      = (ProfileAudio.AudioVariety) GetOneByte(Offset.AudioVariety);
-        Network.Connection = (ProfileNetwork.NetworkConnection) GetOneByte(Offset.NetworkConnectionType);
-
-        Console.Info("Assigning integer values from blam.sav values");
-
+        Details.Colour               = (ProfileDetails.ColourOptions) GetOneByte(Offset.ProfileColour);
+        Video.FrameRate              = (ProfileVideo.VideoFrameRate) GetOneByte(Offset.VideoFrameRate);
+        Video.Particles              = (ProfileVideo.VideoParticles) GetOneByte(Offset.VideoQualityParticles);
+        Video.Quality                = (ProfileVideo.VideoQuality) GetOneByte(Offset.VideoQualityTextures);
+        Audio.Variety                = (ProfileAudio.AudioVariety) GetOneByte(Offset.AudioVariety);
+        Network.Connection           = (ProfileNetwork.NetworkConnection) GetOneByte(Offset.NetworkConnectionType);
         Mouse.Sensitivity.Horizontal = GetOneByte(Offset.MouseSensitivityHorizontal);
         Mouse.Sensitivity.Vertical   = GetOneByte(Offset.MouseSensitivityVertical);
         Video.Resolution.Width       = GetShort(Offset.VideoResolutionWidth);
@@ -285,22 +277,17 @@ namespace HXE.HCE
         Audio.Volume.Music           = GetOneByte(Offset.AudioVolumeMusic);
         Network.Port.Server          = GetShort(Offset.NetworkPortServer);
         Network.Port.Client          = GetShort(Offset.NetworkPortClient);
-
-        Console.Info("Assigning boolean values from blam.sav values");
-
-        Mouse.InvertVerticalAxis = GetBoolean(Offset.MouseInvertVerticalAxis);
-        Video.Effects.Specular   = GetBoolean(Offset.VideoEffectsSpecular);
-        Video.Effects.Shadows    = GetBoolean(Offset.VideoEffectsShadows);
-        Video.Effects.Decals     = GetBoolean(Offset.VideoEffectsDecals);
-        Audio.EAX                = GetBoolean(Offset.AudioEAX);
-        Audio.HWA                = GetBoolean(Offset.AudioHWA);
-
-        Console.Info("Applying any necessary fixes");
+        Mouse.InvertVerticalAxis     = GetBoolean(Offset.MouseInvertVerticalAxis);
+        Video.Effects.Specular       = GetBoolean(Offset.VideoEffectsSpecular);
+        Video.Effects.Shadows        = GetBoolean(Offset.VideoEffectsShadows);
+        Video.Effects.Decals         = GetBoolean(Offset.VideoEffectsDecals);
+        Audio.EAX                    = GetBoolean(Offset.AudioEAX);
+        Audio.HWA                    = GetBoolean(Offset.AudioHWA);
 
         if ((int) Details.Colour == 0xFF)
           Details.Colour = ProfileDetails.ColourOptions.White;
 
-        Console.Info("Profile deserialisation routine is complete");
+        Info("Profile deserialisation routine is complete");
       }
     }
 
