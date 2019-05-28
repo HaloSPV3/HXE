@@ -67,10 +67,6 @@ specific to the SPV3 programs:
                                         including distribution &
                                         installation decisions.
 
-  distributing.txt                      Documentation & instructions on
-                                        compiling, distributing, and
-                                        installing SPV3.2.
-
   exit.txt                              Documentation on the exit codes
                                         that HXE returns when its
                                         process ends.
