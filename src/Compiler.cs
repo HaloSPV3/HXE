@@ -117,6 +117,12 @@ namespace HXE
         var packagePath = Path.Combine(target, packageName);
         var fileName    = file.Name;
 
+        if (System.IO.File.Exists(packagePath))
+        {
+          System.IO.File.Delete(packagePath);
+          Info("Deleted existing target package - " + packageName);
+        }
+
         using (var archive = Open(packagePath, Create))
         {
           var task = new Task(() => { archive.CreateEntryFromFile(file.FullName, fileName, compression); });
