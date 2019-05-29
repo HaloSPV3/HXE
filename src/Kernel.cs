@@ -184,7 +184,9 @@ namespace HXE
 
         Info("Inferred file on the filesystem - " + package.Entry.Name);
 
-        if (blacklist.Any(package.Entry.Name.Contains)) /* skip verification if current file isn't in the whitelist */
+        var lowercaseName = package.Entry.Name.ToLower();
+        
+        if (blacklist.Any(lowercaseName.Contains)) /* skip verification if current file isn't in the whitelist */
           continue;
 
         Info("File is not whitelisted - " + package.Entry.Name);
