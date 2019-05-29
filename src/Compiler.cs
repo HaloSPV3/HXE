@@ -110,12 +110,17 @@ namespace HXE
         {
           var task = new Task(() => { deflate.CreateEntryFromFile(file.FullName, fileName, Optimal); });
 
+          /**
+           * While the task is running, we inform the user that is indeed running by updating the console. Aren't we
+           * nice people?
+           */
+
           task.Start();
-          Info("Started package inflation - " + packageName + " - " + fileName);
+          Wait("Started package deflation - " + packageName + " - " + fileName + " ...");
 
           while (!task.IsCompleted)
           {
-            Wait(Resources.Progress);
+            System.Console.Write(Resources.Progress);
             Thread.Sleep(1000);
           }
 
