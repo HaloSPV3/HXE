@@ -56,6 +56,9 @@ namespace HXE
 
       Info("Normalised inbound source and target paths");
 
+      Debug("Source - " + source);
+      Debug("Target - " + target);
+
       if (!Directory.Exists(source))
         throw new DirectoryNotFoundException("Source directory does not exist.");
 

@@ -266,16 +266,17 @@ namespace HXE
         profile.Load();
 
         Info("Saved profile data to the filesystem");
-        Info("Patched video resolution width  - " + profile.Video.Resolution.Width);
-        Info("Patched video resolution height - " + profile.Video.Resolution.Height);
-        Info("Patched video frame rate        - " + profile.Video.FrameRate);
-        Info("Patched video quality           - " + profile.Video.Particles);
-        Info("Patched video texture           - " + profile.Video.Quality);
-        Info("Patched video effect - specular - " + profile.Video.Effects.Specular);
-        Info("Patched video effect - shadows  - " + profile.Video.Effects.Shadows);
-        Info("Patched video effect - decals   - " + profile.Video.Effects.Decals);
-        Info("Patched audio quality           - " + profile.Audio.Quality);
-        Info("Patched audio variety           - " + profile.Audio.Variety);
+
+        Debug("Patched video resolution width  - " + profile.Video.Resolution.Width);
+        Debug("Patched video resolution height - " + profile.Video.Resolution.Height);
+        Debug("Patched video frame rate        - " + profile.Video.FrameRate);
+        Debug("Patched video quality           - " + profile.Video.Particles);
+        Debug("Patched video texture           - " + profile.Video.Quality);
+        Debug("Patched video effect - specular - " + profile.Video.Effects.Specular);
+        Debug("Patched video effect - shadows  - " + profile.Video.Effects.Shadows);
+        Debug("Patched video effect - decals   - " + profile.Video.Effects.Decals);
+        Debug("Patched audio quality           - " + profile.Audio.Quality);
+        Debug("Patched audio variety           - " + profile.Audio.Variety);
       }
       catch (Exception e)
       {
@@ -321,8 +322,9 @@ namespace HXE
         RootInitc.Save();
 
         Info("Saved campaign progress to the initiation file");
-        Info("Resumed campaign mission    - " + playerDat.Mission);
-        Info("Resumed campaign difficulty - " + playerDat.Difficulty);
+
+        Debug("Resumed campaign mission    - " + playerDat.Mission);
+        Debug("Resumed campaign difficulty - " + playerDat.Difficulty);
       }
       catch (UnauthorizedAccessException e)
       {
@@ -365,12 +367,13 @@ namespace HXE
         RootInitc.Save();
 
         Info("Saved post-processing settings to the initiation file");
-        Info("Applied PP settings for MXAO        - " + RootInitc.PostProcessing.Mxao);
-        Info("Applied PP settings for DOF         - " + RootInitc.PostProcessing.Dof);
-        Info("Applied PP settings for Motion Blur - " + RootInitc.PostProcessing.MotionBlur);
-        Info("Applied PP settings for Lens Flares - " + RootInitc.PostProcessing.DynamicLensFlares);
-        Info("Applied PP settings for Volumetrics - " + RootInitc.PostProcessing.Volumetrics);
-        Info("Applied PP settings for Lens Dirt   - " + RootInitc.PostProcessing.LensDirt);
+
+        Debug("Applied PP settings for MXAO        - " + RootInitc.PostProcessing.Mxao);
+        Debug("Applied PP settings for DOF         - " + RootInitc.PostProcessing.Dof);
+        Debug("Applied PP settings for Motion Blur - " + RootInitc.PostProcessing.MotionBlur);
+        Debug("Applied PP settings for Lens Flares - " + RootInitc.PostProcessing.DynamicLensFlares);
+        Debug("Applied PP settings for Volumetrics - " + RootInitc.PostProcessing.Volumetrics);
+        Debug("Applied PP settings for Lens Dirt   - " + RootInitc.PostProcessing.LensDirt);
       }
       catch (UnauthorizedAccessException e)
       {

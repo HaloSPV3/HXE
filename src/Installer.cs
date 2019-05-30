@@ -149,7 +149,6 @@ namespace HXE
       }.WriteAllText(target);
 
       Info("Wrote the target path to the installation file");
-
       Done("Installation routine has been successfully completed");
     }
   }
