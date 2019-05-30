@@ -127,28 +127,6 @@ namespace HXE
           Info("Deleted existing target package - " + packageName);
         }
 
-        using (var archive = Open(packagePath, Create))
-        {
-          var task = new Task(() => { archive.CreateEntryFromFile(file.FullName, fileName, compression); });
-
-          /**
-           * While the task is running, we inform the user that is indeed running by updating the console. Aren't we
-           * nice people?
-           */
-
-          task.Start();
-
-          Wait("Started package deflation - " + packageName + " - " + fileName + " ...");
-
-          while (!task.IsCompleted)
-          {
-            System.Console.Write(Resources.Progress);
-            Thread.Sleep(1000);
-          }
-
-          Info("Successfully finished package deflation");
-        }
-
         /**
          * We record the package's name on the filesystem to the manifest. This permits the INSTALLER to seek the
          * package within the source directory, and then extract its data to the target directory.
@@ -160,7 +138,6 @@ namespace HXE
         manifest.Packages.Add(new Manifest.Package
         {
           Name = packageName,
-          Size = new FileInfo(packagePath).Length,
           Entry = new Manifest.Package.PackageEntry
           {
             Name = fileName,
@@ -187,9 +164,44 @@ namespace HXE
           }
         });
 
-        Info("Successfully added package entry to the manifest");
+        Info("Successfully added package entry to the manifest - " + packageName);
 
         i++;
+      }
+
+      foreach (var package in manifest.Packages)
+      {
+        var packagePath = Path.Combine(target, package.Name);
+
+        using (var archive = Open(packagePath, Create))
+        {
+          var task = new Task(() =>
+          {
+            var entryPath = Path.Combine(source, package.Entry.Path, package.Entry.Name);
+            archive.CreateEntryFromFile(entryPath, package.Entry.Name, compression);
+          });
+
+          /**
+           * While the task is running, we inform the user that is indeed running by updating the console. Aren't we
+           * nice people?
+           */
+
+          task.Start();
+
+          Wait("Started package deflation - " + package.Name + " - " + package.Entry.Name + " ...");
+
+          while (!task.IsCompleted)
+          {
+            System.Console.Write(Resources.Progress);
+            Thread.Sleep(1000);
+          }
+
+          Info("Successfully finished package deflation");
+
+          package.Size = new FileInfo(packagePath).Length;
+
+          Info("Package size - " + package.Size);
+        }
       }
 
       if (!manifest.Exists())
