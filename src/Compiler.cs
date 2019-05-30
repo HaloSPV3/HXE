@@ -87,8 +87,8 @@ namespace HXE
 
       if (System.IO.File.Exists(Path.Combine(source, "speedwagon")))
       {
-        Warn("No compression will be applied!");
         compression = NoCompression;
+        Info("No compression will be applied!");
       }
 
       Info("Retrieved list of files - creating packages");
@@ -120,6 +120,7 @@ namespace HXE
         if (System.IO.File.Exists(packagePath))
         {
           System.IO.File.Delete(packagePath);
+
           Info("Deleted existing target package - " + packageName);
         }
 
@@ -133,6 +134,7 @@ namespace HXE
            */
 
           task.Start();
+
           Wait("Started package deflation - " + packageName + " - " + fileName + " ...");
 
           while (!task.IsCompleted)
