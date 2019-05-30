@@ -116,6 +116,7 @@ namespace HXE
         }
 
         Directory.CreateDirectory(directory);
+
         Info("Gracefully created directory - " + package.Entry.Path);
 
         var task = new Task(() => { ZipFile.ExtractToDirectory(archive, directory); });
@@ -126,6 +127,7 @@ namespace HXE
          */
 
         task.Start();
+
         Wait("Started package inflation - " + package.Name + " - " + package.Entry.Name + " ...");
 
         while (!task.IsCompleted)
