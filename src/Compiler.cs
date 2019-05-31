@@ -164,10 +164,13 @@ namespace HXE
           }
         });
 
-        Info("Successfully added package entry to the manifest - " + packageName);
+        Info("Successfully finished package inference - " + packageName + " - " + fileName);
 
         i++;
       }
+
+      var c = 1;                       /* current package */
+      var t = manifest.Packages.Count; /* total progress */
 
       foreach (var package in manifest.Packages)
       {
@@ -194,7 +197,7 @@ namespace HXE
 
           task.Start();
 
-          Wait("Started package deflation - " + package.Name + " - " + package.Entry.Name + " ...");
+          Wait($"Started package deflation - [{(c * 200 + t) / (t * 2):D3}%] - {package.Name} - {package.Entry.Name} ");
 
           while (!task.IsCompleted)
           {
@@ -202,12 +205,14 @@ namespace HXE
             Thread.Sleep(1000);
           }
 
-          Info("Successfully finished package deflation");
-
           package.Size = new FileInfo(packagePath).Length;
 
           Info("Package size - " + package.Size);
         }
+
+        Info("Successfully finished package deflation");
+
+        c++;
       }
 
       if (!manifest.Exists())
