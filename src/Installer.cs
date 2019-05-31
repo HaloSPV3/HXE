@@ -103,6 +103,9 @@ namespace HXE
         Info("Length matches - " + package.Name);
       }
 
+      var c = 1;                       /* current package */
+      var t = manifest.Packages.Count; /* total progress */
+
       foreach (var package in manifest.Packages)
       {
         var archive   = Path.Combine(source,    package.Name);
@@ -128,7 +131,7 @@ namespace HXE
 
         task.Start();
 
-        Wait("Started package inflation - " + package.Name + " - " + package.Entry.Name + " ...");
+        Wait($"Started package inflation - [{(c * 200 + t) / (t * 2):D3}%] - {package.Name} - {package.Entry.Name} ");
 
         while (!task.IsCompleted)
         {
@@ -136,7 +139,11 @@ namespace HXE
           Thread.Sleep(1000);
         }
 
+        Info("Entry size - " + new FileInfo(file).Length);
+
         Info("Successfully finished package inflation");
+
+        c++;
       }
 
       manifest.CopyTo(target);
