@@ -220,7 +220,8 @@ namespace HXE
             Thread.Sleep(1000);
           }
 
-          Delete(backup);
+          if (Exists(backup))
+            Delete(backup);
 
           Done("Asset install has been successfully completed");
         }
