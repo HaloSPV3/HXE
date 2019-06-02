@@ -205,7 +205,8 @@ namespace HXE
 
         try
         {
-          Move(target, backup);
+          if (Exists(target))
+            Move(target, backup);
 
           var task = new Task(() => { ExtractToDirectory(File, directory); });
 
