@@ -76,9 +76,11 @@ namespace HXE
       {
         Info("Inferred web request manifest - " + uri);
 
-        using (var client = new WebClient())
+        using (var wr = (HttpWebResponse) WebRequest.Create(uri).GetResponse())
+        using (var rs = wr.GetResponseStream())
+        using (var sr = new StreamReader(rs ?? throw new NullReferenceException("No response for manifest.")))
         {
-          data = client.DownloadString(uri);
+          data = sr.ReadToEnd();
         }
       }
 
