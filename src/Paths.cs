@@ -19,6 +19,7 @@
  */
 
 using static System.Environment;
+using static System.Environment.SpecialFolder;
 using static System.IO.Path;
 
 namespace HXE
@@ -28,38 +29,73 @@ namespace HXE
   /// </summary>
   public static class Paths
   {
-    /// <summary>
-    ///   Files on the filesystem that HCE/SPV3/HXE reads/writes.
-    /// </summary>
-    public static class Files
+    public class HXE
     {
-      public static readonly string Manifest      = $"0x{0:X8}.bin"; /* 0x0000000.bin */       /* hxe */
-      public static readonly string Installation  = Combine(Directories.HXE, "install.txt");   /* hxe */
-      public static readonly string Configuration = Combine(Directories.HXE, "loader.bin");    /* hxe */
-      public static readonly string Exception     = Combine(Directories.HXE, "exception.log"); /* hxe */
-
-      public const string Executable  = "haloce.exe";           /* hce/spv3 */
-      public const string Initiation  = "initc.txt";            /* hce/spv3 */
-      public const string Progress    = "savegame.bin";         /* hce/spv3 */
-      public const string Profile     = "blam.sav";             /* hce/spv3 */
-      public const string LastProfile = "lastprof.txt";         /* hce/spv3 */
-      public const string OpenSauce   = "OS_Settings.User.xml"; /* hce/spv3 */
-      public const string Chimera     = "chimera.bin";          /* hce/spv3 */
+      public static readonly string Directory     = Combine(GetFolderPath(ApplicationData), "HXE");
+      public static readonly string Configuration = Combine(Directory,                      "loader.bin");
+      public static readonly string Exception     = Combine(Directory,                      "exception.log");
+      public static readonly string Installation  = Combine(Directory,                      "install.txt");
+      public static readonly string Manifest      = $"0x{0:X8}.bin"; /* 0x0000000.bin */
     }
 
-    /// <summary>
-    ///   Directories on the filesystem that HCE/SPV3/HXE accesses.
-    /// </summary>
-    public static class Directories
+    public class HCE
     {
-      public static readonly string HXE = Combine(GetFolderPath(SpecialFolder.ApplicationData), "HXE"); /* hxe*/
+      public const           string Executable = "haloce.exe";
+      public const           string Initiation = "initc.txt";
+      public static readonly string Directory  = Combine(GetFolderPath(Personal), "My Games", "Halo CE");
 
-      public const string Profiles  = "savegames"; /* hce/spv3 */
-      public const string OpenSauce = "OpenSauce"; /* hce/spv3 */
+      public static readonly string Profiles    = Combine(Directory, "savegames");
+      public static readonly string LastProfile = Combine(Directory, "lastprof.txt");
+      public static readonly string Chimera     = Combine(Directory, "chimera.bin");
+      public static readonly string OpenSauce   = Combine(Directory, "OpenSauce", "OS_Settings.User.xml");
 
-      public static readonly string Personal = GetFolderPath(SpecialFolder.Personal); /* hce*/
-      public static readonly string Games    = Combine(Personal, "My Games");         /* hce*/
-      public static readonly string HCE      = Combine(Games,    "Halo CE");          /* hce*/
+      public static string Profile(string profile)
+      {
+        return Combine(Directory, Profiles, profile, "blam.sav");
+      }
+
+      public static string Progress(string profile)
+      {
+        return Combine(Directory, Profiles, profile, "savegame.bin");
+      }
+    }
+
+    public class SPV3 : HCE
+    {
+      public new static readonly string Directory = Combine(GetFolderPath(ApplicationData), "SPV3");
+    }
+
+    public class Custom
+    {
+      public static string Profiles(string directory)
+      {
+        return Combine(directory, "savegames");
+      }
+
+      public static string LastProfile(string directory)
+      {
+        return Combine(directory, "lastprof.txt");
+      }
+
+      public static string Chimera(string directory)
+      {
+        return Combine(directory, "chimera.bin");
+      }
+
+      public static string OpenSauce(string directory)
+      {
+        return Combine(directory, "OpenSauce", "OS_Settings.User.xml");
+      }
+
+      public static string Profile(string directory, string profile)
+      {
+        return Combine(directory, Profiles(directory), profile, "blam.sav");
+      }
+
+      public static string Progress(string directory, string profile)
+      {
+        return Combine(directory, Profiles(directory), profile, "savegame.bin");
+      }
     }
   }
 }
