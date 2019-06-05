@@ -44,6 +44,7 @@ namespace HXE
       public static readonly string Configuration = Combine(Directories.HXE,       "loader.bin");
       public static readonly string Exception     = Combine(Directories.HXE,       "exception.log");
       public static readonly string OpenSauce     = Combine(Directories.OpenSauce, "OS_Settings.User.xml");
+      public static readonly string Chimera       = Combine(Directories.HCE,       "chimera.bin");
     }
 
     /// <summary>
