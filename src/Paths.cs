@@ -24,41 +24,42 @@ using static System.IO.Path;
 namespace HXE
 {
   /// <summary>
-  ///   Lists all of the files & directories on the filesystem that SPV3 deals with.
+  ///   Lists all of the files & directories on the filesystem that HCE/SPV3/HXE deals with.
   /// </summary>
   public static class Paths
   {
     /// <summary>
-    ///   Files on the filesystem that SPV3 reads/writes.
+    ///   Files on the filesystem that HCE/SPV3/HXE reads/writes.
     /// </summary>
     public static class Files
     {
-      public const string Executable  = "haloce.exe";
-      public const string Initiation  = "initc.txt";
-      public const string Progress    = "savegame.bin";
-      public const string Profile     = "blam.sav";
-      public const string LastProfile = "lastprof.txt";
+      public static readonly string Manifest      = $"0x{0:X8}.bin"; /* 0x0000000.bin */       /* hxe */
+      public static readonly string Installation  = Combine(Directories.HXE, "install.txt");   /* hxe */
+      public static readonly string Configuration = Combine(Directories.HXE, "loader.bin");    /* hxe */
+      public static readonly string Exception     = Combine(Directories.HXE, "exception.log"); /* hxe */
 
-      public static readonly string Manifest      = $"0x{0:X8}.bin"; /* 0x0000000.bin */
-      public static readonly string Installation  = Combine(Directories.HXE,       "install.txt");
-      public static readonly string Configuration = Combine(Directories.HXE,       "loader.bin");
-      public static readonly string Exception     = Combine(Directories.HXE,       "exception.log");
-      public static readonly string OpenSauce     = Combine(Directories.OpenSauce, "OS_Settings.User.xml");
-      public static readonly string Chimera       = Combine(Directories.HCE,       "chimera.bin");
+      public const string Executable  = "haloce.exe";           /* hce/spv3 */
+      public const string Initiation  = "initc.txt";            /* hce/spv3 */
+      public const string Progress    = "savegame.bin";         /* hce/spv3 */
+      public const string Profile     = "blam.sav";             /* hce/spv3 */
+      public const string LastProfile = "lastprof.txt";         /* hce/spv3 */
+      public const string OpenSauce   = "OS_Settings.User.xml"; /* hce/spv3 */
+      public const string Chimera     = "chimera.bin";          /* hce/spv3 */
     }
 
     /// <summary>
-    ///   Directories on the filesystem that SPV3 accesses.
+    ///   Directories on the filesystem that HCE/SPV3/HXE accesses.
     /// </summary>
     public static class Directories
     {
-      public const string Profiles = "savegames";
+      public static readonly string HXE = Combine(GetFolderPath(SpecialFolder.ApplicationData), "HXE"); /* hxe*/
 
-      public static readonly  string HXE       = Combine(GetFolderPath(SpecialFolder.ApplicationData), "HXE");
-      private static readonly string Personal  = GetFolderPath(SpecialFolder.Personal);
-      private static readonly string Games     = Combine(Personal, "My Games");
-      public static readonly  string HCE       = Combine(Games,    "Halo CE");
-      public static readonly  string OpenSauce = Combine(HCE,      "OpenSauce");
+      public const string Profiles  = "savegames"; /* hce/spv3 */
+      public const string OpenSauce = "OpenSauce"; /* hce/spv3 */
+
+      public static readonly string Personal = GetFolderPath(SpecialFolder.Personal); /* hce*/
+      public static readonly string Games    = Combine(Personal, "My Games");         /* hce*/
+      public static readonly string HCE      = Combine(Games,    "Halo CE");          /* hce*/
     }
   }
 }
