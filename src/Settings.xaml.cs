@@ -27,7 +27,7 @@ namespace HXE
   /// </summary>
   public partial class Settings
   {
-    private readonly Configuration _configuration = (Configuration) Paths.HXE.Configuration;
+    private readonly Configuration _configuration = (Configuration) Paths.Configuration;
 
     public Settings()
     {
