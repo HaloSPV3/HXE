@@ -29,14 +29,11 @@ namespace HXE
   /// </summary>
   public static class Paths
   {
-    public class HXE
-    {
-      public static readonly string Directory     = Combine(GetFolderPath(ApplicationData), "HXE");
-      public static readonly string Configuration = Combine(Directory,                      "loader.bin");
-      public static readonly string Exception     = Combine(Directory,                      "exception.log");
-      public static readonly string Installation  = Combine(Directory,                      "install.txt");
-      public static readonly string Manifest      = $"0x{0:X8}.bin"; /* 0x0000000.bin */
-    }
+    public static readonly string Directory     = Combine(GetFolderPath(ApplicationData), "HXE");
+    public static readonly string Configuration = Combine(Directory,                      "loader.bin");
+    public static readonly string Exception     = Combine(Directory,                      "exception.log");
+    public static readonly string Installation  = Combine(Directory,                      "install.txt");
+    public static readonly string Manifest      = $"0x{0:X8}.bin"; /* 0x0000000.bin */
 
     public class HCE
     {

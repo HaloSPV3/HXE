@@ -65,7 +65,7 @@ namespace HXE
 
       Info("Gracefully created target directory");
 
-      var manifest = (Manifest) Path.Combine(source, Paths.HXE.Manifest);
+      var manifest = (Manifest) Path.Combine(source, Paths.Manifest);
 
       if (!manifest.Exists())
         throw new FileNotFoundException("Manifest file does not exist in the source directory.");
@@ -145,7 +145,7 @@ namespace HXE
 
       new File
       {
-        Path = Paths.HXE.Installation
+        Path = Paths.Installation
       }.WriteAllText(target);
 
       Info("Wrote the target path to the installation file");

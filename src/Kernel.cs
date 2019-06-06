@@ -51,7 +51,7 @@ namespace HXE
     /// </summary>
     public static void Bootstrap(Executable executable)
     {
-      var configuration = (Configuration) Paths.HXE.Configuration;
+      var configuration = (Configuration) Paths.Configuration;
 
       if (!configuration.Exists())
         configuration.Save(); /* gracefully create new configuration */
@@ -155,7 +155,7 @@ namespace HXE
        *            + ----------------------------------- Working directory
        */
 
-      var manifest = (Manifest) Combine(CurrentDirectory, Paths.HXE.Manifest);
+      var manifest = (Manifest) Combine(CurrentDirectory, Paths.Manifest);
 
       /**
        * This shouldn't be an issue in conventional HCE installations; however, for existing/current SPV3 installations

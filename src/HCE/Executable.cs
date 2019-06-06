@@ -109,10 +109,10 @@ namespace HXE.HCE
        */
 
       {
-        if (!System.IO.File.Exists(Paths.HXE.Installation))
+        if (!System.IO.File.Exists(Paths.Installation))
           throw new FileNotFoundException("Could not detect executable on the filesystem.");
 
-        var spv3exe = System.IO.Path.Combine(System.IO.File.ReadAllText(Paths.HXE.Installation).TrimEnd('\n'), hce);
+        var spv3exe = System.IO.Path.Combine(System.IO.File.ReadAllText(Paths.Installation).TrimEnd('\n'), hce);
 
         if (System.IO.File.Exists(spv3exe))
           return (Executable) spv3exe;

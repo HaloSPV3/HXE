@@ -70,7 +70,7 @@ namespace HXE
     /// </param>
     private static void InvokeProgram(string[] args)
     {
-      Directory.CreateDirectory(Paths.HXE.Directory);
+      Directory.CreateDirectory(Paths.Directory);
 
       var hce = new Executable();
 
@@ -163,7 +163,7 @@ namespace HXE
         {
           Error(e.Message);
           System.Console.Error.WriteLine("\n\n" + e.StackTrace);
-          WriteAllText(Paths.HXE.Exception, e.ToString());
+          WriteAllText(Paths.Exception, e.ToString());
           WithCode(Code.Exception);
         }
       }
