@@ -25,7 +25,7 @@ using static System.IO.Path;
 namespace HXE
 {
   /// <summary>
-  ///   Lists all of the files & directories on the filesystem that HCE/SPV3/HXE deals with.
+  ///   Lists all of the files & directories on the filesystem that HCE/HXE deals with.
   /// </summary>
   public static class Paths
   {
@@ -58,11 +58,6 @@ namespace HXE
       {
         return Combine(Directory, Profiles, profile, "savegame.bin");
       }
-    }
-
-    public class SPV3 : HCE
-    {
-      public new static readonly string Directory = Combine(GetFolderPath(ApplicationData), "SPV3");
     }
 
     public class Custom
