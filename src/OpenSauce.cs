@@ -283,9 +283,9 @@ namespace HXE
 
             public class WeaponPosition
             {
-              public long I { get; set; } = 0;
-              public long J { get; set; } = 0;
-              public long K { get; set; } = 0;
+              public double I { get; set; } = 0;
+              public double J { get; set; } = 0;
+              public double K { get; set; } = 0;
             }
           }
         }
@@ -300,8 +300,8 @@ namespace HXE
 
       public class HUDHUDScale
       {
-        public long X { get; set; } = 0;
-        public long Y { get; set; } = 0;
+        public double X { get; set; } = 0;
+        public double Y { get; set; } = 0;
       }
     }
   }
