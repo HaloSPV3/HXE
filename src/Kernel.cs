@@ -131,7 +131,11 @@ namespace HXE
         ".cfg",
         ".ini",
         ".xml",
-        ".m"
+        ".m",
+        ".pdb",
+        ".sav",
+        ".dll",
+        ".ico"
       };
 
       /**
