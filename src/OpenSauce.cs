@@ -24,6 +24,7 @@ using System.IO;
 using System.Xml.Serialization;
 using static System.Math;
 using static System.Windows.SystemParameters;
+using static HXE.OpenSauce.OpenSauceHUD;
 using static HXE.OpenSauce.OpenSauceObjects.ObjectsWeapon.PositionWeapon;
 
 namespace HXE
@@ -70,6 +71,29 @@ namespace HXE
         HUD        = serialised.HUD;
         Objects    = serialised.Objects;
       }
+    }
+
+    /// <summary>
+    ///   Applies DOOM style weapons alignment and forces the HUD to be enabled.
+    /// </summary>
+    public void ApplyDOOM()
+    {
+      Objects.Weapon.ApplyDOOM();
+      HUD.ShowHUD = true;
+    }
+
+    /// <summary>
+    ///   Applies DOOM style weapons alignment and patches invisible HUD.
+    /// </summary>
+    public void ApplyBlind()
+    {
+      Objects.Weapon.ApplyBlind();
+      HUD.ShowHUD = false;
+      HUD.HUDScale = new HUDHUDScale
+      {
+        X = 1,
+        Y = 1
+      };
     }
 
     /// <summary>
@@ -278,20 +302,6 @@ namespace HXE
       public class ObjectsWeapon
       {
         public List<PositionWeapon> Positions { get; set; } = new List<PositionWeapon>();
-
-        [XmlType("Weapon")]
-        public class PositionWeapon
-        {
-          public string         Name     { get; set; } = string.Empty;
-          public WeaponPosition Position { get; set; } = new WeaponPosition();
-
-          public class WeaponPosition
-          {
-            public double I { get; set; } = 0;
-            public double J { get; set; } = 0;
-            public double K { get; set; } = 0;
-          }
-        }
 
         /// <summary>
         ///   Applies DOOM style weapons alignment.
@@ -1076,6 +1086,20 @@ namespace HXE
             }
           };
         }
+
+        [XmlType("Weapon")]
+        public class PositionWeapon
+        {
+          public string         Name     { get; set; } = string.Empty;
+          public WeaponPosition Position { get; set; } = new WeaponPosition();
+
+          public class WeaponPosition
+          {
+            public double I { get; set; }
+            public double J { get; set; }
+            public double K { get; set; }
+          }
+        }
       }
     }
 
@@ -1087,8 +1111,8 @@ namespace HXE
 
       public class HUDHUDScale
       {
-        public double X { get; set; } = 0;
-        public double Y { get; set; } = 0;
+        public double X { get; set; }
+        public double Y { get; set; }
       }
     }
   }
