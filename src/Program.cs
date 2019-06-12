@@ -95,6 +95,12 @@ namespace HXE
             Exit(0);
           }
         )
+        .Add("positions", "Opens positions GUI",
+          s =>
+          {
+            new Application().Run(new Positions());
+            Exit(0);
+          })
         .Add("load", "Initiates HCE/SPV3",
           s => Run(() => { Kernel.Bootstrap(hce); }))
         .Add("install=", "Installs HCE/SPV3 to destination",
@@ -107,13 +113,6 @@ namespace HXE
             var update = new Update();
             update.Import(s);
             update.Commit();
-          }))
-        .Add("positions=", "Converts OS XML to positions.bin",
-          s => Run(() =>
-          {
-            var openSauce = (OpenSauce) s;
-            openSauce.Load();
-            openSauce.Objects.Weapon.Save();
           }))
         .Add("console", "Loads HCE with console mode",
           s => hce.Debug.Console = true)
