@@ -108,6 +108,13 @@ namespace HXE
             update.Import(s);
             update.Commit();
           }))
+        .Add("positions=", "Converts OS XML to positions.bin",
+          s => Run(() =>
+          {
+            var openSauce = (OpenSauce) s;
+            openSauce.Load();
+            openSauce.Objects.Weapon.Save();
+          }))
         .Add("console", "Loads HCE with console mode",
           s => hce.Debug.Console = true)
         .Add("devmode", "Loads HCE with developer mode",
