@@ -135,8 +135,8 @@ namespace HXE.SPV3
       if (PostProcessing.DynamicLensFlares)
         output.AppendLine("set display_precache_progress false");
 
-      if (!PostProcessing.LensDirt)
-        output.AppendLine("set use_super_remote_players_action_update true");
+      if (PostProcessing.LensDirt)
+        output.AppendLine("set use_super_remote_players_action_update false");
 
       if (!PostProcessing.FilmGrain)
         output.AppendLine("set use_new_vehicle_update_scheme true");
