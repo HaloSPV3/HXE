@@ -21,8 +21,11 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Compression;
 using System.Xml.Serialization;
+using static System.IO.Compression.CompressionMode;
 using static System.Math;
+using static System.Text.Encoding;
 using static System.Windows.SystemParameters;
 using static HXE.OpenSauce.OpenSauceHUD;
 using static HXE.OpenSauce.OpenSauceObjects.ObjectsWeapon.PositionWeapon;
@@ -302,6 +305,68 @@ namespace HXE
       public class ObjectsWeapon
       {
         public List<PositionWeapon> Positions { get; set; } = new List<PositionWeapon>();
+
+        /// <summary>
+        ///   Loads data from the file specified in the <see cref="Paths.Positions" /> property.
+        /// </summary>
+        public void Load()
+        {
+          Load(Paths.Positions);
+        }
+
+        /// <summary>
+        ///   Saves data to the file specified in the <see cref="Paths.Positions" /> property.
+        /// </summary>
+        public void Save()
+        {
+          Save(Paths.Positions);
+        }
+
+        /// <summary>
+        ///   Loads data from the file specified in the inbound path.
+        /// </summary>
+        /// <param name="path">
+        ///   Path of the file.
+        /// </param>
+        public void Load(string path)
+        {
+          using (var inflatedStream = new MemoryStream())
+          using (var deflatedStream = new MemoryStream(System.IO.File.ReadAllBytes(path)))
+          using (var compressStream = new DeflateStream(deflatedStream, Decompress))
+          {
+            compressStream.CopyTo(inflatedStream);
+            compressStream.Close();
+
+            using (var reader = new StringReader(Unicode.GetString(inflatedStream.ToArray())))
+            {
+              Positions = (List<PositionWeapon>) new XmlSerializer(typeof(List<PositionWeapon>)).Deserialize(reader);
+            }
+          }
+        }
+
+        /// <summary>
+        ///   Saves data to the file specified in the inbound path.
+        /// </summary>
+        /// <param name="path">
+        ///   Path of the file.
+        /// </param>
+        public void Save(string path)
+        {
+          using (var writer = new StringWriter())
+          {
+            var serialiser = new XmlSerializer(typeof(List<PositionWeapon>));
+            serialiser.Serialize(writer, Positions);
+
+            using (var deflatedStream = new MemoryStream())
+            using (var inflatedStream = new MemoryStream(Unicode.GetBytes(writer.ToString())))
+            using (var compressStream = new DeflateStream(deflatedStream, Compress))
+            {
+              inflatedStream.CopyTo(compressStream);
+              compressStream.Close();
+              System.IO.File.WriteAllBytes(path, deflatedStream.ToArray());
+            }
+          }
+        }
 
         /// <summary>
         ///   Applies DOOM style weapons alignment.
