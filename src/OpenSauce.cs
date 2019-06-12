@@ -21,9 +21,9 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Windows;
 using System.Xml.Serialization;
 using static System.Math;
+using static System.Windows.SystemParameters;
 using static HXE.OpenSauce.OpenSauceObjects.ObjectsWeapon.PositionWeapon;
 
 namespace HXE
@@ -194,7 +194,12 @@ namespace HXE
       public bool   IgnoreFOVChangeInCinematics { get; set; } = true;
       public bool   IgnoreFOVChangeInMainMenu   { get; set; } = true;
 
-      public void CalculateFOV()
+      public double CalculateFOV()
+      {
+        return CalculateFOV(PrimaryScreenWidth, PrimaryScreenHeight);
+      }
+
+      public double CalculateFOV(double width, double height)
       {
         double Degrees(double value)
         {
@@ -211,8 +216,8 @@ namespace HXE
          * This gets me nostalgic!
          */
 
-        var w = SystemParameters.PrimaryScreenWidth;
-        var h = SystemParameters.PrimaryScreenHeight;
+        var w = width;
+        var h = height;
 
         var a = Degrees(w  / h);
         var b = Degrees(4  / 3);
@@ -224,6 +229,8 @@ namespace HXE
         var y              = Degrees(2 * x) - dirtyResultFix;
 
         FieldOfView = Truncate(y * 100) / 100;
+
+        return FieldOfView;
       }
     }
 
