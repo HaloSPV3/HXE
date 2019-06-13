@@ -140,7 +140,7 @@ namespace HXE
       {
         progress?.Report(new Status
         {
-          Current     = c,
+          Current     = c - 1,
           Total       = t,
           Description = $"Updating: {asset.Path}/{asset.Name}"
         });
