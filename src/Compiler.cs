@@ -238,8 +238,10 @@ namespace HXE
        * For subsequent installation convenience, we will make a copy of the current CLI to the target directory.
        */
 
-      var cli = (File) GetCurrentProcess().MainModule?.FileName;
-      cli.CopyTo(target);
+      var cli = (File) Combine(Environment.CurrentDirectory, Paths.Executable);
+
+      if (cli.Exists())
+        cli.CopyTo(target);
 
       Info("Copied current HXE assembly to the target directory");
       Done("Compilation routine has been successfully completed");

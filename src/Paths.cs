@@ -29,7 +29,8 @@ namespace HXE
   /// </summary>
   public static class Paths
   {
-    public const string Manifest = "manifest.bin";
+    public const string Executable = "hxe.exe";
+    public const string Manifest   = "manifest.bin";
 
     public static readonly string Directory     = Combine(GetFolderPath(ApplicationData), "HXE");
     public static readonly string Configuration = Combine(Directory,                      "kernel.bin");
