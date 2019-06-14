@@ -25,6 +25,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using HXE.Properties;
 using static System.Diagnostics.Process;
+using static System.Guid;
 using static System.IO.Compression.CompressionLevel;
 using static System.IO.Compression.ZipArchiveMode;
 using static System.IO.Compression.ZipFile;
@@ -88,7 +89,6 @@ namespace HXE
 
       var manifest    = (Manifest) Combine(target, Paths.Manifest);
       var files       = new DirectoryInfo(source).GetFiles("*", SearchOption.AllDirectories);
-      var i           = 0x01; /* 0x00 = manifest */
       var compression = Optimal;
 
       /**
@@ -123,7 +123,7 @@ namespace HXE
 
       foreach (var file in files)
       {
-        var packageName = $"0x{i:X8}.bin";
+        var packageName = NewGuid() + ".bin";
         var packagePath = Combine(target, packageName);
         var fileName    = file.Name;
 
@@ -172,8 +172,6 @@ namespace HXE
         });
 
         Info("Successfully finished package inference - " + packageName + " - " + fileName);
-
-        i++;
       }
 
       var c = 1;                       /* current package */
