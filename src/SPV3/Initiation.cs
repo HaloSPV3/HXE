@@ -20,6 +20,7 @@
 
 using System;
 using System.Text;
+using static System.IO.File;
 using static HXE.Console;
 using static HXE.SPV3.PostProcessing;
 
@@ -72,8 +73,26 @@ namespace HXE.SPV3
         }
       }
 
+      /**
+       * The SPV3 campaign maps each have an ID assigned to them. SPV3.3 breaks the compatibility by incrementing all of
+       * the IDs.
+       *
+       * To handle permit backwards compatibility with 3.2 and below, we conditionally decrement the mission ID that
+       * will be written to the initiation file.
+       *
+       * The decrementation is determined by the presence of the Paths.SPV33 file in the working directory. If the file
+       * is not found, then it's possible that this loader is being used on SPV3.2 and below, and thus we should use the
+       * old (decremented) mission IDs.
+       */
+      int GetMission()
+      {
+        return System.IO.File.Exists(Paths.Version)
+          ? (int) Mission      /* compatibility with >=SPV3.3 */
+          : (int) Mission - 1; /* compatibility with <=SPV3.2 */
+      }
+
+      var mission      = GetMission();
       var difficulty   = GetDifficulty();
-      var mission      = (int) Mission;
       var autoaim      = PlayerAutoaim ? 1 : 0;
       var magnetism    = PlayerMagnetism ? 1 : 0;
       var cinematic    = CinematicBars ? 0 : 1;
@@ -115,6 +134,7 @@ namespace HXE.SPV3
       var ld   = PostProcessing.LensDirt;
       var fg   = PostProcessing.FilmGrain;
       var hv   = PostProcessing.HudVisor;
+      var ssr  = PostProcessing.SSR;
 
       /* motion blur */
       {
@@ -185,11 +205,12 @@ namespace HXE.SPV3
         output.AppendLine($"set cl_remote_player_action_queue_tick_limit {option}");
       }
 
-      output.AppendLine("set rasterizer_soft_filter "                 + (vl ? "true" : "false")); /* volumetrics    */
-      output.AppendLine("set display_precache_progress "              + (df ? "true" : "false")); /* dynamic flares */
-      output.AppendLine("set use_super_remote_players_action_update " + (ld ? "false" : "true")); /* lens dirt      */
-      output.AppendLine("set use_new_vehicle_update_scheme "          + (fg ? "false" : "true")); /* film grain     */
-      output.AppendLine("set multiplayer_draw_teammates_names "       + (hv ? "false" : "true")); /* hud visor      */
+      output.AppendLine("set rasterizer_soft_filter "                 + (vl ? "true" : "false"));  /* volumetrics    */
+      output.AppendLine("set display_precache_progress "              + (df ? "true" : "false"));  /* dynamic flares */
+      output.AppendLine("set use_super_remote_players_action_update " + (ld ? "false" : "true"));  /* lens dirt      */
+      output.AppendLine("set use_new_vehicle_update_scheme "          + (fg ? "false" : "true"));  /* film grain     */
+      output.AppendLine("set multiplayer_draw_teammates_names "       + (hv ? "false" : "true"));  /* hud visor      */
+      output.AppendLine("set error_suppress_all "                     + (ssr ? "true" : "false")); /* ssr            */
 
       Info("Saving initiation data to the initc.txt file");
       WriteAllText(output.ToString());

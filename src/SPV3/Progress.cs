@@ -62,7 +62,7 @@ namespace HXE.SPV3
       }
 
       /**
-       * Infers the difficulty and returns the Campaign.Difficulty mission.
+       * Infers the mission and returns the Campaign.Mission representation.
        */
 
       Mission GetMission(BinaryReader reader)
@@ -108,6 +108,8 @@ namespace HXE.SPV3
             return Mission.LumoriaB;
           case "spv3_lumoria_cd":
             return Mission.LumoriaCd;
+          case "spv3a05":
+            return Mission.Spv3A05;
           default:
             return Mission.Spv3A10;
         }
