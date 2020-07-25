@@ -62,7 +62,7 @@ namespace HXE
     ///   --console           Loads HCE           with console    mode
     ///   --devmode           Loads HCE           with developer  mode
     ///   --screenshot        Loads HCE           with screenshot ability
-    ///   --window            Loads HCE in window mode
+    ///   --window            Loads HCE           in window mode
     ///   --nogamma           Loads HCE           without gamma overriding
     ///   --adapter=VALUE     Loads HCE           on monitor    X
     ///   --path=VALUE        Loads HCE           with custom   profile path

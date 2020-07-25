@@ -183,7 +183,6 @@ namespace HXE
          *
          * -   Player Auto-aim
          * -   Player Magnetism
-         * -   Execution speed
          * -   Acceleration
          *
          * ... and stuff for SPV3:
@@ -196,7 +195,6 @@ namespace HXE
         {
           init.PlayerAutoaim     = configuration.Tweaks.AutoAim;
           init.PlayerMagnetism   = configuration.Tweaks.Magnetism;
-          init.Speed             = configuration.Tweaks.Speed;
           init.MouseAcceleration = configuration.Tweaks.Acceleration;
           init.Gamma             = configuration.Video.Gamma;
 
@@ -213,11 +211,10 @@ namespace HXE
             Debug("INIT.TWEAKS: Unload         - " + init.Unload);
           }
 
-          Core("INIT.TWEAKS: Magnetism, auto-aim, speed and mouse acceleration tweaks have been updated.");
+          Core("INIT.TWEAKS: Magnetism, auto-aim, and mouse acceleration tweaks have been updated.");
 
           Debug("INIT.TWEAKS: Player Auto-aim    - " + init.PlayerAutoaim);
           Debug("INIT.TWEAKS: Player Magnetism   - " + init.PlayerMagnetism);
-          Debug("INIT.TWEAKS: Speed              - " + init.Speed);
           Debug("INIT.TWEAKS: Mouse Acceleration - " + init.MouseAcceleration);
           Debug("INIT.TWEAKS: Gamma              - " + init.Gamma);
         }
@@ -803,7 +800,6 @@ namespace HXE
             bw.Write(Tweaks.AutoAim);
             bw.Write(Tweaks.Acceleration);
             bw.Write(Tweaks.Unload);
-            bw.Write(Tweaks.Speed);
           }
 
           /* shaders */
@@ -902,7 +898,6 @@ namespace HXE
             Tweaks.AutoAim      = br.ReadBoolean();
             Tweaks.Acceleration = br.ReadBoolean();
             Tweaks.Unload       = br.ReadBoolean();
-            Tweaks.Speed        = br.ReadByte();
           }
 
           /* shaders */
@@ -973,7 +968,6 @@ namespace HXE
 
       public class ConfigurationTweaks
       {
-        public double Speed        { get; set; } = 1;    /* game execution speed  */
         public bool   Cinematic    { get; set; } = true; /* SPV3.2 cinematic bars */
         public bool   Sensor       { get; set; } = true; /* SPV3.2 motion sensor  */
         public bool   Magnetism    { get; set; } = true; /* controller magnetism  */
