@@ -38,7 +38,6 @@ namespace HXE.SPV3
     public bool                MotionSensor      { get; set; } = true;
     public bool                MouseAcceleration { get; set; } = false;
     public int                 Gamma             { get; set; } = 0;
-    public double              Speed             { get; set; } = 1;
     public bool                Unload            { get; set; } = false;
     public Campaign.Mission    Mission           { get; set; } = Campaign.Mission.Spv3A10;
     public Campaign.Difficulty Difficulty        { get; set; } = Campaign.Difficulty.Normal;
@@ -80,7 +79,7 @@ namespace HXE.SPV3
        * To handle permit backwards compatibility with 3.2 and below, we conditionally decrement the mission ID that
        * will be written to the initiation file.
        *
-       * The decrementation is determined by the presence of the Paths.SPV33 file in the working directory. If the file
+       * The decrementation is determined by the presence of the version.txt file in the working directory. If the file
        * is not found, then it's possible that this loader is being used on SPV3.2 and below, and thus we should use the
        * old (decremented) mission IDs.
        */
@@ -99,7 +98,6 @@ namespace HXE.SPV3
       var motionSensor = MotionSensor ? 1 : 0;
       var acceleration = MouseAcceleration ? 1 : 0;
       var gamma        = Gamma;
-      var speed        = Speed;
 
       var output = new StringBuilder();
       output.AppendLine($"set f3 {mission}");
@@ -115,9 +113,6 @@ namespace HXE.SPV3
 
       if (Gamma > 0)
         output.AppendLine($"set_gamma {gamma}");
-
-      if (Speed > 1)
-        output.AppendLine($"game_speed {speed}");
 
       if (Unload)
         output.AppendLine("pp_unload");

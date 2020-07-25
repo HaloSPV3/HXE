@@ -34,12 +34,6 @@ PLAYER AUTO-AIM & MAGNETISM
 These two options improve the experience of using a controller,
 particularly on SPV3.1 & SPV3.2.
 
-SPEED
------
-
-HCE likely won't obey this command properly; however, the kernel
-supports specifying the execution speed of a campaign mission.
-
 MOUSE ACCELERATION
 ------------------
 
