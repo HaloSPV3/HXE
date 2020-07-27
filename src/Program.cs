@@ -1,14 +1,14 @@
 ﻿/**
  * Copyright (c) 2019 Emilian Roman
- * 
+ *
  * This software is provided 'as-is', without any express or implied
  * warranty. In no event will the authors be held liable for any damages
  * arising from the use of this software.
- * 
+ *
  * Permission is granted to anyone to use this software for any purpose,
  * including commercial applications, and to alter it and redistribute it
  * freely, subject to the following restrictions:
- * 
+ *
  * 1. The origin of this software must not be misrepresented; you must not
  *    claim that you wrote the original software. If you use this software
  *    in a product, an acknowledgment in the product documentation would be
@@ -59,39 +59,39 @@ namespace HXE
     ///   --load              Initiates HCE/SPV3
     ///   --install=VALUE     Installs HCE/SPV3   to destination
     ///   --compile=VALUE     Compiles HCE/SPV3   to destination
-    ///   --console           Loads HCE           with console    mode
-    ///   --devmode           Loads HCE           with developer  mode
+    ///   --console           Loads HCE           with console mode
+    ///   --devmode           Loads HCE           with developer mode
     ///   --screenshot        Loads HCE           with screenshot ability
     ///   --window            Loads HCE           in window mode
     ///   --nogamma           Loads HCE           without gamma overriding
-    ///   --adapter=VALUE     Loads HCE           on monitor    X
-    ///   --path=VALUE        Loads HCE           with custom   profile path
-    ///   --vidmode=VALUE     Loads HCE           with video    mode
+    ///   --adapter=VALUE     Loads HCE           on monitor X
+    ///   --path=VALUE        Loads HCE           with custom profile path
+    ///   --vidmode=VALUE     Loads HCE           with video mode
     /// </param>
     private static void InvokeProgram(string[] args)
     {
       Directory.CreateDirectory(Paths.Directory);
 
-      var help       = false;        /* Displays commands list             */
-      var config     = false;        /* Opens configuration GUI            */
-      var positions  = false;        /* Opens configuration GUI            */
-      var install    = string.Empty; /* Initiates HCE/SPV3                 */
-      var compile    = string.Empty; /* Installs HCE/SPV3 to destination   */
-      var update     = string.Empty; /* Compiles HCE/SPV3 to destination   */
-      var console    = false;        /* Updates directory using manifest   */
-      var devmode    = false;        /* Loads HCE with console mode        */
-      var screenshot = false;        /* Loads HCE with developer mode      */
-      var window     = false;        /* Loads HCE with screenshot ability  */
-      var nogamma    = false;        /* Loads HCE in window mode           */
-      var adapter    = string.Empty; /* Loads HCE without gamma overriding */
-      var path       = string.Empty; /* Loads HCE on monitor X             */
-      var exec       = string.Empty; /* Loads HCE with custom profile path */
-      var vidmode    = string.Empty; /* Loads HCE with custom init file    */
+      var help       = false;        /* Displays commands list              */
+      var config     = false;        /* Opens configuration GUI             */
+      var positions  = false;        /* Opens positions GUI                 */
+      var install    = string.Empty; /* Installs HCE/SPV3 to destination    */
+      var compile    = string.Empty; /* Compiles HCE/SPV3 to destination    */
+      var update     = string.Empty; /* Updates directory using manifest    */
+      var console    = false;        /* Loads HCE with console mode         */
+      var devmode    = false;        /* Loads HCE with developer mode       */
+      var screenshot = false;        /* Loads HCE with screenshot ability   */
+      var window     = false;        /* Loads HCE in window mode            */
+      var nogamma    = false;        /* Loads HCE without gamma overriding  */
+      var adapter    = string.Empty; /* Loads HCE on monitor X              */
+      var path       = string.Empty; /* Loads HCE with custom profile path  */
+      var exec       = string.Empty; /* Loads HCE with custom init file     */
+      var vidmode    = string.Empty; /* Loads HCE with custom res. and Hz   */
 
       var options = new OptionSet()
-        .Add("help",       "Displays commands list",             s => help = s      != null)  /* hxe command   */
-        .Add("config",     "Opens configuration GUI",            s => config = s    != null)  /* hxe command   */
-        .Add("positions",  "Opens positions GUI",                s => positions = s != null)  /* hxe command   */
+        .Add("help",       "Displays commands list",             s => help = s       != null) /* hxe command   */
+        .Add("config",     "Opens configuration GUI",            s => config = s     != null) /* hxe command   */
+        .Add("positions",  "Opens positions GUI",                s => positions = s  != null) /* hxe command   */
         .Add("install=",   "Installs HCE/SPV3 to destination",   s => install = s)            /* hxe parameter */
         .Add("compile=",   "Compiles HCE/SPV3 to destination",   s => compile = s)            /* hxe parameter */
         .Add("update=",    "Updates directory using manifest",   s => update = s)             /* hxe parameter */
@@ -103,7 +103,7 @@ namespace HXE
         .Add("adapter=",   "Loads HCE on monitor X",             s => adapter = s)            /* hce parameter */
         .Add("path=",      "Loads HCE with custom profile path", s => path = s)               /* hce parameter */
         .Add("exec=",      "Loads HCE with custom init file",    s => exec = s)               /* hce parameter */
-        .Add("vidmode=",   "Loads HCE with video mode",          s => vidmode = s);           /* hce parameter */
+        .Add("vidmode=",   "Loads HCE with custom res. and Hz",  s => vidmode = s);           /* hce parameter */
 
       var input = options.Parse(args);
 
