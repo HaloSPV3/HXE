@@ -72,10 +72,6 @@
                                   ToolTip="Invokes the HCE process with administrative privileges." />
                     </StackPanel>
                 </GroupBox>
-                <GroupBox Header="Speed">
-                    <TextBox Name="TweaksSpeed"
-                             ToolTip="Declares the game execution speed. Suffice to say, this won't work." />
-                </GroupBox>
             </StackPanel>
 
             <GroupBox Grid.Column="1"
