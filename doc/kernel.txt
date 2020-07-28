@@ -114,7 +114,6 @@ The following table outlines the available options:
                       Auto Aim              bool     0x60
                       Acceleration          bool     0x60
                       Unload                bool     0x60
-                      Speed                 double   0x60
   SPV3.2 Shaders      Internal              bool     0xA0
                       External              bool     0xA1
                       G-Buffer              bool     0xA2

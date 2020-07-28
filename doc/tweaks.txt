@@ -34,4 +34,3 @@ The following tweaks are available for configuration:
   Auto Aim       Toggles controller auto-aim           
   Acceleration   Toggles mouse acceleration            
   Unload         Toggles shader deactivation           SPV3.2 mode only
-  Speed          Sets game execution speed             Likely won't work

@@ -58,7 +58,6 @@ namespace HXE
       MainStart.IsChecked          = _configuration.Main.Start;
       MainResume.IsChecked         = _configuration.Main.Resume;
       MainElevated.IsChecked       = _configuration.Main.Elevated;
-      TweaksSpeed.Text             = _configuration.Tweaks.Speed.ToString();
       TweaksCinematic.IsChecked    = _configuration.Tweaks.Cinematic;
       TweaksSensor.IsChecked       = _configuration.Tweaks.Sensor;
       TweaksMagnetism.IsChecked    = _configuration.Tweaks.Magnetism;
@@ -117,15 +116,6 @@ namespace HXE
 
       try
       {
-        _configuration.Tweaks.Speed = byte.Parse(TweaksSpeed.Text);
-      }
-      catch (Exception)
-      {
-        _configuration.Tweaks.Speed = 1;
-      }
-
-      try
-      {
         _configuration.Video.Gamma = byte.Parse(VideoGamma.Text);
       }
       catch (Exception)
@@ -148,7 +138,6 @@ namespace HXE
       Console.Debug("Main.Patch          - " + _configuration.Main.Patch);
       Console.Debug("Main.Start          - " + _configuration.Main.Start);
       Console.Debug("Main.Resume         - " + _configuration.Main.Resume);
-      Console.Debug("Tweaks.Speed        - " + _configuration.Tweaks.Speed);
       Console.Debug("Tweaks.Cinematic    - " + _configuration.Tweaks.Cinematic);
       Console.Debug("Tweaks.Sensor       - " + _configuration.Tweaks.Sensor);
       Console.Debug("Tweaks.Magnetism    - " + _configuration.Tweaks.Magnetism);
