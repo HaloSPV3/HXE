@@ -57,9 +57,10 @@ accordingly.
 
 Registry location:
 
-  Hive                   Key                                          Sub-key
-  ---------------------- -------------------------------------------- ----------
-  HKEY\_LOCAL\_MACHINE   SOFTWARE\Microsoft\Microsoft Games\Halo CE   EXE Path
+  Hive                   Key                                                     Sub-key    OS Type
+  ---------------------- ------------------------------------------------------- ---------- -----------
+  HKEY\_LOCAL\_MACHINE   SOFTWARE\Microsoft\Microsoft Games\Halo CE              EXE Path   32-bit
+  HKEY\_LOCAL\_MACHINE   SOFTWARE\WOW6432Node\Microsoft\Microsoft Games\Halo CE  EXE Path   64-bit
 
 Installation location:
 
