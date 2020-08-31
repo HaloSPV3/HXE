@@ -53,7 +53,7 @@ namespace HXE
       public static readonly string OpenSauce   = Combine(Directory, "OpenSauce", "OS_Settings.User.xml");
 
       /*
-       * The initiation filename is declared based on the presence of the OpenSauce DLL in the current directory.
+       * The initiation filename is declared based on the presence of the OpenSauce DLL in the current directory or mods subdirectory.
        * 
        * -   initc is interpreted by OpenSauce (InitC = Initiation Client file)
        * -   init is primarily used by dedicated HCE servers for startup commands
@@ -61,7 +61,9 @@ namespace HXE
        * See #20 on github:SPV3
        */
       public static readonly string Initiation
-        = Combine(CurrentDirectory, Exists("dinput8.dll") ? "initc.txt" : "init.txt");
+        = Exists("dinput8.dll") || Exists("mods/opensauce.dll")
+        ? Combine(CurrentDirectory,  "initc.txt")
+        : Combine(CurrentDirectory,  "init.txt");
 
       public static string Profile(string profile)
       {
