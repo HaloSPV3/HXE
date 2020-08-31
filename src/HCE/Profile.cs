@@ -375,12 +375,16 @@ namespace HXE.HCE
       var lastprof = (LastProfile) Custom.LastProfile(directory);
 
       if (!lastprof.Exists())
+        LastProfile.Generate();
+      if (!lastprof.Exists())
         throw new FileNotFoundException("Cannot detect profile - lastprof.txt does not exist.");
 
       lastprof.Load();
 
       var profile = (Profile) Custom.Profile(directory, lastprof.Profile);
 
+      if (!profile.Exists())
+        Profile.Generate.BlamSav();
       if (!profile.Exists())
         throw new FileNotFoundException("Cannot load detected profile - its blam.sav does not exist.");
 
@@ -693,5 +697,39 @@ namespace HXE.HCE
 
       public Dictionary<Action, Button> Mapping = new Dictionary<Action, Button>();
     }
+    /// TEMPORARY until I figure out the best place for these changes.
+  
+    /// <inheritdoc />
+    /// <summary>
+    ///   Generate lastprof.txt if it doesn't exist
+    /// </summary>
+    public class Generate
+    {
+      public string Name(string profileName,string directory)
+      {
+          //LastProfile.save();
+          // todo:
+          // create the file.
+          //  if the file is still null, *then* exception
+          // load the file
+          // initialize with NULL. 'FF'
+          // populate with default settings
+          // end ProfileGen
+        string profile = (Profile) Custom.Profile(directory, LastProfile.Profile);
+  
+        if (!profile.Exists())
+        {
+          BlamSav();
+        }
+        string name = $"New{new Random().Next(1, 999).ToString("D3")}";
+        profile = name;
+        return name;
+      }
+      public void BlamSav()
+      {
+        Profile.Save();
+        return; //stub
+      }
+    }
   }
-}
+}//Detect(Paths.HCE.Directory);
