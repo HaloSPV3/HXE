@@ -152,7 +152,7 @@ namespace HXE
             var prof = (LastProfile) Custom.LastProfile(executable.Profile.Path);
 
             if (!prof.Exists())
-              return;
+              Profile.Generate.BlamSav();
 
             prof.Load();
 

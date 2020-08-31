@@ -84,5 +84,11 @@ namespace HXE.HCE
         Path = name
       };
     }
+    public static void Generate()
+    {
+      string profileName = null;
+      profileName = HXE.HCE.Profile.Generate.Name(profileName);
+      return;
+    }
   }
 }
