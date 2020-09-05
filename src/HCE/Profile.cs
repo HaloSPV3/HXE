@@ -384,7 +384,7 @@ namespace HXE.HCE
       var profile = (Profile) Custom.Profile(directory, lastprof.Profile);
 
       if (!profile.Exists())
-        Profile.Generate.BlamSav();
+        Profile.Generate();
       if (!profile.Exists())
         throw new FileNotFoundException("Cannot load detected profile - its blam.sav does not exist.");
 
@@ -703,33 +703,20 @@ namespace HXE.HCE
     /// <summary>
     ///   Generate lastprof.txt if it doesn't exist
     /// </summary>
-    public class Generate
+    public void Generate()
     {
-      public string Name(string profileName,string directory)
-      {
-          //LastProfile.save();
-          // todo:
-          // create the file.
-          //  if the file is still null, *then* exception
-          // load the file
-          // initialize with NULL. 'FF'
-          // populate with default settings
-          // end ProfileGen
-        string profile = (Profile) Custom.Profile(directory, LastProfile.Profile);
-  
-        if (!profile.Exists())
-        {
-          BlamSav();
-        }
-        string name = $"New{new Random().Next(1, 999).ToString("D3")}";
-        profile = name;
-        return name;
-      }
-      public void BlamSav()
-      {
-        Profile.Save();
-        return; //stub
-      }
+      //LastProfile.save();
+      // todo:
+      // create the file.
+      //  if the file is still null, *then* exception
+      // load the file
+      // populate with default settings
+      // end ProfileGen
+      string name = $"New{new Random().Next(1, 999).ToString("D3")}";
+      ProfileDetails.Name = name;
+      Profile.Save();
+
+      return;
     }
   }
 }//Detect(Paths.HCE.Directory);
