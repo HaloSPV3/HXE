@@ -17,6 +17,7 @@
  *    misrepresented as being the original software.
  * 3. This notice may not be removed or altered from any source distribution.
  */
+//using static HXE.HCE.Profile;
 
 namespace HXE.HCE
 {
@@ -86,8 +87,10 @@ namespace HXE.HCE
     }
     public static void Generate()
     {
-      string profileName = null;
-      profileName = HXE.HCE.Profile.Generate.Name(profileName);
+      HCE.Profile.Generate();
+      HCE.Profile.Load();
+      LastProfile.Profile = HCE.Profile.ProfileDetails.Name;
+      LastProfile.Save();
       return;
     }
   }
