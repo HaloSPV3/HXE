@@ -152,8 +152,9 @@ namespace HXE
             var prof = (LastProfile) Custom.LastProfile(executable.Profile.Path);
 
             if (!prof.Exists())
-              Profile.Generate();
-
+              {
+                prof.Generate();
+              }
             prof.Load();
 
             var name = prof.Profile;

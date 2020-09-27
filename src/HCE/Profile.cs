@@ -30,6 +30,7 @@ using static HXE.HCE.Profile.ProfileDetails;
 using static HXE.HCE.Profile.ProfileNetwork;
 using static HXE.HCE.Profile.ProfileVideo;
 using static HXE.HCE.Profile.ProfileInput;
+using static HXE.HCE.Profile.GenVars;
 using static HXE.Paths;
 using Directory = System.IO.Directory;
 
@@ -375,18 +376,27 @@ namespace HXE.HCE
       var lastprof = (LastProfile) Custom.LastProfile(directory);
 
       if (!lastprof.Exists())
-        LastProfile.Generate();
-      if (!lastprof.Exists())
-        throw new FileNotFoundException("Cannot detect profile - lastprof.txt does not exist.");
-
+        {
+          bool scaffold = lastprof.Exists();
+          lastprof.Generate(scaffold); // An object reference is required
+          if (!lastprof.Exists())
+          {
+            throw new FileNotFoundException("Cannot detect profile - lastprof.txt does not exist.");
+          }
+        }
       lastprof.Load();
 
       var profile = (Profile) Custom.Profile(directory, lastprof.Profile);
 
       if (!profile.Exists())
-        Profile.Generate();
-      if (!profile.Exists())
-        throw new FileNotFoundException("Cannot load detected profile - its blam.sav does not exist.");
+        {
+          bool scaffold = profile.Exists();
+          profile.Generate(scaffold); // An object reference is required
+          if (!profile.Exists())
+          {
+            throw new FileNotFoundException("Cannot load detected profile - its blam.sav does not exist.");
+          }
+        }
 
       profile.Load();
 
@@ -697,26 +707,68 @@ namespace HXE.HCE
 
       public Dictionary<Action, Button> Mapping = new Dictionary<Action, Button>();
     }
-    /// TEMPORARY until I figure out the best place for these changes.
-  
+
     /// <inheritdoc />
     /// <summary>
     ///   Generate lastprof.txt if it doesn't exist
     /// </summary>
-    public void Generate()
+    /// 
+    public class GenVars
+    {
+      private static string NameGen = $"New{new Random().Next(1, 999).ToString("D3")}";
+      private static string GetUserDataPath = Executable.ProfileOptions.Path; // error CS0120: An object reference is required for the non-static field, method, or property 'Executable.ProfileOptions.Path'
+      
+      public static string ProfileName = "";
+      public static string UserData = GetUserDataPath;
+      public static void GenName()
+      {
+        ProfileName = NameGen;
+      }
+
+    }
+
+    public void Scaffold()
+    {
+      // create profile files
+      // e.g., blam.sav, savegame.bin, etc.
+      // and directory structure...
+
+      using (StreamWriter blam = System.IO.File.AppendText("blam.sav")) // Create blam.sav
+      System.IO.File.WriteAllBytes("blam.sav", new byte[0x2000]); // 0x2000 == int 8192
+    
+      using (StreamWriter savegame = System.IO.File.AppendText("savegame.bin")) // Create savegame.bin
+      System.IO.File.WriteAllBytes("savegame.bin", new byte[0x480000]); // 0x480000 == int 4718592
+
+      using (StreamWriter waypoint = System.IO.File.AppendText($"{GenVars.ProfileName}")); // Create waypoint // warning CS0642: Possible mistaken empty statement
+      System.IO.File.WriteAllText($"{GenVars.ProfileName}", new string($"{GenVars.UserData}\\savegames\\{ProfileName}\\{ProfileName}")); // error CS1503: Argument 1: cannot convert from 'string' to 'char*'
+      // ($"{GenVars.UserData}\\savegames\\{ProfileName}\\{ProfileName}");
+      // "waypoint" is used to refer to the file at "$Profile/savegames/$ProfileName/$ProfileName"
+      // Halo writes the path of this file as its contents.
+      // For instance, `.\profiles\savegames\New001\New001`
+      //   when `-path .\profiles`
+            
+      Save(); // save blam.sav data
+    }
+
+    public Profile Generate(bool scaffold = false)
     {
       //LastProfile.save();
       // todo:
-      // create the file.
-      //  if the file is still null, *then* exception
+      // create the file. - done
+      //  if the file is still null, *then* exception - done
       // load the file
       // populate with default settings
       // end ProfileGen
-      string name = $"New{new Random().Next(1, 999).ToString("D3")}";
-      ProfileDetails.Name = name;
-      Profile.Save();
+      var profile = new Profile(); // I need to re-use LastProfile.Generate.Path, not create a new one.
+      var details = new ProfileDetails();
 
-      return;
+      GenVars.GenName();
+      details.Name = ProfileName;
+
+      if (scaffold)
+          profile.Scaffold();
+
+      return profile;
     }
   }
-}//Detect(Paths.HCE.Directory);
+}
