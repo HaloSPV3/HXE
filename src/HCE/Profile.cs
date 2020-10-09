@@ -377,8 +377,6 @@ namespace HXE.HCE
 
       if (!lastprof.Exists())
         {
-          bool scaffold = lastprof.Exists();
-          lastprof.Generate(scaffold); // An object reference is required
           if (!lastprof.Exists())
           {
             throw new FileNotFoundException("Cannot detect profile - lastprof.txt does not exist.");
@@ -390,8 +388,6 @@ namespace HXE.HCE
 
       if (!profile.Exists())
         {
-          bool scaffold = profile.Exists();
-          profile.Generate(scaffold); // An object reference is required
           if (!profile.Exists())
           {
             throw new FileNotFoundException("Cannot load detected profile - its blam.sav does not exist.");
@@ -715,16 +711,19 @@ namespace HXE.HCE
     /// 
     public class GenVars
     {
-      private static string NameGen = $"New{new Random().Next(1, 999).ToString("D3")}";
-      private static string GetUserDataPath = Executable.ProfileOptions.Path; // error CS0120: An object reference is required for the non-static field, method, or property 'Executable.ProfileOptions.Path'
-      
+      readonly private static string NameGen = $"New{new Random().Next(1, 999).ToString("D3")}";
+
+      public static string ProfilePath = ""; // path to Waypoint file. See GenVars' GetPath() and Scaffold()'s waypoint.
       public static string ProfileName = "";
-      public static string UserData = GetUserDataPath;
+      public static string UserData = "";
       public static void GenName()
       {
-        ProfileName = NameGen;
+        ProfileName = NameGen; // Use once to generate a profile name. Read from ProfileName for the resulting name.
       }
-
+      public static void GetProfilePath()
+      {
+        ProfilePath = $"{UserData}\\savegames\\{ProfileName}\\{ProfileName}";
+      }
     }
 
     public void Scaffold()
@@ -732,6 +731,8 @@ namespace HXE.HCE
       // create profile files
       // e.g., blam.sav, savegame.bin, etc.
       // and directory structure...
+      //File. // create directory structure
+      
 
       using (StreamWriter blam = System.IO.File.AppendText("blam.sav")) // Create blam.sav
       System.IO.File.WriteAllBytes("blam.sav", new byte[0x2000]); // 0x2000 == int 8192
@@ -739,36 +740,35 @@ namespace HXE.HCE
       using (StreamWriter savegame = System.IO.File.AppendText("savegame.bin")) // Create savegame.bin
       System.IO.File.WriteAllBytes("savegame.bin", new byte[0x480000]); // 0x480000 == int 4718592
 
-      using (StreamWriter waypoint = System.IO.File.AppendText($"{GenVars.ProfileName}")); // Create waypoint // warning CS0642: Possible mistaken empty statement
-      System.IO.File.WriteAllText($"{GenVars.ProfileName}", new string($"{GenVars.UserData}\\savegames\\{ProfileName}\\{ProfileName}")); // error CS1503: Argument 1: cannot convert from 'string' to 'char*'
+      using (StreamWriter waypoint = System.IO.File.AppendText(ProfileName)) // Create waypoint
+      System.IO.File.WriteAllText(ProfileName, ProfilePath);
       // ($"{GenVars.UserData}\\savegames\\{ProfileName}\\{ProfileName}");
       // "waypoint" is used to refer to the file at "$Profile/savegames/$ProfileName/$ProfileName"
       // Halo writes the path of this file as its contents.
       // For instance, `.\profiles\savegames\New001\New001`
       //   when `-path .\profiles`
-            
-      Save(); // save blam.sav data
     }
 
-    public Profile Generate(bool scaffold = false)
+    public void Generate(bool scaffold, string pathParam, Profile profile)
     {
-      //LastProfile.save();
       // todo:
-      // create the file. - done
-      //  if the file is still null, *then* exception - done
+      // create the file. - done, but double check it
+      //  if the file is still null, *then* throw an error - done
       // load the file
       // populate with default settings
       // end ProfileGen
-      var profile = new Profile(); // I need to re-use LastProfile.Generate.Path, not create a new one.
-      var details = new ProfileDetails();
+      // Re-use LastProfile.Generate.Path: Move relevant declarations to Kernel so LastProfile, Profile use the same instance. - done
+      UserData = pathParam;
 
-      GenVars.GenName();
-      details.Name = ProfileName;
+      GenName();
+      profile.Details.Name = ProfileName;
+
+      GetProfilePath();
 
       if (scaffold)
-          profile.Scaffold();
+        Scaffold();
 
-      return profile;
+      Save();
     }
   }
 }

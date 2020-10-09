@@ -150,10 +150,14 @@ namespace HXE
           try
           {
             var prof = (LastProfile) Custom.LastProfile(executable.Profile.Path);
+            var pathParam = executable.Profile.Path;
+            bool scaffold = System.IO.File.Exists($"{pathParam}\\savegames\\");
 
             if (!prof.Exists())
               {
-                prof.Generate();
+                var lastProfile = new LastProfile();
+                var profile = new Profile();
+                prof.Generate(scaffold, pathParam, lastProfile, profile);
               }
             prof.Load();
 
