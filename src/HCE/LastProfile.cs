@@ -84,12 +84,9 @@ namespace HXE.HCE
         Path = name
       };
     }
-    public void Generate(bool scaffold = false)
+    public void Generate(bool scaffold, string pathParam, LastProfile lastProfile, Profile profile)
     {
-      var lastProfile = new LastProfile();
-      var profile = new HCE.Profile();
-            
-      profile.Generate(scaffold);
+      profile.Generate(scaffold, pathParam, profile);
       profile.Save();
 
       lastProfile.Profile = HCE.Profile.GenVars.ProfileName;
