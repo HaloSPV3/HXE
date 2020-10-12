@@ -377,10 +377,7 @@ namespace HXE.HCE
 
       if (!lastprof.Exists())
         {
-          if (!lastprof.Exists())
-          {
             throw new FileNotFoundException("Cannot detect profile - lastprof.txt does not exist.");
-          }
         }
       lastprof.Load();
 
@@ -388,10 +385,7 @@ namespace HXE.HCE
 
       if (!profile.Exists())
         {
-          if (!profile.Exists())
-          {
-            throw new FileNotFoundException("Cannot load detected profile - its blam.sav does not exist.");
-          }
+          throw new FileNotFoundException("Cannot load detected profile - its blam.sav does not exist.");
         }
 
       profile.Load();
@@ -704,21 +698,19 @@ namespace HXE.HCE
       public Dictionary<Action, Button> Mapping = new Dictionary<Action, Button>();
     }
 
-    /// <inheritdoc />
     /// <summary>
-    ///   Generate lastprof.txt if it doesn't exist
+    ///  Create retrievable variables for Profile Generation. Generate a NewXXX-style name for the new Player Profile.
     /// </summary>
-    /// 
     public class GenVars
     {
       readonly private static string NameGen = $"New{new Random().Next(1, 999).ToString("D3")}";
 
-      public static string ProfilePath = ""; // path to Waypoint file. See GenVars' GetPath() and Scaffold()'s waypoint.
+      public static string ProfilePath = ""; /// path to Waypoint file. See GenVars' GetPath() and Scaffold()'s waypoint.
       public static string ProfileName = "";
       public static string UserData = "";
       public static void GenName()
       {
-        ProfileName = NameGen; // Use once to generate a profile name. Read from ProfileName for the resulting name.
+        ProfileName = NameGen; /// Use once to generate a profile name. Read from ProfileName for the resulting name.
       }
       public static void GetProfilePath()
       {
@@ -726,38 +718,65 @@ namespace HXE.HCE
       }
     }
 
+    /// <summary>
+    /// Create file and folder structure for Profile.Generate() using variables from GenVars
+    /// </summary>
     public void Scaffold()
     {
-      // create profile files
-      // e.g., blam.sav, savegame.bin, etc.
-      // and directory structure...
-      //File. // create directory structure
-      
+      /// create directory structure 
+      /// and profile files...
+      /// e.g., blam.sav, savegame.bin, et cetera
+      Info("Creating Scaffold...\n");
 
-      using (StreamWriter blam = System.IO.File.AppendText("blam.sav")) // Create blam.sav
-      System.IO.File.WriteAllBytes("blam.sav", new byte[0x2000]); // 0x2000 == int 8192
-    
-      using (StreamWriter savegame = System.IO.File.AppendText("savegame.bin")) // Create savegame.bin
-      System.IO.File.WriteAllBytes("savegame.bin", new byte[0x480000]); // 0x480000 == int 4718592
+      Path = $"{UserData}\\savegames\\{ProfileName}\\";
+      CreateDirectory();
+      Info($"Path is currently {Path}\n"); // Doesn't write to console
+      System.Console.WriteLine($"\"{Path}\" exists? {Exists()}"); // Doesn't write to console
 
-      using (StreamWriter waypoint = System.IO.File.AppendText(ProfileName)) // Create waypoint
-      System.IO.File.WriteAllText(ProfileName, ProfilePath);
-      // ($"{GenVars.UserData}\\savegames\\{ProfileName}\\{ProfileName}");
-      // "waypoint" is used to refer to the file at "$Profile/savegames/$ProfileName/$ProfileName"
-      // Halo writes the path of this file as its contents.
-      // For instance, `.\profiles\savegames\New001\New001`
-      //   when `-path .\profiles`
+      /// Create blam.sav
+      using (StreamWriter blam = System.IO.File.AppendText($"blam.sav"))
+      {
+        Path = $"{UserData}\\savegames\\{ProfileName}\\blam.sav";
+        WriteAllBytes(new byte[0x2000]); /// 0x2000 == int 8192
+      }
+
+      /// Create savegame.bin
+      using (StreamWriter savegame = System.IO.File.AppendText($"savegame.bin"))
+      {
+        Path = $"{UserData}\\savegames\\{ProfileName}\\savegame.bin";
+        WriteAllBytes(new byte[0x480000]); /// 0x480000 == int 4718592
+      }
+
+      /// Create waypoint
+      using (StreamWriter waypoint = System.IO.File.AppendText(ProfilePath))
+      {
+        Path = ProfilePath;
+        WriteAllText(ProfilePath);
+      }
+      /// "waypoint" is used to refer to the file at "$Profile/savegames/$ProfileName/$ProfileName"
+      /// Halo writes the path of this file as its contents.
+      /// For instance, `.\profiles\savegames\New001\New001`
+      ///   when `-path .\profiles`
     }
 
+    /// <summary>
+    ///  Generate a new Player Profile. Create savegames folder and relevant file structures. 
+    /// </summary>
+    /// <param name="scaffold">bool to determine whether to execute Scaffold generation.</param>
+    /// <param name="pathParam">-path parameter to pass to Halo and write to profiles.</param>
+    /// <param name="profile">Object to represent as string.</param>
     public void Generate(bool scaffold, string pathParam, Profile profile)
     {
-      // todo:
-      // create the file. - done, but double check it
-      //  if the file is still null, *then* throw an error - done
-      // load the file
-      // populate with default settings
-      // end ProfileGen
-      // Re-use LastProfile.Generate.Path: Move relevant declarations to Kernel so LastProfile, Profile use the same instance. - done
+      /// todo:
+      ///   create the file.
+      ///     double check it
+      ///   DONE: if the file is still null, *then* throw an error.
+      ///     Do this everywhere this function is called.
+      ///   populate with default settings
+      ///     blam.sav has some defaults listed. What needs to be set manually?
+      ///   load the file
+      ///     Do I still need to do this?
+      Info("Generating new Player Profile...");
       UserData = pathParam;
 
       GenName();
@@ -765,10 +784,10 @@ namespace HXE.HCE
 
       GetProfilePath();
 
-      if (scaffold)
+      if (!scaffold)
         Scaffold();
 
-      Save();
+      profile.Save();
     }
   }
 }
