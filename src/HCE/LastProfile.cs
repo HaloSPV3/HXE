@@ -84,10 +84,16 @@ namespace HXE.HCE
         Path = name
       };
     }
+    /// <summary>
+    ///   Call Profile.Generate() and assign the generated Profile as the LastProfile.
+    /// </summary>
+    /// <param name="scaffold">Inherit and pass the bool indicating if the scaffold must be created.</param>
+    /// <param name="pathParam">Inherit and pass the -path parameter.</param>
+    /// <param name="lastProfile">Inherit the instance</param>
+    /// <param name="profile">Inherit and pass the Profile instance to Profile.Generate().</param>
     public void Generate(bool scaffold, string pathParam, LastProfile lastProfile, Profile profile)
     {
       profile.Generate(scaffold, pathParam, profile);
-      profile.Save();
 
       lastProfile.Profile = HCE.Profile.GenVars.ProfileName;
       lastProfile.Save();

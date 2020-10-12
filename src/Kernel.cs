@@ -301,6 +301,13 @@ namespace HXE
         try
         {
           blam = Profile.Detect(executable.Profile.Path);
+          if (!blam.Exists())
+          {
+            bool scaffold = Exists(blam);
+            var lastprofile = new LastProfile();
+            var profile = new Profile();
+            lastprofile.Generate(scaffold, executable.Profile.Path, lastprofile, profile);
+          }
 
           Video();
           Audio();
@@ -380,7 +387,7 @@ namespace HXE
 
           if (configuration.Video.Uncap)
           {
-            blam.Video.FrameRate = VideoFrameRate.VsyncOff;
+            blam.Video.FrameRate = VideoFrameRate.VsyncOff; 
 
             Core("BLAM.VIDEO.UNCAP: Applied V-Sync off for framerate uncap.");
 
@@ -488,7 +495,8 @@ namespace HXE
           open.HUD.ScaleHUD                                 = true; /* fixes user interface    */
           open.Camera.IgnoreFOVChangeInCinematics           = true; /* fixes user interface    */
           open.Camera.IgnoreFOVChangeInMainMenu             = true; /* fixes user interface    */
-          open.Rasterizer.ShaderExtensions.Effect.DepthFade = true; /* shader optimisations    */
+          open.Rasterizer.ShaderExtensions.Effect.DepthFade = true; /* shader optimisations    */ 
+          // Note: DepthFade causes the edges of particles/decals to blend when they clip/intersect with other geometry
 
           open.Save();
 
