@@ -53,7 +53,7 @@ namespace HXE
     {
       var baseDirectory = GetDirectoryName(Path);
 
-      if (!Directory.Exists(baseDirectory))
+      if (!Directory.Exists(GetFullPath(baseDirectory)))
         Directory.CreateDirectory(baseDirectory ?? throw new ArgumentNullException());
     }
 

@@ -150,22 +150,49 @@ namespace HXE
           try
           {
             var prof = (LastProfile) Custom.LastProfile(executable.Profile.Path);
-            var pathParam = executable.Profile.Path;
-            bool scaffold = System.IO.File.Exists($"{pathParam}\\savegames\\");
 
             if (!prof.Exists())
+            {
+              Core("Lastprof.txt does not Exists.");
+              bool scaffold = System.IO.File.Exists($"{executable.Profile.Path}\\savegames\\");
+              var profile = new Profile();
+              Core("Calling LastProfile.Generate()");
+              if (!scaffold)
               {
-                var lastProfile = new LastProfile();
-                var profile = new Profile();
-                prof.Generate(scaffold, pathParam, lastProfile, profile);
+                Info("Savegames scaffold doesn't exist.");
               }
+              else
+              {
+                Info("Savegames scaffold detected.");
+              }
+              prof.Generate(scaffold, executable.Profile.Path, prof, profile);
+            }
             prof.Load();
 
             var name = prof.Profile;
             var save = (Progress) Custom.Progress(executable.Profile.Path, name);
 
             if (!save.Exists())
-              return;
+            {
+              Info("Player Profile Not found.");
+              bool scaffold = System.IO.File.Exists($"{Custom.Profiles(executable.Profile.Path)}");
+              var profile = new Profile();
+              Core("Calling LastProfile.Generate()");
+              if (!scaffold)
+              {
+                Info("Savegames scaffold doesn't exist.");
+              }
+              else
+              {
+                Info("Savegames scaffold detected.");
+              }
+              prof.Generate(scaffold, executable.Profile.Path, prof, profile);
+              if(!save.Exists())
+              {
+                Info("Player Profile could not be created.");
+                return;
+              }
+            }
 
             save.Load();
 
@@ -298,28 +325,45 @@ namespace HXE
       {
         Profile blam;
 
-        try
+        for (int i = 0; i < 1; i++)
         {
-          blam = Profile.Detect(executable.Profile.Path);
-          if (!blam.Exists())
+          try
           {
-            bool scaffold = Exists(blam);
-            var lastprofile = new LastProfile();
-            var profile = new Profile();
-            lastprofile.Generate(scaffold, executable.Profile.Path, lastprofile, profile);
+            blam = Profile.Detect(executable.Profile.Path);
+
+            Video();
+            Audio();
+            Input();
+
+            blam.Save();
+
+            Core("MAIN.BLAM: Profile enhancements have been successfully applied and saved.");
           }
+          catch (Exception e)
+          {
+            Error(e.Message + " -- MAIN.BLAM HALTED");
+            try
+            {
 
-          Video();
-          Audio();
-          Input();
+              bool scaffold   = Exists(GetFullPath($"{Custom.Profiles(executable.Profile.Path)}"));
+              var lastprofile = new LastProfile();
+              blam            = new Profile();
+              Info("Calling LastProfile.Generate()");
+              lastprofile.Generate(scaffold, executable.Profile.Path, lastprofile, blam);
 
-          blam.Save();
+              Video();
+              Audio();
+              Input();
 
-          Core("MAIN.BLAM: Profile enhancements have been successfully applied and saved.");
-        }
-        catch (Exception e)
-        {
-          Error(e.Message + " -- MAIN.BLAM HALTED");
+              blam.Save();
+
+              Core("MAIN.BLAM: Profile enhancements have been successfully applied and saved.");
+            }
+            catch
+            {
+              Error(e.Message + " -- MAIN.BLAM HALTED");
+            }
+          }
         }
 
         /**

@@ -65,6 +65,11 @@ namespace HXE
         ? Combine(CurrentDirectory,  "initc.txt")
         : Combine(CurrentDirectory,  "init.txt");
 
+      public static string ProfileDirectory(string profile)
+      {
+        return Combine(Directory, Profiles, profile);
+      }
+
       public static string Profile(string profile)
       {
         return Combine(Directory, Profiles, profile, "blam.sav");
@@ -73,6 +78,11 @@ namespace HXE
       public static string Progress(string profile)
       {
         return Combine(Directory, Profiles, profile, "savegame.bin");
+      }
+
+      public static string Waypoint(string profile)
+      {
+        return Combine(Directory, Profiles, profile, profile);
       }
     }
 
@@ -98,14 +108,48 @@ namespace HXE
         return Combine(directory, "OpenSauce", "OS_Settings.User.xml");
       }
 
+      /// <summary>
+      /// Provide the -path parameter's string and a Player Profile name to get the path of its directory.
+      /// </summary>
+      /// <param name="directory">The path provided by the -path executable parameter.</param>
+      /// <param name="profile">The name of the provided Player Profile.</param>
+      /// <returns>The path of the Player Profile's directory.</returns>
+      public static string ProfileDirectory(string directory, string profile)
+      {
+        return Combine(directory, Profiles(directory), profile);
+      }
+
+      /// <summary>
+      /// Provide the -path parameter's string and a Player Profile name to get the path of its blam.sav file.
+      /// </summary>
+      /// <param name="directory">The path provided by the -path executable parameter.</param>
+      /// <param name="profile">The name of the provided Player Profile.</param>
+      /// <returns>The path to the Player Profile's blam.sav file.</returns>
       public static string Profile(string directory, string profile)
       {
         return Combine(directory, Profiles(directory), profile, "blam.sav");
       }
 
+      /// <summary>
+      /// Provide the -path parameter's string and a Player Profile name to get the path of its savegame.bin file.
+      /// </summary>
+      /// <param name="directory">The path provided by the -path executable parameter.</param>
+      /// <param name="profile">The name of the provided Player Profile.</param>
+      /// <returns>The path to the Player Profile's savegame.bin file.</returns>
       public static string Progress(string directory, string profile)
       {
         return Combine(directory, Profiles(directory), profile, "savegame.bin");
+      }
+
+      /// <summary>
+      /// Provide the -path parameter's string and a Player Profile name to get the path of its Waypoint file.
+      /// </summary>
+      /// <param name="directory">The path provided by the -path executable parameter.</param>
+      /// <param name="profile">The name of the provided Player Profile.</param>
+      /// <returns>The Path to the Player Profile's Waypoint file as a string.</returns>
+      public static string Waypoint(string directory, string profile)
+      {
+        return Combine(directory, Profiles(directory), profile, profile);
       }
     }
   }

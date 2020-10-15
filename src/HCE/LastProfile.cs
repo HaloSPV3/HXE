@@ -93,10 +93,13 @@ namespace HXE.HCE
     /// <param name="profile">Inherit and pass the Profile instance to Profile.Generate().</param>
     public void Generate(bool scaffold, string pathParam, LastProfile lastProfile, Profile profile)
     {
+      Console.Core("LastProfile.Generate");
       profile.Generate(scaffold, pathParam, profile);
 
-      lastProfile.Profile = HCE.Profile.GenVars.ProfileName;
-      lastProfile.Save();
+      lastProfile.Profile = profile.Details.Name;
+      
+      using (System.IO.StreamWriter lastproftxt = System.IO.File.AppendText($"{pathParam}\\lastprof.txt"))
+        lastProfile.Save();
     }
   }
 }
