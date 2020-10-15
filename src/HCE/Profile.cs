@@ -30,7 +30,6 @@ using static HXE.HCE.Profile.ProfileDetails;
 using static HXE.HCE.Profile.ProfileNetwork;
 using static HXE.HCE.Profile.ProfileVideo;
 using static HXE.HCE.Profile.ProfileInput;
-using static HXE.HCE.Profile.GenVars;
 using static HXE.Paths;
 using Directory = System.IO.Directory;
 
@@ -696,125 +695,6 @@ namespace HXE.HCE
       }
 
       public Dictionary<Action, Button> Mapping = new Dictionary<Action, Button>();
-    }
-
-    /// <summary>
-    ///  Create retrievable variables for Profile Generation. Generate a NewXXX-style name for the new Player Profile.
-    /// </summary>
-    public class GenVars
-    {
-      readonly private static string NameGen = $"New{new Random().Next(1, 999).ToString("D3")}";
-
-      /// <summary>
-      /// Waypoint file's path. See GenVars' GetWaypointPath() and Scaffold()'s waypoint streamwriter.
-      /// </summary>
-      //public static string WaypointPath = "";
-      /// <summary>
-      /// The path passed from the -path Halo parameter or the default location in %UserProfile%\\Documents\\My Games\\Halo CE\\
-      /// </summary>
-      //public static string UserData = ""; /// See Profile.Generate() for assignment.
-      /// <summary>
-      /// Assign arbitrary directory paths to this variable. To be used like a "Current Directory".
-      /// </summary>
-      public static string DirPath = "";
-
-      /// <summary>
-      /// Use once to generate a profile name. Read from ProfileName for the result.
-      /// </summary>
-      public static void SetNewName(Profile profile)
-      {
-        profile.Details.Name = NameGen;
-      }
-      /// <summary>
-      /// Assigns $"{UserData}\\savegames\\{ProfileName}\\{ProfileName}" to Waypoint Path.
-      /// </summary>
-      /*public static void SetWaypointPath(Profile profile, string pathParam)
-      {
-        WaypointPath = Custom.Waypoint(UserData, profile.Details.Name);
-      }*/
-      /// <summary>
-      /// Output the Path variable's current value. Verify its full path exists in the file system.
-      /// </summary>
-      public static void VerifyPath(string path)
-      {
-        Info($"Path is currently \"{path}\"");
-        Info($"The Full Path is \"{System.IO.Path.GetFullPath(path)}\"");
-        Info($"\"{path}\" exists? {Directory.Exists(System.IO.Path.GetFullPath(path))}");
-      }
-    }
-
-    /// <summary>
-    /// Create file and folder structure for Profile.Generate() using variables from GenVars.
-    /// </summary>
-    public void Scaffold(string pathParam, Profile profile)
-    {
-      /// and profile files...
-      /// e.g., blam.sav, savegame.bin, et cetera
-      Core("Creating Scaffold...");
-
-      //var file = new File();
-      /// Set Path to the -path parameter
-      /// Check if it exists, create it if it doesn't.
-      /// Print the full path to the console.
-      Path = pathParam;  /// e.g. ".\temp\"
-      CreateDirectory();
-      VerifyPath(Path);
-
-      /// Set Path to the savegames directory, et cetera
-      Path = Custom.Profiles(pathParam);  /// e.g. ".\temp\savegames\
-      CreateDirectory();
-      VerifyPath(Path);
-
-      /// Set Path to the current Profile's directory, et cetera
-      Path = Custom.ProfileDirectory(pathParam, Details.Name);  /// e.g. ".\temp\savegames\New001\"
-      CreateDirectory();
-      VerifyPath(Path);
-
-      /// Create blam.sav
-      using (StreamWriter blam = System.IO.File. AppendText($"{Path}\\blam.sav"))
-        WriteAllBytes(new byte[0x2000]); /// 0x2000 == int 8192
-
-      /// Create savegame.bin
-      using (StreamWriter savegame = System.IO.File.AppendText($"{Path}\\savegame.bin"))
-        WriteAllBytes(new byte[0x480000]); /// 0x480000 == int 4718592
-
-      /// Create waypoint
-      using (StreamWriter waypoint = System.IO.File.AppendText(Custom.Waypoint(pathParam, profile.Details.Name)))
-        WriteAllText(Custom.Waypoint(pathParam, profile.Details.Name));
-      /// "waypoint" is used to refer to the file at "$Profile\\savegames\\$Details.Name\\$Details.Name"
-      /// Halo writes the path of this file as the file's contents.
-      /// For instance, `.\profiles\savegames\New001\New001`
-      ///   when `-path .\profiles`
-    }
-
-    /// <summary>
-    ///  Generate a new Player Profile. Create savegames folder and relevant file structures. 
-    /// </summary>
-    /// <param name="scaffold">bool to determine whether to execute Scaffold generation.</param>
-    /// <param name="pathParam">-path parameter to pass to Halo and write to profiles.</param>
-    /// <param name="profile">Object to represent as string.</param>
-    public void Generate(bool scaffold, string pathParam, Profile profile)
-    {
-      /// todo:
-      ///   create the file.
-      ///     double check it
-      ///   DONE: if the file is still null, *then* throw an exception.
-      ///     Do this everywhere this function is called.
-      ///   populate with default settings
-      ///     blam.sav has some defaults listed. What needs to be set manually?
-      ///   load the file
-      ///     Do I still need to do this?
-      Core("Profile.Generate");
-
-      SetNewName(profile);
-
-      if (!scaffold)
-        Scaffold(pathParam, profile);
-
-      //profile.Name = Custom.Profile();
-      profile.Path = Custom.Profile(pathParam, profile.Details.Name);
-
-      profile.Save();
     }
   }
 }

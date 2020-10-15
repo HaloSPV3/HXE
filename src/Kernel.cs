@@ -31,8 +31,8 @@ using static System.IO.Directory;
 using static System.IO.Path;
 using static System.Windows.Forms.Screen;
 using static HXE.Console;
-using static HXE.HCE.Profile.ProfileAudio;
 using static HXE.Paths;
+using static HXE.HCE.Profile.ProfileAudio;
 using static HXE.HCE.Profile.ProfileVideo;
 using static HXE.SPV3.PostProcessing;
 using static System.Text.Encoding;
@@ -165,7 +165,7 @@ namespace HXE
               {
                 Info("Savegames scaffold detected.");
               }
-              prof.Generate(scaffold, executable.Profile.Path, prof, profile);
+              NewProfile.LastProfile(scaffold, executable.Profile.Path, prof, profile);
             }
             prof.Load();
 
@@ -186,7 +186,7 @@ namespace HXE
               {
                 Info("Savegames scaffold detected.");
               }
-              prof.Generate(scaffold, executable.Profile.Path, prof, profile);
+              NewProfile.LastProfile(scaffold, executable.Profile.Path, prof, profile);
               if(!save.Exists())
               {
                 Info("Player Profile could not be created.");
@@ -349,7 +349,7 @@ namespace HXE
               var lastprofile = new LastProfile();
               blam            = new Profile();
               Info("Calling LastProfile.Generate()");
-              lastprofile.Generate(scaffold, executable.Profile.Path, lastprofile, blam);
+              NewProfile.LastProfile(scaffold, executable.Profile.Path, lastprofile, blam);
 
               Video();
               Audio();
