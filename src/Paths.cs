@@ -116,7 +116,7 @@ namespace HXE
       /// <returns>The path of the Player Profile's directory.</returns>
       public static string ProfileDirectory(string directory, string profile)
       {
-        return Combine(directory, Profiles(directory), profile);
+        return Combine(Profiles(directory), profile);
       }
 
       /// <summary>
@@ -127,7 +127,7 @@ namespace HXE
       /// <returns>The path to the Player Profile's blam.sav file.</returns>
       public static string Profile(string directory, string profile)
       {
-        return Combine(directory, Profiles(directory), profile, "blam.sav");
+        return Combine(Profiles(directory), profile, "blam.sav");
       }
 
       /// <summary>
@@ -138,7 +138,7 @@ namespace HXE
       /// <returns>The path to the Player Profile's savegame.bin file.</returns>
       public static string Progress(string directory, string profile)
       {
-        return Combine(directory, Profiles(directory), profile, "savegame.bin");
+        return Combine(Profiles(directory), profile, "savegame.bin");
       }
 
       /// <summary>
@@ -149,7 +149,7 @@ namespace HXE
       /// <returns>The Path to the Player Profile's Waypoint file as a string.</returns>
       public static string Waypoint(string directory, string profile)
       {
-        return Combine(directory, Profiles(directory), profile, profile);
+        return Combine(Profiles(directory), profile, profile);
       }
     }
   }

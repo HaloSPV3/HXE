@@ -18,6 +18,12 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
+using System.Collections.Generic;
+using System.IO;
+using System.Text;
+using static HXE.Console;
+using static HXE.Paths;
+
 namespace HXE.HCE
 {
   /// <inheritdoc />
@@ -48,10 +54,41 @@ namespace HXE.HCE
     /// </summary>
     public void Save()
     {
-      var data  = ReadAllText();
-      var split = data.Split('\\');
-      split[split.Length - 2] = Profile;
-      WriteAllText(string.Join("\\", split));
+      using (var fs = new FileStream(Path, FileMode.Open, FileAccess.ReadWrite))
+      using (var ms = new MemoryStream(255))
+      using (var bw = new BinaryWriter(ms))
+      {
+        var path = System.IO.Path.GetDirectoryName(Path);
+        byte[] profdir = Encoding.UTF8.GetBytes(Custom.ProfileDirectory(path, Profile));
+        byte[] delim = Encoding.UTF8.GetBytes("\\");
+        byte[] pad = { 0 };
+        byte[] blam = Encoding.UTF8.GetBytes("lam.sav");
+        List<byte> list1 = new List<byte>(profdir);
+        List<byte> list2 = new List<byte>(delim);
+        List<byte> list3 = new List<byte>(pad);
+        List<byte> list4 = new List<byte>(blam);
+
+        list1.AddRange(list2);
+        list1.AddRange(list3);
+        list1.AddRange(list4);
+        byte[] stream = list1.ToArray();
+
+        var sb = new StringBuilder("Byte Array {");
+        foreach (var b in stream)
+        {
+          sb.Append(b + " ");
+        }
+        sb.Append("}");
+        Debug(sb.ToString());
+
+        ms.Position = 0;
+        bw.Write(stream);
+
+        ms.Position = 0;
+        ms.CopyTo(fs);
+
+        Info("lastprof.txt created");
+      }
     }
 
     /// <summary>
