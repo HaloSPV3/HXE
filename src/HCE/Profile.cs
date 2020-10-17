@@ -121,7 +121,7 @@ namespace HXE.HCE
         WriteByte(Offset.AudioVolumeEffects,         Audio.Volume.Effects);
         WriteByte(Offset.AudioVolumeMusic,           Audio.Volume.Music);
 
-        /*
+        /**
          * As for the boolean values, we convert them behind the scene to their integer equivalents -- 1 and 0 for true
          * and false, respectively.
          */

@@ -149,49 +149,34 @@ namespace HXE
 
           try
           {
-            var prof = (LastProfile) Custom.LastProfile(executable.Profile.Path);
+            var  lastprof = (LastProfile) Custom.LastProfile(executable.Profile.Path);
 
-            if (!prof.Exists())
+            if (!lastprof.Exists())
             {
+              var  profile  = new Profile();
+              bool scaffold = false;
+
               Core("Lastprof.txt does not Exists.");
-              bool scaffold = System.IO.File.Exists($"{executable.Profile.Path}\\savegames\\");
-              var profile = new Profile();
-              Core("Calling LastProfile.Generate()");
+              Core("Calling LastProfile.Generate()...");
               if (!scaffold)
               {
-                Info("Savegames scaffold doesn't exist.");
+                Debug("Savegames scaffold doesn't exist.");
               }
               else
               {
-                Info("Savegames scaffold detected.");
+                Debug("Savegames scaffold detected.");
               }
-              NewProfile.LastProfile(scaffold, executable.Profile.Path, prof, profile);
+              NewProfile.Generate(executable.Profile.Path, lastprof, profile, scaffold);
             }
-            prof.Load();
 
-            var name = prof.Profile;
+            lastprof.Load();
+
+            var name = lastprof.Profile;
             var save = (Progress) Custom.Progress(executable.Profile.Path, name);
 
             if (!save.Exists())
             {
-              Info("Player Profile Not found.");
-              bool scaffold = System.IO.File.Exists($"{Custom.Profiles(executable.Profile.Path)}");
-              var profile = new Profile();
-              Core("Calling LastProfile.Generate()");
-              if (!scaffold)
-              {
-                Info("Savegames scaffold doesn't exist.");
-              }
-              else
-              {
-                Info("Savegames scaffold detected.");
-              }
-              NewProfile.LastProfile(scaffold, executable.Profile.Path, prof, profile);
-              if(!save.Exists())
-              {
-                Info("Player Profile could not be created.");
-                return;
-              }
+              throw new Exception("Player Profile could not be found.");
             }
 
             save.Load();
@@ -325,12 +310,12 @@ namespace HXE
       {
         Profile blam;
 
-        for (int i = 0; i < 1; i++)
+        for (int i = 0; i < 1 ; i++)
         {
           try
           {
             blam = Profile.Detect(executable.Profile.Path);
-
+             
             Video();
             Audio();
             Input();
@@ -341,25 +326,25 @@ namespace HXE
           }
           catch (Exception e)
           {
-            Error(e.Message + " -- MAIN.BLAM HALTED");
-            try
+            if (i == 0)
             {
+              blam = new Profile();
+              var lastprof = (LastProfile)Custom.LastProfile(executable.Profile.Path);
+              bool scaffold = false;
 
-              bool scaffold   = Exists(GetFullPath($"{Custom.Profiles(executable.Profile.Path)}"));
-              var lastprofile = new LastProfile();
-              blam            = new Profile();
-              Info("Calling LastProfile.Generate()");
-              NewProfile.LastProfile(scaffold, executable.Profile.Path, lastprofile, blam);
-
-              Video();
-              Audio();
-              Input();
-
-              blam.Save();
-
-              Core("MAIN.BLAM: Profile enhancements have been successfully applied and saved.");
+              Core("Lastprof.txt does not exist.");
+              Core("Calling LastProfile.Generate()...");
+              if (!scaffold)
+              {
+                Debug("Savegames scaffold doesn't exist.");
+              }
+              else
+              {
+                Debug("Savegames scaffold detected.");
+              }
+              NewProfile.Generate(executable.Profile.Path, lastprof, blam, scaffold);
             }
-            catch
+            else
             {
               Error(e.Message + " -- MAIN.BLAM HALTED");
             }
@@ -527,9 +512,31 @@ namespace HXE
       void Open()
       {
         var open = (OpenSauce) Custom.OpenSauce(executable.Profile.Path);
+        var mod = System.IO.File.Exists("./dinput8.dll") || System.IO.File.Exists("./mods/opensauce.dll");
 
-        if (open.Exists())
+        if (System.IO.File.Exists("./dinput8.dll"))
+          Debug("dinput8.dll exists");
+        else
+          Debug("dinput8 not found");
+
+        if (System.IO.File.Exists("./mods/opensauce.dll"))
+          Debug("opensauce.dll exists");
+        else
+          Debug("opensauce.dll not found");
+
+        if (!mod)
+          Debug("Open Sauce not found");
+
+        if (open.Exists() && mod)
+        { 
+          open.Load(); 
+        }
+        else if(mod)
+        {
+          open.Save();
           open.Load();
+        }
+        
 
         try
         {
@@ -540,7 +547,6 @@ namespace HXE
           open.Camera.IgnoreFOVChangeInCinematics           = true; /* fixes user interface    */
           open.Camera.IgnoreFOVChangeInMainMenu             = true; /* fixes user interface    */
           open.Rasterizer.ShaderExtensions.Effect.DepthFade = true; /* shader optimisations    */ 
-          // Note: DepthFade causes the edges of particles/decals to blend when they clip/intersect with other geometry
 
           open.Save();
 
