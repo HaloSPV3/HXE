@@ -119,7 +119,7 @@ namespace HXE.HCE
          */
 
         if (!string.IsNullOrWhiteSpace(Profile.Path))
-          ApplyArgument(args, $"-path \"{GetFullPath(Profile.Path)}\" ");
+          ApplyArgument(args, $"-path \"{Profile.Path}\" ");
 
         /**
          * Miscellaneous tweaks. 
