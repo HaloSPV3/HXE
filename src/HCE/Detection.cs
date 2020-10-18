@@ -101,7 +101,7 @@ namespace HXE.HCE
     public static FileInfo InferFromRegistryKeyEntry()
     {
       const string keyX64 = @"SOFTWARE\Wow6432Node\Microsoft\Microsoft Games\Halo CE";
-      const string keyX32 = @"SOFTWARE\Microsoft\Microsoft Games\Halo CE";
+      const string keyX86 = @"SOFTWARE\Microsoft\Microsoft Games\Halo CE";
 
       /**
        * Seeks the HEC executable path at the given registry sub-key, and returns the path if it exists on the fs; else
@@ -121,7 +121,7 @@ namespace HXE.HCE
         }
       }
 
-      return GetFromSubKey(keyX64) ?? GetFromSubKey(keyX32);
+      return GetFromSubKey(keyX64) ?? GetFromSubKey(keyX86);
     }
   }
 }
