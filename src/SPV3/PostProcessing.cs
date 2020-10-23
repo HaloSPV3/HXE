@@ -72,6 +72,7 @@ namespace HXE.SPV3
     public DofOptions                 DOF                { get; set; } = DofOptions.High;
     public ExperimentalPostProcessing Experimental       { get; set; } = new ExperimentalPostProcessing();
     public bool                       SSR                { get; set; } = true;
+    public bool                       Deband             { get; set; } = true;
 
     /// <summary>
     ///   Experimental overrides for HCE.
