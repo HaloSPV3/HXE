@@ -49,6 +49,9 @@ namespace HXE
         case Kernel.Configuration.ConfigurationMode.SPV32:
           Mode.SelectedIndex = 2;
           break;
+        case Kernel.Configuration.ConfigurationMode.SPV33:
+          Mode.SelectedIndex = 3;
+          break;
         default:
           throw new ArgumentOutOfRangeException();
       }
@@ -90,6 +93,9 @@ namespace HXE
           break;
         case 2:
           _configuration.Mode = Kernel.Configuration.ConfigurationMode.SPV32;
+          break;
+        case 3:
+          _configuration.Mode = Kernel.Configuration.ConfigurationMode.SPV33;
           break;
         default:
           throw new ArgumentOutOfRangeException();
