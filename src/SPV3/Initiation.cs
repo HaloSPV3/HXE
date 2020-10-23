@@ -129,6 +129,7 @@ namespace HXE.SPV3
       var fg   = PostProcessing.FilmGrain;
       var hv   = PostProcessing.HudVisor;
       var ssr  = PostProcessing.SSR;
+      var db   = PostProcessing.Deband;
 
       /* motion blur */
       {
@@ -200,11 +201,14 @@ namespace HXE.SPV3
       }
 
       output.AppendLine("set rasterizer_soft_filter "                 + (vl ? "true" : "false"));  /* volumetrics    */
-      output.AppendLine("set display_precache_progress "              + (df ? "true" : "false"));  /* dynamic flares */
+      if (!System.IO.File.Exists(Paths.Version))
+        output.AppendLine("set display_precache_progress "            + (df ? "true" : "false"));  /* dynamic flares */
       output.AppendLine("set use_super_remote_players_action_update " + (ld ? "false" : "true"));  /* lens dirt      */
       output.AppendLine("set use_new_vehicle_update_scheme "          + (fg ? "false" : "true"));  /* film grain     */
       output.AppendLine("set multiplayer_draw_teammates_names "       + (hv ? "false" : "true"));  /* hud visor      */
       output.AppendLine("set error_suppress_all "                     + (ssr ? "true" : "false")); /* ssr            */
+      if (System.IO.File.Exists(Paths.Version))
+        output.AppendLine("set display_precache_progress "            + (db ? "true" : "false"));  /* debanding      */
 
       Info("Saving initiation data to the initc.txt file");
       WriteAllText(output.ToString());

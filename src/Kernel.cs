@@ -96,6 +96,9 @@ namespace HXE
     /// </param>
     public static void Invoke(Executable executable, Configuration configuration)
     {
+      if (Exists(Paths.Version))
+        configuration.Mode = Configuration.ConfigurationMode.SPV33;
+
       Init(); /* initc.txt declarations */
       Blam(); /* blam.sav enhancements  */
       Open(); /* opensauce declarations */
@@ -144,7 +147,8 @@ namespace HXE
 
         void Resume()
         {
-          if (configuration.Mode == Configuration.ConfigurationMode.HCE)
+          if (configuration.Mode != Configuration.ConfigurationMode.SPV32 &&
+              configuration.Mode != Configuration.ConfigurationMode.SPV33)
             return;
 
           try
@@ -215,7 +219,8 @@ namespace HXE
           init.MouseAcceleration = configuration.Tweaks.Acceleration;
           init.Gamma             = configuration.Video.Gamma;
 
-          if (configuration.Mode == Configuration.ConfigurationMode.SPV32)
+          if (configuration.Mode == Configuration.ConfigurationMode.SPV32 &&
+              configuration.Mode == Configuration.ConfigurationMode.SPV33)
           {
             init.CinematicBars = configuration.Tweaks.Cinematic;
             init.MotionSensor  = configuration.Tweaks.Sensor;
@@ -242,7 +247,8 @@ namespace HXE
 
         void Shader()
         {
-          if (configuration.Mode != Configuration.ConfigurationMode.SPV32)
+          if (configuration.Mode != Configuration.ConfigurationMode.SPV32 &&
+              configuration.Mode != Configuration.ConfigurationMode.SPV33)
             return;
 
           init.PostProcessing.Internal           = configuration.Shaders.Internal;
@@ -260,8 +266,9 @@ namespace HXE
           init.PostProcessing.MXAO               = configuration.Shaders.MXAO;
           init.PostProcessing.DOF                = configuration.Shaders.DOF;
           init.PostProcessing.SSR                = configuration.Shaders.SSR;
+          init.PostProcessing.Deband             = configuration.Shaders.Deband;
 
-          Core("INIT.SHADER: SPV3.2 post-processing effects have been assigned to the initiation file.");
+          Core("INIT.SHADER: SPV3 post-processing effects have been assigned to the initiation file.");
 
           Debug("INIT.SHADER: Internal            - " + init.PostProcessing.Internal);
           Debug("INIT.SHADER: External            - " + init.PostProcessing.External);
@@ -278,6 +285,7 @@ namespace HXE
           Debug("INIT.SHADER: MXAO                - " + init.PostProcessing.MXAO);
           Debug("INIT.SHADER: DOF                 - " + init.PostProcessing.DOF);
           Debug("INIT.SHADER: SSR                 - " + init.PostProcessing.SSR);
+          Debug("INIT.SHADER: Deband              - " + init.PostProcessing.Deband);
         }
 
         /**
@@ -512,7 +520,8 @@ namespace HXE
       void Open()
       {
         var open = (OpenSauce) Custom.OpenSauce(executable.Profile.Path);
-        var mod = System.IO.File.Exists("./dinput8.dll") || System.IO.File.Exists("./mods/opensauce.dll");
+        var mod = System.IO.File.Exists("./dinput8.dll") ||
+                  System.IO.File.Exists("./mods/opensauce.dll");
 
         if (System.IO.File.Exists("./dinput8.dll"))
           Debug("dinput8.dll exists");
@@ -540,7 +549,7 @@ namespace HXE
 
         try
         {
-          if (configuration.Mode != Configuration.ConfigurationMode.SPV32) return;
+          if (configuration.Mode == Configuration.ConfigurationMode.HCE) return;
 
           open.Rasterizer.PostProcessing.MotionBlur.Enabled = configuration.Shaders.MotionBlur == BuiltIn;
           open.HUD.ScaleHUD                                 = true; /* fixes user interface    */
@@ -550,7 +559,7 @@ namespace HXE
 
           open.Save();
 
-          Core("MAIN.OPEN: Conditionally applied SPV3.2 fixes - enabled HUD scaling, FOV ignoreing, and depth fade.");
+          Core("MAIN.OPEN: Conditionally applied SPV3 fixes - enabled HUD scaling, FOV ignoreing, and depth fade.");
 
           Debug("MAIN.OPEN: Motion Blur          - " + open.Rasterizer.PostProcessing.MotionBlur.Enabled);
           Debug("MAIN.OPEN: HUD Scaling          - " + open.HUD.ScaleHUD);
@@ -767,7 +776,8 @@ namespace HXE
       {
         HCE,   /* tweaks, hce patches & enhancements */
         SPV31, /* legacy maps unlock, no shaders     */
-        SPV32  /* shaders, campaign resume, tweaks   */
+        SPV32, /* shaders, campaign resume, tweaks   */
+        SPV33  /* SPV32, campaign++, deband          */
       }
 
       private const    int    Length = 256; /* persistence binary length */
@@ -883,6 +893,7 @@ namespace HXE
             bw.Write((byte) Shaders.MXAO);
             bw.Write((byte) Shaders.DOF);
             bw.Write(Shaders.SSR);
+            bw.Write(Shaders.Deband);
           }
 
           /* persist */
@@ -981,6 +992,7 @@ namespace HXE
             Shaders.MXAO               = (MxaoOptions) br.ReadByte();
             Shaders.DOF                = (DofOptions) br.ReadByte();
             Shaders.SSR                = br.ReadBoolean();
+            Shaders.Deband             = br.ReadBoolean();
           }
         }
 
