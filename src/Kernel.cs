@@ -223,13 +223,13 @@ namespace HXE
           if (configuration.Mode == Configuration.ConfigurationMode.SPV32 &&
               configuration.Mode == Configuration.ConfigurationMode.SPV33)
           {
-            init.CinematicBars = configuration.Tweaks.Cinematic;
+            init.CinemaBars    = configuration.Tweaks.CinemaBars;
             init.MotionSensor  = configuration.Tweaks.Sensor;
             init.Unload        = configuration.Tweaks.Unload;
 
             Core("INIT.TWEAKS: SPV3.2 cinematic bars, motion sensor and unload tweaks have been updated.");
 
-            Debug("INIT.TWEAKS: Cinematic Bars - " + init.CinematicBars);
+            Debug("INIT.TWEAKS: Cinematic Bars - " + init.CinemaBars);
             Debug("INIT.TWEAKS: Motion Sensor  - " + init.MotionSensor);
             Debug("INIT.TWEAKS: Unload         - " + init.Unload);
           }
@@ -868,7 +868,7 @@ namespace HXE
           /* tweaks */
           {
             ms.Position = (byte) Offset.Tweaks;
-            bw.Write(Tweaks.Cinematic);
+            bw.Write(Tweaks.CinemaBars);
             bw.Write(Tweaks.Sensor);
             bw.Write(Tweaks.Magnetism);
             bw.Write(Tweaks.AutoAim);
@@ -967,7 +967,7 @@ namespace HXE
           /* tweaks */
           {
             ms.Position         = (byte) Offset.Tweaks;
-            Tweaks.Cinematic    = br.ReadBoolean();
+            Tweaks.CinemaBars   = br.ReadBoolean();
             Tweaks.Sensor       = br.ReadBoolean();
             Tweaks.Magnetism    = br.ReadBoolean();
             Tweaks.AutoAim      = br.ReadBoolean();
@@ -1044,7 +1044,7 @@ namespace HXE
 
       public class ConfigurationTweaks
       {
-        public bool   Cinematic    { get; set; } = true; /* SPV3.2 cinematic bars */
+        public bool   CinemaBars   { get; set; } = true; /* SPV3.2 cinematic bars */
         public bool   Sensor       { get; set; } = true; /* SPV3.2 motion sensor  */
         public bool   Magnetism    { get; set; } = true; /* controller magnetism  */
         public bool   AutoAim      { get; set; } = true; /* controller auto-aim   */

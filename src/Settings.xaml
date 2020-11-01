@@ -77,8 +77,8 @@
             <GroupBox Grid.Column="1"
                       Header="Tweaks">
                 <StackPanel VerticalAlignment="Center">
-                    <CheckBox Content="Cinematic"
-                              Name="TweaksCinematic"
+                    <CheckBox Content="Cinematic Bars"
+                              Name="TweaksCinemaBars"
                               ToolTip="Toggles cinematic bars for SPV3.2 cut-scenes." />
                     <CheckBox Content="Sensor"
                               Name="TweaksSensor"

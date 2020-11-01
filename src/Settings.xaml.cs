@@ -61,7 +61,7 @@ namespace HXE
       MainStart.IsChecked          = _configuration.Main.Start;
       MainResume.IsChecked         = _configuration.Main.Resume;
       MainElevated.IsChecked       = _configuration.Main.Elevated;
-      TweaksCinematic.IsChecked    = _configuration.Tweaks.Cinematic;
+      TweaksCinemaBars.IsChecked   = _configuration.Tweaks.CinemaBars;
       TweaksSensor.IsChecked       = _configuration.Tweaks.Sensor;
       TweaksMagnetism.IsChecked    = _configuration.Tweaks.Magnetism;
       TweaksAutoAim.IsChecked      = _configuration.Tweaks.AutoAim;
@@ -106,7 +106,7 @@ namespace HXE
       _configuration.Main.Start          = MainStart.IsChecked          == true;
       _configuration.Main.Resume         = MainResume.IsChecked         == true;
       _configuration.Main.Elevated       = MainElevated.IsChecked       == true;
-      _configuration.Tweaks.Cinematic    = TweaksCinematic.IsChecked    == true;
+      _configuration.Tweaks.CinemaBars   = TweaksCinemaBars.IsChecked   == true;
       _configuration.Tweaks.Sensor       = TweaksSensor.IsChecked       == true;
       _configuration.Tweaks.Magnetism    = TweaksMagnetism.IsChecked    == true;
       _configuration.Tweaks.AutoAim      = TweaksAutoAim.IsChecked      == true;
@@ -144,7 +144,7 @@ namespace HXE
       Console.Debug("Main.Patch          - " + _configuration.Main.Patch);
       Console.Debug("Main.Start          - " + _configuration.Main.Start);
       Console.Debug("Main.Resume         - " + _configuration.Main.Resume);
-      Console.Debug("Tweaks.Cinematic    - " + _configuration.Tweaks.Cinematic);
+      Console.Debug("Tweaks.CinemaBars   - " + _configuration.Tweaks.CinemaBars);
       Console.Debug("Tweaks.Sensor       - " + _configuration.Tweaks.Sensor);
       Console.Debug("Tweaks.Magnetism    - " + _configuration.Tweaks.Magnetism);
       Console.Debug("Tweaks.AutoAim      - " + _configuration.Tweaks.AutoAim);
