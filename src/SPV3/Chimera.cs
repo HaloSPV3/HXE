@@ -29,10 +29,10 @@ namespace HXE.SPV3
   {
     private const int Length = 2056;
 
-    public byte Interpolation        { get; set; } = 9;
-    public bool AnisotropicFiltering { get; set; } = true;
+    public byte Interpolation        { get; set; } = 8;
+    public bool AnisotropicFiltering { get; set; } = false;
     public bool UncapCinematic       { get; set; } = true;
-    public bool BlockLOD             { get; set; }
+    public bool BlockLOD             { get; set; } = false;
 
     /// <summary>
     ///   Saves object state to the inbound file.

@@ -60,19 +60,19 @@ namespace HXE.SPV3
     public bool                       External           { get; set; } = true;
     public bool                       GBuffer            { get; set; } = true;
     public bool                       DepthFade          { get; set; } = true;
-    public bool                       Bloom              { get; set; } = true;
-    public bool                       LensDirt           { get; set; } = true;
-    public bool                       DynamicLensFlares  { get; set; } = true;
-    public bool                       VolumetricLighting { get; set; } = true;
-    public bool                       AntiAliasing       { get; set; } = true;
+    public bool                       Bloom              { get; set; } = false;
+    public bool                       LensDirt           { get; set; } = false;
+    public bool                       DynamicLensFlares  { get; set; } = false;
+    public bool                       VolumetricLighting { get; set; } = false;
+    public bool                       AntiAliasing       { get; set; } = false;
     public bool                       HudVisor           { get; set; } = true;
-    public bool                       FilmGrain          { get; set; } = true;
-    public MotionBlurOptions          MotionBlur         { get; set; } = MotionBlurOptions.PombHigh;
-    public MxaoOptions                MXAO               { get; set; } = MxaoOptions.High;
-    public DofOptions                 DOF                { get; set; } = DofOptions.High;
+    public bool                       FilmGrain          { get; set; } = false;
+    public MotionBlurOptions          MotionBlur         { get; set; } = MotionBlurOptions.Off;
+    public MxaoOptions                MXAO               { get; set; } = MxaoOptions.Off;
+    public DofOptions                 DOF                { get; set; } = DofOptions.Off;
     public ExperimentalPostProcessing Experimental       { get; set; } = new ExperimentalPostProcessing();
-    public bool                       SSR                { get; set; } = true;
-    public bool                       Deband             { get; set; } = true;
+    public bool                       SSR                { get; set; } = false;
+    public bool                       Deband             { get; set; } = false;
 
     /// <summary>
     ///   Experimental overrides for HCE.
