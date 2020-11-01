@@ -31,7 +31,7 @@ namespace HXE.SPV3
   /// </summary>
   public class Initiation : File
   {
-    public bool                CinematicBars     { get; set; } = false;
+    public bool                CinemaBars        { get; set; } = false;
     public bool                PlayerAutoaim     { get; set; } = true;
     public bool                PlayerMagnetism   { get; set; } = true;
     public bool                MotionSensor      { get; set; } = true;
@@ -93,14 +93,14 @@ namespace HXE.SPV3
       var difficulty   = GetDifficulty();
       var autoaim      = PlayerAutoaim ? 1 : 0;
       var magnetism    = PlayerMagnetism ? 1 : 0;
-      var cinematic    = CinematicBars ? 0 : 1;
+      var cinemabars   = CinemaBars ? 0 : 1;
       var motionSensor = MotionSensor ? 1 : 0;
       var acceleration = MouseAcceleration ? 1 : 0;
       var gamma        = Gamma;
 
       var output = new StringBuilder();
       output.AppendLine($"set f3 {mission}");
-      output.AppendLine($"set loud_dialog_hack {cinematic}");
+      output.AppendLine($"set loud_dialog_hack {cinemabars}");
       output.AppendLine($"player_autoaim {autoaim}");
       output.AppendLine($"player_magnetism {magnetism}");
       output.AppendLine($"game_difficulty_set {difficulty}");
