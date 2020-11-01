@@ -43,6 +43,7 @@
                 <ComboBoxItem Content="HCE" />
                 <ComboBoxItem Content="SPV3.1" />
                 <ComboBoxItem Content="SPV3.2" />
+                <ComboBoxItem Content="SPV3.3" />
             </ComboBox>
         </GroupBox>
 
@@ -79,19 +80,19 @@
                 <StackPanel VerticalAlignment="Center">
                     <CheckBox Content="Cinematic Bars"
                               Name="TweaksCinemaBars"
-                              ToolTip="Toggles cinematic bars for SPV3.2 cut-scenes." />
+                              ToolTip="Toggles cinematic bars for cut-scenes." />
                     <CheckBox Content="Sensor"
                               Name="TweaksSensor"
-                              ToolTip="Toggles motion sensor for SPV3.2." />
+                              ToolTip="Toggles motion sensor." />
                     <CheckBox Content="Magnetism"
                               Name="TweaksMagnetism"
-                              ToolTip="Toggles SPV3.2 controller magnetism." />
+                              ToolTip="Toggles controller magnetism." />
                     <CheckBox Content="Auto Aim"
                               Name="TweaksAutoAim"
-                              ToolTip="Toggles SPV3.2 controller auto-aim." />
+                              ToolTip="Toggles controller auto-aim." />
                     <CheckBox Content="Acceleration"
                               Name="TweaksAcceleration"
-                              ToolTip="Toggles HCE/SPV3 mouse acceleration." />
+                              ToolTip="Toggles mouse acceleration." />
                     <CheckBox Content="PP Unload"
                               Name="TweaksUnload"
                               ToolTip="Unloads SPV3 post-processing/run SPV3 without shaders." />
@@ -154,7 +155,7 @@
                 <StackPanel VerticalAlignment="Center">
                     <CheckBox Content="Override"
                               Name="InputOverride"
-                              ToolTip="Forcefully applies the SPV3.2 controller preset." />
+                              ToolTip="Forcefully applies the SPV3 controller preset." />
                 </StackPanel>
             </GroupBox>
         </Grid>
