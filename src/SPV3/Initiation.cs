@@ -31,7 +31,7 @@ namespace HXE.SPV3
   /// </summary>
   public class Initiation : File
   {
-    public bool                CinematicBars     { get; set; } = true;
+    public bool                CinematicBars     { get; set; } = false;
     public bool                PlayerAutoaim     { get; set; } = true;
     public bool                PlayerMagnetism   { get; set; } = true;
     public bool                MotionSensor      { get; set; } = true;
