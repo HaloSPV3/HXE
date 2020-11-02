@@ -50,10 +50,7 @@ namespace HXE.SPV3
     /// </summary>
     protected Mission GetMission(BinaryReader reader)
     {
-      var bytes = new byte[32];
-
-      reader.BaseStream.Seek(0x1E8, SeekOrigin.Begin);
-      reader.BaseStream.Read(bytes, 0, 32);
+      var bytes = GetBytes(reader, 0x1E8, 32);
 
       switch (Encoding.UTF8.GetString(bytes).TrimEnd('\0'))
       {
@@ -103,9 +100,9 @@ namespace HXE.SPV3
     /// </summary>
     protected Difficulty GetDifficulty(BinaryReader reader)
     {
-      reader.BaseStream.Seek(0x1E2, SeekOrigin.Begin);
-
-      switch (reader.ReadByte())
+      var bytes = GetBytes(reader, 0x1E2, 1);
+      
+      switch (bytes[0])
       {
         case 0x0:
           return Difficulty.Noble;
@@ -118,6 +115,14 @@ namespace HXE.SPV3
         default:
           return Difficulty.Normal;
       }
+    }
+
+    private static byte[] GetBytes(BinaryReader reader, int offset, int length)
+    {
+      var bytes = new byte[length];
+      reader.BaseStream.Seek(offset, SeekOrigin.Begin);
+      reader.BaseStream.Read(bytes, 0, length);
+      return bytes;
     }
 
     /// <summary>
