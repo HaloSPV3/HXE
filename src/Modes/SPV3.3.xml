@@ -1,0 +1,442 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Mode xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <ID>spv33</ID>
+    <Name>HXE Kernel Mode for SPV3.3</Name>
+    <Campaign>
+        <Resume>
+            <Enabled>true</Enabled>
+            <Variable>set f3</Variable>
+        </Resume>
+        <Missions>
+            <Mission>
+                <ID>2</ID>
+                <Name>spv3a10</Name>
+                <Description>SPV3 A10</Description>
+            </Mission>
+            <Mission>
+                <ID>3</ID>
+                <Name>spv3a30</Name>
+                <Description>SPV3 A30</Description>
+            </Mission>
+            <Mission>
+                <ID>4</ID>
+                <Name>spv3a50</Name>
+                <Description>SPV3 A50</Description>
+            </Mission>
+            <Mission>
+                <ID>5</ID>
+                <Name>spv3b30</Name>
+                <Description>SPV3 B30</Description>
+            </Mission>
+            <Mission>
+                <ID>6</ID>
+                <Name>spv3b30_evolved</Name>
+                <Description>SPV3 B30 Evolved</Description>
+            </Mission>
+            <Mission>
+                <ID>7</ID>
+                <Name>spv3b40</Name>
+                <Description>SPV3 B40</Description>
+            </Mission>
+            <Mission>
+                <ID>8</ID>
+                <Name>spv3c10</Name>
+                <Description>SPV3 C10</Description>
+            </Mission>
+            <Mission>
+                <ID>9</ID>
+                <Name>spv3c20</Name>
+                <Description>SPV3 C20</Description>
+            </Mission>
+            <Mission>
+                <ID>10</ID>
+                <Name>spv3c40</Name>
+                <Description>SPV3 C40</Description>
+            </Mission>
+            <Mission>
+                <ID>11</ID>
+                <Name>spv3d20</Name>
+                <Description>SPV3 D20</Description>
+            </Mission>
+            <Mission>
+                <ID>12</ID>
+                <Name>spv3d25</Name>
+                <Description>SPV3 D25</Description>
+            </Mission>
+            <Mission>
+                <ID>13</ID>
+                <Name>spv3d30</Name>
+                <Description>SPV3 D30</Description>
+            </Mission>
+            <Mission>
+                <ID>14</ID>
+                <Name>spv3d30_evolved</Name>
+                <Description>SPV3 D30 Evolved</Description>
+            </Mission>
+            <Mission>
+                <ID>15</ID>
+                <Name>spv3d40</Name>
+                <Description>SPV3 D40</Description>
+            </Mission>
+            <Mission>
+                <ID>16</ID>
+                <Name>spv3_lumoria_a</Name>
+                <Description>Lumoria A</Description>
+            </Mission>
+            <Mission>
+                <ID>17</ID>
+                <Name>spv3_lumoria_b</Name>
+                <Description>Lumoria B</Description>
+            </Mission>
+            <Mission>
+                <ID>18</ID>
+                <Name>spv3_lumoria_cd</Name>
+                <Description>Lumoria C &amp; D</Description>
+            </Mission>
+            <Mission>
+                <ID>19</ID>
+                <Name>spv3a05</Name>
+                <Description>SPV3 A05</Description>
+            </Mission>
+        </Missions>
+        <Difficulties>
+            <Difficulty>
+                <ID>0</ID>
+                <Name>Noble</Name>
+            </Difficulty>
+            <Difficulty>
+                <ID>1</ID>
+                <Name>Normal</Name>
+            </Difficulty>
+            <Difficulty>
+                <ID>2</ID>
+                <Name>Heroic</Name>
+            </Difficulty>
+            <Difficulty>
+                <ID>3</ID>
+                <Name>Legendary</Name>
+            </Difficulty>
+        </Difficulties>
+    </Campaign>
+    <Configurations>
+        <Configuration>
+            <ID>0a676f15-bf76-4064-b306-9cd4ec6c3bcb</ID>
+            <Name>Cinematic bars</Name>
+            <Variable>set loud_dialog_hack</Variable>
+            <Options>
+                <ConfigurationOption>
+                    <Name>On</Name>
+                    <Value>1</Value>
+                    <Default>false</Default>
+                </ConfigurationOption>
+                <ConfigurationOption>
+                    <Name>Off</Name>
+                    <Value>0</Value>
+                    <Default>false</Default>
+                </ConfigurationOption>
+            </Options>
+        </Configuration>
+        <Configuration>
+            <ID>d65910a5-2268-4d70-8efe-6fe4f7b4ecad</ID>
+            <Name>Player auto-aim</Name>
+            <Variable>player_autoaim</Variable>
+            <Options>
+                <ConfigurationOption>
+                    <Name>On</Name>
+                    <Value>1</Value>
+                    <Default>true</Default>
+                </ConfigurationOption>
+                <ConfigurationOption>
+                    <Name>Off</Name>
+                    <Value>0</Value>
+                    <Default>false</Default>
+                </ConfigurationOption>
+            </Options>
+        </Configuration>
+        <Configuration>
+            <ID>2ddfb493-d149-4c8c-894f-19f70c370f71</ID>
+            <Name>Player magnetism</Name>
+            <Variable>player_magnetism</Variable>
+            <Options>
+                <ConfigurationOption>
+                    <Name>On</Name>
+                    <Value>1</Value>
+                    <Default>true</Default>
+                </ConfigurationOption>
+                <ConfigurationOption>
+                    <Name>Off</Name>
+                    <Value>0</Value>
+                    <Default>false</Default>
+                </ConfigurationOption>
+            </Options>
+        </Configuration>
+        <Configuration>
+            <ID>7b83f2f1-112d-41e2-9258-14f4130ff3cf</ID>
+            <Name>Motion sensor</Name>
+            <Variable>set rasterizer_hud_motion_sensor</Variable>
+            <Options>
+                <ConfigurationOption>
+                    <Name>On</Name>
+                    <Value>1</Value>
+                    <Default>true</Default>
+                </ConfigurationOption>
+                <ConfigurationOption>
+                    <Name>Off</Name>
+                    <Value>0</Value>
+                    <Default>false</Default>
+                </ConfigurationOption>
+            </Options>
+        </Configuration>
+        <Configuration>
+            <ID>ded5a108-917f-4047-acef-bd26eaa9698f</ID>
+            <Name>Mouse acceleration</Name>
+            <Variable>mouse_acceleration</Variable>
+            <Options>
+                <ConfigurationOption>
+                    <Name>On</Name>
+                    <Value>1</Value>
+                    <Default>false</Default>
+                </ConfigurationOption>
+                <ConfigurationOption>
+                    <Name>Off</Name>
+                    <Value>0</Value>
+                    <Default>false</Default>
+                </ConfigurationOption>
+            </Options>
+        </Configuration>
+        <Configuration>
+            <ID>0c90e70f-d2bf-47f5-a6b4-2970944b9c20</ID>
+            <Name>SPV3.3 DRM Unlock</Name>
+            <Variable>set f1</Variable>
+            <Options>
+                <ConfigurationOption>
+                    <Name>On</Name>
+                    <Value>8</Value>
+                    <Default>false</Default>
+                </ConfigurationOption>
+                <ConfigurationOption>
+                    <Name>Off</Name>
+                    <Value>0</Value>
+                    <Default>false</Default>
+                </ConfigurationOption>
+            </Options>
+        </Configuration>
+        <Configuration>
+            <ID>62ae980e-6740-4efc-97ff-ec04f923b4d0</ID>
+            <Name>Motion Blur</Name>
+            <Variable>set multiplayer_hit_sound_volume</Variable>
+            <Options>
+                <ConfigurationOption>
+                    <Name>Off</Name>
+                    <Value>1.0</Value>
+                    <Default>false</Default>
+                </ConfigurationOption>
+                <ConfigurationOption>
+                    <Name>Built-in</Name>
+                    <Value>1.1</Value>
+                    <Default>false</Default>
+                </ConfigurationOption>
+                <ConfigurationOption>
+                    <Name>POMB - Low</Name>
+                    <Value>1.2</Value>
+                    <Default>false</Default>
+                </ConfigurationOption>
+                <ConfigurationOption>
+                    <Name>POMB - High</Name>
+                    <Value>1.3</Value>
+                    <Default>true</Default>
+                </ConfigurationOption>
+            </Options>
+        </Configuration>
+        <Configuration>
+            <ID>99b4352a-39b8-4738-83bf-553ee2701d5b</ID>
+            <Name>Motion Blur</Name>
+            <Variable>set multiplayer_hit_sound_volume</Variable>
+            <Options>
+                <ConfigurationOption>
+                    <Name>Off</Name>
+                    <Value>1.0</Value>
+                    <Default>false</Default>
+                </ConfigurationOption>
+                <ConfigurationOption>
+                    <Name>Built-in</Name>
+                    <Value>1.1</Value>
+                    <Default>false</Default>
+                </ConfigurationOption>
+                <ConfigurationOption>
+                    <Name>POMB - Low</Name>
+                    <Value>1.2</Value>
+                    <Default>false</Default>
+                </ConfigurationOption>
+                <ConfigurationOption>
+                    <Name>POMB - High</Name>
+                    <Value>1.3</Value>
+                    <Default>true</Default>
+                </ConfigurationOption>
+            </Options>
+        </Configuration>
+        <Configuration>
+            <ID>33e536e4-be1e-48fe-a32f-9f95e76e60e2</ID>
+            <Name>MXAO</Name>
+            <Variable>set cl_remote_player_action_queue_limit</Variable>
+            <Options>
+                <ConfigurationOption>
+                    <Name>Off</Name>
+                    <Value>2</Value>
+                    <Default>false</Default>
+                </ConfigurationOption>
+                <ConfigurationOption>
+                    <Name>Low</Name>
+                    <Value>3</Value>
+                    <Default>false</Default>
+                </ConfigurationOption>
+                <ConfigurationOption>
+                    <Name>High</Name>
+                    <Value>4</Value>
+                    <Default>true</Default>
+                </ConfigurationOption>
+            </Options>
+        </Configuration>
+        <Configuration>
+            <ID>477c20ff-9722-47fd-ac92-35e54704f091</ID>
+            <Name>Depth of Field</Name>
+            <Variable>set cl_remote_player_action_queue_tick_limit</Variable>
+            <Options>
+                <ConfigurationOption>
+                    <Name>Off</Name>
+                    <Value>6</Value>
+                    <Default>false</Default>
+                </ConfigurationOption>
+                <ConfigurationOption>
+                    <Name>Low</Name>
+                    <Value>7</Value>
+                    <Default>false</Default>
+                </ConfigurationOption>
+                <ConfigurationOption>
+                    <Name>High</Name>
+                    <Value>8</Value>
+                    <Default>true</Default>
+                </ConfigurationOption>
+            </Options>
+        </Configuration>
+        <Configuration>
+            <ID>1855f669-6812-4368-9496-a8dc3c25ba1b</ID>
+            <Name>Volumetric Lighting</Name>
+            <Variable>set rasterizer_soft_filter</Variable>
+            <Options>
+                <ConfigurationOption>
+                    <Name>On</Name>
+                    <Value>true</Value>
+                    <Default>true</Default>
+                </ConfigurationOption>
+                <ConfigurationOption>
+                    <Name>Off</Name>
+                    <Value>false</Value>
+                    <Default>false</Default>
+                </ConfigurationOption>
+            </Options>
+        </Configuration>
+        <Configuration>
+            <ID>7214628b-4513-4011-947a-7d684c00af97</ID>
+            <Name>Dynamic Flares</Name>
+            <Variable>set display_precache_progress</Variable>
+            <Options>
+                <ConfigurationOption>
+                    <Name>On</Name>
+                    <Value>true</Value>
+                    <Default>true</Default>
+                </ConfigurationOption>
+                <ConfigurationOption>
+                    <Name>Off</Name>
+                    <Value>false</Value>
+                    <Default>false</Default>
+                </ConfigurationOption>
+            </Options>
+        </Configuration>
+        <Configuration>
+            <ID>f7bc917f-7f23-43d1-b884-4e9fb608408a</ID>
+            <Name>Lens Dirt</Name>
+            <Variable>set use_super_remote_players_action_update</Variable>
+            <Options>
+                <ConfigurationOption>
+                    <Name>On</Name>
+                    <Value>true</Value>
+                    <Default>true</Default>
+                </ConfigurationOption>
+                <ConfigurationOption>
+                    <Name>Off</Name>
+                    <Value>false</Value>
+                    <Default>false</Default>
+                </ConfigurationOption>
+            </Options>
+        </Configuration>
+        <Configuration>
+            <ID>b1377628-f785-4256-abd0-00677db8c7cb</ID>
+            <Name>Film Grain</Name>
+            <Variable>set use_new_vehicle_update_scheme</Variable>
+            <Options>
+                <ConfigurationOption>
+                    <Name>On</Name>
+                    <Value>true</Value>
+                    <Default>true</Default>
+                </ConfigurationOption>
+                <ConfigurationOption>
+                    <Name>Off</Name>
+                    <Value>false</Value>
+                    <Default>false</Default>
+                </ConfigurationOption>
+            </Options>
+        </Configuration>
+        <Configuration>
+            <ID>d4422035-4830-4cfa-ba0a-c270c742583a</ID>
+            <Name>HUD Visor</Name>
+            <Variable>set multiplayer_draw_teammates_names</Variable>
+            <Options>
+                <ConfigurationOption>
+                    <Name>On</Name>
+                    <Value>true</Value>
+                    <Default>true</Default>
+                </ConfigurationOption>
+                <ConfigurationOption>
+                    <Name>Off</Name>
+                    <Value>false</Value>
+                    <Default>false</Default>
+                </ConfigurationOption>
+            </Options>
+        </Configuration>
+        <Configuration>
+            <ID>b6f2929e-8516-48e6-9b6f-32481b06ef5d</ID>
+            <Name>SSR</Name>
+            <Variable>set error_suppress_all</Variable>
+            <Options>
+                <ConfigurationOption>
+                    <Name>On</Name>
+                    <Value>true</Value>
+                    <Default>true</Default>
+                </ConfigurationOption>
+                <ConfigurationOption>
+                    <Name>Off</Name>
+                    <Value>false</Value>
+                    <Default>false</Default>
+                </ConfigurationOption>
+            </Options>
+        </Configuration>
+        <Configuration>
+            <ID>8e86da21-1263-4c93-ba5e-99bf292d6228</ID>
+            <Name>Debanding</Name>
+            <Variable>set display_precache_progress</Variable>
+            <Options>
+                <ConfigurationOption>
+                    <Name>On</Name>
+                    <Value>true</Value>
+                    <Default>true</Default>
+                </ConfigurationOption>
+                <ConfigurationOption>
+                    <Name>Off</Name>
+                    <Value>false</Value>
+                    <Default>false</Default>
+                </ConfigurationOption>
+            </Options>
+        </Configuration>
+    </Configurations>
+</Mode>
