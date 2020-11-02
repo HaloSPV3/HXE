@@ -10,8 +10,8 @@ namespace HXE.HCE
   /// </summary>
   public abstract class Progress : File
   {
-    public abstract Campaign.Mission    Mission    { get; set; }
-    public abstract Campaign.Difficulty Difficulty { get; set; }
+    public abstract SPV3.Campaign.Mission    Mission    { get; set; }
+    public abstract SPV3.Campaign.Difficulty Difficulty { get; set; }
 
     /// <summary>
     ///   Loads object state from the inbound file.
@@ -56,12 +56,12 @@ namespace HXE.HCE
     /// <summary>
     ///   Infers the mission and returns the Campaign.Mission representation.
     /// </summary>
-    protected abstract Campaign.Mission GetMission(string mission);
+    protected abstract SPV3.Campaign.Mission GetMission(string mission);
 
     /// <summary>
     ///   Infers the difficulty and returns the Campaign.Difficulty representation.
     /// </summary>
-    protected abstract Campaign.Difficulty GetDifficulty(byte mission);
+    protected abstract SPV3.Campaign.Difficulty GetDifficulty(byte mission);
 
     private static byte[] GetBytes(BinaryReader reader, int offset, int length)
     {

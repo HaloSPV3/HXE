@@ -28,74 +28,74 @@ namespace HXE.SPV3
   /// </summary>
   public class Progress : HCE.Progress
   {
-    public override Mission    Mission    { get; set; } = Mission.Spv3A10;
-    public override Difficulty Difficulty { get; set; } = Difficulty.Heroic;
+    public override Campaign.Mission    Mission    { get; set; } = Campaign.Mission.Spv3A10;
+    public override Campaign.Difficulty Difficulty { get; set; } = Campaign.Difficulty.Heroic;
 
     /// <summary>
     ///   Infers the mission and returns the Campaign.Mission representation.
     /// </summary>
-    protected override Mission GetMission(string mission)
+    protected override Campaign.Mission GetMission(string mission)
     {
       switch (mission)
       {
         case "spv3a10":
-          return Mission.Spv3A10;
+          return Campaign.Mission.Spv3A10;
         case "spv3a30":
-          return Mission.Spv3A30;
+          return Campaign.Mission.Spv3A30;
         case "spv3a50":
-          return Mission.Spv3A50;
+          return Campaign.Mission.Spv3A50;
         case "spv3b30":
-          return Mission.Spv3B30;
+          return Campaign.Mission.Spv3B30;
         case "spv3b30_evolved":
-          return Mission.Spv3B30Evolved;
+          return Campaign.Mission.Spv3B30Evolved;
         case "spv3b40":
-          return Mission.Spv3B40;
+          return Campaign.Mission.Spv3B40;
         case "spv3c10":
-          return Mission.Spv3C10;
+          return Campaign.Mission.Spv3C10;
         case "spv3c20":
-          return Mission.Spv3C20;
+          return Campaign.Mission.Spv3C20;
         case "spv3c40":
-          return Mission.Spv3C40;
+          return Campaign.Mission.Spv3C40;
         case "spv3d20":
-          return Mission.Spv3D20;
+          return Campaign.Mission.Spv3D20;
         case "spv3d25":
-          return Mission.Spv3D25;
+          return Campaign.Mission.Spv3D25;
         case "spv3d30":
-          return Mission.Spv3D30;
+          return Campaign.Mission.Spv3D30;
         case "spv3d30_evolved":
-          return Mission.Spv3D30Evolved;
+          return Campaign.Mission.Spv3D30Evolved;
         case "spv3d40":
-          return Mission.Spv3D40;
+          return Campaign.Mission.Spv3D40;
         case "spv3_lumoria_a":
-          return Mission.LumoriaA;
+          return Campaign.Mission.LumoriaA;
         case "spv3_lumoria_b":
-          return Mission.LumoriaB;
+          return Campaign.Mission.LumoriaB;
         case "spv3_lumoria_cd":
-          return Mission.LumoriaCd;
+          return Campaign.Mission.LumoriaCd;
         case "spv3a05":
-          return Mission.Spv3A05;
+          return Campaign.Mission.Spv3A05;
         default:
-          return Mission.Spv3A10;
+          return Campaign.Mission.Spv3A10;
       }
     }
 
     /// <summary>
     ///   Infers the difficulty and returns the Campaign.Difficulty representation.
     /// </summary>
-    protected override Difficulty GetDifficulty(byte mission)
+    protected override Campaign.Difficulty GetDifficulty(byte mission)
     {
       switch (mission)
       {
         case 0x0:
-          return Difficulty.Noble;
+          return Campaign.Difficulty.Noble;
         case 0x1:
-          return Difficulty.Normal;
+          return Campaign.Difficulty.Normal;
         case 0x2:
-          return Difficulty.Heroic;
+          return Campaign.Difficulty.Heroic;
         case 0x3:
-          return Difficulty.Legendary;
+          return Campaign.Difficulty.Legendary;
         default:
-          return Difficulty.Normal;
+          return Campaign.Difficulty.Normal;
       }
     }
 
