@@ -20,9 +20,37 @@ namespace HXE.HCE
     {
       using (var reader = new BinaryReader(System.IO.File.Open(Path, FileMode.Open)))
       {
-        Difficulty = GetDifficulty(GetBytes(reader, 0x1E2, 1)[0]);
-        Mission    = GetMission(Encoding.UTF8.GetString(GetBytes(reader, 0x1E8, 32)).TrimEnd('\0'));
+        Mission    = GetMission(ReadMission(reader));
+        Difficulty = GetDifficulty(ReadDifficulty(reader));
       }
+    }
+
+    /// <summary>
+    ///   Retrieves the Mission data using the inbound BinaryReader object.
+    /// </summary>
+    private static string ReadMission(BinaryReader reader)
+    {
+      const int offset = 0x1E8;
+      const int length = 32;
+
+      var data    = GetBytes(reader, offset, length);
+      var mission = Encoding.UTF8.GetString(data).TrimEnd('\0');
+
+      return mission;
+    }
+
+    /// <summary>
+    ///   Retrieves the Difficulty data using the inbound BinaryReader object.
+    /// </summary>
+    private static byte ReadDifficulty(BinaryReader reader)
+    {
+      const int offset = 0x1E2;
+      const int length = 1;
+
+      var data       = GetBytes(reader, offset, length);
+      var difficulty = data[0];
+
+      return difficulty;
     }
 
     /// <summary>
