@@ -71,6 +71,7 @@
     <Compile Include="Configuration.cs" />
     <Compile Include="Difficulty.cs" />
     <Compile Include="HCE\Progress.cs" />
+    <Compile Include="Mode.cs" />
     <Compile Include="Mission.cs" />
     <Compile Include="NewProfile.cs" />
     <Compile Include="Compiler.cs" />
