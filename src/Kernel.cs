@@ -1024,11 +1024,11 @@ namespace HXE
 
       public class ConfigurationVideo
       {
-        public bool Resolution { get; set; } = true; /* auto resolution   */
-        public bool Uncap      { get; set; } = true; /* unlock framerate  */
-        public bool Quality    { get; set; } = true; /* auto high quality */
-        public byte Gamma      { get; set; }         /* game video gamma  */
-        public bool Bless      { get; set; } = true; /* border-less hack  */
+        public bool Resolution { get; set; } = true; /* auto resolution                          */
+        public bool Uncap      { get; set; } = true; /* unlock framerate                         */
+        public bool Quality    { get; set; }         /* set to false by default for optimisation */
+        public byte Gamma      { get; set; }         /* game video gamma                         */
+        public bool Bless      { get; set; } = true; /* border-less hack                         */
       }
 
       public class ConfigurationAudio
