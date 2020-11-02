@@ -40,19 +40,17 @@ namespace HXE.SPV3
     {
       using (var reader = new BinaryReader(System.IO.File.Open(Path, FileMode.Open)))
       {
-        Difficulty = GetDifficulty(reader);
-        Mission    = GetMission(reader);
+        Difficulty = GetDifficulty(GetBytes(reader, 0x1E2, 1)[0]);
+        Mission    = GetMission(Encoding.UTF8.GetString(GetBytes(reader, 0x1E8, 32)).TrimEnd('\0'));
       }
     }
 
     /// <summary>
     ///   Infers the mission and returns the Campaign.Mission representation.
     /// </summary>
-    protected Mission GetMission(BinaryReader reader)
+    protected Mission GetMission(string mission)
     {
-      var bytes = GetBytes(reader, 0x1E8, 32);
-
-      switch (Encoding.UTF8.GetString(bytes).TrimEnd('\0'))
+      switch (mission)
       {
         case "spv3a10":
           return Mission.Spv3A10;
@@ -98,11 +96,9 @@ namespace HXE.SPV3
     /// <summary>
     ///   Infers the difficulty and returns the Campaign.Difficulty representation.
     /// </summary>
-    protected Difficulty GetDifficulty(BinaryReader reader)
+    protected Difficulty GetDifficulty(byte mission)
     {
-      var bytes = GetBytes(reader, 0x1E2, 1);
-      
-      switch (bytes[0])
+      switch (mission)
       {
         case 0x0:
           return Difficulty.Noble;
