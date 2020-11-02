@@ -37,6 +37,7 @@ using static HXE.HCE.Profile.ProfileVideo;
 using static HXE.SPV3.PostProcessing;
 using static System.Text.Encoding;
 using static HXE.SPV3.PostProcessing.MotionBlurOptions;
+using Progress = HXE.SPV3.Progress;
 
 namespace HXE
 {

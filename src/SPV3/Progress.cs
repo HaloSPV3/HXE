@@ -18,107 +18,84 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-using System.IO;
-using System.Text;
 using static HXE.SPV3.Campaign;
 
 namespace HXE.SPV3
 {
   /// <inheritdoc />
   /// <summary>
-  ///   Object representation of a savegame.bin file on the filesystem.
+  ///   Object representation of a savegame.bin file on the filesystem with SPV3 data.
   /// </summary>
-  public class Progress : File
+  public class Progress : HCE.Progress
   {
-    public Mission    Mission    { get; set; } = Mission.Spv3A10;
-    public Difficulty Difficulty { get; set; } = Difficulty.Heroic;
+    public override Mission    Mission    { get; set; } = Mission.Spv3A10;
+    public override Difficulty Difficulty { get; set; } = Difficulty.Heroic;
 
     /// <summary>
-    ///   Loads object state from the inbound file.
+    ///   Infers the mission and returns the Campaign.Mission representation.
     /// </summary>
-    public void Load()
+    protected override Mission GetMission(string mission)
     {
-      /**
-       * Infers the difficulty and returns the Campaign.Difficulty representation.
-       */
-
-      Difficulty GetDifficulty(BinaryReader reader)
+      switch (mission)
       {
-        reader.BaseStream.Seek(0x1E2, SeekOrigin.Begin);
-
-        switch (reader.ReadByte())
-        {
-          case 0x0:
-            return Difficulty.Noble;
-          case 0x1:
-            return Difficulty.Normal;
-          case 0x2:
-            return Difficulty.Heroic;
-          case 0x3:
-            return Difficulty.Legendary;
-          default:
-            return Difficulty.Normal;
-        }
+        case "spv3a10":
+          return Mission.Spv3A10;
+        case "spv3a30":
+          return Mission.Spv3A30;
+        case "spv3a50":
+          return Mission.Spv3A50;
+        case "spv3b30":
+          return Mission.Spv3B30;
+        case "spv3b30_evolved":
+          return Mission.Spv3B30Evolved;
+        case "spv3b40":
+          return Mission.Spv3B40;
+        case "spv3c10":
+          return Mission.Spv3C10;
+        case "spv3c20":
+          return Mission.Spv3C20;
+        case "spv3c40":
+          return Mission.Spv3C40;
+        case "spv3d20":
+          return Mission.Spv3D20;
+        case "spv3d25":
+          return Mission.Spv3D25;
+        case "spv3d30":
+          return Mission.Spv3D30;
+        case "spv3d30_evolved":
+          return Mission.Spv3D30Evolved;
+        case "spv3d40":
+          return Mission.Spv3D40;
+        case "spv3_lumoria_a":
+          return Mission.LumoriaA;
+        case "spv3_lumoria_b":
+          return Mission.LumoriaB;
+        case "spv3_lumoria_cd":
+          return Mission.LumoriaCd;
+        case "spv3a05":
+          return Mission.Spv3A05;
+        default:
+          return Mission.Spv3A10;
       }
+    }
 
-      /**
-       * Infers the mission and returns the Campaign.Mission representation.
-       */
-
-      Mission GetMission(BinaryReader reader)
+    /// <summary>
+    ///   Infers the difficulty and returns the Campaign.Difficulty representation.
+    /// </summary>
+    protected override Difficulty GetDifficulty(byte mission)
+    {
+      switch (mission)
       {
-        var bytes = new byte[32];
-
-        reader.BaseStream.Seek(0x1E8, SeekOrigin.Begin);
-        reader.BaseStream.Read(bytes, 0, 32);
-
-        switch (Encoding.UTF8.GetString(bytes).TrimEnd('\0'))
-        {
-          case "spv3a10":
-            return Mission.Spv3A10;
-          case "spv3a30":
-            return Mission.Spv3A30;
-          case "spv3a50":
-            return Mission.Spv3A50;
-          case "spv3b30":
-            return Mission.Spv3B30;
-          case "spv3b30_evolved":
-            return Mission.Spv3B30Evolved;
-          case "spv3b40":
-            return Mission.Spv3B40;
-          case "spv3c10":
-            return Mission.Spv3C10;
-          case "spv3c20":
-            return Mission.Spv3C20;
-          case "spv3c40":
-            return Mission.Spv3C40;
-          case "spv3d20":
-            return Mission.Spv3D20;
-          case "spv3d25":
-            return Mission.Spv3D25;
-          case "spv3d30":
-            return Mission.Spv3D30;
-          case "spv3d30_evolved":
-            return Mission.Spv3D30Evolved;
-          case "spv3d40":
-            return Mission.Spv3D40;
-          case "spv3_lumoria_a":
-            return Mission.LumoriaA;
-          case "spv3_lumoria_b":
-            return Mission.LumoriaB;
-          case "spv3_lumoria_cd":
-            return Mission.LumoriaCd;
-          case "spv3a05":
-            return Mission.Spv3A05;
-          default:
-            return Mission.Spv3A10;
-        }
-      }
-
-      using (var reader = new BinaryReader(System.IO.File.Open(Path, FileMode.Open)))
-      {
-        Difficulty = GetDifficulty(reader);
-        Mission    = GetMission(reader);
+        case 0x0:
+          return Difficulty.Noble;
+        case 0x1:
+          return Difficulty.Normal;
+        case 0x2:
+          return Difficulty.Heroic;
+        case 0x3:
+          return Difficulty.Legendary;
+        default:
+          return Difficulty.Normal;
       }
     }
 
