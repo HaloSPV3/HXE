@@ -72,6 +72,7 @@
     <Compile Include="Common\ExtConvert.cs" />
     <Compile Include="Common\ExtPath.cs" />
     <Compile Include="Common\ExtProcess.cs" />
+    <Compile Include="Configuration.cs" />
     <Compile Include="Difficulty.cs" />
     <Compile Include="HCE\Registry.cs" />
     <Compile Include="HCE\Progress.cs" />
