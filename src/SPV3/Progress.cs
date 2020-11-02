@@ -18,37 +18,23 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-using System.IO;
-using System.Text;
 using static HXE.SPV3.Campaign;
 
 namespace HXE.SPV3
 {
   /// <inheritdoc />
   /// <summary>
-  ///   Object representation of a savegame.bin file on the filesystem.
+  ///   Object representation of a savegame.bin file on the filesystem with SPV3 data.
   /// </summary>
-  public class Progress : File
+  public class Progress : HCE.Progress
   {
-    public Mission    Mission    { get; set; } = Mission.Spv3A10;
-    public Difficulty Difficulty { get; set; } = Difficulty.Heroic;
-
-    /// <summary>
-    ///   Loads object state from the inbound file.
-    /// </summary>
-    public void Load()
-    {
-      using (var reader = new BinaryReader(System.IO.File.Open(Path, FileMode.Open)))
-      {
-        Difficulty = GetDifficulty(GetBytes(reader, 0x1E2, 1)[0]);
-        Mission    = GetMission(Encoding.UTF8.GetString(GetBytes(reader, 0x1E8, 32)).TrimEnd('\0'));
-      }
-    }
+    public override Mission    Mission    { get; set; } = Mission.Spv3A10;
+    public override Difficulty Difficulty { get; set; } = Difficulty.Heroic;
 
     /// <summary>
     ///   Infers the mission and returns the Campaign.Mission representation.
     /// </summary>
-    protected Mission GetMission(string mission)
+    protected override Mission GetMission(string mission)
     {
       switch (mission)
       {
@@ -96,7 +82,7 @@ namespace HXE.SPV3
     /// <summary>
     ///   Infers the difficulty and returns the Campaign.Difficulty representation.
     /// </summary>
-    protected Difficulty GetDifficulty(byte mission)
+    protected override Difficulty GetDifficulty(byte mission)
     {
       switch (mission)
       {
@@ -111,14 +97,6 @@ namespace HXE.SPV3
         default:
           return Difficulty.Normal;
       }
-    }
-
-    private static byte[] GetBytes(BinaryReader reader, int offset, int length)
-    {
-      var bytes = new byte[length];
-      reader.BaseStream.Seek(offset, SeekOrigin.Begin);
-      reader.BaseStream.Read(bytes, 0, length);
-      return bytes;
     }
 
     /// <summary>
