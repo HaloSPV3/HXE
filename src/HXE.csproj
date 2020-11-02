@@ -109,6 +109,8 @@
     <Compile Include="Update.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Modes\SPV3.2.xml" />
+    <Content Include="Modes\SPV3.3.xml" />
     <EmbeddedResource Include="Assets\banner.txt" />
     <Content Include="Assets\icon.ico" />
     <Page Include="Positions.xaml" />
