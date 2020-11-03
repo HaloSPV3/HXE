@@ -164,13 +164,13 @@ namespace HXE
 
         public class PostProcessingMotionBlur
         {
-          public bool   Enabled    { get; set; } = true;
+          public bool   Enabled    { get; set; } = false;
           public double BlurAmount { get; set; } = 1.00;
         }
 
         public class PostProcessingBloom
         {
-          public bool Enabled { get; set; } = true;
+          public bool Enabled { get; set; } = false;
         }
 
         public class PostProcessingAntiAliasing
