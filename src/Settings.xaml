@@ -123,11 +123,24 @@
                 </StackPanel>
 
                 <GroupBox Grid.Column="1"
-                          Header="Gamma">
-                    <TextBox Name="VideoGamma"
-                             VerticalContentAlignment="Center"
-                             HorizontalContentAlignment="Center"
-                             ToolTip="Saves you from looking into a void when playing SPV3's Maw." />
+                          Header="Gamma"
+                          ToolTip="Disabling will run HCE with gamma disabled.">
+                    <Grid>
+                      <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition/>
+                      </Grid.ColumnDefinitions>
+                    <CheckBox Grid.Column="0"
+                              Name="VideoUseGamma"
+                              VerticalAlignment="Center" />
+                    <TextBox  Grid.Column="1"
+                              Name="VideoGamma"
+                              VerticalAlignment="Center"
+                              VerticalContentAlignment="Center"
+                              HorizontalContentAlignment="Center"
+                              IsEnabled="{Binding Settings.VideoUseGamma}"
+                              ToolTip="Saves you from looking into a void when playing SPV3's Maw." />
+                    </Grid>
                 </GroupBox>
             </Grid>
         </GroupBox>
