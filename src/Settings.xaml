@@ -166,7 +166,7 @@
             <GroupBox Grid.Column="1"
                       Header="Input">
                 <StackPanel VerticalAlignment="Center">
-                    <CheckBox Content="Override"
+                    <CheckBox Content="Enforce Preset"
                               Name="InputOverride"
                               ToolTip="Forcefully applies the SPV3 controller preset." />
                 </StackPanel>
