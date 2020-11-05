@@ -227,7 +227,7 @@ namespace HXE
             init.MotionSensor  = configuration.Tweaks.Sensor;
             init.Unload        = configuration.Tweaks.Unload;
 
-            Core("INIT.TWEAKS: SPV3.2 cinematic bars, motion sensor and unload tweaks have been updated.");
+            Core("INIT.TWEAKS: SPV3 cinematic bars, motion sensor and unload tweaks have been updated.");
 
             Debug("INIT.TWEAKS: Cinematic Bars - " + init.CinemaBars);
             Debug("INIT.TWEAKS: Motion Sensor  - " + init.MotionSensor);
@@ -243,7 +243,7 @@ namespace HXE
         }
 
         /**
-         * SPV3.2 shader toggles and configurations.
+         * SPV3 shader toggles and configurations.
          */
 
         void Shader()
@@ -478,7 +478,7 @@ namespace HXE
         }
 
         /**
-         * Apply SPV3.2's preset input to the controller.
+         * Apply SPV3's preset input to the controller.
          */
 
         void Input()
@@ -514,7 +514,7 @@ namespace HXE
       }
 
       /**
-       * For SPV3.2, we will tweak the OpenSauce settings to ensure full compatibility with 3.2's specifications and
+       * For SPV3.2+, we will tweak the OpenSauce settings to ensure full compatibility with 3.2+'s specifications and
        * post-processing effects.
        */
 
@@ -848,6 +848,7 @@ namespace HXE
             bw.Write(Video.Resolution);
             bw.Write(Video.Uncap);
             bw.Write(Video.Quality);
+            bw.Write(Video.UseGamma);
             bw.Write(Video.Gamma);
             bw.Write(Video.Bless);
           }
@@ -947,6 +948,7 @@ namespace HXE
             Video.Resolution = br.ReadBoolean();
             Video.Uncap      = br.ReadBoolean();
             Video.Quality    = br.ReadBoolean();
+            Video.UseGamma   = br.ReadBoolean();
             Video.Gamma      = br.ReadByte();
             Video.Bless      = br.ReadBoolean();
           }
@@ -1024,11 +1026,12 @@ namespace HXE
 
       public class ConfigurationVideo
       {
-        public bool Resolution { get; set; } = true; /* auto resolution                          */
-        public bool Uncap      { get; set; } = true; /* unlock framerate                         */
+        public bool Resolution { get; set; } = true; /* auto resolution   */
+        public bool Uncap      { get; set; } = true; /* unlock framerate  */
         public bool Quality    { get; set; }         /* set to false by default for optimisation */
-        public byte Gamma      { get; set; }         /* game video gamma                         */
-        public bool Bless      { get; set; } = true; /* border-less hack                         */
+        public bool UseGamma   { get; set; } = true; /* enable hce gamma  */
+        public byte Gamma      { get; set; }         /* game video gamma  */
+        public bool Bless      { get; set; } = true; /* border-less hack  */
       }
 
       public class ConfigurationAudio
@@ -1044,12 +1047,12 @@ namespace HXE
 
       public class ConfigurationTweaks
       {
-        public bool   CinemaBars   { get; set; } = true; /* SPV3.2 cinematic bars */
-        public bool   Sensor       { get; set; } = true; /* SPV3.2 motion sensor  */
+        public bool   CinemaBars   { get; set; } = true; /* SPV3 cinematic bars   */
+        public bool   Sensor       { get; set; } = true; /* SPV3 motion sensor    */
         public bool   Magnetism    { get; set; } = true; /* controller magnetism  */
         public bool   AutoAim      { get; set; } = true; /* controller auto-aim   */
         public bool   Acceleration { get; set; }         /* mouse acceleration    */
-        public bool   Unload       { get; set; }         /* unload spv3.2 shaders */
+        public bool   Unload       { get; set; }         /* unload SPV3 shaders   */
       }
     }
   }

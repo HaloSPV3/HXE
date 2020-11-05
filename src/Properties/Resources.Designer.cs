@@ -68,7 +68,7 @@ namespace HXE.Properties {
         ///| |  | |/ . \| |____
         ///|_|  |_/_/ \_\______| :: Halo XE
         ///================================
-        ///A HCE wrapper and SPV3.2 loader.
+        ///A HCE wrapper and SPV3 loader.
         ///--------------------------------
         ///src: https://source.n2.network/hxe
         ///bin: https://builds.n2.network/hxe
