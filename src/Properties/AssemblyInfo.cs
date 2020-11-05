@@ -24,8 +24,8 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("A HCE wrapper and SPV3.2 loader")]
-[assembly: AssemblyDescription("A HCE wrapper and SPV3.2 loader")]
+[assembly: AssemblyTitle("A HCE wrapper and SPV3 loader")]
+[assembly: AssemblyDescription("A HCE wrapper and SPV3 loader")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Yu:Miris")]
 [assembly: AssemblyProduct("HXE")]

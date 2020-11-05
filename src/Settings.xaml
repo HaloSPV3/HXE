@@ -43,6 +43,7 @@
                 <ComboBoxItem Content="HCE" />
                 <ComboBoxItem Content="SPV3.1" />
                 <ComboBoxItem Content="SPV3.2" />
+                <ComboBoxItem Content="SPV3.3" />
             </ComboBox>
         </GroupBox>
 
@@ -79,19 +80,19 @@
                 <StackPanel VerticalAlignment="Center">
                     <CheckBox Content="Cinematic Bars"
                               Name="TweaksCinemaBars"
-                              ToolTip="Toggles cinematic bars for SPV3.2 cut-scenes." />
+                              ToolTip="Toggles cinematic bars for cut-scenes." />
                     <CheckBox Content="Sensor"
                               Name="TweaksSensor"
-                              ToolTip="Toggles motion sensor for SPV3.2." />
+                              ToolTip="Toggles motion sensor." />
                     <CheckBox Content="Magnetism"
                               Name="TweaksMagnetism"
-                              ToolTip="Toggles SPV3.2 controller magnetism." />
+                              ToolTip="Toggles controller magnetism." />
                     <CheckBox Content="Auto Aim"
                               Name="TweaksAutoAim"
-                              ToolTip="Toggles SPV3.2 controller auto-aim." />
+                              ToolTip="Toggles controller auto-aim." />
                     <CheckBox Content="Acceleration"
                               Name="TweaksAcceleration"
-                              ToolTip="Toggles HCE/SPV3 mouse acceleration." />
+                              ToolTip="Toggles mouse acceleration." />
                     <CheckBox Content="PP Unload"
                               Name="TweaksUnload"
                               ToolTip="Unloads SPV3 post-processing/run SPV3 without shaders." />
@@ -122,11 +123,24 @@
                 </StackPanel>
 
                 <GroupBox Grid.Column="1"
-                          Header="Gamma">
-                    <TextBox Name="VideoGamma"
-                             VerticalContentAlignment="Center"
-                             HorizontalContentAlignment="Center"
-                             ToolTip="Saves you from looking into a void when playing SPV3's Maw." />
+                          Header="Gamma"
+                          ToolTip="Disabling will run HCE with gamma disabled.">
+                    <Grid>
+                      <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition/>
+                      </Grid.ColumnDefinitions>
+                    <CheckBox Grid.Column="0"
+                              Name="VideoUseGamma"
+                              VerticalAlignment="Center" />
+                    <TextBox  Grid.Column="1"
+                              Name="VideoGamma"
+                              VerticalAlignment="Center"
+                              VerticalContentAlignment="Center"
+                              HorizontalContentAlignment="Center"
+                              IsEnabled="{Binding Settings.VideoUseGamma}"
+                              ToolTip="Saves you from looking into a void when playing SPV3's Maw." />
+                    </Grid>
                 </GroupBox>
             </Grid>
         </GroupBox>
@@ -152,9 +166,9 @@
             <GroupBox Grid.Column="1"
                       Header="Input">
                 <StackPanel VerticalAlignment="Center">
-                    <CheckBox Content="Override"
+                    <CheckBox Content="Enforce Preset"
                               Name="InputOverride"
-                              ToolTip="Forcefully applies the SPV3.2 controller preset." />
+                              ToolTip="Forcefully applies the SPV3 controller preset." />
                 </StackPanel>
             </GroupBox>
         </Grid>
