@@ -218,10 +218,10 @@ namespace HXE
          * This gets me nostalgic!
          */
 
-        var w = width;
-        var h = height;
+        var w = width - 8;
+        var h = height - 8;
 
-        var a = Degrees(w  / h);
+        var a = Degrees(w / h);
         var b = Degrees(4  / 3);
         var c = Degrees(70 / 2);
 
