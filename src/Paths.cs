@@ -153,5 +153,40 @@ namespace HXE
         return Combine(Profiles(directory), profile, profile);
       }
     }
+
+    public class MCC
+    {
+      public const string SteamEXE = "steam.exe";
+      public const string Halo1dll = "halo1.dll";
+      public static readonly string ProgFiles = GetFolderPath(ProgramFilesX86)
+                                                != ""
+                                                ? GetFolderPath(ProgramFilesX86)
+                                                : GetFolderPath(ProgramFiles);
+      public static readonly string Steam     = Combine(ProgFiles, "\\Steam");
+      public static readonly string SteamLibs = Combine(Steam, "\\steamapps\\libraryfolders.vdf");
+      public static readonly string Halo1Path = Combine(Steam, "\\steamapps\\common\\Halo The Master Chief Collection\\Halo1\\", Halo1dll);
+
+      public static string NewSteamEXE  = ""; // set by SetSteamEXE
+      public static string NewSteamDir  = ""; 
+      public static string NewSteamLib  = ""; 
+      public static string NewLibrary   = "";
+      public static string NewDllPath   = Combine(NewLibrary, "\\steamapps\\common\\Halo The Master Chief Collection\\Halo1\\", Halo1dll);
+      public static void SetSteam(string steamexe)
+      {
+        NewSteamEXE = steamexe;
+        NewSteamDir = GetFullPath(GetDirectoryName(steamexe));
+        NewSteamLib = Combine(NewSteamDir, "");
+      }
+      public static void SetLibrary()
+      {
+
+      }
+
+      /// 1. Search for "\\Steam\\steamapps\\libraryfolder.vdf".
+      /// 2. Parse the contents for one or more Steam Libary path.
+      /// 3. Walk each library, searching for "\\{library}\\steamapps\\common\\Halo The Master Chief Collection\\"
+      /// 4. If it's found, search inside it for "\\halo1\\halo1.dll"
+      /// 5. (OPTIONAL) verify it by checking the file size. If it's above 20MiB, it passes the verification check.
+    }
   }
 }
