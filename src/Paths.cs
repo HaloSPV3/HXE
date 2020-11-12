@@ -170,7 +170,7 @@ namespace HXE
       public static string NewSteamDir  = ""; 
       public static string NewSteamLib  = ""; 
       public static string NewLibrary   = "";
-      public static string NewDllPath   = Combine(NewLibrary, "\\steamapps\\common\\Halo The Master Chief Collection\\Halo1\\", Halo1dll);
+      public static string NewHalo1Path = Combine(NewLibrary, "\\steamapps\\common\\Halo The Master Chief Collection\\Halo1\\", Halo1dll);
       public static void SetSteam(string steamexe)
       {
         NewSteamEXE = steamexe;
