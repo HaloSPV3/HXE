@@ -3,9 +3,9 @@ using static HXE.Paths.MCC;
 
 namespace HXE.Steam
 {
-  partial class MCC
+  public partial class MCC
   {
-    class Halo1
+    public class Halo1
     {
       public string placeholder = "";
 
