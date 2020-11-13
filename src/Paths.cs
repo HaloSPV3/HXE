@@ -162,7 +162,7 @@ namespace HXE
                                                 != ""
                                                 ? GetFolderPath(ProgramFilesX86)
                                                 : GetFolderPath(ProgramFiles);
-      public static readonly string Steam     = Combine(ProgFiles, "\\Steam");
+      public static readonly string Steam     = Combine(ProgFiles, "\\Steam\\");
       public static readonly string SteamLibs = Combine(Steam, "\\steamapps\\libraryfolders.vdf");
       public static readonly string Halo1Path = Combine(Steam, "\\steamapps\\common\\Halo The Master Chief Collection\\Halo1\\", Halo1dll);
 
@@ -171,17 +171,12 @@ namespace HXE
       public static string NewSteamLib  = ""; 
       public static string NewLibrary   = "";
       public static string NewHalo1Path = Combine(NewLibrary, "\\steamapps\\common\\Halo The Master Chief Collection\\Halo1\\", Halo1dll);
-      public static void SetSteam(string steamexe)
+      public static void SetSteam(string steamexepath)
       {
-        NewSteamEXE = steamexe;
-        NewSteamDir = GetFullPath(GetDirectoryName(steamexe));
+        NewSteamEXE = steamexepath;
+        NewSteamDir = GetFullPath(GetDirectoryName(steamexepath));
         NewSteamLib = Combine(NewSteamDir, "");
       }
-      public static void SetLibrary()
-      {
-
-      }
-
       /// 1. Search for "\\Steam\\steamapps\\libraryfolder.vdf".
       /// 2. Parse the contents for one or more Steam Libary path.
       /// 3. Walk each library, searching for "\\{library}\\steamapps\\common\\Halo The Master Chief Collection\\"
