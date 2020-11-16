@@ -158,19 +158,20 @@ namespace HXE
     {
       public const string SteamEXE = "steam.exe";
       public const string Halo1dll = "halo1.dll";
+      public const string SteamMccH1 = "steamapps\\common\\Halo The Master Chief Collections\\Halo1";
       public static readonly string ProgFiles = GetFolderPath(ProgramFilesX86)
                                                 != ""
                                                 ? GetFolderPath(ProgramFilesX86)
                                                 : GetFolderPath(ProgramFiles);
-      public static readonly string Steam     = Combine(ProgFiles, "\\Steam\\");
-      public static readonly string SteamLibs = Combine(Steam, "\\steamapps\\libraryfolders.vdf");
-      public static readonly string Halo1Path = Combine(Steam, "\\steamapps\\common\\Halo The Master Chief Collection\\Halo1\\", Halo1dll);
+      public static readonly string Steam     = Combine(ProgFiles, "Steam");
+      public static readonly string SteamLibs = Combine(Steam, "steamapps", "libraryfolders.vdf");
+      public static readonly string Halo1Path = Combine(Steam, SteamMccH1, Halo1dll);
 
       public static string NewSteamEXE  = ""; // set by SetSteamEXE
       public static string NewSteamDir  = ""; 
       public static string NewSteamLib  = ""; 
       public static string NewLibrary   = "";
-      public static string NewHalo1Path = Combine(NewLibrary, "\\steamapps\\common\\Halo The Master Chief Collection\\Halo1\\", Halo1dll);
+      public static string NewHalo1Path = Combine(NewLibrary, Halo1dll);
       public static void SetSteam(string steamexepath)
       {
         NewSteamEXE = steamexepath;

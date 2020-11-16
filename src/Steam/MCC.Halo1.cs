@@ -30,7 +30,14 @@ namespace HXE.Steam
     {
       public string placeholder = "";
 
-
+      public void ScanForHalo1Dll(Libraries libs)
+      {
+        libs.ScanLibraries(Halo1dll);
+        if (!VerifyHalo1DLL())
+        {
+          throw new System.Exception("Halo1.dll is invalid.");
+        }
+      }
 
       /// <summary>
       /// Check if the inferred Halo1.dll is probably legitimate.

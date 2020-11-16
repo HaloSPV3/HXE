@@ -22,6 +22,7 @@
 using System;
 using System.IO;
 using static HXE.Paths.MCC;
+using static System.IO.Path;
 
 namespace HXE.Steam
 {
@@ -30,8 +31,9 @@ namespace HXE.Steam
     /// <summary>
     /// Assign a file path as a string. Local functions will use the 'file' alias and read from this class member.
     /// </summary>
-    public File LibrariesFile = (File)SteamLibs; // local variable 'file'
-    public string[] LibList = new string[16];  // Arbitrary 16 library limit.
+    public File     LibrariesFile = (File)SteamLibs; // local variable 'file'
+    public string[] LibList       = new string[15];  // Arbitrary 16 library limit. If you go over this, you're insane.
+    public string[] ReturnPaths   = new string[15]; // Arbitary 16 limit of return values. One for each Library.
     /// <summary>
     /// Read Steam's "libraryfolders.vdf" and assign each libary folder to an
     /// entry in an index array. Then, walk each entry to find the given path.
@@ -62,6 +64,7 @@ namespace HXE.Steam
         }
       }
     }
+
     /// <summary>
     /// Pass a file path to LibrariesFile.vdf if the default path doesn't exist. Then execute ParseLibraries().
     /// </summary>
@@ -71,9 +74,31 @@ namespace HXE.Steam
       LibrariesFile.Path = path;
       ParseLibraries();
     }
+
+    /// <summary>
+    /// Scan each discovered Steam Library for a given path. Each 'hit' is assigned to the ReturnPaths array. 
+    /// </summary>
+    /// <param name="path">The path(s) to find within the Steam Library folders.</param>
+    /// <remarks>
+    /// If only one result is expected, it can be accessed as ReturnPath[0].
+    /// If there are multiple 'hits', implement another While loop to filter results.
+    /// </remarks>
     public void ScanLibraries(string path)
     {
-      throw new NotImplementedException();
+      int x = 0; // ListList index
+      int y = 0; // ReturnPaths index
+      var file = (File)LibList[x];
+
+      while (x < 16 && LibList[x] != null)
+      {
+        file.Path = Combine(file.Path, path);
+        if (file.Exists())
+        {
+          ReturnPaths[y] = file.Path;
+          y++;
+        }
+        x++;
+      }
     }
   }
 }
