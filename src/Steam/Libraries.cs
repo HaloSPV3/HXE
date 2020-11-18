@@ -26,71 +26,73 @@ using static System.IO.Path;
 
 namespace HXE.Steam
 {
-  public class Libraries
+  public class Libraries : File
   {
     /// <summary>
-    /// Assign a file path as a string. Local functions will use the 'file' alias and read from this class member.
+    /// Create an object representing LibraryFolders.vdf on the filesystem.
+    /// Local functions will read the contents of this file object.
     /// </summary>
-    public File     LibrariesFile = (File)SteamLibs; // local variable 'file'
-    public string[] LibList       = new string[15];  // Arbitrary 16 library limit. If you go over this, you're insane.
-    public string[] ReturnPaths   = new string[15]; // Arbitary 16 limit of return values. One for each Library.
+    public File     LibFoldersVdf = (File)SteamLibList;
+    public string[] LibList       = new string[15];  /// Arbitrary limit of 16 libraries. If you go over this, you're insane.
+    public string[] ReturnPaths   = new string[15]; /// Arbitary limit of 16 results per search.
+    
     /// <summary>
-    /// Read Steam's "libraryfolders.vdf" and assign each libary folder to an
-    /// entry in an index array. Then, walk each entry to find the given path.
+    /// Read Steam's "libraryfolders.vdf" and assign the libary folders to an index array.
     /// </summary>
     public void ParseLibraries()
     {
-      if (!LibrariesFile.Exists() || LibrariesFile.Path == null)
-        throw new Exception("Steam Library list not found.");
-      using (StreamReader reader = System.IO.File.OpenText(LibrariesFile))
+      if (!LibFoldersVdf.Exists() || LibFoldersVdf.Path == null)
+        throw new FileNotFoundException("Steam Library list not found.");
+      string allText = LibFoldersVdf.ReadAllText();
+      string[] lines = allText.Split('\n');
+      ushort x = 0; 
+      ushort y = 1;
+
+      while (lines[x] != null)
       {
-        ushort x = 0;
-        ushort y = 1;
-        string[] line = new string[255]; // Found more than 255 lines? That's unreasonable.
-        while ((line[x] = reader.ReadLine()) != null)
+        /// extract the path string from the line if the line matches a pattern.
+        if (lines[x].Contains($"\"{y}\"")) /// e.g. "1" OR "2" OR "3"
         {
-          // extract the path string from the line if the line matches a pattern.
-          if (line[x].Contains($"\"{y}\""))
-          {
-            line[x].Trim();
-            line[x].Remove(0, 3);
-            line[x].Trim();
-            line[x].Replace("\"", " ");
-            line[x].Trim();
-            LibList[y - 1] = line[x]; // y-1 because 0 is ununsed. This moves all entries so the first one occupies libs[0]
-            y++;
-          }
-          x++;
+          lines[x].Replace($"\"{y}\"", " ");
+          lines[x].Replace('\"', ' ');
+          lines[x].Trim();
+          LibList[y - 1] = lines[x]; /// y-1 because 0 is ununsed. This moves all entries so the first one occupies libs[0]
+          y++;
         }
+        x++;
       }
     }
 
     /// <summary>
-    /// Pass a file path to LibrariesFile.vdf if the default path doesn't exist. Then execute ParseLibraries().
+    /// Pass a file path to replace the inferred Libraries path. Then execute ParseLibraries().
     /// </summary>
-    /// <param name="path">The file path to non-standard LibraryFiles.vdf.</param>
+    /// <param name="path">A non-standard path to LibraryFolderss.vdf.</param>
+    /// <remarks>
+    /// The inferred path will work 99% of the time. This will probably be removed later.
+    /// </remarks>
     public void ParseLibraries(string path)
     {
-      LibrariesFile.Path = path;
+      LibFoldersVdf.Path = path;
       ParseLibraries();
     }
 
     /// <summary>
-    /// Scan each discovered Steam Library for a given path. Each 'hit' is assigned to the ReturnPaths array. 
+    /// Search each discovered Steam Library for a given path. Each result is assigned to the ReturnPaths array. 
     /// </summary>
     /// <param name="path">The path(s) to find within the Steam Library folders.</param>
     /// <remarks>
     /// If only one result is expected, it can be accessed as ReturnPath[0].
-    /// If there are multiple 'hits', implement another While loop to filter results.
+    /// If there are multiple results, implement another While loop to filter them.
+    /// 
     /// </remarks>
     public void ScanLibraries(string path)
     {
-      int x = 0; // ListList index
-      int y = 0; // ReturnPaths index
-      var file = (File)LibList[x];
+      int x = 0; /// LibList index
+      int y = 0; /// ReturnPaths index
 
-      while (x < 16 && LibList[x] != null)
+      while (x != 15 && LibList[x] != null)
       {
+        File file = (File)LibList[x]; /// each element in LibList[] is assigned as a File object's Path.
         file.Path = Combine(file.Path, path);
         if (file.Exists())
         {

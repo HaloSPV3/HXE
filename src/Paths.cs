@@ -156,33 +156,35 @@ namespace HXE
 
     public class MCC
     {
-      public const string SteamEXE = "steam.exe";
       public const string Halo1dll = "halo1.dll";
-      public const string SteamMccH1 = "steamapps\\common\\Halo The Master Chief Collections\\Halo1";
+      public const string SteamExe = "steam.exe";
+      public const string SteamMccH1 = "steamapps\\common\\Halo The Master Chief Collection\\Halo1";
+
+      /// Determine the path for 32-bit Program Files,
+      /// then Steam's default path
+      /// and the LibraryFolders.vdf path
       public static readonly string ProgFiles = GetFolderPath(ProgramFilesX86)
                                                 != ""
                                                 ? GetFolderPath(ProgramFilesX86)
                                                 : GetFolderPath(ProgramFiles);
-      public static readonly string Steam     = Combine(ProgFiles, "Steam");
-      public static readonly string SteamLibs = Combine(Steam, "steamapps", "libraryfolders.vdf");
-      public static readonly string Halo1Path = Combine(Steam, SteamMccH1, Halo1dll);
+      public static readonly string SteamDefault = Combine(ProgFiles, "Steam");
+      public static readonly string SteamLibList = Combine(Steam, "steamapps", "libraryfolders.vdf");
+      
+      public static string Steam = SteamDefault; /// Change via SetSteam(steamexepath)
+      public static string SteamLibrary = Steam; /// Change directly or by assigning an element from Libraries.LibList[]
+      public static string Halo1Path = Combine(SteamLibrary, SteamMccH1, Halo1dll); /// 
 
-      public static string NewSteamEXE  = ""; // set by SetSteamEXE
-      public static string NewSteamDir  = ""; 
-      public static string NewSteamLib  = ""; 
-      public static string NewLibrary   = "";
-      public static string NewHalo1Path = Combine(NewLibrary, Halo1dll);
       public static void SetSteam(string steamexepath)
       {
-        NewSteamEXE = steamexepath;
-        NewSteamDir = GetFullPath(GetDirectoryName(steamexepath));
-        NewSteamLib = Combine(NewSteamDir, "");
+        Steam = GetDirectoryName(steamexepath);
+        SteamLibrary = Steam;
+        Halo1Path = Combine(SteamLibrary, SteamMccH1, Halo1dll);
       }
-      /// 1. Search for "\\Steam\\steamapps\\libraryfolder.vdf".
-      /// 2. Parse the contents for one or more Steam Libary path.
-      /// 3. Walk each library, searching for "\\{library}\\steamapps\\common\\Halo The Master Chief Collection\\"
-      /// 4. If it's found, search inside it for "\\halo1\\halo1.dll"
-      /// 5. (OPTIONAL) verify it by checking the file size. If it's above 20MiB, it passes the verification check.
+      /// 1. DONE  Search for "\\Steam\\steamapps\\libraryfolder.vdf".
+      /// 2. DONE  Parse the contents for one or more Steam Libary path.
+      /// 3. DONE  Walk each library, searching for "\\{library}\\steamapps\\common\\Halo The Master Chief Collection\\halo1\\halo1.dll"
+      /// 4. DONE  (OPTIONAL) verify it by checking the file size. If it's above 20MiB, it passes the verification check.
+      /// 5. Now, do all of this for custom paths.
     }
   }
 }
