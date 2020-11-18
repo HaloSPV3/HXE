@@ -28,11 +28,12 @@ namespace HXE.Steam
   {
     public class Halo1
     {
-      public string placeholder = "";
-
       public void ScanForHalo1Dll(Libraries libs)
       {
-        libs.ScanLibraries(Halo1dll);
+        if (!libs.Exists())
+          throw new FileNotFoundException();
+
+        libs.ScanLibraries(Path.Combine(SteamMccH1, Halo1dll));
         if (!VerifyHalo1DLL())
         {
           throw new System.Exception("Halo1.dll is invalid.");
