@@ -63,7 +63,7 @@ namespace HXE
       return System.IO.File.Exists(Path);
     }
 
-    public ulong Length()
+    public ulong Size()
     {
       var file = new FileInfo(Path);
       return (ulong) file.Length;

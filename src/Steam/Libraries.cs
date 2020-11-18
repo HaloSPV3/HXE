@@ -40,7 +40,7 @@ namespace HXE.Steam
     /// </summary>
     public void ParseLibraries()
     {
-      if (!LibrariesFile.Exists())
+      if (!LibrariesFile.Exists() || LibrariesFile.Path == null)
         throw new Exception("Steam Library list not found.");
       using (StreamReader reader = System.IO.File.OpenText(LibrariesFile))
       {
