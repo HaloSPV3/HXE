@@ -28,6 +28,28 @@ namespace HXE.Steam
   {
     public class Halo1
     {
+      /// <summary>
+      ///   Set a new path for Halo1.dll
+      /// </summary>
+      /// <param name="path">
+      ///   Custom-library path to Halo1.dll.
+      ///   If null, set Halo1Path to the default library in Steam's directory.
+      /// </param>
+      public static void SetHalo1Path()
+      {
+        Halo1Path = Path.Combine(SteamLibrary, SteamMccH1, Halo1dll);
+        if (!System.IO.File.Exists(Halo1Path))
+        {
+          var libs = new Libraries();
+          var mccH1 = Path.Combine(SteamMccH1, Halo1dll);
+
+          libs.ParseLibraries();
+          libs.ScanLibraries(mccH1);
+          Halo1Path = libs.ReturnPaths[0];
+          if (Halo1Path == null) throw new FileNotFoundException("Halo1dll not found");
+        }
+      }
+
       public void ScanForHalo1Dll(Libraries libs)
       {
         if (!libs.Exists())

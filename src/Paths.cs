@@ -156,6 +156,7 @@ namespace HXE
 
     public class MCC
     {
+      // TODO: Move Steam variables to another class
       public const string Halo1dll = "halo1.dll";
       public const string SteamExe = "steam.exe";
       public const string SteamMccH1 = "steamapps\\common\\Halo The Master Chief Collection\\Halo1";
@@ -168,17 +169,17 @@ namespace HXE
                                                 ? GetFolderPath(ProgramFilesX86)
                                                 : GetFolderPath(ProgramFiles);
       public static readonly string SteamDefault = Combine(ProgFiles, "Steam");
-      public static readonly string SteamLibList = Combine(Steam, "steamapps", "libraryfolders.vdf");
       
       public static string Steam = SteamDefault; /// Change via SetSteam(steamexepath)
+      public static string SteamLibList = Combine(Steam, "steamapps", "libraryfolders.vdf");
       public static string SteamLibrary = Steam; /// Change directly or by assigning an element from Libraries.LibList[]
-      public static string Halo1Path = Combine(SteamLibrary, SteamMccH1, Halo1dll); /// 
+      public static string Halo1Path = Combine(SteamLibrary, SteamMccH1, Halo1dll); ///
 
       public static void SetSteam(string steamexepath)
       {
         Steam = GetDirectoryName(steamexepath);
+        SteamLibList = Combine(Steam, "steamapps", "libraryfolders.vdf");
         SteamLibrary = Steam;
-        Halo1Path = Combine(SteamLibrary, SteamMccH1, Halo1dll);
       }
       /// 1. DONE  Search for "\\Steam\\steamapps\\libraryfolder.vdf".
       /// 2. DONE  Parse the contents for one or more Steam Libary path.
