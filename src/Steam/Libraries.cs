@@ -53,10 +53,11 @@ namespace HXE.Steam
         /// extract the path string from the line if the line matches a pattern.
         if (lines[x].Contains($"\"{y}\"")) /// e.g. "1" OR "2" OR "3"
         {
+          lines[x].Replace('\t', ' ');
           lines[x].Replace($"\"{y}\"", " ");
           lines[x].Replace('\"', ' ');
           lines[x].Trim();
-          LibList[y - 1] = lines[x]; /// y-1 because 0 is ununsed. This moves all entries so the first one occupies libs[0]
+          LibList[y - 1] = lines[x]; /// y-1 because 0 is ununsed. This moves all entries so the first one occupies LibList[0]
           y++;
         }
         x++;
