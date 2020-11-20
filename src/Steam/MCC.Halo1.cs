@@ -40,7 +40,7 @@ namespace HXE.Steam
         libs.ScanLibraries(mccH1);
         Halo1Path = libs.ReturnPaths[0];
         if (Halo1Path == null) 
-          throw new FileNotFoundException("Halo1dll not found");
+          throw new FileNotFoundException("Halo1.dll not found");
         if (!VerifyHalo1DLL())
           throw new System.Exception("Halo1.dll is invalid.");
       }
