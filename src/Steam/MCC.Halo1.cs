@@ -26,7 +26,7 @@ namespace HXE.Steam
 {
   public partial class MCC
   {
-    public class Halo1
+    public static class Halo1
     {
       /// <summary>
       ///   Set a new path for Halo1.dll
@@ -39,26 +39,17 @@ namespace HXE.Steam
         libs.ParseLibraries();
         libs.ScanLibraries(mccH1);
         Halo1Path = libs.ReturnPaths[0];
-        if (Halo1Path == null) throw new FileNotFoundException("Halo1dll not found");
-      }
-
-      public void ScanForHalo1Dll(Libraries libs)
-      {
-        if (!libs.Exists())
-          throw new FileNotFoundException();
-
-        libs.ScanLibraries(Path.Combine(SteamMccH1, Halo1dll));
+        if (Halo1Path == null) 
+          throw new FileNotFoundException("Halo1dll not found");
         if (!VerifyHalo1DLL())
-        {
           throw new System.Exception("Halo1.dll is invalid.");
-        }
       }
 
       /// <summary>
       /// Check if the inferred Halo1.dll is probably legitimate.
       /// </summary>
       /// <returns>Returns true if the file is larger than 20MiB.</returns>
-      public bool VerifyHalo1DLL()
+      public static bool VerifyHalo1DLL()
       {
         var fileinfo = new FileInfo(Halo1Path);
         if (20971520 < (ulong)fileinfo.Length)
