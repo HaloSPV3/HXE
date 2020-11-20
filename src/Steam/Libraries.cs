@@ -19,7 +19,6 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-using System;
 using System.IO;
 using static HXE.Paths.MCC;
 using static System.IO.Path;
@@ -47,20 +46,28 @@ namespace HXE.Steam
       string[] lines = allText.Split('\n');
       ushort x = 0; 
       ushort y = 1;
+      ushort z = (ushort)lines.GetUpperBound(0);
+
+      /// <example>
+      /// 
+      /// </example>
 
       while (lines[x] != null)
       {
         /// extract the path string from the line if the line matches a pattern.
         if (lines[x].Contains($"\"{y}\"")) /// e.g. "1" OR "2" OR "3"
         {
-          lines[x].Replace('\t', ' ');
-          lines[x].Replace($"\"{y}\"", " ");
-          lines[x].Replace('\"', ' ');
-          lines[x].Trim();
+          lines[x] = lines[x].Trim('\t'); /// Trim Tab characters
+          lines[x] = lines[x].Replace($"\"{y}\"", "");
+          lines[x] = lines[x].Replace("\"", "");
+          lines[x] = lines[x].Replace("\\\\", "\\");
+          lines[x] = lines[x].Trim('\t');
           LibList[y - 1] = lines[x]; /// y-1 because 0 is ununsed. This moves all entries so the first one occupies LibList[0]
           y++;
         }
-        x++;
+        if (x != z)
+          x++;
+        else lines[x] = null;
       }
     }
 
