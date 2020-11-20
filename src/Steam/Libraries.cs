@@ -97,6 +97,7 @@ namespace HXE.Steam
     {
       int x = 0; /// LibList index
       int y = 0; /// ReturnPaths index
+      int z = LibList.GetUpperBound(0);
 
       while (x != 15 && LibList[x] != null)
       {
@@ -107,7 +108,10 @@ namespace HXE.Steam
           ReturnPaths[y] = file.Path;
           y++;
         }
-        x++;
+        if (x != z)
+          x++;
+        else
+          LibList[x] = null;
       }
     }
   }
