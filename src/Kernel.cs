@@ -849,7 +849,7 @@ namespace HXE
             bw.Write(Video.Resolution);
             bw.Write(Video.Uncap);
             bw.Write(Video.Quality);
-            bw.Write(Video.UseGamma);
+            bw.Write(Video.GammaEnabled);
             bw.Write(Video.Gamma);
             bw.Write(Video.Bless);
           }
@@ -945,13 +945,13 @@ namespace HXE
 
           /* video */
           {
-            ms.Position      = (byte) Offset.Video;
-            Video.Resolution = br.ReadBoolean();
-            Video.Uncap      = br.ReadBoolean();
-            Video.Quality    = br.ReadBoolean();
-            Video.UseGamma   = br.ReadBoolean();
-            Video.Gamma      = br.ReadByte();
-            Video.Bless      = br.ReadBoolean();
+            ms.Position        = (byte) Offset.Video;
+            Video.Resolution   = br.ReadBoolean();
+            Video.Uncap        = br.ReadBoolean();
+            Video.Quality      = br.ReadBoolean();
+            Video.GammaEnabled = br.ReadBoolean();
+            Video.Gamma        = br.ReadByte();
+            Video.Bless        = br.ReadBoolean();
           }
 
           /* audio */
@@ -1027,12 +1027,12 @@ namespace HXE
 
       public class ConfigurationVideo
       {
-        public bool Resolution { get; set; } = true; /* auto resolution   */
-        public bool Uncap      { get; set; } = true; /* unlock framerate  */
-        public bool Quality    { get; set; }         /* set to false by default for optimisation */
-        public bool UseGamma   { get; set; } = true; /* enable hce gamma  */
-        public byte Gamma      { get; set; }         /* game video gamma  */
-        public bool Bless      { get; set; } = true; /* border-less hack  */
+        public bool Resolution    { get; set; } = true;  /* auto resolution   */
+        public bool Uncap         { get; set; } = true;  /* unlock framerate  */
+        public bool Quality       { get; set; }          /* set to false by default for optimisation */
+        public bool GammaEnabled  { get; set; } = false; /* enable hce gamma  */
+        public byte Gamma         { get; set; }          /* game video gamma  */
+        public bool Bless         { get; set; } = true;  /* border-less hack  */
       }
 
       public class ConfigurationAudio

@@ -131,14 +131,14 @@
                         <ColumnDefinition/>
                       </Grid.ColumnDefinitions>
                     <CheckBox Grid.Column="0"
-                              Name="VideoUseGamma"
+                              Name="VideoGammaEnabled"
                               VerticalAlignment="Center" />
                     <TextBox  Grid.Column="1"
                               Name="VideoGamma"
                               VerticalAlignment="Center"
                               VerticalContentAlignment="Center"
                               HorizontalContentAlignment="Center"
-                              IsEnabled="{Binding Settings.VideoUseGamma}"
+                              IsEnabled="{Binding Settings.VideoGammaEnabled}"
                               ToolTip="Saves you from looking into a void when playing SPV3's Maw." />
                     </Grid>
                 </GroupBox>
