@@ -72,7 +72,7 @@ namespace HXE
       VideoUncap.IsChecked         = _configuration.Video.Uncap;
       VideoQuality.IsChecked       = _configuration.Video.Quality;
       VideoBless.IsChecked         = _configuration.Video.Bless;
-      VideoUseGamma.IsChecked      = _configuration.Video.UseGamma;
+      VideoGammaEnabled.IsChecked  = _configuration.Video.GammaEnabled;
       VideoGamma.Text              = _configuration.Video.Gamma.ToString();
       AudioQuality.IsChecked       = _configuration.Audio.Quality;
       AudioEnhancements.IsChecked  = _configuration.Audio.Enhancements;
@@ -118,7 +118,7 @@ namespace HXE
       _configuration.Video.Uncap         = VideoUncap.IsChecked         == true;
       _configuration.Video.Quality       = VideoQuality.IsChecked       == true;
       _configuration.Video.Bless         = VideoBless.IsChecked         == true;
-      _configuration.Video.UseGamma      = VideoUseGamma.IsChecked      == true;
+      _configuration.Video.GammaEnabled  = VideoGammaEnabled.IsChecked  == true;
       _configuration.Audio.Quality       = AudioQuality.IsChecked       == true;
       _configuration.Audio.Enhancements  = AudioEnhancements.IsChecked  == true;
       _configuration.Input.Override      = InputOverride.IsChecked      == true;
@@ -137,7 +137,10 @@ namespace HXE
 
       PrintConfiguration();
 
-      Exit.WithCode(Exit.Code.Success);
+      var process = System.Diagnostics.Process.GetCurrentProcess();
+      if (process.ProcessName == "hxe")
+        Exit.WithCode(Exit.Code.Success);
+      else Hide();
     }
 
     private void PrintConfiguration()
@@ -157,7 +160,7 @@ namespace HXE
       Console.Debug("Video.Uncap         - " + _configuration.Video.Uncap);
       Console.Debug("Video.Quality       - " + _configuration.Video.Quality);
       Console.Debug("Video.Bless         - " + _configuration.Video.Bless);
-      Console.Debug("Video.UseGamma      - " + _configuration.Video.UseGamma);
+      Console.Debug("Video.GammaEnabled  - " + _configuration.Video.GammaEnabled);
       Console.Debug("Video.Gamma         - " + _configuration.Video.Gamma);
       Console.Debug("Audio.Quality       - " + _configuration.Audio.Quality);
       Console.Debug("Audio.Enhancements  - " + _configuration.Audio.Enhancements);
@@ -166,7 +169,10 @@ namespace HXE
 
     private void Cancel(object sender, RoutedEventArgs e)
     {
-      Exit.WithCode(Exit.Code.Success);
+      var process = System.Diagnostics.Process.GetCurrentProcess();
+      if (process.ProcessName == "hxe")
+        Exit.WithCode(Exit.Code.Success);
+      else Hide();
     }
   }
 }
