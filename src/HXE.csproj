@@ -101,6 +101,8 @@
     <Compile Include="SPV3\PostProcessing.cs" />
     <Compile Include="SPV3\Progress.cs" />
     <Compile Include="Status.cs" />
+    <Compile Include="Steam\Libraries.cs" />
+    <Compile Include="Steam\MCC.Halo1.cs" />
     <Compile Include="Update.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -115,6 +117,7 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
          Other similar extension points exist, see Microsoft.Common.targets.

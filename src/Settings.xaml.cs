@@ -29,17 +29,40 @@ namespace HXE
   /// </summary>
   public partial class Settings
   {
-    private readonly Kernel.Configuration _configuration = new Kernel.Configuration(Paths.Configuration);
+    private          Kernel.Configuration       _configuration = new Kernel.Configuration(Paths.Configuration);
+    private readonly System.Diagnostics.Process _process       = System.Diagnostics.Process.GetCurrentProcess();
+
+    public Kernel.Configuration Configuration
+    {
+      get => _configuration;
+      set
+      {
+        if (value == _configuration) return;
+        _configuration = value;
+      }
+    }
+
+    public Settings(Kernel.Configuration cfg)
+    {
+      Configuration = cfg;
+      //DataContext = cfg;
+      Initialize();
+    }
 
     public Settings()
+    {
+      Initialize();
+    }
+
+    public void Initialize()
     {
       InitializeComponent();
 
       Console.Info("Loading kernel settings");
 
-      _configuration.Load();
+      Configuration.Load();
 
-      switch (_configuration.Mode)
+      switch (Configuration.Mode)
       {
         case Kernel.Configuration.ConfigurationMode.HCE:
           Mode.SelectedIndex = 0;
@@ -57,26 +80,26 @@ namespace HXE
           throw new ArgumentOutOfRangeException();
       }
 
-      MainReset.IsChecked          = _configuration.Main.Reset;
-      MainPatch.IsChecked          = _configuration.Main.Patch;
-      MainStart.IsChecked          = _configuration.Main.Start;
-      MainResume.IsChecked         = _configuration.Main.Resume;
-      MainElevated.IsChecked       = _configuration.Main.Elevated;
-      TweaksCinemaBars.IsChecked   = _configuration.Tweaks.CinemaBars;
-      TweaksSensor.IsChecked       = _configuration.Tweaks.Sensor;
-      TweaksMagnetism.IsChecked    = _configuration.Tweaks.Magnetism;
-      TweaksAutoAim.IsChecked      = _configuration.Tweaks.AutoAim;
-      TweaksAcceleration.IsChecked = _configuration.Tweaks.Acceleration;
-      TweaksUnload.IsChecked       = _configuration.Tweaks.Unload;
-      VideoResolution.IsChecked    = _configuration.Video.Resolution;
-      VideoUncap.IsChecked         = _configuration.Video.Uncap;
-      VideoQuality.IsChecked       = _configuration.Video.Quality;
-      VideoBless.IsChecked         = _configuration.Video.Bless;
-      VideoUseGamma.IsChecked      = _configuration.Video.UseGamma;
-      VideoGamma.Text              = _configuration.Video.Gamma.ToString();
-      AudioQuality.IsChecked       = _configuration.Audio.Quality;
-      AudioEnhancements.IsChecked  = _configuration.Audio.Enhancements;
-      InputOverride.IsChecked      = _configuration.Input.Override;
+      MainReset.IsChecked          = Configuration.Main.Reset;
+      MainPatch.IsChecked          = Configuration.Main.Patch;
+      MainStart.IsChecked          = Configuration.Main.Start;
+      MainResume.IsChecked         = Configuration.Main.Resume;
+      MainElevated.IsChecked       = Configuration.Main.Elevated;
+      TweaksCinemaBars.IsChecked   = Configuration.Tweaks.CinemaBars;
+      TweaksSensor.IsChecked       = Configuration.Tweaks.Sensor;
+      TweaksMagnetism.IsChecked    = Configuration.Tweaks.Magnetism;
+      TweaksAutoAim.IsChecked      = Configuration.Tweaks.AutoAim;
+      TweaksAcceleration.IsChecked = Configuration.Tweaks.Acceleration;
+      TweaksUnload.IsChecked       = Configuration.Tweaks.Unload;
+      VideoResolution.IsChecked    = Configuration.Video.Resolution;
+      VideoUncap.IsChecked         = Configuration.Video.Uncap;
+      VideoQuality.IsChecked       = Configuration.Video.Quality;
+      VideoBless.IsChecked         = Configuration.Video.Bless;
+      VideoGammaEnabled.IsChecked  = Configuration.Video.GammaEnabled;
+      VideoGamma.Text              = Configuration.Video.Gamma.ToString();
+      AudioQuality.IsChecked       = Configuration.Audio.Quality;
+      AudioEnhancements.IsChecked  = Configuration.Audio.Enhancements;
+      InputOverride.IsChecked      = Configuration.Input.Override;
 
       PrintConfiguration();
     }
@@ -88,85 +111,89 @@ namespace HXE
       switch (Mode.SelectedIndex)
       {
         case 0:
-          _configuration.Mode = Kernel.Configuration.ConfigurationMode.HCE;
+          Configuration.Mode = Kernel.Configuration.ConfigurationMode.HCE;
           break;
         case 1:
-          _configuration.Mode = Kernel.Configuration.ConfigurationMode.SPV31;
+          Configuration.Mode = Kernel.Configuration.ConfigurationMode.SPV31;
           break;
         case 2:
-          _configuration.Mode = Kernel.Configuration.ConfigurationMode.SPV32;
+          Configuration.Mode = Kernel.Configuration.ConfigurationMode.SPV32;
           break;
         case 3:
-          _configuration.Mode = Kernel.Configuration.ConfigurationMode.SPV33;
+          Configuration.Mode = Kernel.Configuration.ConfigurationMode.SPV33;
           break;
         default:
           throw new ArgumentOutOfRangeException();
       }
 
-      _configuration.Main.Reset          = MainReset.IsChecked          == true;
-      _configuration.Main.Patch          = MainPatch.IsChecked          == true;
-      _configuration.Main.Start          = MainStart.IsChecked          == true;
-      _configuration.Main.Resume         = MainResume.IsChecked         == true;
-      _configuration.Main.Elevated       = MainElevated.IsChecked       == true;
-      _configuration.Tweaks.CinemaBars   = TweaksCinemaBars.IsChecked   == true;
-      _configuration.Tweaks.Sensor       = TweaksSensor.IsChecked       == true;
-      _configuration.Tweaks.Magnetism    = TweaksMagnetism.IsChecked    == true;
-      _configuration.Tweaks.AutoAim      = TweaksAutoAim.IsChecked      == true;
-      _configuration.Tweaks.Acceleration = TweaksAcceleration.IsChecked == true;
-      _configuration.Tweaks.Unload       = TweaksUnload.IsChecked       == true;
-      _configuration.Video.Resolution    = VideoResolution.IsChecked    == true;
-      _configuration.Video.Uncap         = VideoUncap.IsChecked         == true;
-      _configuration.Video.Quality       = VideoQuality.IsChecked       == true;
-      _configuration.Video.Bless         = VideoBless.IsChecked         == true;
-      _configuration.Video.UseGamma      = VideoUseGamma.IsChecked      == true;
-      _configuration.Audio.Quality       = AudioQuality.IsChecked       == true;
-      _configuration.Audio.Enhancements  = AudioEnhancements.IsChecked  == true;
-      _configuration.Input.Override      = InputOverride.IsChecked      == true;
+      Configuration.Main.Reset          = MainReset.IsChecked          == true;
+      Configuration.Main.Patch          = MainPatch.IsChecked          == true;
+      Configuration.Main.Start          = MainStart.IsChecked          == true;
+      Configuration.Main.Resume         = MainResume.IsChecked         == true;
+      Configuration.Main.Elevated       = MainElevated.IsChecked       == true;
+      Configuration.Tweaks.CinemaBars   = TweaksCinemaBars.IsChecked   == true;
+      Configuration.Tweaks.Sensor       = TweaksSensor.IsChecked       == true;
+      Configuration.Tweaks.Magnetism    = TweaksMagnetism.IsChecked    == true;
+      Configuration.Tweaks.AutoAim      = TweaksAutoAim.IsChecked      == true;
+      Configuration.Tweaks.Acceleration = TweaksAcceleration.IsChecked == true;
+      Configuration.Tweaks.Unload       = TweaksUnload.IsChecked       == true;
+      Configuration.Video.Resolution    = VideoResolution.IsChecked    == true;
+      Configuration.Video.Uncap         = VideoUncap.IsChecked         == true;
+      Configuration.Video.Quality       = VideoQuality.IsChecked       == true;
+      Configuration.Video.Bless         = VideoBless.IsChecked         == true;
+      Configuration.Video.GammaEnabled  = VideoGammaEnabled.IsChecked  == true;
+      Configuration.Audio.Quality       = AudioQuality.IsChecked       == true;
+      Configuration.Audio.Enhancements  = AudioEnhancements.IsChecked  == true;
+      Configuration.Input.Override      = InputOverride.IsChecked      == true;
 
       try
       {
-        _configuration.Video.Gamma = byte.Parse(VideoGamma.Text);
+        Configuration.Video.Gamma = byte.Parse(VideoGamma.Text);
       }
       catch (Exception)
       {
-        _configuration.Video.Gamma = 0;
+        Configuration.Video.Gamma = 0;
       }
 
-      _configuration.Save();
-      _configuration.Load();
+      Configuration.Save();
+      Configuration.Load();
 
       PrintConfiguration();
 
-      Exit.WithCode(Exit.Code.Success);
+      if (_process.ProcessName == "hxe")
+        Exit.WithCode(Exit.Code.Success);
+      else Hide();
     }
 
     private void PrintConfiguration()
     {
-      Console.Debug("Mode                - " + _configuration.Mode);
-      Console.Debug("Main.Reset          - " + _configuration.Main.Reset);
-      Console.Debug("Main.Patch          - " + _configuration.Main.Patch);
-      Console.Debug("Main.Start          - " + _configuration.Main.Start);
-      Console.Debug("Main.Resume         - " + _configuration.Main.Resume);
-      Console.Debug("Tweaks.CinemaBars   - " + _configuration.Tweaks.CinemaBars);
-      Console.Debug("Tweaks.Sensor       - " + _configuration.Tweaks.Sensor);
-      Console.Debug("Tweaks.Magnetism    - " + _configuration.Tweaks.Magnetism);
-      Console.Debug("Tweaks.AutoAim      - " + _configuration.Tweaks.AutoAim);
-      Console.Debug("Tweaks.Acceleration - " + _configuration.Tweaks.Acceleration);
-      Console.Debug("Tweaks.Unload       - " + _configuration.Tweaks.Unload);
-      Console.Debug("Video.Resolution    - " + _configuration.Video.Resolution);
-      Console.Debug("Video.Uncap         - " + _configuration.Video.Uncap);
-      Console.Debug("Video.Quality       - " + _configuration.Video.Quality);
-      Console.Debug("Video.Bless         - " + _configuration.Video.Bless);
-      Console.Debug("Video.UseGamma      - " + _configuration.Video.UseGamma);
-      Console.Debug("Video.Gamma         - " + _configuration.Video.Gamma);
-      Console.Debug("Audio.Quality       - " + _configuration.Audio.Quality);
-      Console.Debug("Audio.Enhancements  - " + _configuration.Audio.Enhancements);
-      Console.Debug("Input.Override      - " + _configuration.Input.Override);
+      Console.Debug("Mode                - " + Configuration.Mode);
+      Console.Debug("Main.Reset          - " + Configuration.Main.Reset);
+      Console.Debug("Main.Patch          - " + Configuration.Main.Patch);
+      Console.Debug("Main.Start          - " + Configuration.Main.Start);
+      Console.Debug("Main.Resume         - " + Configuration.Main.Resume);
+      Console.Debug("Tweaks.CinemaBars   - " + Configuration.Tweaks.CinemaBars);
+      Console.Debug("Tweaks.Sensor       - " + Configuration.Tweaks.Sensor);
+      Console.Debug("Tweaks.Magnetism    - " + Configuration.Tweaks.Magnetism);
+      Console.Debug("Tweaks.AutoAim      - " + Configuration.Tweaks.AutoAim);
+      Console.Debug("Tweaks.Acceleration - " + Configuration.Tweaks.Acceleration);
+      Console.Debug("Tweaks.Unload       - " + Configuration.Tweaks.Unload);
+      Console.Debug("Video.Resolution    - " + Configuration.Video.Resolution);
+      Console.Debug("Video.Uncap         - " + Configuration.Video.Uncap);
+      Console.Debug("Video.Quality       - " + Configuration.Video.Quality);
+      Console.Debug("Video.Bless         - " + Configuration.Video.Bless);
+      Console.Debug("Video.GammaEnabled  - " + Configuration.Video.GammaEnabled);
+      Console.Debug("Video.Gamma         - " + Configuration.Video.Gamma);
+      Console.Debug("Audio.Quality       - " + Configuration.Audio.Quality);
+      Console.Debug("Audio.Enhancements  - " + Configuration.Audio.Enhancements);
+      Console.Debug("Input.Override      - " + Configuration.Input.Override);
     }
 
     private void Cancel(object sender, RoutedEventArgs e)
     {
-      Exit.WithCode(Exit.Code.Success);
+      if (_process.ProcessName == "hxe")
+        Exit.WithCode(Exit.Code.Success);
+      else Hide();
     }
   }
 }
