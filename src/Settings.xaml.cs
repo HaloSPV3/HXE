@@ -45,6 +45,7 @@ namespace HXE
     public Settings(Kernel.Configuration cfg)
     {
       Configuration = cfg;
+      //DataContext = cfg;
       Initialize();
     }
 
