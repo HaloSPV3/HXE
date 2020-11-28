@@ -105,7 +105,7 @@ namespace HXE.HCE
       const string keyX86 = @"SOFTWARE\Microsoft\Microsoft Games\Halo CE";
 
       /**
-       * Seeks the HEC executable path at the given registry sub-key, and returns the path if it exists on the fs; else
+       * Seeks the HaloCE.exe path at the given registry sub-key, and returns the path if it exists on the fs; else
        * null.
        */
       FileInfo GetFromSubKey(string subKey)
@@ -114,6 +114,7 @@ namespace HXE.HCE
         using (var key = Registry.LocalMachine.OpenSubKey(subKey))
         {
           var path = key?.GetValue(member).ToString();
+          path = Combine(path, Paths.HCE.Executable);
 
           if (path != null && Exists(path))
             return new FileInfo(path);
