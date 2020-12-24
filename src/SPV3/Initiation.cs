@@ -85,9 +85,9 @@ namespace HXE.SPV3
        */
       int GetMission()
       {
-        return System.IO.File.Exists(Paths.Version)
-          ? (int) Mission      /* compatibility with >=SPV3.3 */
-          : (int) Mission - 1; /* compatibility with <=SPV3.2 */
+        return System.IO.File.Exists(Paths.Legacy)
+          ? (int) Mission - 1 /* compatibility with <=SPV3.2 */
+          : (int) Mission;    /* compatibility with >=SPV3.3 */
       }
 
       var mission      = GetMission();
@@ -202,13 +202,13 @@ namespace HXE.SPV3
       }
 
       output.AppendLine("set rasterizer_soft_filter "                 + (vl ? "true" : "false"));  /* volumetrics    */
-      if (!System.IO.File.Exists(Paths.Version))
+      if (System.IO.File.Exists(Paths.Legacy))
         output.AppendLine("set display_precache_progress "            + (df ? "true" : "false"));  /* dynamic flares */
       output.AppendLine("set use_super_remote_players_action_update " + (ld ? "false" : "true"));  /* lens dirt      */
       output.AppendLine("set use_new_vehicle_update_scheme "          + (fg ? "false" : "true"));  /* film grain     */
       output.AppendLine("set multiplayer_draw_teammates_names "       + (hv ? "false" : "true"));  /* hud visor      */
       output.AppendLine("set error_suppress_all "                     + (ssr ? "true" : "false")); /* ssr            */
-      if (System.IO.File.Exists(Paths.Version))
+      if (!System.IO.File.Exists(Paths.Legacy))
         output.AppendLine("set display_precache_progress "            + (db ? "true" : "false"));  /* debanding      */
 
       Info("Saving initiation data to the initc.txt file");
