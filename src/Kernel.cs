@@ -98,7 +98,7 @@ namespace HXE
     /// </param>
     public static void Invoke(Executable executable, Configuration configuration)
     {
-      if (Exists(Paths.Version))
+      if (!Exists(Legacy))
         configuration.Mode = Configuration.ConfigurationMode.SPV33;
 
       Init(); /* initc.txt declarations */

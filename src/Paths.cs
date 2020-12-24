@@ -41,7 +41,7 @@ namespace HXE
     public static readonly string DSOAL         = Combine(CurrentDirectory,               "dsoal-aldrv.dll");
     public static readonly string DSOUND        = Combine(CurrentDirectory,               "dsound.dll");
     public static readonly string ALSoft        = Combine(CurrentDirectory,               "alsoft.ini");
-    public static readonly string Version       = Combine(CurrentDirectory,               "version.txt");
+    public static readonly string Legacy        = Combine(CurrentDirectory,               "legacy.txt");
 
     public class HCE
     {
@@ -63,8 +63,8 @@ namespace HXE
        */
       public static readonly string Initiation
         = Exists("dinput8.dll") || Exists("mods/opensauce.dll")
-        ? Combine(CurrentDirectory,  "initc.txt")
-        : Combine(CurrentDirectory,  "init.txt");
+          ? Combine(CurrentDirectory, "initc.txt")
+          : Combine(CurrentDirectory, "init.txt");
 
       public static string ProfileDirectory(string profile)
       {
