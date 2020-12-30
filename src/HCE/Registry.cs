@@ -1,10 +1,33 @@
-﻿using System;
+﻿/**
+ * Copyright (c) 2019 Emilian Roman
+ * Copyright (c) 2020 Noah Sherwin
+ * 
+ * This software is provided 'as-is', without any express or implied
+ * warranty. In no event will the authors be held liable for any damages
+ * arising from the use of this software.
+ * 
+ * Permission is granted to anyone to use this software for any purpose,
+ * including commercial applications, and to alter it and redistribute it
+ * freely, subject to the following restrictions:
+ * 
+ * 1. The origin of this software must not be misrepresented; you must not
+ *    claim that you wrote the original software. If you use this software
+ *    in a product, an acknowledgment in the product documentation would be
+ *    appreciated but is not required.
+ * 2. Altered source versions must be plainly marked as such, and must not be
+ *    misrepresented as being the original software.
+ * 3. This notice may not be removed or altered from any source distribution.
+ */
+
+using System;
 using System.IO;
-using System.Security.Principal;
 using System.Diagnostics;
 using Microsoft.Win32;
 using Enc = System.Text.Encoding;
 using WinReg = Microsoft.Win32.Registry;
+using static HXE.Common.Convert;
+using static HXE.Common.Path;
+using static HXE.Common.Process;
 
 namespace HXE.HCE
 {
@@ -50,23 +73,6 @@ namespace HXE.HCE
       }
     }
 
-    public static byte[] StringToByteArray(string hex)
-    {
-      int    sLength = hex.Length;
-      byte[] bytes   = new byte[sLength / 2];
-      for (int i = 0; i < sLength; i+=2)
-      {
-        bytes[i / 2] = Convert.ToByte(hex.Substring(i, 2), 16);
-      }
-      return bytes;
-    }
-
-    public static bool RunningAsAdmin()
-    {
-      var Principle = new WindowsPrincipal(WindowsIdentity.GetCurrent());
-      return Principle.IsInRole(WindowsBuiltInRole.Administrator);
-    }
-
     public static string WoWCheck()
     {
       return null != WinReg.LocalMachine.OpenSubKey(x86_64) ? x86_64 : x86;
@@ -102,11 +108,16 @@ namespace HXE.HCE
       File   file = (File) Path.Combine(Environment.CurrentDirectory, $"{game}.reg");
       string content = "";
 
-      /** Replace strings containing single backslashes with double-backslashes*/
-      if (!data.EXE_Path.Contains("\\\\"))
-        data.EXE_Path = data.EXE_Path.Replace("\\", "\\\\");
-      if (!data.CDPath.Contains("\\\\"))
-        data.CDPath = data.CDPath.Replace("\\", "\\\\");
+      /** 
+       * All path separators must be "\\\\" in memory and written to file as "\\".
+       * TRUE bool indicates the return string must escape double-backslashes.
+       */
+      data.EXE_Path = SanitizeSeparators(data.EXE_Path, true);
+      data.CDPath   = SanitizeSeparators(data.CDPath  , true);
+      
+      /** Ensure EXE Path ends with double-backslash*/
+      if (!data.EXE_Path.EndsWith("\\\\"))
+        data.EXE_Path += "\\\\";
       
       switch (game)
       {

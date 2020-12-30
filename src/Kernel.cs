@@ -507,7 +507,9 @@ namespace HXE
             {Profile.ProfileInput.Action.ThrowGrenade, Profile.ProfileInput.Button.LB},
             {Profile.ProfileInput.Action.Flashlight, Profile.ProfileInput.Button.LT},
             {Profile.ProfileInput.Action.MeleeAttack, Profile.ProfileInput.Button.RB},
-            {Profile.ProfileInput.Action.FireWeapon, Profile.ProfileInput.Button.RT}
+            {Profile.ProfileInput.Action.FireWeapon, Profile.ProfileInput.Button.RT},
+            {Profile.ProfileInput.Action.MenuBack, Profile.ProfileInput.Button.Back},
+            {Profile.ProfileInput.Action.MenuAccept, Profile.ProfileInput.Button.Start}
           };
 
           Core("BLAM.INPUT: Input overrides have been applied accordingly.");
