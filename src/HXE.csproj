@@ -68,6 +68,9 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common\Convert.cs" />
+    <Compile Include="Common\Path.cs" />
+    <Compile Include="Common\Process.cs" />
     <Compile Include="HCE\Registry.cs" />
     <Compile Include="HCE\Progress.cs" />
     <Compile Include="NewProfile.cs" />
