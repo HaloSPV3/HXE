@@ -55,9 +55,28 @@ namespace HXE.HCE
     public static Executable Detect()
     {
       var hce = Detection.Infer();
+      string fullName = "";
 
-      if (System.IO.File.Exists(hce.FullName))
-        return (Executable) hce.FullName;
+      try
+      {
+        fullName = hce.FullName;
+      }
+      catch(System.Exception e)
+      {
+        using (System.Windows.Forms.OpenFileDialog ofd = new System.Windows.Forms.OpenFileDialog())
+        {
+          ofd.InitialDirectory = GetFolderPath(SpecialFolder.Desktop);
+          ofd.Filter = "Halo Custom Edition (haloce.exe)|haloce.exe|Halo Retail/Trial (halo.exe)|halo.exe";
+          ofd.FilterIndex = 1;
+          ofd.RestoreDirectory = true;
+
+          if (ofd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            fullName = GetFullPath(ofd.FileName);
+        }
+      }
+
+        if (System.IO.File.Exists(fullName))
+          return (Executable)fullName;
 
       throw new FileNotFoundException("Could not detect executable on the filesystem.");
     }
@@ -104,7 +123,7 @@ namespace HXE.HCE
         if (Video.NoGamma)
           ApplyArgument(args, "-nogamma ");
 
-        if (Video.Mode)
+        if (Video.DisplayMode)
         {
           if (Video.Width > 0 && Video.Height > 0 && Video.Refresh > 0) /* optional refresh rate */
             ApplyArgument(args, $"-vidmode {Video.Width},{Video.Height},{Video.Refresh} ");
@@ -194,13 +213,13 @@ namespace HXE.HCE
 
     public class VideoOptions
     {
-      public bool   Mode    { get; set; }
-      public bool   Window  { get; set; }
-      public ushort Width   { get; set; }
-      public ushort Height  { get; set; }
-      public ushort Refresh { get; set; }
-      public byte   Adapter { get; set; }
-      public bool   NoGamma { get; set; }
+      public bool   DisplayMode { get; set; }
+      public bool   Window      { get; set; }
+      public ushort Width       { get; set; }
+      public ushort Height      { get; set; }
+      public ushort Refresh     { get; set; }
+      public byte   Adapter     { get; set; }
+      public bool   NoGamma     { get; set; }
     }
 
     public class ProfileOptions
