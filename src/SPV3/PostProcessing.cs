@@ -74,6 +74,7 @@ namespace HXE.SPV3
     public ExperimentalPostProcessing Experimental       { get; set; } = new ExperimentalPostProcessing();
     public bool                       SSR                { get; set; } = false;
     public bool                       Deband             { get; set; } = false;
+    public bool                       AdaptiveHDR        { get; set; } = false;
 
     /// <summary>
     ///   Experimental overrides for HCE.
