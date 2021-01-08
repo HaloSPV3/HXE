@@ -27,7 +27,7 @@ namespace HXE
   /// <summary>
   ///   Interaction logic for Settings.xaml
   /// </summary>
-  public partial class Settings
+  public partial class Settings : Window
   {
     private          Kernel.Configuration       _configuration = new Kernel.Configuration(Paths.Configuration);
     private readonly System.Diagnostics.Process _process       = System.Diagnostics.Process.GetCurrentProcess();
@@ -162,7 +162,11 @@ namespace HXE
 
       if (_process.ProcessName == "hxe")
         Exit.WithCode(Exit.Code.Success);
-      else Hide();
+      else
+      {
+        DialogResult = true;
+        Close();
+      }
     }
 
     private void PrintConfiguration()

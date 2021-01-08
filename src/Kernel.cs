@@ -269,6 +269,7 @@ namespace HXE
           init.PostProcessing.DOF                = configuration.Shaders.DOF;
           init.PostProcessing.SSR                = configuration.Shaders.SSR;
           init.PostProcessing.Deband             = configuration.Shaders.Deband;
+          init.PostProcessing.AdaptiveHDR        = configuration.Shaders.AdaptiveHDR;
 
           Core("INIT.SHADER: SPV3 post-processing effects have been assigned to the initiation file.");
 
@@ -288,6 +289,7 @@ namespace HXE
           Debug("INIT.SHADER: DOF                 - " + init.PostProcessing.DOF);
           Debug("INIT.SHADER: SSR                 - " + init.PostProcessing.SSR);
           Debug("INIT.SHADER: Deband              - " + init.PostProcessing.Deband);
+          Debug("INIT.SHADER: AdaptiveHDR         - " + init.PostProcessing.AdaptiveHDR);
         }
 
         /**
@@ -804,10 +806,15 @@ namespace HXE
       public ConfigurationInput  Input   { get; set; } = new ConfigurationInput();  /* profile input      */
       public ConfigurationTweaks Tweaks  { get; set; } = new ConfigurationTweaks(); /* profile tweaks     */
       public PostProcessing      Shaders { get; set; } = new PostProcessing();      /* spv3 shaders       */
+      public static byte         Version { get; set; } = 20;
 
       /// <summary>
       ///   Persists object state to the filesystem.
       /// </summary>
+      /// <remarks>
+      ///   When these the offsets of the file changes,
+      ///   increment the file version.
+      /// </remarks>
       public Configuration Save()
       {
         CreateDirectory(GetDirectoryName(_path)
@@ -821,6 +828,12 @@ namespace HXE
           {
             bw.Write(new byte[Length]);
             ms.Position = 0;
+          }
+
+          /* version */
+          {
+            ms.Position = (byte) Offset.Version;
+            bw.Write(Version);
           }
 
           /* signature */
@@ -899,6 +912,7 @@ namespace HXE
             bw.Write((byte) Shaders.DOF);
             bw.Write(Shaders.SSR);
             bw.Write(Shaders.Deband);
+            bw.Write(Shaders.AdaptiveHDR);
           }
 
           /* persist */
@@ -929,6 +943,17 @@ namespace HXE
             ms.Position = 0;
           }
 
+          /* version */
+          {
+            ms.Position = (byte) Offset.Version;
+            Version = br.ReadByte();
+            if (Version != 20)
+            {
+              Save();
+              Load();
+            }
+          }
+
           /* mode */
           {
             ms.Position = (byte) Offset.Mode;
@@ -937,11 +962,11 @@ namespace HXE
 
           /* main */
           {
-            ms.Position = (byte) Offset.Main;
-            Main.Reset  = br.ReadBoolean();
-            Main.Patch  = br.ReadBoolean();
-            Main.Start  = br.ReadBoolean();
-            Main.Resume = br.ReadBoolean();
+            ms.Position   = (byte) Offset.Main;
+            Main.Reset    = br.ReadBoolean();
+            Main.Patch    = br.ReadBoolean();
+            Main.Start    = br.ReadBoolean();
+            Main.Resume   = br.ReadBoolean();
             Main.Elevated = br.ReadBoolean();
           }
 
@@ -999,6 +1024,7 @@ namespace HXE
             Shaders.DOF                = (DofOptions) br.ReadByte();
             Shaders.SSR                = br.ReadBoolean();
             Shaders.Deband             = br.ReadBoolean();
+            Shaders.AdaptiveHDR        = br.ReadBoolean();
           }
         }
 
@@ -1009,7 +1035,8 @@ namespace HXE
       {
         Start     = 0x00,
         Signature = Start     + 0x00,
-        Mode      = Signature + 0x10,
+        Version   = Signature + 0x10,
+        Mode      = Version   + 0x10,
         Main      = Mode      + 0x10,
         Video     = Main      + 0x10,
         Audio     = Video     + 0x10,
