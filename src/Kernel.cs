@@ -897,8 +897,11 @@ namespace HXE
             Version = br.ReadByte();
             if (Version != 20)
             {
+              fs.Close();
+              ms.Close();
+              br.Close();
               Save();
-              Load();
+              return this;
             }
           }
 

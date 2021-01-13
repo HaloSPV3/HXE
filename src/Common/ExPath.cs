@@ -22,7 +22,7 @@
 
 namespace HXE.Common
 {
-  public static class Path
+  public static class ExPath
   {
     /// <summary>
     /// 
