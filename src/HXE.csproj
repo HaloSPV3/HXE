@@ -103,7 +103,7 @@
     <Compile Include="SPV3\Campaign.cs" />
     <Compile Include="SPV3\Chimera.cs" />
     <Compile Include="SPV3\Initiation.cs" />
-    <Compile Include="SPV3\PostProcessing.cs" />
+    <Compile Include="SPV3\PP.cs" />
     <Compile Include="SPV3\Progress.cs" />
     <Compile Include="Status.cs" />
     <Compile Include="Steam\Libraries.cs" />
