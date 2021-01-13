@@ -25,9 +25,9 @@ using System.Diagnostics;
 using Microsoft.Win32;
 using Enc = System.Text.Encoding;
 using WinReg = Microsoft.Win32.Registry;
-using static HXE.Common.Convert;
-using static HXE.Common.Path;
-using static HXE.Common.Process;
+using static HXE.Common.ExConvert;
+using static HXE.Common.ExPath;
+using static HXE.Common.ExProcess;
 
 namespace HXE.HCE
 {

@@ -19,16 +19,19 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-using System.Security.Principal;
-
 namespace HXE.Common
 {
-  public static class Process
+  public static class ExConvert
   {
-    public static bool RunningAsAdmin()
+    public static byte[] StringToByteArray(string hex)
     {
-      var Principle = new WindowsPrincipal(WindowsIdentity.GetCurrent());
-      return Principle.IsInRole(WindowsBuiltInRole.Administrator);
+      int sLength = hex.Length;
+      byte[] bytes = new byte[sLength / 2];
+      for (int i = 0; i < sLength; i += 2)
+      {
+        bytes[i / 2] = System.Convert.ToByte(hex.Substring(i, 2), 16);
+      }
+      return bytes;
     }
   }
 }
