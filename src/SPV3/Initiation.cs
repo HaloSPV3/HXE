@@ -22,7 +22,6 @@
 using System;
 using System.Text;
 using static HXE.Console;
-using static HXE.SPV3.PostProcessing;
 
 namespace HXE.SPV3
 {
@@ -43,9 +42,8 @@ namespace HXE.SPV3
     public Campaign.Difficulty Difficulty        { get; set; } = Campaign.Difficulty.Normal;
     public bool                Unlock            { get; set; }
     public bool                Attract           { get; set; } = true;
+    public int                 Shaders           { get; set; } = 0;
 
-    public PostProcessing PostProcessing { get; set; } =
-      new PostProcessing();
 
     /// <summary>
     ///   Saves object state to the inbound file.
@@ -125,95 +123,78 @@ namespace HXE.SPV3
        * Encodes post-processing settings to the initc file. Refer to doc/shaders.txt for further information.
        */
 
-      var mb   = PostProcessing.MotionBlur;
-      var mxao = PostProcessing.MXAO;
-      var dof  = PostProcessing.DOF;
-      var vl   = PostProcessing.VolumetricLighting;
-      var df   = PostProcessing.DynamicLensFlares;
-      var ld   = PostProcessing.LensDirt;
-      var fg   = PostProcessing.FilmGrain;
-      var hv   = PostProcessing.HudVisor;
-      var ssr  = PostProcessing.SSR;
-      var db   = PostProcessing.Deband;
+      output.AppendLine((Shaders & PP.VOLUMETRIC_LIGHTING) != 0
+        ? "set rasterizer_soft_filter true"
+        : "set rasterizer_soft_filter false");
+
+      output.AppendLine((Shaders & PP.LENS_DIRT) != 0
+        ? "set use_super_remote_players_action_update false"
+        : "set use_super_remote_players_action_update true");
+
+      output.AppendLine((Shaders & PP.LENS_DIRT) != 0
+        ? "set use_super_remote_players_action_update false"
+        : "set use_super_remote_players_action_update true");
+
+      output.AppendLine((Shaders & PP.FILM_GRAIN) != 0
+        ? "set use_new_vehicle_update_scheme false"
+        : "set use_new_vehicle_update_scheme true");
+
+      output.AppendLine((Shaders & PP.HUD_VISOR) != 0
+        ? "set multiplayer_draw_teammates_names false"
+        : "set multiplayer_draw_teammates_names true");
+
+      output.AppendLine((Shaders & PP.SSR) != 0
+        ? "set error_suppress_all true"
+        : "set error_suppress_all false");
+
+      if (System.IO.File.Exists(Paths.Legacy))
+        output.AppendLine((Shaders & PP.DYNAMIC_LENS_FLARES) != 0
+          ? "set display_precache_progress true"
+          : "set display_precache_progress false");
+
+      if (!System.IO.File.Exists(Paths.Legacy))
+        output.AppendLine((Shaders & PP.DEBAND) != 0
+          ? "set display_precache_progress true"
+          : "set display_precache_progress false");
 
       /* motion blur */
+      output.AppendLine("set multiplayer_hit_sound_volume " + new Func<string>(() =>
       {
-        string option;
+        if ((Shaders & PP.MOTION_BLUR_POMB_HIGH) != 0)
+          return "1.3";
 
-        switch (mb)
-        {
-          case MotionBlurOptions.Off:
-            option = "1.0";
-            break;
-          case MotionBlurOptions.BuiltIn:
-            option = "1.1";
-            break;
-          case MotionBlurOptions.PombLow:
-            option = "1.2";
-            break;
-          case MotionBlurOptions.PombHigh:
-            option = "1.3";
-            break;
-          default:
-            throw new ArgumentOutOfRangeException();
-        }
+        if ((Shaders & PP.MOTION_BLUR_POMB_LOW) != 0)
+          return "1.2";
 
-        output.AppendLine($"set multiplayer_hit_sound_volume {option}");
-      }
+        if ((Shaders & PP.MOTION_BLUR_BUILT_IN) != 0)
+          return "1.1";
+
+        return "1.0";
+      })());
 
       /* mxao */
+      output.AppendLine("set cl_remote_player_action_queue_limit " + new Func<string>(() =>
       {
-        string option;
+        if ((Shaders & PP.MXAO_HIGH) != 0)
+          return "4";
 
-        switch (mxao)
-        {
-          case MxaoOptions.Off:
-            option = "2";
-            break;
-          case MxaoOptions.Low:
-            option = "3";
-            break;
-          case MxaoOptions.High:
-            option = "4";
-            break;
-          default:
-            throw new ArgumentOutOfRangeException();
-        }
+        if ((Shaders & PP.MXAO_LOW) != 0)
+          return "3";
 
-        output.AppendLine($"set cl_remote_player_action_queue_limit {option}");
-      }
+        return "2";
+      })());
 
       /* depth of field */
+      output.AppendLine("set cl_remote_player_action_queue_tick_limit " + new Func<string>(() =>
       {
-        string option;
+        if ((Shaders & PP.DOF_HIGH) != 0)
+          return "8";
 
-        switch (dof)
-        {
-          case DofOptions.Off:
-            option = "6";
-            break;
-          case DofOptions.Low:
-            option = "7";
-            break;
-          case DofOptions.High:
-            option = "8";
-            break;
-          default:
-            throw new ArgumentOutOfRangeException();
-        }
+        if ((Shaders & PP.DOF_LOW) != 0)
+          return "7";
 
-        output.AppendLine($"set cl_remote_player_action_queue_tick_limit {option}");
-      }
-
-      output.AppendLine("set rasterizer_soft_filter "                 + (vl ? "true" : "false"));  /* volumetrics    */
-      if (System.IO.File.Exists(Paths.Legacy))
-        output.AppendLine("set display_precache_progress "            + (df ? "true" : "false"));  /* dynamic flares */
-      output.AppendLine("set use_super_remote_players_action_update " + (ld ? "false" : "true"));  /* lens dirt      */
-      output.AppendLine("set use_new_vehicle_update_scheme "          + (fg ? "false" : "true"));  /* film grain     */
-      output.AppendLine("set multiplayer_draw_teammates_names "       + (hv ? "false" : "true"));  /* hud visor      */
-      output.AppendLine("set error_suppress_all "                     + (ssr ? "true" : "false")); /* ssr            */
-      if (!System.IO.File.Exists(Paths.Legacy))
-        output.AppendLine("set display_precache_progress "            + (db ? "true" : "false"));  /* debanding      */
+        return "6";
+      })());
 
       Info("Saving initiation data to the initc.txt file");
       WriteAllText(output.ToString());

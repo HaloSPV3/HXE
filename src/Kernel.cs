@@ -35,9 +35,7 @@ using static HXE.Console;
 using static HXE.Paths;
 using static HXE.HCE.Profile.ProfileAudio;
 using static HXE.HCE.Profile.ProfileVideo;
-using static HXE.SPV3.PostProcessing;
 using static System.Text.Encoding;
-using static HXE.SPV3.PostProcessing.MotionBlurOptions;
 using Progress = HXE.SPV3.Progress;
 
 namespace HXE
@@ -253,43 +251,9 @@ namespace HXE
               configuration.Mode != Configuration.ConfigurationMode.SPV33)
             return;
 
-          init.PostProcessing.Internal           = configuration.Shaders.Internal;
-          init.PostProcessing.External           = configuration.Shaders.External;
-          init.PostProcessing.GBuffer            = configuration.Shaders.GBuffer;
-          init.PostProcessing.DepthFade          = configuration.Shaders.DepthFade;
-          init.PostProcessing.Bloom              = configuration.Shaders.Bloom;
-          init.PostProcessing.LensDirt           = configuration.Shaders.LensDirt;
-          init.PostProcessing.DynamicLensFlares  = configuration.Shaders.DynamicLensFlares;
-          init.PostProcessing.VolumetricLighting = configuration.Shaders.VolumetricLighting;
-          init.PostProcessing.AntiAliasing       = configuration.Shaders.AntiAliasing;
-          init.PostProcessing.HudVisor           = configuration.Shaders.HudVisor;
-          init.PostProcessing.FilmGrain          = configuration.Shaders.FilmGrain;
-          init.PostProcessing.MotionBlur         = configuration.Shaders.MotionBlur;
-          init.PostProcessing.MXAO               = configuration.Shaders.MXAO;
-          init.PostProcessing.DOF                = configuration.Shaders.DOF;
-          init.PostProcessing.SSR                = configuration.Shaders.SSR;
-          init.PostProcessing.Deband             = configuration.Shaders.Deband;
-          init.PostProcessing.AdaptiveHDR        = configuration.Shaders.AdaptiveHDR;
+          init.Shaders = configuration.Shaders;
 
           Core("INIT.SHADER: SPV3 post-processing effects have been assigned to the initiation file.");
-
-          Debug("INIT.SHADER: Internal            - " + init.PostProcessing.Internal);
-          Debug("INIT.SHADER: External            - " + init.PostProcessing.External);
-          Debug("INIT.SHADER: GBuffer             - " + init.PostProcessing.GBuffer);
-          Debug("INIT.SHADER: DepthFade           - " + init.PostProcessing.DepthFade);
-          Debug("INIT.SHADER: Bloom               - " + init.PostProcessing.Bloom);
-          Debug("INIT.SHADER: LensDirt            - " + init.PostProcessing.LensDirt);
-          Debug("INIT.SHADER: Dynamic Lens Flares - " + init.PostProcessing.DynamicLensFlares);
-          Debug("INIT.SHADER: Volumetric Lighting - " + init.PostProcessing.VolumetricLighting);
-          Debug("INIT.SHADER: Anti Aliasing       - " + init.PostProcessing.AntiAliasing);
-          Debug("INIT.SHADER: HUD Visor           - " + init.PostProcessing.HudVisor);
-          Debug("INIT.SHADER: Film Grain          - " + init.PostProcessing.FilmGrain);
-          Debug("INIT.SHADER: Motion Blur         - " + init.PostProcessing.MotionBlur);
-          Debug("INIT.SHADER: MXAO                - " + init.PostProcessing.MXAO);
-          Debug("INIT.SHADER: DOF                 - " + init.PostProcessing.DOF);
-          Debug("INIT.SHADER: SSR                 - " + init.PostProcessing.SSR);
-          Debug("INIT.SHADER: Deband              - " + init.PostProcessing.Deband);
-          Debug("INIT.SHADER: AdaptiveHDR         - " + init.PostProcessing.AdaptiveHDR);
         }
 
         /**
@@ -557,7 +521,7 @@ namespace HXE
         {
           if (configuration.Mode == Configuration.ConfigurationMode.HCE) return;
 
-          open.Rasterizer.PostProcessing.MotionBlur.Enabled = configuration.Shaders.MotionBlur == BuiltIn;
+          open.Rasterizer.PostProcessing.MotionBlur.Enabled = (configuration.Shaders & PP.MOTION_BLUR_BUILT_IN) != 0;
           open.HUD.ScaleHUD                                 = true; /* fixes user interface    */
           open.Camera.IgnoreFOVChangeInCinematics           = true; /* fixes user interface    */
           open.Camera.IgnoreFOVChangeInMainMenu             = true; /* fixes user interface    */
@@ -805,7 +769,7 @@ namespace HXE
       public ConfigurationAudio  Audio   { get; set; } = new ConfigurationAudio();  /* profile audio      */
       public ConfigurationInput  Input   { get; set; } = new ConfigurationInput();  /* profile input      */
       public ConfigurationTweaks Tweaks  { get; set; } = new ConfigurationTweaks(); /* profile tweaks     */
-      public PostProcessing      Shaders { get; set; } = new PostProcessing();      /* spv3 shaders       */
+      public int      Shaders { get; set; } = 0;      /* spv3 shaders       */
       public static byte         Version { get; set; } = 20;
 
       /// <summary>
@@ -896,23 +860,7 @@ namespace HXE
           /* shaders */
           {
             ms.Position = (byte) Offset.Shaders;
-            bw.Write(Shaders.Internal);
-            bw.Write(Shaders.External);
-            bw.Write(Shaders.GBuffer);
-            bw.Write(Shaders.DepthFade);
-            bw.Write(Shaders.Bloom);
-            bw.Write(Shaders.LensDirt);
-            bw.Write(Shaders.DynamicLensFlares);
-            bw.Write(Shaders.VolumetricLighting);
-            bw.Write(Shaders.AntiAliasing);
-            bw.Write(Shaders.HudVisor);
-            bw.Write(Shaders.FilmGrain);
-            bw.Write((byte) Shaders.MotionBlur);
-            bw.Write((byte) Shaders.MXAO);
-            bw.Write((byte) Shaders.DOF);
-            bw.Write(Shaders.SSR);
-            bw.Write(Shaders.Deband);
-            bw.Write(Shaders.AdaptiveHDR);
+            bw.Write(Shaders);
           }
 
           /* persist */
@@ -1008,23 +956,7 @@ namespace HXE
           /* shaders */
           {
             ms.Position                = (byte) Offset.Shaders;
-            Shaders.Internal           = br.ReadBoolean();
-            Shaders.External           = br.ReadBoolean();
-            Shaders.GBuffer            = br.ReadBoolean();
-            Shaders.DepthFade          = br.ReadBoolean();
-            Shaders.Bloom              = br.ReadBoolean();
-            Shaders.LensDirt           = br.ReadBoolean();
-            Shaders.DynamicLensFlares  = br.ReadBoolean();
-            Shaders.VolumetricLighting = br.ReadBoolean();
-            Shaders.AntiAliasing       = br.ReadBoolean();
-            Shaders.HudVisor           = br.ReadBoolean();
-            Shaders.FilmGrain          = br.ReadBoolean();
-            Shaders.MotionBlur         = (MotionBlurOptions) br.ReadByte();
-            Shaders.MXAO               = (MxaoOptions) br.ReadByte();
-            Shaders.DOF                = (DofOptions) br.ReadByte();
-            Shaders.SSR                = br.ReadBoolean();
-            Shaders.Deband             = br.ReadBoolean();
-            Shaders.AdaptiveHDR        = br.ReadBoolean();
+            Shaders                    = br.ReadInt32();
           }
         }
 
