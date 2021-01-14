@@ -25,9 +25,9 @@ using System.Diagnostics;
 using Microsoft.Win32;
 using Enc = System.Text.Encoding;
 using WinReg = Microsoft.Win32.Registry;
-using static HXE.Common.ExConvert;
-using static HXE.Common.ExPath;
-using static HXE.Common.ExProcess;
+using static HXE.Common.ExtConvert;
+using static HXE.Common.ExtPath;
+using static HXE.Common.ExtProcess;
 
 namespace HXE.HCE
 {
@@ -476,11 +476,6 @@ namespace HXE.HCE
       {
         throw new Exception("Failed to read registry keys: " + e);
       }
-    }
-
-    public static void WriteKey(Data data)
-    {
-      //take a parameter
     }
 
     /// <summary>

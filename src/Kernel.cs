@@ -769,15 +769,15 @@ namespace HXE
       public ConfigurationAudio  Audio   { get; set; } = new ConfigurationAudio();  /* profile audio      */
       public ConfigurationInput  Input   { get; set; } = new ConfigurationInput();  /* profile input      */
       public ConfigurationTweaks Tweaks  { get; set; } = new ConfigurationTweaks(); /* profile tweaks     */
-      public int      Shaders { get; set; } = 0;      /* spv3 shaders       */
-      public static byte         Version { get; set; } = 20;
+      public int                 Shaders { get; set; } = 0;                         /* spv3 shaders       */
+      public const byte          Version = 20;
 
       /// <summary>
       ///   Persists object state to the filesystem.
       /// </summary>
       /// <remarks>
-      ///   When these the offsets of the file changes,
-      ///   increment the file version.
+      ///   When the offsets of the file changes,
+      ///   increment the config version.
       /// </remarks>
       public Configuration Save()
       {
@@ -894,8 +894,7 @@ namespace HXE
           /* version */
           {
             ms.Position = (byte) Offset.Version;
-            Version = br.ReadByte();
-            if (Version != 20)
+            if (br.ReadByte() != Version)
             {
               fs.Close();
               ms.Close();
