@@ -21,7 +21,7 @@
 
 namespace HXE.Common
 {
-  public static class Convert
+  public static class ExtConvert
   {
     public static byte[] StringToByteArray(string hex)
     {
