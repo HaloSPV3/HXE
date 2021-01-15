@@ -167,10 +167,10 @@ namespace HXE.SPV3
         ? "set error_suppress_all true"
         : "set error_suppress_all false");
 
-      output.AppendLine(";;;  Toggle Adaptive HDR");
+      output.AppendLine(";;;  If TRUE, disable Adaptive HDR");
       output.AppendLine((Shaders & PP.ADAPTIVE_HDR) != 0
-        ? "set director_camera_switching 1" 
-        : "set director_camera_switching 0");
+        ? "set director_camera_switch_fast 0" 
+        : "set director_camera_switch_fast 1");
 
       if (System.IO.File.Exists(Paths.Legacy))
       {
