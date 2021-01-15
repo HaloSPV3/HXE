@@ -63,6 +63,9 @@ namespace HXE.HCE
       }
       catch(System.Exception e)
       {
+        var log = (HXE.File) Paths.Exception;
+        log.WriteAllText("The inferred executable path was probably malformed or incomplete.\n Error: " + e);
+
         using (System.Windows.Forms.OpenFileDialog ofd = new System.Windows.Forms.OpenFileDialog())
         {
           ofd.InitialDirectory = GetFolderPath(SpecialFolder.Desktop);

@@ -23,7 +23,7 @@ using System.Security.Principal;
 
 namespace HXE.Common
 {
-  public static class Process
+  public static class ExtProcess
   {
     public static bool RunningAsAdmin()
     {
