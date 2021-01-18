@@ -166,7 +166,7 @@ namespace HXE
       {
         var msg = " -- Legal copy of HCE needs to be installed for loading!\n Error:  " + e.ToString();
         var log = (File)Paths.Exception;
-        log.WriteAllText(msg);
+        log.AppendAllText(msg + "\n");
         Error(msg);
       }
 
@@ -229,7 +229,7 @@ namespace HXE
         {
           var msg = " -- EXEC.START HALTED\n Error:  " + e.ToString();
           var log = (File)Paths.Exception;
-          log.WriteAllText(msg);
+          log.AppendAllText(msg + "\n");
           Error(msg);
           System.Console.Error.WriteLine("\n\n" + e.StackTrace);
           WithCode(Code.Exception);

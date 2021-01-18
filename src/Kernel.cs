@@ -96,6 +96,11 @@ namespace HXE
     /// </param>
     public static void Invoke(Executable executable, Configuration configuration)
     {
+      {
+        if (new FileInfo(Paths.Exception).Length > 1048576) // If greater than 1 MiB...
+          System.IO.File.WriteAllText(Paths.Exception, ""); // ...clear log.
+      }
+
       if (!Exists(Legacy))
         configuration.Mode = Configuration.ConfigurationMode.SPV33;
 
@@ -136,7 +141,7 @@ namespace HXE
         {
           var msg = " -- MAIN.INIT HALTED.\n Error:  " + e.ToString();
           var log = (File)Paths.Exception;
-          log.WriteAllText(msg);
+          log.AppendAllText(msg + "\n");
           Error(msg);
         }
 
@@ -200,7 +205,7 @@ namespace HXE
           {
             var msg = " -- INIT.RESUME HALTED\n Error:  " + e.ToString();
             var log = (File)Paths.Exception;
-            log.WriteAllText(msg);
+            log.AppendAllText(msg + "\n");
             Error(e.Message + " -- INIT.RESUME HALTED");
           }
         }
@@ -328,7 +333,7 @@ namespace HXE
             {
               var msg = " -- MAIN.BLAM HALTED\n Error:  " + e.ToString();
               var log = (File)Paths.Exception;
-              log.WriteAllText(msg);
+              log.AppendAllText(msg + "\n");
               Error(msg);
             }
           }
@@ -548,7 +553,7 @@ namespace HXE
         {
           var msg = " -- MAIN.OPEN\n Error:  " + e.ToString();
           var log = (File)Paths.Exception;
-          log.WriteAllText(msg);
+          log.AppendAllText(msg + "\n");
           Error(msg);
         }
       }
@@ -587,7 +592,7 @@ namespace HXE
           {
             var msg = " -- MAIN.BLAM HALTED\n Error:  " + e.ToString();
             var log = (File)Paths.Exception;
-            log.WriteAllText(msg);
+            log.AppendAllText(msg + "\n");
             Info(msg);
           }
 
@@ -652,7 +657,7 @@ namespace HXE
           {
             var msg = " -- EXEC.PATCH HALTED\n Error:  " + e.ToString();
             var log = (File)Paths.Exception;
-            log.WriteAllText(msg);
+            log.AppendAllText(msg + "\n");
             Error(msg);
           }
         }
@@ -673,7 +678,7 @@ namespace HXE
           {
             var msg = " -- EXEC.START HALTED\n Error:  " + e.ToString();
             var log = (File)Paths.Exception;
-            log.WriteAllText(msg);
+            log.AppendAllText(msg + "\n");
             Error(msg);
           }
         }
@@ -752,7 +757,7 @@ namespace HXE
           {
             var msg = " -- EXEC.START HALTED\n Error:  " + e.ToString();
             var log = (File)Paths.Exception;
-            log.WriteAllText(msg);
+            log.AppendAllText(msg + "\n");
             Error(msg);
           }
         }
