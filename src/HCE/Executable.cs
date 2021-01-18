@@ -64,7 +64,7 @@ namespace HXE.HCE
       catch(System.Exception e)
       {
         var log = (HXE.File) Paths.Exception;
-        log.WriteAllText("The inferred executable path was probably malformed or incomplete.\n Error: " + e);
+        log.AppendAllText("The inferred executable path was probably malformed or incomplete.\n Error: " + e + "\n");
 
         using (System.Windows.Forms.OpenFileDialog ofd = new System.Windows.Forms.OpenFileDialog())
         {

@@ -79,6 +79,12 @@ namespace HXE
       System.IO.File.Copy(Path, Combine(target, Name), true);
     }
 
+    public void AppendAllText(string contents)
+    {
+      CreateDirectory();
+      System.IO.File.AppendAllText(Path, contents);
+    }
+
     public void WriteAllText(string contents)
     {
       CreateDirectory();
