@@ -96,6 +96,11 @@ namespace HXE
     /// </param>
     public static void Invoke(Executable executable, Configuration configuration)
     {
+      {
+        if (new FileInfo(Paths.Exception).Length > 1048576) // If greater than 1 MiB...
+          System.IO.File.WriteAllText(Paths.Exception, ""); // ...clear log.
+      }
+
       if (!Exists(Legacy))
         configuration.Mode = Configuration.ConfigurationMode.SPV33;
 
@@ -134,7 +139,10 @@ namespace HXE
         }
         catch (Exception e)
         {
-          Error(e.Message + " -- MAIN.INIT HALTED");
+          var msg = " -- MAIN.INIT HALTED.\n Error:  " + e.ToString();
+          var log = (File)Paths.Exception;
+          log.AppendAllText(msg + "\n");
+          Error(msg);
         }
 
         /**
@@ -195,6 +203,9 @@ namespace HXE
           }
           catch (Exception e)
           {
+            var msg = " -- INIT.RESUME HALTED\n Error:  " + e.ToString();
+            var log = (File)Paths.Exception;
+            log.AppendAllText(msg + "\n");
             Error(e.Message + " -- INIT.RESUME HALTED");
           }
         }
@@ -304,25 +315,26 @@ namespace HXE
           {
             if (i == 0)
             {
-              blam = new Profile();
               var lastprof = (LastProfile)Custom.LastProfile(executable.Profile.Path);
-              bool scaffold = false;
+              var scaffold = lastprof.Exists() && System.IO.File.Exists(Custom.Profile(executable.Profile.Path, lastprof.Profile));
 
-              Core("Lastprof.txt does not exist.");
-              Core("Calling LastProfile.Generate()...");
+              if (!lastprof.Exists())
+                Core("Lastprof.txt does not exist.");
+
               if (!scaffold)
-              {
                 Debug("Savegames scaffold doesn't exist.");
-              }
               else
-              {
                 Debug("Savegames scaffold detected.");
-              }
-              NewProfile.Generate(executable.Profile.Path, lastprof, blam, scaffold);
+
+              Core("Calling LastProfile.Generate()...");
+              NewProfile.Generate(executable.Profile.Path, lastprof, new Profile(), scaffold);
             }
             else
             {
-              Error(e.Message + " -- MAIN.BLAM HALTED");
+              var msg = " -- MAIN.BLAM HALTED\n Error:  " + e.ToString();
+              var log = (File)Paths.Exception;
+              log.AppendAllText(msg + "\n");
+              Error(msg);
             }
           }
         }
@@ -539,7 +551,10 @@ namespace HXE
         }
         catch (Exception e)
         {
-          Error(e.Message + " -- MAIN.OPEN HALTED");
+          var msg = " -- MAIN.OPEN\n Error:  " + e.ToString();
+          var log = (File)Paths.Exception;
+          log.AppendAllText(msg + "\n");
+          Error(msg);
         }
       }
 
@@ -575,7 +590,10 @@ namespace HXE
           }
           catch (Exception e)
           {
-            Info(e.Message);
+            var msg = " -- MAIN.BLAM HALTED\n Error:  " + e.ToString();
+            var log = (File)Paths.Exception;
+            log.AppendAllText(msg + "\n");
+            Info(msg);
           }
 
           var tries = 0;
@@ -637,7 +655,10 @@ namespace HXE
           }
           catch (Exception e)
           {
-            Error(e.Message + " -- EXEC.PATCH HALTED");
+            var msg = " -- EXEC.PATCH HALTED\n Error:  " + e.ToString();
+            var log = (File)Paths.Exception;
+            log.AppendAllText(msg + "\n");
+            Error(msg);
           }
         }
 
@@ -655,7 +676,10 @@ namespace HXE
           }
           catch (Exception e)
           {
-            Error(e.Message + " -- EXEC.START HALTED");
+            var msg = " -- EXEC.START HALTED\n Error:  " + e.ToString();
+            var log = (File)Paths.Exception;
+            log.AppendAllText(msg + "\n");
+            Error(msg);
           }
         }
 
@@ -731,7 +755,10 @@ namespace HXE
           }
           catch (Exception e)
           {
-            Error(e.Message + " -- EXEC.BLESS HALTED");
+            var msg = " -- EXEC.START HALTED\n Error:  " + e.ToString();
+            var log = (File)Paths.Exception;
+            log.AppendAllText(msg + "\n");
+            Error(msg);
           }
         }
       }

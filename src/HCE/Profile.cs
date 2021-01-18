@@ -377,7 +377,7 @@ namespace HXE.HCE
 
       if (!lastprof.Exists())
         {
-            throw new FileNotFoundException("Cannot detect profile - lastprof.txt does not exist.");
+          throw new FileNotFoundException("Cannot detect profile - lastprof.txt does not exist.");
         }
       lastprof.Load();
 
