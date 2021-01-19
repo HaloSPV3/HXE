@@ -108,8 +108,8 @@
                 </Grid.ColumnDefinitions>
 
                 <StackPanel Grid.Column="0">
-                    <CheckBox Content="Resolution"
-                              Name="VideoResolution"
+                    <CheckBox Content="AutoResolution"
+                              Name="VideoAutoResolution"
                               ToolTip="Declares the player profile &amp; HCE video resolution." />
                     <CheckBox Content="Uncap"
                               Name="VideoUncap"
