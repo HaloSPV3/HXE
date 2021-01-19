@@ -68,11 +68,14 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Campaign.cs" />
+    <Compile Include="Difficulty.cs" />
+    <Compile Include="Mission.cs" />
+    <Compile Include="Resume.cs" />
     <Compile Include="Common\ExtConvert.cs" />
     <Compile Include="Common\ExtPath.cs" />
     <Compile Include="Common\ExtProcess.cs" />
     <Compile Include="HCE\Registry.cs" />
-    <Compile Include="HCE\Progress.cs" />
     <Compile Include="NewProfile.cs" />
     <Compile Include="Compiler.cs" />
     <Compile Include="Console.cs" />
@@ -88,6 +91,7 @@
     <Compile Include="Positions.xaml.cs">
       <DependentUpon>Positions.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Progress.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -104,13 +108,25 @@
     <Compile Include="SPV3\Chimera.cs" />
     <Compile Include="SPV3\Initiation.cs" />
     <Compile Include="SPV3\PP.cs" />
-    <Compile Include="SPV3\Progress.cs" />
     <Compile Include="Status.cs" />
     <Compile Include="Steam\Libraries.cs" />
     <Compile Include="Steam\MCC.Halo1.cs" />
     <Compile Include="Update.cs" />
   </ItemGroup>
   <ItemGroup>
+    <!-- Campaign Support -->
+    <ContentWithTargetPath Include="Campaigns\SPV31.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <TargetPath>spv31.xml</TargetPath>
+    </ContentWithTargetPath>
+    <ContentWithTargetPath Include="Campaigns\SPV32.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <TargetPath>spv32.xml</TargetPath>
+    </ContentWithTargetPath>
+    <ContentWithTargetPath Include="Campaigns\SPV33.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <TargetPath>spv33.xml</TargetPath>
+    </ContentWithTargetPath>
     <EmbeddedResource Include="Assets\banner.txt" />
     <Content Include="Assets\icon.ico" />
     <Page Include="Positions.xaml" />
@@ -122,7 +138,6 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
          Other similar extension points exist, see Microsoft.Common.targets.

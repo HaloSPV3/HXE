@@ -31,18 +31,18 @@ namespace HXE.SPV3
   /// </summary>
   public class Initiation : File
   {
-    public bool                CinemaBars        { get; set; } = false;
-    public bool                PlayerAutoaim     { get; set; } = true;
-    public bool                PlayerMagnetism   { get; set; } = true;
-    public bool                MotionSensor      { get; set; } = true;
-    public bool                MouseAcceleration { get; set; } = false;
-    public int                 Gamma             { get; set; } = 0;
-    public bool                Unload            { get; set; } = false;
-    public Campaign.Mission    Mission           { get; set; } = Campaign.Mission.Spv3A10;
-    public Campaign.Difficulty Difficulty        { get; set; } = Campaign.Difficulty.Normal;
-    public bool                Unlock            { get; set; }
-    public bool                Attract           { get; set; } = true;
-    public int                 Shaders           { get; set; } = 0;
+    public bool     CinemaBars        { get; set; } = false;
+    public bool     PlayerAutoaim     { get; set; } = true;
+    public bool     PlayerMagnetism   { get; set; } = true;
+    public bool     MotionSensor      { get; set; } = true;
+    public bool     MouseAcceleration { get; set; } = false;
+    public int      Gamma             { get; set; } = 0;
+    public bool     Unload            { get; set; } = false;
+    public Resume   Resume            { get; set; }
+    public Progress Progress          { get; set; }
+    public bool     Unlock            { get; set; }
+    public bool     Attract           { get; set; } = true;
+    public int      Shaders           { get; set; } = 0;
 
 
     /// <summary>
@@ -50,47 +50,9 @@ namespace HXE.SPV3
     /// </summary>
     public void Save()
     {
-      /**
-       * Converts the Campaign.Difficulty value to a game_difficulty_set parameter, as specified in the loader.txt
-       * documentation.
-       */
-      string GetDifficulty()
-      {
-        switch (Difficulty)
-        {
-          case Campaign.Difficulty.Normal:
-            return "normal";
-          case Campaign.Difficulty.Heroic:
-            return "hard";
-          case Campaign.Difficulty.Legendary:
-            return "impossible";
-          case Campaign.Difficulty.Noble:
-            return "easy";
-          default:
-            throw new ArgumentOutOfRangeException();
-        }
-      }
-
-      /**
-       * The SPV3 campaign maps each have an ID assigned to them. SPV3.3 breaks the compatibility by incrementing all of
-       * the IDs.
-       *
-       * To handle permit backwards compatibility with 3.2 and below, we conditionally decrement the mission ID that
-       * will be written to the initiation file.
-       *
-       * The decrementation is determined by the presence of the version.txt file in the working directory. If the file
-       * is not found, then it's possible that this loader is being used on SPV3.2 and below, and thus we should use the
-       * old (decremented) mission IDs.
-       */
-      int GetMission()
-      {
-        return System.IO.File.Exists(Paths.Legacy)
-          ? (int) Mission - 1 /* compatibility with <=SPV3.2 */
-          : (int) Mission;    /* compatibility with >=SPV3.3 */
-      }
-
-      var mission      = GetMission();
-      var difficulty   = GetDifficulty();
+      var resume       = Resume.Initiation;
+      var mission      = Progress.Mission.Initiation;
+      var difficulty   = Progress.Difficulty.Initiation;
       var autoaim      = PlayerAutoaim ? 1 : 0;
       var magnetism    = PlayerMagnetism ? 1 : 0;
       var cinemabars   = CinemaBars ? 0 : 1;
@@ -100,7 +62,7 @@ namespace HXE.SPV3
 
       var output = new StringBuilder();
       output.AppendLine(";;;  Set Mission/Progress");
-      output.AppendLine($"set f3 {mission}");
+      output.AppendLine($"set {resume} {mission}");
       output.AppendLine(";;;  Toggle cinematic black bars");
       output.AppendLine($"set loud_dialog_hack {cinemabars}");
       output.AppendLine(";;;  Toggle projectile trajectory aim assist");

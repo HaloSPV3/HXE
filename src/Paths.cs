@@ -43,6 +43,11 @@ namespace HXE
     public static readonly string ALSoft        = Combine(CurrentDirectory,               "alsoft.ini");
     public static readonly string Legacy        = Combine(CurrentDirectory,               "legacy.txt");
 
+    public static string Campaign(Kernel.Configuration.ConfigurationMode mode)
+    {
+      return Combine(CurrentDirectory, $"{mode.ToString().ToLower()}.xml");
+    }
+
     public class HCE
     {
       public const           string Executable = "haloce.exe";
