@@ -36,7 +36,6 @@ using static HXE.Paths;
 using static HXE.HCE.Profile.ProfileAudio;
 using static HXE.HCE.Profile.ProfileVideo;
 using static System.Text.Encoding;
-using Progress = HXE.SPV3.Progress;
 
 namespace HXE
 {
@@ -191,15 +190,18 @@ namespace HXE
               throw new Exception("Player Profile could not be found.");
             }
 
-            save.Load();
+            var campaign = (Campaign) Campaign(configuration.Mode);
 
-            init.Mission    = save.Mission;
-            init.Difficulty = save.Difficulty;
+            campaign.Load();
+            save.Load(campaign);
+
+            init.Progress = save;
+            init.Resume   = campaign.Resume;
 
             Core("INIT.RESUME: Campaign checkpoint information has been applied to the initiation file.");
 
-            Debug("INIT.RESUME: Mission    - " + init.Mission);
-            Debug("INIT.RESUME: Difficulty - " + init.Difficulty);
+            Debug("INIT.RESUME: Mission    - " + init.Progress.Mission.Name);
+            Debug("INIT.RESUME: Difficulty - " + init.Progress.Difficulty.Name);
           }
           catch (Exception e)
           {
