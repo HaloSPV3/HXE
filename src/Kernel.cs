@@ -351,7 +351,7 @@ namespace HXE
 
         void Video()
         {
-          if (configuration.Video.Resolution)
+          if (!configuration.Video.ResolutionEnabled)
           {
             if (executable.Video.Width == 0 || executable.Video.Height == 0)
             {
@@ -858,7 +858,7 @@ namespace HXE
           /* video */
           {
             ms.Position = (byte) Offset.Video;
-            bw.Write(Video.Resolution);
+            bw.Write(Video.ResolutionEnabled);
             bw.Write(Video.Uncap);
             bw.Write(Video.Quality);
             bw.Write(Video.GammaEnabled);
@@ -955,13 +955,13 @@ namespace HXE
 
           /* video */
           {
-            ms.Position        = (byte) Offset.Video;
-            Video.Resolution   = br.ReadBoolean();
-            Video.Uncap        = br.ReadBoolean();
-            Video.Quality      = br.ReadBoolean();
-            Video.GammaEnabled = br.ReadBoolean();
-            Video.Gamma        = br.ReadByte();
-            Video.Bless        = br.ReadBoolean();
+            ms.Position             = (byte) Offset.Video;
+            Video.ResolutionEnabled = br.ReadBoolean();
+            Video.Uncap             = br.ReadBoolean();
+            Video.Quality           = br.ReadBoolean();
+            Video.GammaEnabled      = br.ReadBoolean();
+            Video.Gamma             = br.ReadByte();
+            Video.Bless             = br.ReadBoolean();
           }
 
           /* audio */
@@ -1023,12 +1023,12 @@ namespace HXE
 
       public class ConfigurationVideo
       {
-        public bool Resolution    { get; set; } = true;  /* auto resolution   */
-        public bool Uncap         { get; set; } = true;  /* unlock framerate  */
-        public bool Quality       { get; set; }          /* set to false by default for optimisation */
-        public bool GammaEnabled  { get; set; } = false; /* enable hce gamma  */
-        public byte Gamma         { get; set; }          /* game video gamma  */
-        public bool Bless         { get; set; } = true;  /* border-less hack  */
+        public bool ResolutionEnabled { get; set; } = true;  /* custom resolution */
+        public bool Uncap             { get; set; } = true;  /* unlock framerate   */
+        public bool Quality           { get; set; }          /* set to false by default for optimisation */
+        public bool GammaEnabled      { get; set; } = false; /* enable hce gamma   */
+        public byte Gamma             { get; set; }          /* game video gamma   */
+        public bool Bless             { get; set; } = true;  /* border-less hack   */
       }
 
       public class ConfigurationAudio
