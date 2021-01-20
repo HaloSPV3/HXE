@@ -96,8 +96,9 @@ namespace HXE
     public static void Invoke(Executable executable, Configuration configuration)
     {
       {
-        if (new FileInfo(Paths.Exception).Length > 1048576) // If greater than 1 MiB...
-          System.IO.File.WriteAllText(Paths.Exception, ""); // ...clear log.
+        if (Exists(Paths.Exception))
+          if (new FileInfo(Paths.Exception).Length > 1048576) // If greater than 1 MiB...
+            System.IO.File.WriteAllText(Paths.Exception, ""); // ...clear log.
       }
 
       if (!Exists(Legacy))
@@ -138,9 +139,9 @@ namespace HXE
         }
         catch (Exception e)
         {
-          var msg = " -- MAIN.INIT HALTED.\n Error:  " + e.ToString();
+          var msg = " -- MAIN.INIT HALTED.\n Error:  " + e.ToString() + "\n";
           var log = (File)Paths.Exception;
-          log.AppendAllText(msg + "\n");
+          log.AppendAllText(msg);
           Error(msg);
         }
 
@@ -205,9 +206,9 @@ namespace HXE
           }
           catch (Exception e)
           {
-            var msg = " -- INIT.RESUME HALTED\n Error:  " + e.ToString();
+            var msg = " -- INIT.RESUME HALTED\n Error:  " + e.ToString() + "\n";
             var log = (File)Paths.Exception;
-            log.AppendAllText(msg + "\n");
+            log.AppendAllText(msg);
             Error(e.Message + " -- INIT.RESUME HALTED");
           }
         }
@@ -333,9 +334,9 @@ namespace HXE
             }
             else
             {
-              var msg = " -- MAIN.BLAM HALTED\n Error:  " + e.ToString();
+              var msg = " -- MAIN.BLAM HALTED\n Error:  " + e.ToString() + "\n";
               var log = (File)Paths.Exception;
-              log.AppendAllText(msg + "\n");
+              log.AppendAllText(msg);
               Error(msg);
             }
           }
@@ -557,9 +558,9 @@ namespace HXE
         }
         catch (Exception e)
         {
-          var msg = " -- MAIN.OPEN\n Error:  " + e.ToString();
+          var msg = " -- MAIN.OPEN\n Error:  " + e.ToString() + "\n";
           var log = (File)Paths.Exception;
-          log.AppendAllText(msg + "\n");
+          log.AppendAllText(msg);
           Error(msg);
         }
       }
@@ -596,9 +597,9 @@ namespace HXE
           }
           catch (Exception e)
           {
-            var msg = " -- MAIN.BLAM HALTED\n Error:  " + e.ToString();
+            var msg = " -- MAIN.BLAM HALTED\n Error:  " + e.ToString() + "\n";
             var log = (File)Paths.Exception;
-            log.AppendAllText(msg + "\n");
+            log.AppendAllText(msg);
             Info(msg);
           }
 
@@ -661,9 +662,9 @@ namespace HXE
           }
           catch (Exception e)
           {
-            var msg = " -- EXEC.PATCH HALTED\n Error:  " + e.ToString();
+            var msg = " -- EXEC.PATCH HALTED\n Error:  " + e.ToString() + "\n";
             var log = (File)Paths.Exception;
-            log.AppendAllText(msg + "\n");
+            log.AppendAllText(msg);
             Error(msg);
           }
         }
@@ -682,9 +683,9 @@ namespace HXE
           }
           catch (Exception e)
           {
-            var msg = " -- EXEC.START HALTED\n Error:  " + e.ToString();
+            var msg = " -- EXEC.START HALTED\n Error:  " + e.ToString() + "\n";
             var log = (File)Paths.Exception;
-            log.AppendAllText(msg + "\n");
+            log.AppendAllText(msg);
             Error(msg);
           }
         }
@@ -761,9 +762,9 @@ namespace HXE
           }
           catch (Exception e)
           {
-            var msg = " -- EXEC.START HALTED\n Error:  " + e.ToString();
+            var msg = " -- EXEC.START HALTED\n Error:  " + e.ToString() + "\n";
             var log = (File)Paths.Exception;
-            log.AppendAllText(msg + "\n");
+            log.AppendAllText(msg);
             Error(msg);
           }
         }

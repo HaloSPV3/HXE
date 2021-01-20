@@ -164,9 +164,9 @@ namespace HXE
       }
       catch (Exception e)
       {
-        var msg = " -- Legal copy of HCE needs to be installed for loading!\n Error:  " + e.ToString();
+        var msg = " -- Legal copy of HCE needs to be installed for loading!\n Error:  " + e.ToString() + "\n";
         var log = (File)Paths.Exception;
-        log.AppendAllText(msg + "\n");
+        log.AppendAllText(msg);
         Error(msg);
       }
 
@@ -227,9 +227,9 @@ namespace HXE
         }
         catch (Exception e)
         {
-          var msg = " -- EXEC.START HALTED\n Error:  " + e.ToString();
+          var msg = " -- EXEC.START HALTED\n Error:  " + e.ToString() + "\n";
           var log = (File)Paths.Exception;
-          log.AppendAllText(msg + "\n");
+          log.AppendAllText(msg);
           Error(msg);
           System.Console.Error.WriteLine("\n\n" + e.StackTrace);
           WithCode(Code.Exception);
