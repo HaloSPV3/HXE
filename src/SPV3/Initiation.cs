@@ -50,9 +50,6 @@ namespace HXE.SPV3
     /// </summary>
     public void Save()
     {
-      var resume       = Resume.Initiation;
-      var mission      = Progress.Mission.Initiation;
-      var difficulty   = Progress.Difficulty.Initiation;
       var autoaim      = PlayerAutoaim ? 1 : 0;
       var magnetism    = PlayerMagnetism ? 1 : 0;
       var cinemabars   = CinemaBars ? 0 : 1;
@@ -61,16 +58,25 @@ namespace HXE.SPV3
       var gamma        = Gamma;
 
       var output = new StringBuilder();
-      output.AppendLine(";;;  Set Mission/Progress");
-      output.AppendLine($"set {resume} {mission}");
+
+      if (Resume.Initiation != null && Progress.Mission.Initiation != null)
+      {
+        output.AppendLine(";;;  Set Mission/Progress");
+        output.AppendLine($"set {Resume.Initiation} {Progress.Mission.Initiation}");
+      }
+
+      if (Progress.Difficulty.Initiation != null)
+      {
+        output.AppendLine(";;;  Set Difficulty");
+        output.AppendLine($"game_difficulty_set {Progress.Difficulty.Initiation}");
+      }
+
       output.AppendLine(";;;  Toggle cinematic black bars");
       output.AppendLine($"set loud_dialog_hack {cinemabars}");
       output.AppendLine(";;;  Toggle projectile trajectory aim assist");
       output.AppendLine($"player_autoaim {autoaim}");
       output.AppendLine(";;;  Toggle reticle/aiming magnetism");
       output.AppendLine($"player_magnetism {magnetism}");
-      output.AppendLine(";;;  Set Difficulty");
-      output.AppendLine($"game_difficulty_set {difficulty}");
       output.AppendLine(";;;  Toggle mouse acceleration; Sometimes it works, sometimes it doesn't");
       output.AppendLine($"mouse_acceleration {acceleration}");
       output.AppendLine(";;;  Toggle Motion Sensor");
