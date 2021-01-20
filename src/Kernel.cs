@@ -95,11 +95,9 @@ namespace HXE
     /// </param>
     public static void Invoke(Executable executable, Configuration configuration)
     {
-      {
-        if (Exists(Paths.Exception))
-          if (new FileInfo(Paths.Exception).Length > 1048576) // If greater than 1 MiB...
-            System.IO.File.WriteAllText(Paths.Exception, ""); // ...clear log.
-      }
+
+      System.IO.File.WriteAllText(Paths.Exception, ""); // ...clear log.
+
 
       if (!Exists(Legacy))
         configuration.Mode = Configuration.ConfigurationMode.SPV33;
