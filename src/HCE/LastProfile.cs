@@ -36,7 +36,7 @@ namespace HXE.HCE
     /// <summary>
     ///   Last accessed HCE profile.
     /// </summary>
-    public string Profile { get; set; }
+    public string Profile { get; set; } = "New001";
 
     /// <summary>
     ///   Interprets the profile name from the lastprof.txt file.
