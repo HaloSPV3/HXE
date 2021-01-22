@@ -315,7 +315,7 @@ namespace HXE
           }
           catch (Exception e)
           {
-            if (i == 0)
+            if (i == 0 && (uint)e.HResult == 0x80070002) // FileNotFoundException
             {
               var lastprof = (LastProfile)Custom.LastProfile(executable.Profile.Path);
               var scaffold = lastprof.Exists() && System.IO.File.Exists(Custom.Profile(executable.Profile.Path, lastprof.Profile));
@@ -487,9 +487,7 @@ namespace HXE
             {Profile.ProfileInput.Action.ThrowGrenade, Profile.ProfileInput.Button.LB},
             {Profile.ProfileInput.Action.Flashlight, Profile.ProfileInput.Button.LT},
             {Profile.ProfileInput.Action.MeleeAttack, Profile.ProfileInput.Button.RB},
-            {Profile.ProfileInput.Action.FireWeapon, Profile.ProfileInput.Button.RT},
-            {Profile.ProfileInput.Action.MenuBack, Profile.ProfileInput.Button.Back},
-            {Profile.ProfileInput.Action.MenuAccept, Profile.ProfileInput.Button.Start}
+            {Profile.ProfileInput.Action.FireWeapon, Profile.ProfileInput.Button.RT}
           };
 
           Core("BLAM.INPUT: Input overrides have been applied accordingly.");

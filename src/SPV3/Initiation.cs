@@ -59,16 +59,22 @@ namespace HXE.SPV3
 
       var output = new StringBuilder();
 
-      if (Resume.Initiation != null && Progress.Mission.Initiation != null)
+      if (Resume != null && Progress != null)
       {
-        output.AppendLine(";;;  Set Mission/Progress");
-        output.AppendLine($"set {Resume.Initiation} {Progress.Mission.Initiation}");
+        if (Resume.Initiation != null && Progress.Mission.Initiation != null)
+        {
+          output.AppendLine(";;;  Set Mission/Progress");
+          output.AppendLine($"set {Resume.Initiation} {Progress.Mission.Initiation}");
+        } 
       }
 
-      if (Progress.Difficulty.Initiation != null)
-      {
-        output.AppendLine(";;;  Set Difficulty");
-        output.AppendLine($"game_difficulty_set {Progress.Difficulty.Initiation}");
+      if (Progress != null) 
+      { 
+        if (Progress.Difficulty.Initiation != null)
+        {
+          output.AppendLine(";;;  Set Difficulty");
+          output.AppendLine($"game_difficulty_set {Progress.Difficulty.Initiation}");
+        }
       }
 
       output.AppendLine(";;;  Toggle cinematic black bars");
