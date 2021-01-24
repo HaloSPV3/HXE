@@ -151,7 +151,18 @@ namespace HXE.HCE
           var value  = (byte) mapping.Key;  /* action */
           var offset = (int) mapping.Value; /* button */
 
-          Debug("Assigning input to action - " + mapping.Key + " -> " + mapping.Value);
+          Debug("Assigning input to action - " + mapping.Key + " -> " + mapping.Value);          
+
+          ms.Position = offset;
+          bw.Write(value);
+        }
+
+        foreach (var bitbind in Input.BitBinding)
+        {
+          var value  = (byte) bitbind.Key;   /* button */
+          var offset = (int)  bitbind.Value; /* action */
+
+          Debug("Assigning input to action - " + bitbind.Key + " -> " + bitbind.Value);
 
           ms.Position = offset;
           bw.Write(value);
@@ -335,6 +346,19 @@ namespace HXE.HCE
 
           if (!Input.Mapping.ContainsKey(key))
             Input.Mapping.Add(key, value);
+        }
+
+        Input.BitBinding = new Dictionary<OddValues, OddOffsets>();
+
+        foreach (var offset in Enum.GetValues(typeof(OddOffsets)))
+        {
+          reader.BaseStream.Seek((int) offset, SeekOrigin.Begin);
+
+          var key   = (OddValues) reader.ReadByte();
+          var value = (OddOffsets) offset;
+
+          if (!Input.BitBinding.ContainsKey(key))
+            Input.BitBinding.Add(key, value);
         }
 
         if ((int) Details.Colour == 0xFF)
@@ -657,8 +681,6 @@ namespace HXE.HCE
         Flashlight      = 0x05, /* actions  */
         ScopeZoom       = 0x0B, /* actions  */
         Action          = 0x02, /* actions  */
-        MenuAccept      = 0xFF, /* misc.    */
-        MenuBack        = 0xFF, /* misc.    */
         Say             = 0x0F, /* misc.    */
         SayToTeam       = 0x10, /* misc.    */
         SayToVehicle    = 0x11, /* misc.    */
@@ -695,7 +717,30 @@ namespace HXE.HCE
         Back  = 0x236  /* home - back                     */
       }
 
+      public enum OddOffsets
+      {
+        MenuAccept = 0x32A, /* misc.           */
+        MenuBack   = 0x32C, /* misc.           */
+      }
+
+      public enum OddValues // bit mask?
+      {
+        Button1  = 0x0000, /* face - button a                */ //confirmed
+        Button2  = 0x0100, /* face - button b                */ //confirmed
+        Button3  = 0x0200, /* face - button x                */
+        Button4  = 0x0300, /* face - button y                */
+        Button5  = 0x0400, /* shoulder - L shoulder, white   */
+        Button6  = 0x0500, /* shoulder - R shoulder, black   */
+        Button7  = 0x0600, /* home - back                    */
+        Button8  = 0x0700, /* home - start                   */ //confirmed
+        Button9  = 0x0800, /* analogue - left  stick - click */
+        Button10 = 0x0900, /* analogue - right stick - click */
+        //todo: confirm the other values
+      }
+
       public Dictionary<Action, Button> Mapping = new Dictionary<Action, Button>();
+
+      public Dictionary<OddValues, OddOffsets> BitBinding = new Dictionary<OddValues, OddOffsets>();
     }
   }
 }
