@@ -62,6 +62,21 @@ namespace HXE
 
       Configuration.Load();
 
+      try { AssignConfig(); }
+      catch(Exception e)
+      {
+        if (e.Message == "Kernel Mode not recognized.")
+        {
+          Configuration = new Kernel.Configuration(Configuration.Path);
+          Configuration.Save();
+          AssignConfig();
+        }
+        else throw e;
+      }
+    }
+
+    public void AssignConfig()
+    {
       switch (Configuration.Mode)
       {
         case Kernel.Configuration.ConfigurationMode.HCE:
@@ -77,7 +92,7 @@ namespace HXE
           Mode.SelectedIndex = 3;
           break;
         default:
-          throw new ArgumentOutOfRangeException();
+          throw new ArgumentOutOfRangeException("Switch (Configuration.Mode)", "Kernel Mode not recognized.");
       }
 
       MainReset.IsChecked           = Configuration.Main.Reset;

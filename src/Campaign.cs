@@ -30,6 +30,11 @@ namespace HXE
     public List<Mission>    Missions     { get; set; } = new List<Mission>();
     public List<Difficulty> Difficulties { get; set; } = new List<Difficulty>();
 
+    public Campaign(string path)
+    {
+      Path = path;
+    }
+
     public void Load()
     {
       var campaign = (Campaign) new XmlSerializer(typeof(Campaign))
