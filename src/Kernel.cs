@@ -97,8 +97,7 @@ namespace HXE
     {
       /* Clear log file */
       {
-        FileInfo fileInfo = new FileInfo(Paths.Exception);
-        if (fileInfo.Length > 1048576) // If larger than 1 MiB, ...
+        if (new FileInfo(Paths.Exception).Length > 1048576) // If larger than 1 MiB, ...
           System.IO.File.WriteAllText(Paths.Exception, ""); // ...clear log.
       }
 
