@@ -95,12 +95,18 @@ namespace HXE
     /// </param>
     public static void Invoke(Executable executable, Configuration configuration)
     {
+      /* Clear log file */
+      {
+        FileInfo fileInfo = new FileInfo(Paths.Exception);
+        if (fileInfo.Length > 1048576) // If larger than 1 MiB, ...
+          System.IO.File.WriteAllText(Paths.Exception, ""); // ...clear log.
+      }
 
-      System.IO.File.WriteAllText(Paths.Exception, ""); // ...clear log.
-
-
-      if (!Exists(Legacy))
-        configuration.Mode = Configuration.ConfigurationMode.SPV33;
+      /* Switch to legacy kernel modes */
+      {
+        if (!Exists(Legacy))
+          configuration.Mode = Configuration.ConfigurationMode.SPV33;
+      }
 
       Init(); /* initc.txt declarations */
       Blam(); /* blam.sav enhancements  */
@@ -802,6 +808,7 @@ namespace HXE
       public ConfigurationInput  Input   { get; set; } = new ConfigurationInput();  /* profile input      */
       public ConfigurationTweaks Tweaks  { get; set; } = new ConfigurationTweaks(); /* profile tweaks     */
       public int                 Shaders { get; set; } = 0;                         /* spv3 shaders       */
+      public string              Path    { get => _path; }
       public const byte          Version = 20;
 
       /// <summary>
