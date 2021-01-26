@@ -194,7 +194,7 @@ namespace HXE
               throw new Exception("Player Profile could not be found.");
             }
 
-            var campaign = (Campaign) Campaign(configuration.Mode);
+            var campaign = new HXE.Campaign(Paths.Campaign(configuration.Mode));
 
             campaign.Load();
             save.Load(campaign);
