@@ -24,11 +24,14 @@ using System.Xml.Serialization;
 
 namespace HXE
 {
+  [XmlRoot("Campaign", IsNullable = false)]
   public class Campaign : File
   {
     public Resume           Resume       { get; set; } = new Resume();
     public List<Mission>    Missions     { get; set; } = new List<Mission>();
     public List<Difficulty> Difficulties { get; set; } = new List<Difficulty>();
+
+    public Campaign() { }
 
     public Campaign(string path)
     {
@@ -37,23 +40,8 @@ namespace HXE
 
     public void Load()
     {
-      Campaign campaign = new Campaign(Path);
-      try
-      {
-        var type = typeof(Campaign);
-        var xmls = new XmlSerializer(type);
-        FileStream fs = new FileStream(Path, FileMode.Open);
-        var ds = xmls.Deserialize(fs);
-        campaign = (Campaign)ds;
-        /*campaign = (Campaign)new XmlSerializer(typeof(Campaign))
-          .Deserialize(new FileStream(Path, FileMode.Open));*/
-      }
-      catch (System.Exception e)
-      {
-        var msg = " -- INIT.RESUME HALTED\n Error:  " + e.ToString() + "\n";
-        var log = (File)Paths.Exception;
-        log.AppendAllText(msg);
-      }
+      var campaign = (Campaign)new XmlSerializer(typeof(Campaign))
+        .Deserialize(new FileStream(Path, FileMode.Open));
 
       Resume       = campaign.Resume;
       Missions     = campaign.Missions;

@@ -33,6 +33,7 @@ namespace HXE
     {
       using (var reader = new BinaryReader(System.IO.File.Open(Path, FileMode.Open)))
       {
+        /* Exceptions if the savegame binary contains null characters where the mission bytes are expected */
         Mission = campaign.Missions
           .First
           (
@@ -55,7 +56,10 @@ namespace HXE
     {
       var bytes = new byte[length];
       reader.BaseStream.Seek(offset, SeekOrigin.Begin);
-      reader.BaseStream.Read(bytes, 0, length);
+      for (int i = 0; i < length; i++)
+      {
+        bytes[i] = (byte) reader.BaseStream.ReadByte();
+      }
       return bytes;
     }
 

@@ -43,6 +43,7 @@ namespace HXE.SPV3
     public bool     Unlock            { get; set; }
     public bool     Attract           { get; set; } = true;
     public int      Shaders           { get; set; } = 0;
+    public Kernel.Configuration.ConfigurationMode mode;
 
 
     /// <summary>
@@ -67,48 +68,57 @@ namespace HXE.SPV3
           output.AppendLine($"set {Resume.Initiation} {Progress.Mission.Initiation}");
         } 
       }
+      else if (mode == Kernel.Configuration.ConfigurationMode.SPV33)
+      {
+        output.AppendLine("\n;;;  Set Mission/Progress");
+        output.AppendLine($"set f3 2");
+      }
 
       if (Progress != null) 
       { 
         if (Progress.Difficulty.Initiation != null)
         {
-          output.AppendLine(";;;  Set Difficulty");
+          output.AppendLine("\n;;;  Set Difficulty");
           output.AppendLine($"game_difficulty_set {Progress.Difficulty.Initiation}");
         }
       }
 
-      output.AppendLine(";;;  Toggle cinematic black bars");
+      output.AppendLine("\n;;;  Toggle cinematic black bars");
       output.AppendLine($"set loud_dialog_hack {cinemabars}");
-      output.AppendLine(";;;  Toggle projectile trajectory aim assist");
+
+      output.AppendLine("\n;;;  Toggle projectile trajectory aim assist");
       output.AppendLine($"player_autoaim {autoaim}");
-      output.AppendLine(";;;  Toggle reticle/aiming magnetism");
+      
+      output.AppendLine("\n;;;  Toggle reticle/aiming magnetism");
       output.AppendLine($"player_magnetism {magnetism}");
-      output.AppendLine(";;;  Toggle mouse acceleration; Sometimes it works, sometimes it doesn't");
+      
+      output.AppendLine("\n;;;  Toggle mouse acceleration; Sometimes it works, sometimes it doesn't");
       output.AppendLine($"mouse_acceleration {acceleration}");
-      output.AppendLine(";;;  Toggle Motion Sensor");
+      
+      output.AppendLine("\n;;;  Toggle Motion Sensor");
       output.AppendLine($"set rasterizer_hud_motion_sensor {motionSensor}");
 
       if (Unlock)
       {
-        output.AppendLine(";;;  Unlock all levels");
+        output.AppendLine("\n;;;  Unlock all levels");
         output.AppendLine("set f1 8");
       }
 
       if (Attract)
       {
-        output.AppendLine(";;;  Play attractive film on startup");
+        output.AppendLine("\n;;;  Play attractive film on startup");
         output.AppendLine("play_bink_movie attract.bik");
       }
 
       if (Gamma > 0)
       {
-        output.AppendLine(";;;  Override system video gamma");
+        output.AppendLine("\n;;;  Override system video gamma");
         output.AppendLine($"set_gamma {gamma}");
       }
 
       if (Unload)
       {
-        output.AppendLine(";;;  Disable post-processing");
+        output.AppendLine("\n;;;  Disable post-processing");
         output.AppendLine("pp_unload");
       }
 
@@ -116,39 +126,39 @@ namespace HXE.SPV3
        * Encodes post-processing settings to the initc file. Refer to doc/shaders.txt for further information.
        */
 
-      output.AppendLine(";;;  Toggle Volumetric Lighting");
+      output.AppendLine("\n;;;  Toggle Volumetric Lighting");
       output.AppendLine((Shaders & PP.VOLUMETRIC_LIGHTING) != 0
         ? "set rasterizer_soft_filter true"
         : "set rasterizer_soft_filter false");
 
-      output.AppendLine(";;;  If TRUE, disable Lens Dirt");
+      output.AppendLine("\n;;;  If TRUE, disable Lens Dirt");
       output.AppendLine((Shaders & PP.LENS_DIRT) != 0
         ? "set use_super_remote_players_action_update false"
         : "set use_super_remote_players_action_update true");
 
-      output.AppendLine(";;;  If TRUE, disable Film Grain");
+      output.AppendLine("\n;;;  If TRUE, disable Film Grain");
       output.AppendLine((Shaders & PP.FILM_GRAIN) != 0
         ? "set use_new_vehicle_update_scheme false"
         : "set use_new_vehicle_update_scheme true");
 
-      output.AppendLine(";;;  If TRUE, disable immersive helmet/visor overlay");
+      output.AppendLine("\n;;;  If TRUE, disable immersive helmet/visor overlay");
       output.AppendLine((Shaders & PP.HUD_VISOR) != 0
         ? "set multiplayer_draw_teammates_names false"
         : "set multiplayer_draw_teammates_names true");
 
-      output.AppendLine(";;;  Toggle Screen-Space, path-traced Reflections");
+      output.AppendLine("\n;;;  Toggle Screen-Space, path-traced Reflections");
       output.AppendLine((Shaders & PP.SSR) != 0
         ? "set error_suppress_all true"
         : "set error_suppress_all false");
 
-      output.AppendLine(";;;  If TRUE, disable Adaptive HDR");
+      output.AppendLine("\n;;;  If TRUE, disable Adaptive HDR");
       output.AppendLine((Shaders & PP.ADAPTIVE_HDR) != 0
         ? "set director_camera_switch_fast 0" 
         : "set director_camera_switch_fast 1");
 
       if (System.IO.File.Exists(Paths.Legacy))
       {
-        output.AppendLine(";;;  Toggle Dynamic Lens Flares");
+        output.AppendLine("\n;;;  Toggle Dynamic Lens Flares");
         output.AppendLine((Shaders & PP.DYNAMIC_LENS_FLARES) != 0
           ? "set display_precache_progress true"
           : "set display_precache_progress false");
@@ -156,14 +166,14 @@ namespace HXE.SPV3
 
       if (!System.IO.File.Exists(Paths.Legacy))
       {
-        output.AppendLine(";;;  Toggle Color Deband");
+        output.AppendLine("\n;;;  Toggle Color Deband");
         output.AppendLine((Shaders & PP.DEBAND) != 0
           ? "set display_precache_progress true"
           : "set display_precache_progress false");
       }
 
       /* motion blur */
-      output.AppendLine(";;;  Set Motion Blur: {1.0, 1.1, 1.2, 1.3}; 1.0 == off");
+      output.AppendLine("\n;;;  Set Motion Blur: {1.0, 1.1, 1.2, 1.3}; 1.0 == off");
       output.AppendLine("set multiplayer_hit_sound_volume " + new Func<string>(() =>
       {
         if ((Shaders & PP.MOTION_BLUR_POMB_HIGH) != 0)
@@ -179,7 +189,7 @@ namespace HXE.SPV3
       })());
 
       /* mxao */
-      output.AppendLine(";;;  Set MartyMcFly's MX Ambient Occlusion: {2, 3, 4}; 2 == off");
+      output.AppendLine("\n;;;  Set MartyMcFly's MX Ambient Occlusion: {2, 3, 4}; 2 == off");
       output.AppendLine("set cl_remote_player_action_queue_limit " + new Func<string>(() =>
       {
         if ((Shaders & PP.MXAO_HIGH) != 0)
@@ -192,7 +202,7 @@ namespace HXE.SPV3
       })());
 
       /* depth of field */
-      output.AppendLine(";;;  Set Depth of Field {6, 7, 8}; 6 == off");
+      output.AppendLine("\n;;;  Set Depth of Field {6, 7, 8}; 6 == off");
       output.AppendLine("set cl_remote_player_action_queue_tick_limit " + new Func<string>(() =>
       {
         if ((Shaders & PP.DOF_HIGH) != 0)
