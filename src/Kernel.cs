@@ -107,10 +107,10 @@ namespace HXE
           configuration.Mode = Configuration.ConfigurationMode.SPV33;
       }
 
-      Init(); /* initc.txt declarations */
-      Blam(); /* blam.sav enhancements  */
-      Open(); /* opensauce declarations */
-      Exec(); /* haloce.exe invocation  */
+      Init(configuration.Mode); /* initc.txt declarations */
+      Blam();                   /* blam.sav enhancements  */
+      Open();                   /* opensauce declarations */
+      Exec();                   /* haloce.exe invocation  */
 
       Core("CORE.MAIN: Successfully updated the initiation, profile and OS files, and invoked the HCE executable.");
 
@@ -125,9 +125,10 @@ namespace HXE
        * -   SHADER: SPV3 post-processing configurations, including activated shaders & shader intensity levels.
        */
 
-      void Init()
+      void Init(Configuration.ConfigurationMode mode = Configuration.ConfigurationMode.HCE)
       {
         var init = (Initiation) GetFullPath(executable.Debug.Initiation);
+        init.mode = mode;
 
         Resume(); /* spv3 campaign resume with ui.map compatibility */
         Tweaks(); /* hce/spv3 start-up miscellaneous tweaks         */
