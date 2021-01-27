@@ -82,9 +82,6 @@ namespace HXE
         case Kernel.Configuration.ConfigurationMode.HCE:
           Mode.SelectedIndex = 0;
           break;
-        case Kernel.Configuration.ConfigurationMode.SPV31:
-          Mode.SelectedIndex = 1;
-          break;
         case Kernel.Configuration.ConfigurationMode.SPV32:
           Mode.SelectedIndex = 2;
           break;
@@ -129,12 +126,9 @@ namespace HXE
           Configuration.Mode = Kernel.Configuration.ConfigurationMode.HCE;
           break;
         case 1:
-          Configuration.Mode = Kernel.Configuration.ConfigurationMode.SPV31;
-          break;
-        case 2:
           Configuration.Mode = Kernel.Configuration.ConfigurationMode.SPV32;
           break;
-        case 3:
+        case 2:
           Configuration.Mode = Kernel.Configuration.ConfigurationMode.SPV33;
           break;
         default:
