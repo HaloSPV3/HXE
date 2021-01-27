@@ -283,7 +283,7 @@ namespace HXE
 
         void Unlock()
         {
-          if (configuration.Mode != Configuration.ConfigurationMode.SPV31)
+          if (configuration.Mode != Configuration.ConfigurationMode.SPV32)
             return;
 
           init.Unlock = true;
@@ -296,13 +296,13 @@ namespace HXE
        * We enhance the player's profile by applying the highest video & audio quality settings, along with forcing the
        * resolution declared in video parameters of the inbound executable.
        *
-       * The enhancements are applied based on the provided configuration, and also the on the success rate of inferring
+       * The enhancements are applied based on the provided configuration and the successful inference
        * the last used profile in the specified profiles directory.
        */
 
       void Blam()
       {
-        Profile blam;
+        Profile blam = new Profile();
 
         for (int i = 0; i < 1 ; i++)
         {
@@ -334,7 +334,7 @@ namespace HXE
                 Debug("Savegames scaffold detected.");
 
               Core("Calling LastProfile.Generate()...");
-              NewProfile.Generate(executable.Profile.Path, lastprof, new Profile(), scaffold);
+              NewProfile.Generate(executable.Profile.Path, lastprof, blam, scaffold);
             }
             else
             {
@@ -783,7 +783,6 @@ namespace HXE
       public enum ConfigurationMode
       {
         HCE,   /* tweaks, hce patches & enhancements */
-        SPV31, /* legacy maps unlock, no shaders     */
         SPV32, /* shaders, campaign resume, tweaks   */
         SPV33  /* SPV32, campaign++, deband          */
       }
@@ -1029,7 +1028,7 @@ namespace HXE
 
       public class ConfigurationVideo
       {
-        public bool ResolutionEnabled { get; set; } = true;  /* custom resolution */
+        public bool ResolutionEnabled { get; set; } = false; /* custom resolution */
         public bool Uncap             { get; set; } = true;  /* unlock framerate   */
         public bool Quality           { get; set; }          /* set to false by default for optimisation */
         public bool GammaEnabled      { get; set; } = false; /* enable hce gamma   */

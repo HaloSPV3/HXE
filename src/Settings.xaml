@@ -41,7 +41,6 @@
         <GroupBox Header="Mode">
             <ComboBox Name="Mode">
                 <ComboBoxItem Content="HCE" />
-                <ComboBoxItem Content="SPV3.1" />
                 <ComboBoxItem Content="SPV3.2" />
                 <ComboBoxItem Content="SPV3.3" />
             </ComboBox>
