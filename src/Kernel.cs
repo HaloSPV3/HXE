@@ -169,20 +169,8 @@ namespace HXE
 
             if (!lastprof.Exists())
             {
-              var  profile  = new Profile();
-              bool scaffold = false;
-
-              Core("Lastprof.txt does not Exists.");
-              Core("Calling LastProfile.Generate()...");
-              if (!scaffold)
-              {
-                Debug("Savegames scaffold doesn't exist.");
-              }
-              else
-              {
-                Debug("Savegames scaffold detected.");
-              }
-              NewProfile.Generate(executable.Profile.Path, lastprof, profile, scaffold);
+              Error("Lastprof.txt does not Exist.");
+              lastprof.Save();
             }
 
             lastprof.Load();
@@ -192,16 +180,48 @@ namespace HXE
 
             if (!save.Exists())
             {
-              throw new Exception("Player Profile could not be found.");
+              Error("Player Profile could not be found.");
+              var savegames = Custom.Profiles(executable.Profile.Path);
+              if (!Exists(savegames))
+              {
+                Error("Savegames folder does not exist.");
+                NewProfile.Generate(executable.Profile.Path, lastprof, new Profile(), false);
+              }
+              else
+              {
+                var profiles = new List<string>(GetDirectories(savegames));
+                var validProfiles = new List<string>{ };
+
+                if (profiles.Count == 0)
+                {
+                  Error("No profiles found in savegames folder.");
+                  Core("Generating new profile");
+                  NewProfile.Generate(executable.Profile.Path, lastprof, new Profile(), false);
+                }
+                else
+                {
+                  foreach (string profile in profiles)
+                  {
+                    var dirName = GetDirectoryName(profile);
+                    if (System.IO.File.Exists(Combine(Custom.ProfileDirectory(executable.Profile.Path, dirName) + "blam.sav")))
+                      validProfiles.Add(dirName); // todo: implement better validation
+                  }
+                  save = (Progress) Custom.Progress(executable.Profile.Path, validProfiles[0]); // todo: allow the user to select another profile
+                  lastprof.Profile = validProfiles[0];
+                }
+              }
             }
 
-            var campaign = new HXE.Campaign(Paths.Campaign(configuration.Mode));
+            if (configuration.Mode != Configuration.ConfigurationMode.SPV33)
+            {
+              var campaign = new HXE.Campaign(Paths.Campaign(configuration.Mode));
 
-            campaign.Load();
-            save.Load(campaign);
+              campaign.Load();
+              save.Load(campaign);
 
-            init.Progress = save;
-            init.Resume   = campaign.Resume;
+              init.Progress = save;
+              init.Resume = campaign.Resume;
+            }
 
             Core("INIT.RESUME: Campaign checkpoint information has been applied to the initiation file.");
 
@@ -318,31 +338,28 @@ namespace HXE
 
             Core("MAIN.BLAM: Profile enhancements have been successfully applied and saved.");
           }
+          catch (FileNotFoundException)
+          {
+            var lastprof = (LastProfile) Custom.LastProfile(executable.Profile.Path);
+            var scaffold = lastprof.Exists() && System.IO.File.Exists(Custom.Profile(executable.Profile.Path, lastprof.Profile));
+
+            if (!lastprof.Exists())
+              Core("Lastprof.txt does not exist.");
+
+            if (!scaffold)
+              Debug("Savegames scaffold doesn't exist.");
+            else
+              Debug("Savegames scaffold detected.");
+
+            Core("Calling LastProfile.Generate()...");
+            NewProfile.Generate(executable.Profile.Path, lastprof, blam, scaffold);
+          }
           catch (Exception e)
           {
-            if (i == 0 && (uint)e.HResult == 0x80070002) // FileNotFoundException
-            {
-              var lastprof = (LastProfile)Custom.LastProfile(executable.Profile.Path);
-              var scaffold = lastprof.Exists() && System.IO.File.Exists(Custom.Profile(executable.Profile.Path, lastprof.Profile));
-
-              if (!lastprof.Exists())
-                Core("Lastprof.txt does not exist.");
-
-              if (!scaffold)
-                Debug("Savegames scaffold doesn't exist.");
-              else
-                Debug("Savegames scaffold detected.");
-
-              Core("Calling LastProfile.Generate()...");
-              NewProfile.Generate(executable.Profile.Path, lastprof, blam, scaffold);
-            }
-            else
-            {
-              var msg = " -- MAIN.BLAM HALTED\n Error:  " + e.ToString() + "\n";
-              var log = (File)Paths.Exception;
-              log.AppendAllText(msg);
-              Error(msg);
-            }
+            var msg = " -- MAIN.BLAM HALTED\n Error:  " + e.ToString() + "\n";
+            var log = (File)Paths.Exception;
+            log.AppendAllText(msg);
+            Error(msg);
           }
         }
 
