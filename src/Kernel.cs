@@ -866,7 +866,7 @@ namespace HXE
             bw.Write(Video.ResolutionEnabled);
             bw.Write(Video.Uncap);
             bw.Write(Video.Quality);
-            bw.Write(Video.GammaEnabled);
+            bw.Write(Video.GammaOn);
             bw.Write(Video.Gamma);
             bw.Write(Video.Bless);
           }
@@ -964,7 +964,7 @@ namespace HXE
             Video.ResolutionEnabled = br.ReadBoolean();
             Video.Uncap             = br.ReadBoolean();
             Video.Quality           = br.ReadBoolean();
-            Video.GammaEnabled      = br.ReadBoolean();
+            Video.GammaOn           = br.ReadBoolean();
             Video.Gamma             = br.ReadByte();
             Video.Bless             = br.ReadBoolean();
           }
@@ -1031,7 +1031,7 @@ namespace HXE
         public bool ResolutionEnabled { get; set; } = false; /* custom resolution */
         public bool Uncap             { get; set; } = true;  /* unlock framerate   */
         public bool Quality           { get; set; }          /* set to false by default for optimisation */
-        public bool GammaEnabled      { get; set; } = false; /* enable hce gamma   */
+        public bool GammaOn           { get; set; } = false; /* enable hce gamma   */
         public byte Gamma             { get; set; }          /* game video gamma   */
         public bool Bless             { get; set; } = true;  /* border-less hack   */
       }
