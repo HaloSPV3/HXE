@@ -43,8 +43,6 @@ namespace HXE.SPV3
     public bool     Unlock            { get; set; }
     public bool     Attract           { get; set; } = true;
     public int      Shaders           { get; set; } = 0;
-    public Kernel.Configuration.ConfigurationMode mode;
-
 
     /// <summary>
     ///   Saves object state to the inbound file.
@@ -67,11 +65,6 @@ namespace HXE.SPV3
           output.AppendLine(";;;  Set Mission/Progress");
           output.AppendLine($"set {Resume.Initiation} {Progress.Mission.Initiation}");
         } 
-      }
-      else if (mode == Kernel.Configuration.ConfigurationMode.SPV33)
-      {
-        output.AppendLine("\n;;;  Set Mission/Progress");
-        output.AppendLine($"set f3 2");
       }
 
       if (Progress != null) 
