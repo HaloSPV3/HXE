@@ -318,7 +318,7 @@ namespace HXE
 
       void Blam()
       {
-        Profile blam = new Profile();
+        Profile blam;
 
         try
         {
@@ -346,7 +346,7 @@ namespace HXE
             Debug("Savegames scaffold detected.");
 
           Core("Calling LastProfile.Generate()...");
-          NewProfile.Generate(executable.Profile.Path, lastprof, blam, scaffold);
+          NewProfile.Generate(executable.Profile.Path, lastprof, blam = new Profile(), scaffold);
         }
         catch (Exception e)
         {

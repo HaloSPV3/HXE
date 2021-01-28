@@ -400,17 +400,17 @@ namespace HXE.HCE
       var lastprof = (LastProfile) Custom.LastProfile(directory);
 
       if (!lastprof.Exists())
-        {
-          throw new FileNotFoundException("Cannot detect profile - lastprof.txt does not exist.");
-        }
+      {
+        throw new FileNotFoundException("Cannot detect profile - lastprof.txt does not exist.");
+      }
       lastprof.Load();
 
       var profile = (Profile) Custom.Profile(directory, lastprof.Profile);
 
       if (!profile.Exists())
-        {
-          throw new FileNotFoundException("Cannot load detected profile - its blam.sav does not exist.");
-        }
+      {
+        throw new FileNotFoundException("Cannot load detected profile - its blam.sav does not exist.");
+      }
 
       profile.Load();
 
