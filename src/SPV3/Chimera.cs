@@ -30,10 +30,11 @@ namespace HXE.SPV3
     {
         private const int Length = 2056;
 
-        public byte Interpolation { get; set; } = 8;
+        public byte Interpolation        { get; set; } = 8;
         public bool AnisotropicFiltering { get; set; } = false;
-        public bool UncapCinematic { get; set; } = true;
-        public bool BlockLOD { get; set; } = false;
+        public bool UncapCinematic       { get; set; } = true;
+        public bool BlockLOD             { get; set; } = false;
+        public double Throttle           { get; set; } = 0;
 
         /// <summary>
         ///   Saves object state to the inbound file.
@@ -58,6 +59,10 @@ namespace HXE.SPV3
                 ms.Position = 0x1F;
                 bw.Write(BlockLOD ? (byte)1 : (byte)0);
 
+                // float 1.0 == 0x3F_80_00_00; Written little-endian as 00 00 80 3F
+                ms.Position = 0x34;
+                bw.Write(Throttle);
+
                 bw.Write(new byte[Length - ms.Position]); /* padding */
 
                 ms.Position = 0;
@@ -76,15 +81,17 @@ namespace HXE.SPV3
             {
                 fs.CopyTo(ms);
 
-                ms.Position = 0x0F;
-                Interpolation = br.ReadByte();
-                ms.Position = 0x02;
-                AnisotropicFiltering = br.ReadByte() == 1;
-                ms.Position = 0x1E;
-                UncapCinematic = br.ReadByte() == 1;
-                ms.Position = 0x1F;
-                BlockLOD = br.ReadByte() == 1;
-            }
+            ms.Position          = 0x0F;
+            Interpolation        = br.ReadByte();
+            ms.Position          = 0x02;
+            AnisotropicFiltering = br.ReadByte() == 1;
+            ms.Position          = 0x1E;
+            UncapCinematic       = br.ReadByte() == 1;
+            ms.Position          = 0x1F;
+            BlockLOD             = br.ReadByte() == 1;
+            ms.Position          = 0x34;
+            Throttle             = br.ReadDouble();
+          }
         }
 
         /// <summary>
