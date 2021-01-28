@@ -33,22 +33,21 @@ namespace HXE
     {
       using (var reader = new BinaryReader(System.IO.File.Open(Path, FileMode.Open)))
       {
-        /* Exceptions if the savegame binary contains null characters where the mission bytes are expected */
-        Mission = campaign.Missions
-          .First
-          (
-            mission => mission.Value ==
-              Encoding.UTF8
+        
+        string exeDir = System.IO.Path.GetDirectoryName(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName);
+        string readerString = Encoding.UTF8
                 .GetString(GetBytes(reader, 0x1E8, 32))
-                .TrimEnd('\0')
-          );
+                .TrimEnd('\0');
 
-        Difficulty = campaign.Difficulties
-          .First
-          (
-            difficulty => difficulty.Value ==
-              GetBytes(reader, 0x1E2, 1)[0]
-          );
+        Mission = readerString == "" ? /* New savegames return null string */
+          campaign.Missions[0]
+        : Mission = campaign.Missions
+            .First(mission => mission.Value == readerString);
+
+        Difficulty = System.IO.File.Exists(System.IO.Path.Combine(exeDir, "spv3.exe")) ?
+          campaign.Difficulties[2] /* Legendary/Impossible */
+        : campaign.Difficulties /* New savegames return 0 */
+            .First(difficulty => difficulty.Value == GetBytes(reader, 0x1E2, 1)[0]);
       }
     }
 
