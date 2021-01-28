@@ -212,16 +212,13 @@ namespace HXE
               }
             }
 
-            if (configuration.Mode != Configuration.ConfigurationMode.SPV33)
-            {
-              var campaign = new HXE.Campaign(Paths.Campaign(configuration.Mode));
+            var campaign = new HXE.Campaign(Paths.Campaign(configuration.Mode));
 
-              campaign.Load();
-              save.Load(campaign);
+            campaign.Load();
+            save.Load(campaign);
 
-              init.Progress = save;
-              init.Resume = campaign.Resume;
-            }
+            init.Progress = save;
+            init.Resume = campaign.Resume;
 
             Core("INIT.RESUME: Campaign checkpoint information has been applied to the initiation file.");
 
@@ -231,7 +228,7 @@ namespace HXE
           catch (Exception e)
           {
             var msg = " -- INIT.RESUME HALTED\n Error:  " + e.ToString() + "\n";
-            var log = (File)Paths.Exception;
+            var log = (File) Paths.Exception;
             log.AppendAllText(msg);
             Error(e.Message + " -- INIT.RESUME HALTED");
           }
