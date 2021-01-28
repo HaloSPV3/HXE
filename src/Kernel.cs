@@ -320,43 +320,40 @@ namespace HXE
       {
         Profile blam = new Profile();
 
-        for (int i = 0; i < 1 ; i++)
+        try
         {
-          try
-          {
-            blam = Profile.Detect(executable.Profile.Path);
+          blam = Profile.Detect(executable.Profile.Path);
              
-            Video();
-            Audio();
-            Input();
+          Video();
+          Audio();
+          Input();
 
-            blam.Save();
+          blam.Save();
 
-            Core("MAIN.BLAM: Profile enhancements have been successfully applied and saved.");
-          }
-          catch (FileNotFoundException)
-          {
-            var lastprof = (LastProfile) Custom.LastProfile(executable.Profile.Path);
-            var scaffold = lastprof.Exists() && System.IO.File.Exists(Custom.Profile(executable.Profile.Path, lastprof.Profile));
+          Core("MAIN.BLAM: Profile enhancements have been successfully applied and saved.");
+        }
+        catch (FileNotFoundException)
+        {
+          var lastprof = (LastProfile) Custom.LastProfile(executable.Profile.Path);
+          var scaffold = lastprof.Exists() && System.IO.File.Exists(Custom.Profile(executable.Profile.Path, lastprof.Profile));
 
-            if (!lastprof.Exists())
-              Core("Lastprof.txt does not exist.");
+          if (!lastprof.Exists())
+            Core("Lastprof.txt does not exist.");
 
-            if (!scaffold)
-              Debug("Savegames scaffold doesn't exist.");
-            else
-              Debug("Savegames scaffold detected.");
+          if (!scaffold)
+            Debug("Savegames scaffold doesn't exist.");
+          else
+            Debug("Savegames scaffold detected.");
 
-            Core("Calling LastProfile.Generate()...");
-            NewProfile.Generate(executable.Profile.Path, lastprof, blam, scaffold);
-          }
-          catch (Exception e)
-          {
-            var msg = " -- MAIN.BLAM HALTED\n Error:  " + e.ToString() + "\n";
-            var log = (File)Paths.Exception;
-            log.AppendAllText(msg);
-            Error(msg);
-          }
+          Core("Calling LastProfile.Generate()...");
+          NewProfile.Generate(executable.Profile.Path, lastprof, blam, scaffold);
+        }
+        catch (Exception e)
+        {
+          var msg = " -- MAIN.BLAM HALTED\n Error:  " + e.ToString() + "\n";
+          var log = (File)Paths.Exception;
+          log.AppendAllText(msg);
+          Error(msg);
         }
 
         /**
