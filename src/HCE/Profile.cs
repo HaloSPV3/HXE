@@ -146,6 +146,14 @@ namespace HXE.HCE
           bw.Write(0x7F);
         }
 
+        foreach (var offset in Enum.GetValues(typeof(OddOffsets)))
+        {
+          Debug("Nulling input - " + offset);
+
+          ms.Position = (int) offset;
+          bw.Write(0xFFFF);
+        }
+
         foreach (var mapping in Input.Mapping)
         {
           var value  = (byte) mapping.Key;  /* action */
@@ -156,7 +164,7 @@ namespace HXE.HCE
           ms.Position = offset;
           bw.Write(value);
         }
-
+        
         foreach (var bitbind in Input.BitBinding)
         {
           var value  = (byte) bitbind.Key;   /* button */
@@ -166,6 +174,7 @@ namespace HXE.HCE
 
           ms.Position = offset;
           bw.Write(value);
+          bw.Write((byte) 0x00);
         }
 
         /**
@@ -717,24 +726,34 @@ namespace HXE.HCE
         Back  = 0x236  /* home - back                     */
       }
 
+      /// <summary>
+      /// Offsets from 810=0x32A to 825=0x339.
+      /// Represents Actions in Misc section
+      /// </summary>
       public enum OddOffsets
       {
         MenuAccept = 0x32A, /* misc.           */
         MenuBack   = 0x32C, /* misc.           */
+        unknown2   = 0x32E,
+        unknown3   = 0x330,
+        unknown4   = 0x332,
+        unknown5   = 0x334,
+        unknown6   = 0x336,
+        unknown7   = 0x338
       }
 
       public enum OddValues // bit mask?
       {
-        Button1  = 0x0000, /* face - button a                */ //confirmed
-        Button2  = 0x0100, /* face - button b                */ //confirmed
-        Button3  = 0x0200, /* face - button x                */
-        Button4  = 0x0300, /* face - button y                */
-        Button5  = 0x0400, /* shoulder - L shoulder, white   */
-        Button6  = 0x0500, /* shoulder - R shoulder, black   */
-        Button7  = 0x0600, /* home - back                    */
-        Button8  = 0x0700, /* home - start                   */ //confirmed
-        Button9  = 0x0800, /* analogue - left  stick - click */
-        Button10 = 0x0900, /* analogue - right stick - click */
+        Button1  = 0x00, /* face - button a                */ //confirmed
+        Button2  = 0x01, /* face - button b                */ //confirmed
+        Button3  = 0x02, /* face - button x                */
+        Button4  = 0x03, /* face - button y                */
+        Button5  = 0x04, /* shoulder - L shoulder, white   */
+        Button6  = 0x05, /* shoulder - R shoulder, black   */
+        Button7  = 0x06, /* home - back                    */
+        Button8  = 0x07, /* home - start                   */ //confirmed
+        Button9  = 0x08, /* analogue - left  stick - click */
+        Button10 = 0x09  /* analogue - right stick - click */
         //todo: confirm the other values
       }
 
