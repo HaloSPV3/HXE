@@ -98,6 +98,11 @@
   </Missions>
   <Difficulties>
     <Difficulty>
+      <Name>Legendary</Name>
+      <Value>2</Value>
+      <Initiation>impossible</Initiation>
+    </Difficulty>
+    <Difficulty>
       <Name>Normal</Name>
       <Value>0</Value>
       <Initiation>normal</Initiation>
@@ -106,11 +111,6 @@
       <Name>Heroic</Name>
       <Value>1</Value>
       <Initiation>hard</Initiation>
-    </Difficulty>
-    <Difficulty>
-      <Name>Legendary</Name>
-      <Value>2</Value>
-      <Initiation>impossible</Initiation>
     </Difficulty>
     <Difficulty>
       <Name>Noble</Name>
