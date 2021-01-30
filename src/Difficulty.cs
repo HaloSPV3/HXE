@@ -22,8 +22,8 @@ namespace HXE
 {
   public class Difficulty
   {
-    public string Name       { get; set; }
-    public byte   Value      { get; set; }
-    public string Initiation { get; set; }
+	  public string Name       { get; set; } = string.Empty;
+	  public byte   Value      { get; set; } = 0;
+	  public string Initiation { get; set; } = string.Empty;
   }
 }

@@ -23,6 +23,6 @@ namespace HXE
   public class Resume
   {
     public bool   Enabled    { get; set; }
-    public string Initiation { get; set; }
+    public string Initiation { get; set; } = string.Empty;
   }
 }
