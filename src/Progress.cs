@@ -31,23 +31,26 @@ namespace HXE
 
     public void Load(Campaign campaign)
     {
+      if (!Exists())
+        return;
+
       using (var reader = new BinaryReader(System.IO.File.Open(Path, FileMode.Open)))
       {
-        
-        string exeDir = System.IO.Path.GetDirectoryName(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName);
-        string readerString = Encoding.UTF8
+        Mission = campaign.Missions
+          .FirstOrDefault
+          (
+            mission => mission.Value ==
+              Encoding.UTF8
                 .GetString(GetBytes(reader, 0x1E8, 32))
-                .TrimEnd('\0');
+                .TrimEnd('\0')
+          ) ?? campaign.Missions.First();
 
-        Mission = readerString == "" ? /* New savegames return null string */
-          campaign.Missions[0]
-        : Mission = campaign.Missions
-            .First(mission => mission.Value == readerString);
-
-        Difficulty = System.IO.File.Exists(System.IO.Path.Combine(exeDir, "spv3.exe")) ?
-          campaign.Difficulties[2] /* Legendary/Impossible */
-        : campaign.Difficulties /* New savegames return 0 */
-            .First(difficulty => difficulty.Value == GetBytes(reader, 0x1E2, 1)[0]);
+        Difficulty = campaign.Difficulties
+          .FirstOrDefault
+          (
+            difficulty => difficulty.Value ==
+              GetBytes(reader, 0x1E2, 1)[0]
+          ) ?? campaign.Difficulties.First();
       }
     }
 
@@ -55,10 +58,7 @@ namespace HXE
     {
       var bytes = new byte[length];
       reader.BaseStream.Seek(offset, SeekOrigin.Begin);
-      for (int i = 0; i < length; i++)
-      {
-        bytes[i] = (byte) reader.BaseStream.ReadByte();
-      }
+      reader.BaseStream.Read(bytes, 0, length);
       return bytes;
     }
 
