@@ -42,7 +42,7 @@ namespace HXE.SPV3
     public Progress Progress          { get; set; }
     public bool     Unlock            { get; set; }
     public bool     Attract           { get; set; } = true;
-    public int      Shaders           { get; set; } = 0;
+    public uint     Shaders           { get; set; } = 0;
 
     /// <summary>
     ///   Saves object state to the inbound file.
