@@ -6,6 +6,11 @@
   </Resume>
   <Missions>
     <Mission>
+      <Name>SPV3 A05</Name>
+      <Value>spv3a05</Value>
+      <Initiaton>1</Initiaton>
+    </Mission>
+    <Mission>
       <Name>SPV3 A10</Name>
       <Value>spv3a10</Value>
       <Initiation>2</Initiation>
@@ -89,11 +94,6 @@
       <Name>SPV3 Lumoria CD</Name>
       <Value>spv3_lumoria_cd</Value>
       <Initiation>18</Initiation>
-    </Mission>
-    <Mission>
-      <Name>SPV3 A05</Name>
-      <Value>spv3a05</Value>
-      <Initiation>19</Initiation>
     </Mission>
   </Missions>
   <Difficulties>
