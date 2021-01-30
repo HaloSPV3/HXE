@@ -201,12 +201,13 @@ namespace HXE
                 {
                   foreach (string profile in profiles)
                   {
-                    var dirName = GetDirectoryName(profile);
-                    if (System.IO.File.Exists(Combine(Custom.ProfileDirectory(executable.Profile.Path, dirName) + "blam.sav")))
+                    var dirName = profile;
+                    if (System.IO.File.Exists(System.IO.Path.Combine(profile, "blam.sav")))
                       validProfiles.Add(dirName); // todo: implement better validation
                   }
                   save = (Progress) Custom.Progress(executable.Profile.Path, validProfiles[0]); // todo: allow the user to select another profile
-                  lastprof.Profile = validProfiles[0];
+                  lastprof.Profile = GetFileName(validProfiles[0]);
+                  lastprof.Save();
                 }
               }
             }
