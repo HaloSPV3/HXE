@@ -99,22 +99,22 @@
   <Difficulties>
     <Difficulty>
       <Name>Legendary</Name>
-      <Value>2</Value>
+      <Value>3</Value>
       <Initiation>impossible</Initiation>
     </Difficulty>
     <Difficulty>
       <Name>Normal</Name>
-      <Value>0</Value>
+      <Value>1</Value>
       <Initiation>normal</Initiation>
     </Difficulty>
     <Difficulty>
       <Name>Heroic</Name>
-      <Value>1</Value>
+      <Value>2</Value>
       <Initiation>hard</Initiation>
     </Difficulty>
     <Difficulty>
       <Name>Noble</Name>
-      <Value>3</Value>
+      <Value>0</Value>
       <Initiation>easy</Initiation>
     </Difficulty>
   </Difficulties>
