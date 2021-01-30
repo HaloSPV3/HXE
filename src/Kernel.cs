@@ -814,7 +814,7 @@ namespace HXE
       public ConfigurationAudio  Audio   { get; set; } = new ConfigurationAudio();  /* profile audio      */
       public ConfigurationInput  Input   { get; set; } = new ConfigurationInput();  /* profile input      */
       public ConfigurationTweaks Tweaks  { get; set; } = new ConfigurationTweaks(); /* profile tweaks     */
-      public int                 Shaders { get; set; } = 0;                         /* spv3 shaders       */
+      public uint                Shaders { get; set; } = 0;                         /* spv3 shaders       */
       public string              Path    { get => _path; }
       public const byte          Version = 20;
 
@@ -1004,7 +1004,7 @@ namespace HXE
           /* shaders */
           {
             ms.Position                = (byte) Offset.Shaders;
-            Shaders                    = br.ReadInt32();
+            Shaders                    = br.ReadUInt32();
           }
         }
 
