@@ -38,8 +38,8 @@ namespace HXE.SPV3
     public bool     MouseAcceleration { get; set; } = false;
     public int      Gamma             { get; set; } = 0;
     public bool     Unload            { get; set; } = false;
-    public Resume   Resume            { get; set; }
-    public Progress Progress          { get; set; }
+    public Resume   Resume            { get; set; } = new Resume();
+    public Progress Progress          { get; set; } = new Progress();
     public bool     Unlock            { get; set; }
     public bool     Attract           { get; set; } = true;
     public uint     Shaders           { get; set; } = 0;
@@ -58,22 +58,13 @@ namespace HXE.SPV3
 
       var output = new StringBuilder();
 
-      if (Resume != null && Progress != null)
+      if (Resume.Enabled)
       {
-        if (Resume.Initiation != null && Progress.Mission.Initiation != null)
-        {
-          output.AppendLine(";;;  Set Mission/Progress");
-          output.AppendLine($"set {Resume.Initiation} {Progress.Mission.Initiation}");
-        } 
-      }
+        output.AppendLine("\n;;;  Set Mission/Progress");
+        output.AppendLine($"set {Resume.Initiation} {Progress.Mission.Initiation}");
 
-      if (Progress != null) 
-      { 
-        if (Progress.Difficulty.Initiation != null)
-        {
-          output.AppendLine("\n;;;  Set Difficulty");
-          output.AppendLine($"game_difficulty_set {Progress.Difficulty.Initiation}");
-        }
+        output.AppendLine("\n;;;  Set Difficulty");
+        output.AppendLine($"game_difficulty_set {Progress.Difficulty.Initiation}");
       }
 
       output.AppendLine("\n;;;  Toggle cinematic black bars");
