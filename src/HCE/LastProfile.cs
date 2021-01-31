@@ -55,7 +55,7 @@ namespace HXE.HCE
     /// </summary>
     public void Save()
     {
-      using (var fs = new FileStream(Path, FileMode.Open, FileAccess.ReadWrite))
+      using (var fs = new FileStream(Path, FileMode.OpenOrCreate, FileAccess.ReadWrite))
       using (var ms = new MemoryStream(255))
       using (var bw = new BinaryWriter(ms))
       {
