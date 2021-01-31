@@ -185,6 +185,8 @@ namespace HXE
               {
                 Error("Savegames folder does not exist.");
                 NewProfile.Generate(executable.Profile.Path, lastprof, new Profile(), false);
+                name = lastprof.Profile;
+                save = (Progress) Custom.Progress(executable.Profile.Path, name);
               }
               else
               {
@@ -208,6 +210,8 @@ namespace HXE
                   save = (Progress) Custom.Progress(executable.Profile.Path, validProfiles[0]); // todo: allow the user to select another profile
                   lastprof.Profile = GetFileName(validProfiles[0]);
                   lastprof.Save();
+                  name = lastprof.Profile;
+                  save = (Progress) Custom.Progress(executable.Profile.Path, name);
                 }
               }
             }
