@@ -5,18 +5,14 @@
     <Initiation>f3</Initiation> <!-- initc.txt variable storing mission value -->
   </Resume>
   <Missions>
-    <!-- SPV3 A05 -->
-    <Mission>
-      <Name>SPV3 A05</Name>    <!-- canonical name                -->
-      <Value>spv3a05</Value>   <!-- cache/savegame.bin name       -->
-      <Initiaton>1</Initiaton> <!-- initc.txt variable (f3) value -->
-    </Mission>
-
     <!-- SPV3 A10 -->
     <Mission>
       <Name>SPV3 A10</Name>
+      <!-- canonical name                -->
       <Value>spv3a10</Value>
+      <!-- cache/savegame.bin name       -->
       <Initiation>2</Initiation>
+      <!-- initc.txt variable (f3) value -->
     </Mission>
 
     <!-- SPV3 A30 -->
@@ -131,7 +127,14 @@
       <Initiation>18</Initiation>
     </Mission>
     
-        <!-- SPV3 rockslide spartan -->
+    <!-- SPV3 A05 -->
+    <Mission>
+      <Name>SPV3 A05</Name>
+      <Value>spv3a05</Value>
+      <Initiaton>19</Initiaton>
+    </Mission>
+
+    <!-- SPV3 rockslide spartan -->
     <Mission>
       <Name>SPV3 Rockslide Spartan</Name>
       <Value>spv3_rockslide_spartan</Value>
