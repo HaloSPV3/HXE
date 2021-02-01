@@ -753,7 +753,7 @@ namespace HXE
               var buffer    = new byte[1];
               var loaded    = false;
 
-              while (!loaded)
+              while (!loaded && process.HasExited != true)
               {
                 ReadProcessMemory((int) processHandle, LOADED_OFFSET, buffer, buffer.Length, ref bytesRead);
                 loaded = buffer[0] == 1;
