@@ -18,15 +18,15 @@ namespace HXE
     /// Later, some patches may be configured in SPV3 loader. Perhaps via The "Advanced" menu aka HXE's Configuration UserControl. Bring it full circle.
     public class PatchGroup
     {
-      public string name       = string.Empty;   /* Make large address aware */
-      public string executable = string.Empty;   /* haloce.exe               */
-      public List<DataSet> dataSet;
+      public string Name       { get; set; } = string.Empty;   /* Make large address aware */
+      public string Executable { get; set; } = string.Empty;   /* haloce.exe               */
+      public List<DataSet> DataSet = new List<DataSet>();
     }
     public class DataSet // 00000136: 0F 2F
     {
-      public uint offset   = 0x0;
-      public byte original = 0x0;
-      public byte patch    = 0x0;
+      public uint Offset   { get; set; } = 0x0;
+      public byte Original { get; set; } = 0x0;
+      public byte Patch    { get; set; } = 0x0;
     }
 
     public static List<PatchGroup> Patches = Reader(); // See Write() for tmp overrides
@@ -49,40 +49,69 @@ namespace HXE
     /// <summary>
     /// 
     /// </summary>
-    /// <param name="configuration"></param>
+    /// <param name="cfg">HXE.Kernel.Configuration.Tweaks.Patches unsigned integer</param>
     /// <param name="exePath">Path to Halo executable</param>
-    public void Write(Kernel.Configuration cfg, string exePath)
+    public void Write(uint cfg, string exePath)
     {
-      var PatchCfg = cfg.Tweaks.Patches;
+      var LAA = true;
+      var DRM = (cfg & KPatches.DISABLE_DRM_AND_KEY_CHECKS) != 0;
+
+      /* Temporary LAA, DRM */
+      {
+        using (var fs = new FileStream(exePath, FileMode.Open, FileAccess.ReadWrite))
+        using (var ms = new MemoryStream(0x24B000))
+        using (var bw = new BinaryWriter(ms))
+        using (var br = new BinaryReader(ms))
+        {
+
+        }
+      }
+
+      /* Flexible patcher */
       using (var fs = new FileStream(exePath, FileMode.Open, FileAccess.ReadWrite))
       using (var ms = new MemoryStream(0x24B000))
       using (var bw = new BinaryWriter(ms))
       using (var br = new BinaryReader(ms))
       {
+        var FilteredPatches = new List<PatchGroup>();
         foreach (var PatchGroup in Patches)
         {
-          byte value  = /* bool from configuration.Patches bitwise int */ ? patch.crack : patch.original;
-          long offset = PatchGroup;
-          ms.Position = 0;
-          fs.Position = 0;
-          fs.CopyTo(ms);
-
-          ms.Position = offset;
-
-          if (br.ReadByte() != value)
+          if (PatchGroup.Executable == "haloce.exe")
+            FilteredPatches.Add(PatchGroup);
+        }
+        foreach (var PatchGroup in FilteredPatches)
+        {
+          foreach (var DataSet in PatchGroup.DataSet) // I hate this
           {
-            ms.Position -= 1; /* restore position */
-            bw.Write(value);  /* patch LAA flag   */
 
-            fs.Position = 0;
+            byte value  = /* bool from configuration.Patches bitwise int */ ? patch.crack : patch.original;
+            long offset = DataSet.Offset;
             ms.Position = 0;
-            ms.CopyTo(fs);
+            fs.Position = 0;
+            fs.CopyTo(ms);
 
-            Info($"Applied {patchname} patch to the HCE executable");
-          }
-          else
-          {
-            Info($"HCE executable already patched with {patch.Name}");
+            ms.Position = offset;
+
+            switch(PatchGroup.Name)
+            {
+              case "": 
+            }
+
+            if (br.ReadByte() != value)
+            {
+              ms.Position -= 1; /* restore position */
+              bw.Write(value);  /* patch            */
+
+              fs.Position = 0;
+              ms.Position = 0;
+              ms.CopyTo(fs);
+
+              Info($"Applied {patchname} patch to the HCE executable");
+            }
+            else
+            {
+              Info($"HCE executable already patched with {patch.Name}");
+            } 
           }
         }
       }

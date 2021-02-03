@@ -643,7 +643,7 @@ namespace HXE
         {
           try
           {
-            new Patcher().Write(configuration, executable.Path);
+            new Patcher().Write(configuration.Tweaks.Patches, executable.Path);
             Core("EXEC.PATCH: Conditional LAA patching has been handled.");
           }
           catch (Exception e)
