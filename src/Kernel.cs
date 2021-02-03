@@ -821,7 +821,6 @@ namespace HXE
       public ConfigurationTweaks Tweaks  { get; set; } = new ConfigurationTweaks(); /* profile tweaks     */
       public uint                Shaders { get; set; } = 0;                         /* spv3 shaders       */
       public string              Path    { get => _path; }
-      public const byte          Version = 20;
 
       /// <summary>
       ///   Persists object state to the filesystem.
@@ -843,12 +842,6 @@ namespace HXE
           {
             bw.Write(new byte[Length]);
             ms.Position = 0;
-          }
-
-          /* version */
-          {
-            ms.Position = (byte) Offset.Version;
-            bw.Write(Version);
           }
 
           /* signature */
@@ -941,19 +934,6 @@ namespace HXE
           {
             fs.CopyTo(ms);
             ms.Position = 0;
-          }
-
-          /* version */
-          {
-            ms.Position = (byte) Offset.Version;
-            if (br.ReadByte() != Version)
-            {
-              fs.Close();
-              ms.Close();
-              br.Close();
-              Save();
-              return this;
-            }
           }
 
           /* mode */
