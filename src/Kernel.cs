@@ -643,38 +643,7 @@ namespace HXE
         {
           try
           {
-            var Patcher = new Patcher();
-            using (var fs = new FileStream(executable.Path, FileMode.Open, FileAccess.ReadWrite))
-            using (var ms = new MemoryStream(0x24B000))
-            using (var bw = new BinaryWriter(ms))
-            using (var br = new BinaryReader(ms))
-            {
-            foreach (var patch in Patcher.Patches)
-              byte value  = /* bool from configuration.Patches bitwise int */ ? patch.crack : patch.original;
-              long offset = 0x136;
-              ms.Position = 0;
-              fs.Position = 0;
-              fs.CopyTo(ms);
-
-              ms.Position = offset;
-
-              if (br.ReadByte() != value)
-              {
-                ms.Position -= 1; /* restore position */
-                bw.Write(value);  /* patch LAA flag   */
-
-                fs.Position = 0;
-                ms.Position = 0;
-                ms.CopyTo(fs);
-
-                Info($"Applied {patchname} patch to the HCE executable");
-              }
-              else
-              {
-                Info($"HCE executable already patched with {patch.Name}");
-              }
-            }
-
+            new Patcher().Write(configuration, executable.Path);
             Core("EXEC.PATCH: Conditional LAA patching has been handled.");
           }
           catch (Exception e)
