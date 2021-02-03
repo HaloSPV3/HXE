@@ -671,7 +671,7 @@ namespace HXE
               }
               else
               {
-                Info("HCE executable already patched with LAA");
+                Info($"HCE executable already patched with {patch.Name}");
               }
             }
 
@@ -820,7 +820,6 @@ namespace HXE
       public ConfigurationInput  Input   { get; set; } = new ConfigurationInput();  /* profile input      */
       public ConfigurationTweaks Tweaks  { get; set; } = new ConfigurationTweaks(); /* profile tweaks     */
       public uint                Shaders { get; set; } = 0;                         /* spv3 shaders       */
-      public uint                Patches { get; set; } = 0;                         /* customEd patches   */ /** Get values from HXE.Patches */
       public string              Path    { get => _path; }
       public const byte          Version = 20;
 
@@ -907,6 +906,7 @@ namespace HXE
             bw.Write(Tweaks.AutoAim);
             bw.Write(Tweaks.Acceleration);
             bw.Write(Tweaks.Unload);
+            bw.Write(Tweaks.Patches);
           }
 
           /* shaders */
@@ -1005,6 +1005,7 @@ namespace HXE
             Tweaks.AutoAim      = br.ReadBoolean();
             Tweaks.Acceleration = br.ReadBoolean();
             Tweaks.Unload       = br.ReadBoolean();
+            Tweaks.Patches      = br.ReadUInt32();
           }
 
           /* shaders */
@@ -1069,6 +1070,7 @@ namespace HXE
         public bool   AutoAim      { get; set; } = true; /* controller auto-aim   */
         public bool   Acceleration { get; set; }         /* mouse acceleration    */
         public bool   Unload       { get; set; }         /* unload SPV3 shaders   */
+        public uint   Patches      { get; set; } = 0;    /* haloce exe patches    */ /** See HXE.Patches.KPatches */
       }
     }
   }
