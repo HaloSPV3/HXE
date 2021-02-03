@@ -1,8 +1,11 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.IO.Path;
+using static HXE.Console;
 
 namespace HXE
 {
@@ -26,7 +29,7 @@ namespace HXE
       public byte patch    = 0x0;
     }
 
-    public static List<PatchGroup> Patches = Reader();
+    public static List<PatchGroup> Patches = Reader(); // See Write() for tmp overrides
 
     public static List<PatchGroup> Reader() 
     {
@@ -43,6 +46,51 @@ namespace HXE
       return new List<PatchGroup>();
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="configuration"></param>
+    /// <param name="exePath">Path to Halo executable</param>
+    public void Write(Kernel.Configuration cfg, string exePath)
+    {
+      var PatchCfg = cfg.Tweaks.Patches;
+      using (var fs = new FileStream(exePath, FileMode.Open, FileAccess.ReadWrite))
+      using (var ms = new MemoryStream(0x24B000))
+      using (var bw = new BinaryWriter(ms))
+      using (var br = new BinaryReader(ms))
+      {
+        foreach (var PatchGroup in Patches)
+        {
+          byte value  = /* bool from configuration.Patches bitwise int */ ? patch.crack : patch.original;
+          long offset = PatchGroup;
+          ms.Position = 0;
+          fs.Position = 0;
+          fs.CopyTo(ms);
+
+          ms.Position = offset;
+
+          if (br.ReadByte() != value)
+          {
+            ms.Position -= 1; /* restore position */
+            bw.Write(value);  /* patch LAA flag   */
+
+            fs.Position = 0;
+            ms.Position = 0;
+            ms.CopyTo(fs);
+
+            Info($"Applied {patchname} patch to the HCE executable");
+          }
+          else
+          {
+            Info($"HCE executable already patched with {patch.Name}");
+          }
+        }
+      }
+    }
+
+    /// <summary>
+    /// Offsets for bitwise operations
+    /// </summary>
     public static class KPatches
     {
       public const uint ENABLE_LARGE_ADDRESS_AWARE = 1 << 0x00; // Increase max memory range from 2GiB to 4GiB.
@@ -56,7 +104,7 @@ namespace HXE
       public const uint DISABLE_MOUSE_ACCELERATION = 1 << 0x08; // Self-explanatory.
       public const uint BLOCK_UPDATE_CHECKS        = 1 << 0x09; // Prevents checking for game updates.
       public const uint PREVENT_DESCOPING_ON_DMG   = 1 << 0x10; // Prevents zoomed-in weapons from descoping when the player takes damage.
-      public const uint ADD_TAG                    = 1 << 0x11; // ?
+    //public const uint ADD_TAG                    = 1 << 0x11; // pR0Ps' signature
     }
   }
 }
