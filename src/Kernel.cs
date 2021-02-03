@@ -641,16 +641,17 @@ namespace HXE
 
         void Patch()
         {
-          const byte value  = 0x2F;  /* LAA flag   */
-          const long offset = 0x136; /* LAA offset */
-
           try
           {
+            var Patcher = new Patcher();
             using (var fs = new FileStream(executable.Path, FileMode.Open, FileAccess.ReadWrite))
             using (var ms = new MemoryStream(0x24B000))
             using (var bw = new BinaryWriter(ms))
             using (var br = new BinaryReader(ms))
             {
+            foreach (var patch in Patcher.Patches)
+              byte value  = /* bool from configuration.Patches bitwise int */ ? patch.crack : patch.original;
+              long offset = 0x136;
               ms.Position = 0;
               fs.Position = 0;
               fs.CopyTo(ms);
@@ -666,7 +667,7 @@ namespace HXE
                 ms.Position = 0;
                 ms.CopyTo(fs);
 
-                Info("Applied LAA patch to the HCE executable");
+                Info($"Applied {patchname} patch to the HCE executable");
               }
               else
               {
@@ -819,6 +820,7 @@ namespace HXE
       public ConfigurationInput  Input   { get; set; } = new ConfigurationInput();  /* profile input      */
       public ConfigurationTweaks Tweaks  { get; set; } = new ConfigurationTweaks(); /* profile tweaks     */
       public uint                Shaders { get; set; } = 0;                         /* spv3 shaders       */
+      public uint                Patches { get; set; } = 0;                         /* customEd patches   */ /** Get values from HXE.Patches */
       public string              Path    { get => _path; }
       public const byte          Version = 20;
 
