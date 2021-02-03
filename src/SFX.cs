@@ -71,7 +71,7 @@ namespace HXE
 		}
 
 		/**
-		 * Creates an SFX of the given source, using the current HXE executable, to the given target. 
+		 * Creates an SFX of the given source, using the current HXE executable, to the given target.
 		 */
 		public static void Compile(DirectoryInfo source, DirectoryInfo target)
 		{
@@ -114,7 +114,7 @@ namespace HXE
 
 			Info($"Source HXE EXE: {sourceHxe.FullName}");
 			Info($"Target HXE SFX: {targetHxe.FullName}");
-			
+
 			if (targetHxe.Exists)
 				targetHxe.Delete();
 
@@ -122,62 +122,51 @@ namespace HXE
 			 * We create a copy of this executable for subsequent appending of the DEFLATE & SFX data. We refresh the FileInfo
 			 * object to ensure that we have the real length of the executable on the fs.
 			 */
-			
+
 			sourceHxe.CopyTo(targetHxe.FullName);
 			targetHxe.Refresh();
 
 			Info($"Copied {targetHxe.Length} bytes to: {targetHxe.Length}");
-			
+
 			/**
 			 * For each discovered file in the given source directory, we will:
 			 *
-			 * 1. DEFLATE it on the fs;
-			 * 2. Append the DEFLATE file to the copied HXE executable;
-			 * 3. Create an SFX entry specifying:
+			 * 1. Append a DEFLATE representation of it to the copied HXE executable;
+			 * 2. Create an SFX entry specifying:
 			 *    a) the file name & path on the fs
 			 *    b) the file length on the fs
-			 *    c) offset of the archive's data in HXE SFX
+			 *    c) offset of the DEFLATE data in HXE SFX
 			 */
 
 			foreach (var file in files)
 			{
-				var archive = new FileInfo(file.FullName + ".deflate");
+				/**
+				 * We append the DEFLATE data to the HXE SFX binary. After the procedure is done, we will refresh the FileInfo
+				 * for the SFX to retrieve its new length. This length will be used to determine length of the DEFALTE and thus
+				 * its offset in the HXE SFX binary.
+				 */
+
+				long deflateLength;
 
 				{
-					Info($"Compressing new file: {archive.Name} <= {file.Name}");
-
 					using (var iStream = file.OpenRead())
-					using (var oStream = archive.Create())
+					using (var oStream = System.IO.File.Open(targetHxe.FullName, Append))
 					using (var dStream = new DeflateStream(oStream, Compress))
 					{
 						iStream.CopyTo(dStream);
 					}
 
-					archive.Refresh();
-
-					Info($"Compressed {file.Length} bytes to {archive.Length} bytes.");
-				}
-				
-				/**
-				 * We append the DEFLATE data to the HXE SFX binary. After the procedure is done, we will refresh the FileInfo
-				 * for the SFX to retrieve its new length. This length will be used to determine the offset of the current file
-				 * DEFLATE data.
-				 */
-
-				{
-					Info($"Appending archive to SFX: {targetHxe.Name} <= {archive.Name}");
-
-					using (var iStream = archive.OpenRead())
-					using (var oStream = System.IO.File.Open(targetHxe.FullName, Append))
-					{
-						iStream.CopyTo(oStream);
-					}
-
+					var oldLength = targetHxe.Length;
 					targetHxe.Refresh();
+					var newLength = targetHxe.Length;
+					
+					Info($"HXE SFX increased from {oldLength} to {newLength} bytes.");
+					
+					deflateLength = newLength - oldLength;
 
-					Info($"HXE SFX is now {targetHxe.Length} bytes in length.");
+					Info($"DEFLATE length is thus {deflateLength} bytes.");
 				}
-				
+
 				/**
 				 * We will add an entry for the current file and its DEFLATE representation to teach the HXE SFX how to recreate
 				 * the file down the line.
@@ -192,11 +181,11 @@ namespace HXE
 				 */
 
 				{
-					Info($"Acknowledging new entry: {targetHxe.Name} <= {archive.Name}");
+					Info($"Acknowledging new entry: {targetHxe.Name} <= {file.Name}");
 
 					var name   = file.Name;
 					var length = file.Length;
-					var offset = targetHxe.Length - archive.Length;
+					var offset = targetHxe.Length - deflateLength;
 					var path = file.DirectoryName != null && file.DirectoryName.Equals(source.FullName)
 						? string.Empty
 						: file.DirectoryName?.Substring(source.FullName.Length + 1);
@@ -214,13 +203,12 @@ namespace HXE
 						Offset = offset
 					});
 
-					archive.Delete();
 					targetHxe.Refresh();
 				}
 
 				WriteLine(NewLine + new string('-', 80));
 			}
-			
+
 			/**
 			 * Once we have created & appended the DEFLATE data for each file, and also populated the SFX object, we will
 			 * serialise it to a byte array which in turn gets appended to the HXE SFX binary as well. This makes the SFX
@@ -254,7 +242,7 @@ namespace HXE
 		public static void Extract(DirectoryInfo target)
 		{
 			target.Create();
-			
+
 			/**
 			 * We will assume that the current HXE executable contains SFX data to be extracted.
 			 */
@@ -263,7 +251,7 @@ namespace HXE
 			var sfx = new SFX();
 
 			Info($"Determining SFX structure in {hxe.Name}");
-			
+
 			/**
 			 * We first hydrate the SFX object with information from the HXE SFX binary. The start of the SFX data is inferred
 			 * from the length specified at the EOF. We also need to keep in mind the length of the variable that specifies
@@ -286,7 +274,7 @@ namespace HXE
 					)
 				);
 			}
-			
+
 			/**
 			 * For each entry specified in the SFX object, we seek its DEFLATE data and extract it to the fs at the given path
 			 * and filename. Because .NET doesn't support copying a specified amount of bytes from a stream to another, we are
