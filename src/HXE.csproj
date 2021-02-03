@@ -140,9 +140,9 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\..\halo-ce-patches\patches.crk">
+    <EmbeddedResource Include="..\..\..\halo-ce-patches\patches.crk">
       <Link>HCE\patches.crk</Link>
-    </None>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
