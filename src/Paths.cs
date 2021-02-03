@@ -23,6 +23,7 @@ using static System.Environment;
 using static System.Environment.SpecialFolder;
 using static System.IO.File;
 using static System.IO.Path;
+using static System.Diagnostics.Process;
 
 namespace HXE
 {
@@ -34,6 +35,7 @@ namespace HXE
     public const string Executable = "hxe.exe";
     public const string Manifest   = "manifest.bin";
 
+    public static readonly string StartDirectory= Combine(GetDirectoryName(GetCurrentProcess().MainModule.FileName));
     public static readonly string Directory     = Combine(GetFolderPath(ApplicationData), "HXE");
     public static readonly string Configuration = Combine(Directory,                      "kernel-0x03.bin");
     public static readonly string Exception     = Combine(Directory,                      "exception.log");
