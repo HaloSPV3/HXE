@@ -22,6 +22,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
+using System.Linq;
 using System.Xml.Serialization;
 using static System.Console;
 using static System.Environment;
@@ -108,7 +109,7 @@ namespace HXE
 
 			var sourceHxe = new FileInfo(GetEntryAssembly()?.Location ?? throw new InvalidOperationException());
 			var targetHxe = new FileInfo(Combine(target.FullName, "hxe.sfx.exe"));
-
+			
 			Info($"Source: {source.FullName}");
 			Info($"Target: {target.FullName}");
 
@@ -118,6 +119,9 @@ namespace HXE
 			if (targetHxe.Exists)
 				targetHxe.Delete();
 
+			var sourceSize = files.Sum(x => x.Length);
+			var sfxSize    = 0L;
+			
 			/**
 			 * We create a copy of this executable for subsequent appending of the DEFLATE & SFX data. We refresh the FileInfo
 			 * object to ensure that we have the real length of the executable on the fs.
@@ -138,14 +142,18 @@ namespace HXE
 			 *    c) offset of the DEFLATE data in HXE SFX
 			 */
 
-			foreach (var file in files)
+			for (var i = 0; i < files.Length; i++)
 			{
+				var file = files[i];
+				Info($"Packaging file: {file.Name}");
+
 				/**
 				 * We append the DEFLATE data to the HXE SFX binary. After the procedure is done, we will refresh the FileInfo
 				 * for the SFX to retrieve its new length. This length will be used to determine length of the DEFALTE and thus
 				 * its offset in the HXE SFX binary.
 				 */
 
+				var  length = file.Length;
 				long deflateLength;
 
 				{
@@ -156,15 +164,22 @@ namespace HXE
 						iStream.CopyTo(dStream);
 					}
 
+					WriteLine(NewLine + new string('-', 80));
+
 					var oldLength = targetHxe.Length;
 					targetHxe.Refresh();
 					var newLength = targetHxe.Length;
-					
+
 					Info($"HXE SFX increased from {oldLength} to {newLength} bytes.");
-					
+
 					deflateLength = newLength - oldLength;
 
-					Info($"DEFLATE length is thus {deflateLength} bytes.");
+					sfxSize += deflateLength;
+
+					if (deflateLength < length)
+						Info($"DEFLATE length is thus {(decimal)deflateLength / length * 100:##.##}% of {length} bytes.");
+					else
+						Warn($"DEFLATE length is higher by {deflateLength - length} bytes than the raw file length.");
 				}
 
 				/**
@@ -181,19 +196,15 @@ namespace HXE
 				 */
 
 				{
-					Info($"Acknowledging new entry: {targetHxe.Name} <= {file.Name}");
 
 					var name   = file.Name;
-					var length = file.Length;
 					var offset = targetHxe.Length - deflateLength;
 					var path = file.DirectoryName != null && file.DirectoryName.Equals(source.FullName)
 						? string.Empty
 						: file.DirectoryName?.Substring(source.FullName.Length + 1);
 
-					Debug($"NAME   - {name}");
-					Debug($"LENGTH - {length}");
-					Debug($"OFFSET - {offset}");
-					Debug($"PATH   - {path}");
+					Info($"Acknowledging new entry: {targetHxe.Name} <= {path}\\{name}");
+					Info($"DEFLATE starts at offset 0x{offset:x8} in the HXE SFX binary.");
 
 					sfx.Entries.Add(new Entry
 					{
@@ -207,6 +218,9 @@ namespace HXE
 				}
 
 				WriteLine(NewLine + new string('-', 80));
+				Info($"Finished packaging file: {file.Name}");
+				Info($"{files.Length - (i + 1)} files are currently remaining.");
+				WriteLine(NewLine + new string('=', 80));
 			}
 
 			/**
@@ -224,8 +238,7 @@ namespace HXE
 				var sfxData   = sfx.Serialise();
 				var sfxOffset = targetHxe.Length;
 
-				Info($"Appending {sfxData.Length} bytes of SFX information.");
-				Debug($"OFFSET: {sfxOffset}");
+				Info($"Appending SFX length ({sfxData.Length}) at offset 0x{sfxOffset:x8}.");
 
 				using (var hxeStream = new FileStream(targetHxe.FullName, Append))
 				using (var binWriter = new BinaryWriter(hxeStream))
@@ -233,6 +246,17 @@ namespace HXE
 					binWriter.Write(sfxData);
 					binWriter.Write(sfxOffset);
 				}
+			}
+
+			{
+				WriteLine(NewLine + new string('*', 80));
+				Info($"Finished packaging {targetHxe.Name} with {files.Length} files.");
+
+				var percentage = (double)sfxSize /sourceSize * 100;
+
+				Info($"Source directory size: {sourceSize} bytes");
+				Info($"SFX DEFLATE data size: {sfxSize} bytes");
+				Info($"Data has been compressed down to {percentage:##.##}%");
 			}
 		}
 
@@ -281,13 +305,15 @@ namespace HXE
 			 * implementing our own method for copying the data using buffers.
 			 */
 
-			foreach (var entry in sfx.Entries)
+			for (var i = 0; i < sfx.Entries.Count; i++)
 			{
+				var entry    = sfx.Entries[i];
 				var original = new FileInfo(Combine(target.FullName, entry.Path, entry.Name));
 
 				original.Directory?.Create();
 
-				Info($"Extracting DEFLATE to: {original.FullName}");
+				Info($"Found {entry.Length} bytes at 0x{entry.Offset:x8}: {entry.Name}");
+				Info($"Extracting its DEFLATE data to: {original.FullName}");
 
 				using (var iStream = hxe.OpenRead())
 				using (var oStream = original.Create())
@@ -303,6 +329,12 @@ namespace HXE
 						bytes -= read;
 					}
 				}
+
+				WriteLine(NewLine + new string('-', 80));
+				Info($"Finished extracting file: {entry.Name}");
+				Info($"{sfx.Entries.Count - (i + 1)} files are currently remaining.");
+
+				WriteLine(NewLine + new string('=', 80));
 			}
 		}
 
