@@ -69,6 +69,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Campaign.cs" />
+    <Compile Include="Patcher.cs" />
     <Compile Include="Difficulty.cs" />
     <Compile Include="Mission.cs" />
     <Compile Include="Resume.cs" />
@@ -137,6 +138,11 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="..\..\..\halo-ce-patches\patches.crk">
+      <Link>HCE\patches.crk</Link>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
