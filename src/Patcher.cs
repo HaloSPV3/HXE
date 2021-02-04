@@ -22,6 +22,7 @@ namespace HXE
       public string Executable { get; set; } = string.Empty;   /* haloce.exe               */
       public List<DataSet> DataSet = new List<DataSet>();
     }
+
     public class DataSet // 00000136: 0F 2F
     {
       public uint Offset   { get; set; } = 0x0;
@@ -55,6 +56,16 @@ namespace HXE
     {
       var LAA = true;
       var DRM = (cfg & KPatches.DISABLE_DRM_AND_KEY_CHECKS) != 0;
+      var patchlist = new List<DataSet>();
+      
+      patchlist.Add(new DataSet() { Offset = 0x136, Original = 0x0F, Patch = 0x2F }); /* LAA */
+      
+      if (DRM)
+      {
+        // just the most important ones for now
+        patchlist.Add(new DataSet() { Offset = 0x144c2B, Original = 0x38, Patch = 0xEB });
+        patchlist.Add(new DataSet() { Offset = 0x144c2C, Original = 0x18, Patch = 0x13 });
+      }
 
       /* Temporary LAA, DRM */
       {
@@ -63,7 +74,36 @@ namespace HXE
         using (var bw = new BinaryWriter(ms))
         using (var br = new BinaryReader(ms))
         {
+          byte value;
+          foreach (var patch in patchlist)
+          {
+            ms.Position = 0;
+            fs.Position = 0;
+            fs.CopyTo(ms);
 
+            ms.Position = patch.Offset;
+            value = patch.Patch;
+
+            if (br.ReadByte() != value)
+            {
+              ms.Position -= 1; /* restore position */
+              bw.Write(value);  /* patch            */
+
+              fs.Position = 0;
+              ms.Position = 0;
+              ms.CopyTo(fs);
+
+              Info($"Applied LAA patch to the HCE executable");
+              if (DRM)
+                Info($"Applied Partial DRM patch to the HCE executable");
+            }
+            else
+            {
+              Info($"HCE executable already patched with LAA");
+              if (DRM)
+                Info($"HCE executable already patched with NoDRM");
+            }
+          }
         }
       }
 
@@ -84,7 +124,7 @@ namespace HXE
           foreach (var DataSet in PatchGroup.DataSet) // I hate this
           {
 
-            byte value  = /* bool from configuration.Patches bitwise int */ ? patch.crack : patch.original;
+            byte value  = false ? DataSet.Patch : DataSet.Original;
             long offset = DataSet.Offset;
             ms.Position = 0;
             fs.Position = 0;
@@ -94,7 +134,10 @@ namespace HXE
 
             switch(PatchGroup.Name)
             {
-              case "": 
+              case "":
+                break;
+              default:
+                break;
             }
 
             if (br.ReadByte() != value)
@@ -106,12 +149,12 @@ namespace HXE
               ms.Position = 0;
               ms.CopyTo(fs);
 
-              Info($"Applied {patchname} patch to the HCE executable");
+              Info($"Applied \"{PatchGroup.Name}\" patch to the HCE executable");
             }
             else
             {
-              Info($"HCE executable already patched with {patch.Name}");
-            } 
+              Info($"HCE executable already patched with \"{PatchGroup.Name}\"");
+            }
           }
         }
       }
