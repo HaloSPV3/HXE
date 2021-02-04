@@ -25,9 +25,9 @@ namespace HXE
 
     public class DataSet // 00000136: 0F 2F
     {
-      public uint Offset   { get; set; } = 0x0;
-      public byte Original { get; set; } = 0x0;
-      public byte Patch    { get; set; } = 0x0;
+      public uint Offset   { get; set; }
+      public byte Original { get; set; }
+      public byte Patch    { get; set; }
     }
 
     public static List<PatchGroup> Patches = Reader(); // See Write() for tmp overrides
@@ -93,21 +93,23 @@ namespace HXE
               ms.Position = 0;
               ms.CopyTo(fs);
 
-              Info($"Applied LAA patch to the HCE executable");
+              if (patch.Offset == 0x136)
+                Info($"Applied LAA patch to the HCE executable");
               if (DRM)
                 Info($"Applied Partial DRM patch to the HCE executable");
             }
             else
             {
-              Info($"HCE executable already patched with LAA");
-              if (DRM)
+              if (patch.Offset == 0x136)
+                Info($"HCE executable already patched with LAA");
+              if (DRM && patch.Offset != 0x136)
                 Info($"HCE executable already patched with NoDRM");
             }
           }
         }
       }
 
-      /* Flexible patcher */
+      /* Flexible patcher */ /** This does not yet function, but it does't throw exceptions */
       using (var fs = new FileStream(exePath, FileMode.Open, FileAccess.ReadWrite))
       using (var ms = new MemoryStream(0x24B000))
       using (var bw = new BinaryWriter(ms))
