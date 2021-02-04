@@ -641,40 +641,10 @@ namespace HXE
 
         void Patch()
         {
-          const byte value  = 0x2F;  /* LAA flag   */
-          const long offset = 0x136; /* LAA offset */
-
           try
           {
-            using (var fs = new FileStream(executable.Path, FileMode.Open, FileAccess.ReadWrite))
-            using (var ms = new MemoryStream(0x24B000))
-            using (var bw = new BinaryWriter(ms))
-            using (var br = new BinaryReader(ms))
-            {
-              ms.Position = 0;
-              fs.Position = 0;
-              fs.CopyTo(ms);
-
-              ms.Position = offset;
-
-              if (br.ReadByte() != value)
-              {
-                ms.Position -= 1; /* restore position */
-                bw.Write(value);  /* patch LAA flag   */
-
-                fs.Position = 0;
-                ms.Position = 0;
-                ms.CopyTo(fs);
-
-                Info("Applied LAA patch to the HCE executable");
-              }
-              else
-              {
-                Info("HCE executable already patched with LAA");
-              }
-            }
-
-            Core("EXEC.PATCH: Conditional LAA patching has been handled.");
+            new Patcher().Write(configuration.Tweaks.Patches, executable.Path);
+            Core("EXEC.PATCH: Conditional patching has been handled.");
           }
           catch (Exception e)
           {
@@ -820,7 +790,6 @@ namespace HXE
       public ConfigurationTweaks Tweaks  { get; set; } = new ConfigurationTweaks(); /* profile tweaks     */
       public uint                Shaders { get; set; } = 0;                         /* spv3 shaders       */
       public string              Path    { get => _path; }
-      public const byte          Version = 20;
 
       /// <summary>
       ///   Persists object state to the filesystem.
@@ -842,12 +811,6 @@ namespace HXE
           {
             bw.Write(new byte[Length]);
             ms.Position = 0;
-          }
-
-          /* version */
-          {
-            ms.Position = (byte) Offset.Version;
-            bw.Write(Version);
           }
 
           /* signature */
@@ -905,6 +868,7 @@ namespace HXE
             bw.Write(Tweaks.AutoAim);
             bw.Write(Tweaks.Acceleration);
             bw.Write(Tweaks.Unload);
+            bw.Write(Tweaks.Patches);
           }
 
           /* shaders */
@@ -939,19 +903,6 @@ namespace HXE
           {
             fs.CopyTo(ms);
             ms.Position = 0;
-          }
-
-          /* version */
-          {
-            ms.Position = (byte) Offset.Version;
-            if (br.ReadByte() != Version)
-            {
-              fs.Close();
-              ms.Close();
-              br.Close();
-              Save();
-              return this;
-            }
           }
 
           /* mode */
@@ -1003,6 +954,7 @@ namespace HXE
             Tweaks.AutoAim      = br.ReadBoolean();
             Tweaks.Acceleration = br.ReadBoolean();
             Tweaks.Unload       = br.ReadBoolean();
+            Tweaks.Patches      = br.ReadUInt32();
           }
 
           /* shaders */
@@ -1067,6 +1019,7 @@ namespace HXE
         public bool   AutoAim      { get; set; } = true; /* controller auto-aim   */
         public bool   Acceleration { get; set; }         /* mouse acceleration    */
         public bool   Unload       { get; set; }         /* unload SPV3 shaders   */
+        public uint   Patches      { get; set; } = 0;    /* haloce exe patches    */ /** See HXE.Patches.KPatches */
       }
     }
   }
