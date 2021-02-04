@@ -134,10 +134,10 @@ namespace HXE
       }
 
       if (!string.IsNullOrWhiteSpace(install))
-        Run(() => { SFX.Extract(new DirectoryInfo(install)); });
+        Run(() => { Installer.Install(CurrentDirectory, Path.GetFullPath(install)); });
 
       if (!string.IsNullOrWhiteSpace(compile))
-        Run(() => { SFX.Compile(new DirectoryInfo(CurrentDirectory), new DirectoryInfo(compile)); });
+        Run(() => { Compiler.Compile(CurrentDirectory, Path.GetFullPath(compile)); });
 
       if (!string.IsNullOrWhiteSpace(update))
         Run(() =>
