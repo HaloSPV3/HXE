@@ -141,11 +141,12 @@ namespace HXE
 			 *    b) the file length on the fs
 			 *    c) offset of the DEFLATE data in HXE SFX
 			 */
-
-			for (var i = 0; i < files.Length; i++)
+			using (var oStream = System.IO.File.Open(targetHxe.FullName, Append))
 			{
-				var file = files[i];
-				Info($"Packaging file: {file.Name}");
+				for (var i = 0; i < files.Length; i++)
+				{
+					var file = files[i];
+					Info($"Packaging file: {file.Name}");
 
 				/**
 				 * We append the DEFLATE data to the HXE SFX binary. After the procedure is done, we will refresh the FileInfo
@@ -156,13 +157,14 @@ namespace HXE
 				var  length = file.Length;
 				long deflateLength;
 
-				{
-					using (var iStream = file.OpenRead())
-					using (var oStream = System.IO.File.Open(targetHxe.FullName, Append))
-					using (var dStream = new DeflateStream(oStream, Compress))
 					{
-						iStream.CopyTo(dStream);
-					}
+						using (var iStream = file.OpenRead())
+						using (var dStream = new DeflateStream(oStream, Compress, true))
+						{
+							iStream.CopyTo(dStream);
+							dStream.Close();
+							oStream.Flush(true);
+						}
 
 					WriteLine(NewLine + new string('-', 80));
 
@@ -240,11 +242,14 @@ namespace HXE
 
 				Info($"Appending SFX length ({sfxData.Length}) at offset 0x{sfxOffset:x8}.");
 
-				using (var hxeStream = new FileStream(targetHxe.FullName, Append))
-				using (var binWriter = new BinaryWriter(hxeStream))
-				{
-					binWriter.Write(sfxData);
-					binWriter.Write(sfxOffset);
+					using (var binWriter = new BinaryWriter(oStream))
+					{
+						binWriter.Write(sfxData);
+						binWriter.Write(sfxOffset);
+
+						oStream.Flush(true);
+						binWriter.Close();
+					}
 				}
 			}
 
