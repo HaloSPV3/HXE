@@ -47,31 +47,6 @@ namespace HXE
 		public List<Entry> Entries { get; set; } = new List<Entry>();
 
 		/**
-		 * Retrieves a byte array representing the object state which can hydrate an SFX instance using Deserialise().
-		 */
-		public byte[] Serialise()
-		{
-			var xml = new XmlSerializer(typeof(SFX));
-			using (var sw = new StringWriter())
-			{
-				xml.Serialize(sw, this);
-				return Unicode.GetBytes(sw.ToString());
-			}
-		}
-
-		/**
-		 * Hydrates the SFX instance properties with inbound data previously created by Serialise().
-		 */
-		public void Deserialise(byte[] data)
-		{
-			using (var sr = new StringReader(Unicode.GetString(data)))
-			{
-				var sfx = (SFX) new XmlSerializer(typeof(SFX)).Deserialize(sr);
-				Entries = sfx.Entries;
-			}
-		}
-
-		/**
 		 * Creates an SFX of the given source, using the current HXE executable, to the given target.
 		 */
 		public static void Compile(DirectoryInfo source, DirectoryInfo target)
@@ -109,7 +84,7 @@ namespace HXE
 
 			var sourceHxe = new FileInfo(GetEntryAssembly()?.Location ?? throw new InvalidOperationException());
 			var targetHxe = new FileInfo(Combine(target.FullName, "hxe.sfx.exe"));
-			
+
 			Info($"Source: {source.FullName}");
 			Info($"Target: {target.FullName}");
 
@@ -121,7 +96,7 @@ namespace HXE
 
 			var sourceSize = files.Sum(x => x.Length);
 			var sfxSize    = 0L;
-			
+
 			/**
 			 * We create a copy of this executable for subsequent appending of the DEFLATE & SFX data. We refresh the FileInfo
 			 * object to ensure that we have the real length of the executable on the fs.
@@ -148,14 +123,14 @@ namespace HXE
 					var file = files[i];
 					Info($"Packaging file: {file.Name}");
 
-				/**
-				 * We append the DEFLATE data to the HXE SFX binary. After the procedure is done, we will refresh the FileInfo
-				 * for the SFX to retrieve its new length. This length will be used to determine length of the DEFALTE and thus
-				 * its offset in the HXE SFX binary.
-				 */
+					/**
+					 * We append the DEFLATE data to the HXE SFX binary. After the procedure is done, we will refresh the FileInfo
+					 * for the SFX to retrieve its new length. This length will be used to determine length of the DEFALTE and thus
+					 * its offset in the HXE SFX binary.
+					 */
 
-				var  length = file.Length;
-				long deflateLength;
+					var  length = file.Length;
+					long deflateLength;
 
 					{
 						using (var iStream = file.OpenRead())
@@ -166,81 +141,80 @@ namespace HXE
 							oStream.Flush(true);
 						}
 
+						WriteLine(NewLine + new string('-', 80));
+
+						var oldLength = targetHxe.Length;
+						targetHxe.Refresh();
+						var newLength = targetHxe.Length;
+
+						Info($"HXE SFX increased from {oldLength} to {newLength} bytes.");
+
+						deflateLength = newLength - oldLength;
+
+						sfxSize += deflateLength;
+
+						if (deflateLength < length)
+							Info($"DEFLATE length is thus {(decimal) deflateLength / length * 100:##.##}% of {length} bytes.");
+						else
+							Warn($"DEFLATE length is higher by {deflateLength - length} bytes than the raw file length.");
+					}
+
+					/**
+					 * We will add an entry for the current file and its DEFLATE representation to teach the HXE SFX how to recreate
+					 * the file down the line.
+					 *
+					 * The entries are designed to recreate the structure of the source directory, in a given arbitrary target
+					 * directory. As such, we will avoid absoltue paths for the files and instead infer paths relative to the source
+					 * directory.
+					 *
+					 * Each DEFLATE entry will be appended at the end of the HXE SFX binary. To determine where each file's DEFLATE
+					 * representation starts, we determine the offset by extracting the DEFLATE length, from the HXE SFX binary
+					 * length.
+					 */
+
+					{
+						var name   = file.Name;
+						var offset = targetHxe.Length - deflateLength;
+						var path = file.DirectoryName != null && file.DirectoryName.Equals(source.FullName)
+							? string.Empty
+							: file.DirectoryName?.Substring(source.FullName.Length + 1);
+
+						Info($"Acknowledging new entry: {targetHxe.Name} <= {path}\\{name}");
+						Info($"DEFLATE starts at offset 0x{offset:x8} in the HXE SFX binary.");
+
+						sfx.Entries.Add(new Entry
+						{
+							Name   = name,
+							Path   = path,
+							Length = length,
+							Offset = offset
+						});
+
+						targetHxe.Refresh();
+					}
+
 					WriteLine(NewLine + new string('-', 80));
-
-					var oldLength = targetHxe.Length;
-					targetHxe.Refresh();
-					var newLength = targetHxe.Length;
-
-					Info($"HXE SFX increased from {oldLength} to {newLength} bytes.");
-
-					deflateLength = newLength - oldLength;
-
-					sfxSize += deflateLength;
-
-					if (deflateLength < length)
-						Info($"DEFLATE length is thus {(decimal)deflateLength / length * 100:##.##}% of {length} bytes.");
-					else
-						Warn($"DEFLATE length is higher by {deflateLength - length} bytes than the raw file length.");
+					Info($"Finished packaging file: {file.Name}");
+					Info($"{files.Length - (i + 1)} files are currently remaining.");
+					WriteLine(NewLine + new string('=', 80));
 				}
 
 				/**
-				 * We will add an entry for the current file and its DEFLATE representation to teach the HXE SFX how to recreate
-				 * the file down the line.
+				 * Once we have created & appended the DEFLATE data for each file, and also populated the SFX object, we will
+				 * serialise it to a byte array which in turn gets appended to the HXE SFX binary as well. This makes the SFX
+				 * completely self-contained and portable.
 				 *
-				 * The entries are designed to recreate the structure of the source directory, in a given arbitrary target
-				 * directory. As such, we will avoid absoltue paths for the files and instead infer paths relative to the source
-				 * directory.
-				 *
-				 * Each DEFLATE entry will be appended at the end of the HXE SFX binary. To determine where each file's DEFLATE
-				 * representation starts, we determine the offset by extracting the DEFLATE length, from the HXE SFX binary
-				 * length.
+				 * Because an SFX object's array representation is a variable length, we will append the said length to the binary
+				 * as well. This will allow HXE to determine both the start and end of the SFX data when deserialising it, by
+				 * seeking backwards from the EOF. By seeking as many bytes backwards as specified in the length value, the start
+				 * of the SFX data can be determined.
 				 */
 
 				{
+					var sfxData   = sfx.Serialise();
+					var sfxOffset = targetHxe.Length;
 
-					var name   = file.Name;
-					var offset = targetHxe.Length - deflateLength;
-					var path = file.DirectoryName != null && file.DirectoryName.Equals(source.FullName)
-						? string.Empty
-						: file.DirectoryName?.Substring(source.FullName.Length + 1);
-
-					Info($"Acknowledging new entry: {targetHxe.Name} <= {path}\\{name}");
-					Info($"DEFLATE starts at offset 0x{offset:x8} in the HXE SFX binary.");
-
-					sfx.Entries.Add(new Entry
-					{
-						Name   = name,
-						Path   = path,
-						Length = length,
-						Offset = offset
-					});
-
-					targetHxe.Refresh();
-				}
-
-				WriteLine(NewLine + new string('-', 80));
-				Info($"Finished packaging file: {file.Name}");
-				Info($"{files.Length - (i + 1)} files are currently remaining.");
-				WriteLine(NewLine + new string('=', 80));
-			}
-
-			/**
-			 * Once we have created & appended the DEFLATE data for each file, and also populated the SFX object, we will
-			 * serialise it to a byte array which in turn gets appended to the HXE SFX binary as well. This makes the SFX
-			 * completely self-contained and portable.
-			 *
-			 * Because an SFX object's array representation is a variable length, we will append the said length to the binary
-			 * as well. This will allow HXE to determine both the start and end of the SFX data when deserialising it, by
-			 * seeking backwards from the EOF. By seeking as many bytes backwards as specified in the length value, the start
-			 * of the SFX data can be determined.
-			 */
-
-			{
-				var sfxData   = sfx.Serialise();
-				var sfxOffset = targetHxe.Length;
-
-				Info($"Appending SFX length ({sfxData.Length}) at offset 0x{sfxOffset:x8}.");
+					Info($"Appending SFX length ({sfxData.Length}) at offset 0x{sfxOffset:x8}.");
 
 					using (var binWriter = new BinaryWriter(oStream))
 					{
@@ -257,7 +231,7 @@ namespace HXE
 				WriteLine(NewLine + new string('*', 80));
 				Info($"Finished packaging {targetHxe.Name} with {files.Length} files.");
 
-				var percentage = (double)sfxSize /sourceSize * 100;
+				var percentage = (double) sfxSize / sourceSize * 100;
 
 				Info($"Source directory size: {sourceSize} bytes");
 				Info($"SFX DEFLATE data size: {sfxSize} bytes");
@@ -340,6 +314,31 @@ namespace HXE
 				Info($"{sfx.Entries.Count - (i + 1)} files are currently remaining.");
 
 				WriteLine(NewLine + new string('=', 80));
+			}
+		}
+
+		/**
+		 * Retrieves a byte array representing the object state which can hydrate an SFX instance using Deserialise().
+		 */
+		public byte[] Serialise()
+		{
+			var xml = new XmlSerializer(typeof(SFX));
+			using (var sw = new StringWriter())
+			{
+				xml.Serialize(sw, this);
+				return Unicode.GetBytes(sw.ToString());
+			}
+		}
+
+		/**
+		 * Hydrates the SFX instance properties with inbound data previously created by Serialise().
+		 */
+		public void Deserialise(byte[] data)
+		{
+			using (var sr = new StringReader(Unicode.GetString(data)))
+			{
+				var sfx = (SFX) new XmlSerializer(typeof(SFX)).Deserialize(sr);
+				Entries = sfx.Entries;
 			}
 		}
 
