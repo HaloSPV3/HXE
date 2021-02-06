@@ -49,7 +49,7 @@ namespace HXE
 		/**
 		 * Creates an SFX of the given source, using the current HXE executable, to the given target.
 		 */
-		public static void Compile(DirectoryInfo source, DirectoryInfo target)
+		public static void Compile(DirectoryInfo source, DirectoryInfo target, string filter = "*")
 		{
 			target.Create();
 
@@ -80,7 +80,7 @@ namespace HXE
 			 */
 
 			var sfx   = new SFX();
-			var files = source.GetFiles("*", SearchOption.AllDirectories);
+			var files = source.GetFiles(filter, SearchOption.AllDirectories);
 
 			var sourceHxe = new FileInfo(GetEntryAssembly()?.Location ?? throw new InvalidOperationException());
 			var targetHxe = new FileInfo(Combine(target.FullName, "hxe.sfx.exe"));
