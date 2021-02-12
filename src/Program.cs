@@ -89,6 +89,7 @@ namespace HXE
       var path       = string.Empty; /* Loads HCE with custom profile path  */
       var exec       = string.Empty; /* Loads HCE with custom init file     */
       var vidmode    = string.Empty; /* Loads HCE with custom res. and Hz   */
+      var refresh    = string.Empty; /* Loads HCE with custom refresh rate  */
 
       var options = new OptionSet()
         .Add("help"      , "Displays commands list"                                , s => help       = s != null)  /* hxe command   */
@@ -106,7 +107,8 @@ namespace HXE
         .Add("adapter="  , "Loads HCE on monitor X"                                , s => adapter    = s)          /* hce parameter */
         .Add("path="     , "Loads HCE with custom profile path"                    , s => path       = s)          /* hce parameter */
         .Add("exec="     , "Loads HCE with custom init file"                       , s => exec       = s)          /* hce parameter */
-        .Add("vidmode="  , "Loads HCE with custom res. and Hz"                     , s => vidmode    = s);         /* hce parameter */
+        .Add("vidmode="  , "Loads HCE with custom res. and Hz"                     , s => vidmode    = s)          /* hce parameter */
+        .Add("refresh="  , "Loads HCE with custom refresh rate"                    , s => refresh    = s);         /* hce parameter */
 
       var input = options.Parse(args);
 
@@ -220,6 +222,9 @@ namespace HXE
         if (a.Length > 2) /* optional refresh rate */
           hce.Video.Refresh = ushort.Parse(a[2]);
       }
+
+      if (!string.IsNullOrWhiteSpace(refresh))
+        hce.Video.Refresh = ushort.Parse(refresh);
 
       /**
        * Implicitly invoke the HXE kernel with the HCE loading procedure.
