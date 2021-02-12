@@ -390,10 +390,13 @@ namespace HXE
         {
           if (!configuration.Video.ResolutionEnabled)
           {
-            executable.Video.Width  = (ushort) PrimaryScreen.Bounds.Width;
-            executable.Video.Height = (ushort) PrimaryScreen.Bounds.Height;
+            if (executable.Video.Width == 0 || executable.Video.Height == 0)
+            {
+              executable.Video.Width  = (ushort) PrimaryScreen.Bounds.Width;
+              executable.Video.Height = (ushort) PrimaryScreen.Bounds.Height;
 
-            Core("BLAM.VIDEO.RESOLUTION: No resolution provided. Applied native resolution to executable.");
+              Core("BLAM.VIDEO.RESOLUTION: No resolution provided. Applied native resolution to executable.");
+            }
 
             if (executable.Video.Width  > (ushort) PrimaryScreen.Bounds.Width ||
                 executable.Video.Height > (ushort) PrimaryScreen.Bounds.Height)
