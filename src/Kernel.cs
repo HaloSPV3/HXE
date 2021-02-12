@@ -213,7 +213,7 @@ namespace HXE
                     if (profile.Exists())
                       validProfiles.Add(profile); // todo: implement better validation
                   }
-                  lastprof.Profile = validProfiles[0].Name;
+                  lastprof.Profile = validProfiles[0].Details.Name;
                   lastprof.Save();
                 }
                 else
@@ -390,6 +390,7 @@ namespace HXE
         {
           if (!configuration.Video.ResolutionEnabled)
           {
+            // infer from resoluition if Native Resoluton preferred.
             if (executable.Video.Width == 0 || executable.Video.Height == 0)
             {
               executable.Video.Width  = (ushort) PrimaryScreen.Bounds.Width;
