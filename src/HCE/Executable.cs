@@ -134,6 +134,9 @@ namespace HXE.HCE
             ApplyArgument(args, $"-vidmode {Video.Width},{Video.Height} ");
         }
 
+        if (Video.Refresh > 0)
+          ApplyArgument(args, $"-refresh {Video.Refresh} ");
+        
         if (Video.Adapter > 1)
           ApplyArgument(args, $"-adapter {Video.Adapter} ");
 
