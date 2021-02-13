@@ -114,31 +114,24 @@ namespace HXE
     /// <param name="exePath">Path to Halo executable</param>
     public void Write(uint cfg, string exePath)
     {
-      bool LAA               = (cfg & EXEP.ENABLE_LARGE_ADDRESS_AWARE) != 0;
+      /** Configurable */
       bool DRM               = (cfg & EXEP.DISABLE_DRM_AND_KEY_CHECKS) != 0;
-      bool FixLAN            = (cfg & EXEP.BIND_SERVER_TO_0000)        != 0;
-      bool NoSafe            = (cfg & EXEP.DISABLE_SAFEMODE_PROMPT)    != 0;
       bool NoGamma           = (cfg & EXEP.DISABLE_SYSTEM_GAMMA)       != 0;
-      bool Fix32Tex          = (cfg & EXEP.FIX_32BIT_TEXTURES)         != 0;
-      bool NoEULA            = (cfg & EXEP.DISABLE_EULA)               != 0;
-      bool NoRegistryExit    = (cfg & EXEP.DISABLE_REG_EXIT_STATE)     != 0;
       bool NoAutoCenter      = (cfg & EXEP.DISABLE_VEHICLE_AUTOCENTER) != 0;
       bool NoMouseAccel      = (cfg & EXEP.DISABLE_MOUSE_ACCELERATION) != 0;
-      bool BlockUpdates      = (cfg & EXEP.BLOCK_UPDATE_CHECKS)        != 0;
       bool BlockCamShake     = (cfg & EXEP.BLOCK_CAMERA_SHAKE)         != 0;
       bool BlockDescopeOnDMG = (cfg & EXEP.PREVENT_DESCOPING_ON_DMG)   != 0;
       var FilteredPatches    = new List<PatchGroup>();
 
       /** Overrides */
-      {
-        LAA            = true;
-        FixLAN         = true;
-        Fix32Tex       = true;
-        NoSafe         = true;
-        NoEULA         = true;
-        NoRegistryExit = true;
-        BlockUpdates   = true;
-      }
+      bool LAA            = true; // (cfg & EXEP.ENABLE_LARGE_ADDRESS_AWARE) != 0;
+      bool FixLAN         = true; // (cfg & EXEP.BIND_SERVER_TO_0000)        != 0;
+      bool Fix32Tex       = true; // (cfg & EXEP.DISABLE_SAFEMODE_PROMPT)    != 0;
+      bool NoSafe         = true; // (cfg & EXEP.FIX_32BIT_TEXTURES)         != 0;
+      bool NoEULA         = true; // (cfg & EXEP.DISABLE_EULA)               != 0;
+      bool NoRegistryExit = true; // (cfg & EXEP.DISABLE_REG_EXIT_STATE)     != 0;
+      bool BlockUpdates   = true; // (cfg & EXEP.BLOCK_UPDATE_CHECKS)        != 0;
+      
       
       /** Filter PatchGroups for those requested 
        * NOTE: Update String matches as needed.
