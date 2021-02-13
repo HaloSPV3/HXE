@@ -213,7 +213,7 @@ namespace HXE
                     if (profile.Exists())
                       validProfiles.Add(profile); // todo: implement better validation
                   }
-                  lastprof.Profile = validProfiles[0].Name;
+                  lastprof.Profile = validProfiles[0].Details.Name;
                   lastprof.Save();
                 }
                 else
@@ -390,13 +390,16 @@ namespace HXE
         {
           if (!configuration.Video.ResolutionEnabled)
           {
-            executable.Video.Width  = (ushort) PrimaryScreen.Bounds.Width;
-            executable.Video.Height = (ushort) PrimaryScreen.Bounds.Height;
+            // infer from resolution if Native Resoluton preferred.
+            if (executable.Video.Width == 0 || executable.Video.Height == 0)
+            {
+              executable.Video.Width  = (ushort) PrimaryScreen.Bounds.Width;
+              executable.Video.Height = (ushort) PrimaryScreen.Bounds.Height;
 
-            Core("BLAM.VIDEO.RESOLUTION: No resolution provided. Applied native resolution to executable.");
-
-            if (executable.Video.Width  > (ushort) PrimaryScreen.Bounds.Width ||
-                executable.Video.Height > (ushort) PrimaryScreen.Bounds.Height)
+              Core("BLAM.VIDEO.RESOLUTION: No resolution provided. Applied native resolution to executable.");
+            }
+            else if (executable.Video.Width  > (ushort) PrimaryScreen.Bounds.Width ||
+                     executable.Video.Height > (ushort) PrimaryScreen.Bounds.Height)
             {
               executable.Video.Width  = (ushort) PrimaryScreen.Bounds.Width;
               executable.Video.Height = (ushort) PrimaryScreen.Bounds.Height;
