@@ -24,7 +24,7 @@ namespace HXE
 
     public class DataSet // 00000136: 0F 2F
     {
-      public uint Offset   { get; set; }
+      public long Offset   { get; set; }
       public byte Original { get; set; }
       public byte Patch    { get; set; }
     }
@@ -90,9 +90,9 @@ namespace HXE
               List<string> values = file.
                                     ElementAt(index).Split(byteSep, StringSplitOptions.RemoveEmptyEntries).
                                     ToList();
-              patchGroup.DataSets.Add(new DataSet { Offset   = ByteArrayToUInt(StringToByteArray(values[0])),
-                                                    Original = StringToByteArray(values[1])[0],
-                                                    Patch    = StringToByteArray(values[2])[0]});
+              patchGroup.DataSets.Add(new DataSet { Offset   = int.Parse(values[0], System.Globalization.NumberStyles.HexNumber),
+                                                    Original = byte.Parse(values[1], System.Globalization.NumberStyles.HexNumber),
+                                                    Patch    = byte.Parse(values[2], System.Globalization.NumberStyles.HexNumber)});
               index++;
             }
           }
