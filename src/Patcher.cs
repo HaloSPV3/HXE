@@ -114,6 +114,8 @@ namespace HXE
     /// <param name="exePath">Path to Halo executable</param>
     public void Write(uint cfg, string exePath)
     {
+      var FilteredPatches    = new List<PatchGroup>();
+
       /** Configurable */
       bool DRM               = (cfg & EXEP.DISABLE_DRM_AND_KEY_CHECKS) != 0;
       bool NoGamma           = (cfg & EXEP.DISABLE_SYSTEM_GAMMA)       != 0;
@@ -121,7 +123,6 @@ namespace HXE
       bool NoMouseAccel      = (cfg & EXEP.DISABLE_MOUSE_ACCELERATION) != 0;
       bool BlockCamShake     = (cfg & EXEP.BLOCK_CAMERA_SHAKE)         != 0;
       bool BlockDescopeOnDMG = (cfg & EXEP.PREVENT_DESCOPING_ON_DMG)   != 0;
-      var FilteredPatches    = new List<PatchGroup>();
 
       /** Overrides */
       bool LAA            = true; // (cfg & EXEP.ENABLE_LARGE_ADDRESS_AWARE) != 0;
@@ -131,136 +132,136 @@ namespace HXE
       bool NoEULA         = true; // (cfg & EXEP.DISABLE_EULA)               != 0;
       bool NoRegistryExit = true; // (cfg & EXEP.DISABLE_REG_EXIT_STATE)     != 0;
       bool BlockUpdates   = true; // (cfg & EXEP.BLOCK_UPDATE_CHECKS)        != 0;
-      
-      
+
+
       /** Filter PatchGroups for those requested 
        * NOTE: Update String matches as needed.
        */
+      foreach (var pg in Patches)
       {
-        var filter = new List<PatchGroup>();
-        
-        foreach (var pg in Patches)
+        if (LAA && pg.Executable == "haloce.exe" && pg.Name.Contains("large address aware"))
         {
-          if (LAA               && pg.Executable == "haloce.exe" && pg.Name.Contains("large address aware"))
-          {
-            pg.Toggle = true;
-            filter.Add(pg);
-            continue;
-          }
-          if (DRM               && pg.Executable == "haloce.exe" && pg.Name.Contains("DRM"))
-          {
-            pg.Toggle = true;
-            filter.Add(pg);
-            continue;
-          }
-          if (FixLAN            && pg.Executable == "haloce.exe" && pg.Name.Contains("Bind server to 0.0.0.0"))
-          {
-            pg.Toggle = true;
-            filter.Add(pg);
-            continue;
-          }
-          if (NoSafe            && pg.Executable == "haloce.exe" && pg.Name.Contains("safe mode prompt"))
-          {
-            pg.Toggle = true;
-            filter.Add(pg);
-            continue;
-          }
-          if (NoGamma           && pg.Executable == "haloce.exe" && pg.Name.Contains("gamma"))
-          {
-            pg.Toggle = true;
-            filter.Add(pg);
-            continue;
-          }
-          if (Fix32Tex          && pg.Executable == "haloce.exe" && pg.Name.Contains("32-bit textures"))
-          {
-            pg.Toggle = true;
-            filter.Add(pg);
-            continue;
-          }
-          if (NoEULA            && pg.Executable == "haloce.exe" && pg.Name.Contains("EULA"))
-          {
-            pg.Toggle = true;
-            filter.Add(pg);
-            continue;
-          }
-          if (NoRegistryExit    && pg.Executable == "haloce.exe" && pg.Name.Contains("exit status"))
-          {
-            pg.Toggle = true;
-            filter.Add(pg);
-            continue;
-          }
-          if (NoAutoCenter      && pg.Executable == "haloce.exe" && pg.Name.Contains("auto-centering"))
-          {
-            pg.Toggle = true;
-            filter.Add(pg);
-            continue;
-          }
-          if (NoMouseAccel      && pg.Executable == "haloce.exe" && pg.Name.Contains("mouse acceleration"))
-          {
-            pg.Toggle = true;
-            filter.Add(pg);
-            continue;
-          }
-          if (BlockUpdates      && pg.Executable == "haloce.exe" && pg.Name.Contains("update checks"))
-          {
-            pg.Toggle = true;
-            filter.Add(pg);
-            continue;
-          }
-          if (BlockCamShake     && pg.Executable == "haloce.exe" && pg.Name.Contains("camera shaking"))
-          {
-            pg.Toggle = true;
-            filter.Add(pg);
-            continue;
-          }
-          if (BlockDescopeOnDMG && pg.Executable == "haloce.exe" && pg.Name.Contains("Prevent descoping when taking damage"))
-          {
-            pg.Toggle = true;
-            filter.Add(pg);
-            continue;
-          }
+          pg.Toggle = true;
+          FilteredPatches.Add(pg);
+          continue;
         }
-
-        FilteredPatches = filter;
+        if (DRM && pg.Executable == "haloce.exe" && pg.Name.Contains("DRM"))
+        {
+          pg.Toggle = true;
+          FilteredPatches.Add(pg);
+          continue;
+        }
+        if (FixLAN && pg.Executable == "haloce.exe" && pg.Name.Contains("Bind server to 0.0.0.0"))
+        {
+          pg.Toggle = true;
+          FilteredPatches.Add(pg);
+          continue;
+        }
+        if (NoSafe && pg.Executable == "haloce.exe" && pg.Name.Contains("safe mode prompt"))
+        {
+          pg.Toggle = true;
+          FilteredPatches.Add(pg);
+          continue;
+        }
+        if (NoGamma && pg.Executable == "haloce.exe" && pg.Name.Contains("gamma"))
+        {
+          pg.Toggle = true;
+          FilteredPatches.Add(pg);
+          continue;
+        }
+        if (Fix32Tex && pg.Executable == "haloce.exe" && pg.Name.Contains("32-bit textures"))
+        {
+          pg.Toggle = true;
+          FilteredPatches.Add(pg);
+          continue;
+        }
+        if (NoEULA && pg.Executable == "haloce.exe" && pg.Name.Contains("EULA"))
+        {
+          pg.Toggle = true;
+          FilteredPatches.Add(pg);
+          continue;
+        }
+        if (NoRegistryExit && pg.Executable == "haloce.exe" && pg.Name.Contains("exit status"))
+        {
+          pg.Toggle = true;
+          FilteredPatches.Add(pg);
+          continue;
+        }
+        if (NoAutoCenter && pg.Executable == "haloce.exe" && pg.Name.Contains("auto-centering"))
+        {
+          pg.Toggle = true;
+          FilteredPatches.Add(pg);
+          continue;
+        }
+        if (NoMouseAccel && pg.Executable == "haloce.exe" && pg.Name.Contains("mouse acceleration"))
+        {
+          pg.Toggle = true;
+          FilteredPatches.Add(pg);
+          continue;
+        }
+        if (BlockUpdates && pg.Executable == "haloce.exe" && pg.Name.Contains("update checks"))
+        {
+          pg.Toggle = true;
+          FilteredPatches.Add(pg);
+          continue;
+        }
+        if (BlockCamShake && pg.Executable == "haloce.exe" && pg.Name.Contains("camera shaking"))
+        {
+          pg.Toggle = true;
+          FilteredPatches.Add(pg);
+          continue;
+        }
+        if (BlockDescopeOnDMG && pg.Executable == "haloce.exe" && pg.Name.Contains("Prevent descoping when taking damage"))
+        {
+          pg.Toggle = true;
+          FilteredPatches.Add(pg);
+          continue;
+        }
       }
 
       /** Flexible patcher */
-      using (var fs = new FileStream(exePath, FileMode.Open, FileAccess.ReadWrite))
-      using (var ms = new MemoryStream(0x24B000))
-      using (var bw = new BinaryWriter(ms))
-      using (var br = new BinaryReader(ms))
+      try
       {
+        using (var fs = new FileStream(exePath, FileMode.Open, FileAccess.ReadWrite))
+        using (var ms = new MemoryStream(0x24B000))
+        using (var bw = new BinaryWriter(ms))
+        using (var br = new BinaryReader(ms))
         foreach (var PatchGroup in FilteredPatches)
-        {
-
-          foreach (var DataSet in PatchGroup.DataSets) // I hate this
           {
-            byte value  = PatchGroup.Toggle ? DataSet.Patch : DataSet.Original;
-            long offset = DataSet.Offset;
-            ms.Position = 0;
-            fs.Position = 0;
-            fs.CopyTo(ms);
-
-            ms.Position = offset;
-
-            if (br.ReadByte() != value)
+            foreach (var DataSet in PatchGroup.DataSets)
             {
-              ms.Position -= 1; /** restore position */
-              bw.Write(value);  /** write value      */
-
-              fs.Position = 0;
+              byte value  = PatchGroup.Toggle ? DataSet.Patch : DataSet.Original;
+              long offset = DataSet.Offset;
               ms.Position = 0;
-              ms.CopyTo(fs);
+              fs.Position = 0;
+              fs.CopyTo(ms);
 
-              Info($"Applied \"{PatchGroup.Name}\" patch to the HCE executable");
-            }
-            else
-            {
-              Info($"HCE executable already patched with \"{PatchGroup.Name}\"");
+              ms.Position = offset;
+
+              if (br.ReadByte() != value)
+              {
+                if (PatchGroup.Name.Contains("DRM") && PatchGroup.Toggle == false)
+                  return;
+
+                ms.Position -= 1; /** restore position */
+                bw.Write(value);  /** write value      */
+
+                fs.Position = 0;
+                ms.Position = 0;
+                ms.CopyTo(fs);
+
+                Info($"Applied \"{PatchGroup.Name}\" patch to the HCE executable");
+              }
+              else
+                Info($"HCE executable already patched with \"{PatchGroup.Name}\"");
             }
           }
-        }
       }
+      catch (Exception)
+      {
+        // We need to catch exceptions thrown by the using() statements.
+        throw;
+      }    
     }
 
     /// <summary>
