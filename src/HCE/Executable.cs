@@ -159,7 +159,7 @@ namespace HXE.HCE
 
       Info("Starting process for HCE executable");
 
-      Process.Start(new ProcessStartInfo
+      System.Diagnostics.Process.Start(new ProcessStartInfo
       {
         FileName = Path,
         WorkingDirectory = GetDirectoryName(Path) ??

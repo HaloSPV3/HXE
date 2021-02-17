@@ -27,6 +27,7 @@ using System.Runtime.InteropServices;
 using HXE.HCE;
 using HXE.Properties;
 using HXE.SPV3;
+using static System.Diagnostics.Process;
 using static System.Environment;
 using static System.IO.Directory;
 using static System.IO.Path;
@@ -628,7 +629,7 @@ namespace HXE
 
           try
           {
-            foreach (var process in Process.GetProcessesByName("haloce"))
+            foreach (var process in GetProcessesByName("haloce"))
               process.Kill();
           }
           catch (Exception e)
@@ -642,7 +643,7 @@ namespace HXE
           var tries = 0;
           Wait("Waiting for existing HCE process to end ");
 
-          while (Process.GetProcessesByName("haloce").Length > 0 && tries <= 25)
+          while (GetProcessesByName("haloce").Length > 0 && tries <= 25)
           {
             System.Console.Write(Resources.Progress);
             tries++;
@@ -728,7 +729,7 @@ namespace HXE
 
           try
           {
-            var processes = Process.GetProcesses();
+            var processes = GetProcesses();
 
             foreach (var process in processes)
             {
