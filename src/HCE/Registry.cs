@@ -23,6 +23,7 @@ using System;
 using System.IO;
 using System.Diagnostics;
 using Microsoft.Win32;
+using static System.Diagnostics.Process;
 using Enc = System.Text.Encoding;
 using WinReg = Microsoft.Win32.Registry;
 using static HXE.Common.ExtConvert;
@@ -271,9 +272,9 @@ namespace HXE.HCE
         var StartInfo = new ProcessStartInfo
         {
           WorkingDirectory = Environment.CurrentDirectory,
-          FileName = Process.GetCurrentProcess().MainModule.FileName,
-          UseShellExecute = true,
-          Verb = "runas"
+          FileName         = GetCurrentProcess().MainModule.FileName,
+          UseShellExecute  = true,
+          Verb             = "runas"
           /** runas rundown
             * "runas" implicitly means "Run As Administrator". 
             * This particular Verb requires UseShellExecute to be True.
@@ -286,7 +287,7 @@ namespace HXE.HCE
             * See https://stackoverflow.com/a/133500
             */
         };
-        using (Process process = Process.Start(StartInfo))
+        using (var process = Start(StartInfo))
         {
           int timeout = 5000;
           process.WaitForExit(timeout);
