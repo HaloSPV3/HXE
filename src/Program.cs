@@ -20,6 +20,7 @@
  */
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -80,6 +81,7 @@ namespace HXE
       var compile    = string.Empty; /* Compiles HCE/SPV3 to destination    */
       var update     = string.Empty; /* Updates directory using manifest    */
       var registry   = string.Empty; /* Write to Windows Registry           */
+      var infer      = false;        /* Infer the running Halo executable   */
       var console    = false;        /* Loads HCE with console mode         */
       var devmode    = false;        /* Loads HCE with developer mode       */
       var screenshot = false;        /* Loads HCE with screenshot ability   */
@@ -99,6 +101,7 @@ namespace HXE
         .Add("compile="  , "Compiles HCE/SPV3 to destination"                      , s => compile    = s)          /* hxe parameter */
         .Add("update="   , "Updates directory using manifest"                      , s => update     = s)          /* hxe parameter */
         .Add("registry=" , "Create Registry keys for Retail, Custom, Trial, or HEK", s => registry   = s)          /* hxe parameter */
+        .Add("infer" , "Infer the running Halo executable"                         , s => infer      = s != null)  /* hxe parameter */
         .Add("console"   , "Loads HCE with console mode"                           , s => console    = s != null)  /* hce parameter */
         .Add("devmode"   , "Loads HCE with developer mode"                         , s => devmode    = s != null)  /* hce parameter */
         .Add("screenshot", "Loads HCE with screenshot ability"                     , s => screenshot = s != null)  /* hce parameter */
@@ -132,6 +135,23 @@ namespace HXE
       if (positions)
       {
         new Application().Run(new Positions());
+        Exit(0);
+      }
+
+      if (infer)
+      {
+        var descriptions = new Dictionary<Process.Type, string>
+        {
+          {Process.Type.Unknown, "N/A"},
+          {Process.Type.Retail,  "Halo: Combat Evolved"},
+          {Process.Type.HCE,     "Halo: Custom Edition"},
+          {Process.Type.Steam,   "Halo: MCC - CEA (Steam)"},
+          {Process.Type.Store,   "Halo: MCC - CEA (Store)"},
+        };
+
+        Info($"Inferred the following Halo process: {descriptions[Process.Infer()]}");
+        Info("Press any key to exit.");
+        ReadLine();
         Exit(0);
       }
 
