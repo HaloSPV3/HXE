@@ -119,8 +119,8 @@ jobs:
       ################
 
       # https://github.com/marketplace/actions/gittools
-      - name: Setup GitTools
-        uses: GitTools/actions@v0.9.10
+#      - name: Setup GitTools
+#        uses: GitTools/actions@v0.9.10
 
       - name: Setup GitVersion
         uses: GitTools/actions/gitversion/setup@v0.9.10
