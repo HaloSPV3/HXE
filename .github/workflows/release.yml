@@ -15,9 +15,6 @@ on:
     # Match
     - 'src/**'
     - '.gitmodules'
-    # Ignore
-    - '!**.md'
-    - '!**.txt'
 
  # A workflow run is made up of one or more jobs that can run sequentially or in parallel
  # However, each Job uses separate Runners
