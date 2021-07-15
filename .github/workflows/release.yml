@@ -15,7 +15,6 @@ on:
     - 'ext/'
     - 'src/'
     # Ignore
-    - '!**.yml'
     - '!**.md'
     - '!**.txt'
 
