@@ -12,13 +12,10 @@ on:
   push:
     branches: [ main, develop ]
     paths:
+    - 'ext/'
+    - 'src/'
     # Ignore
-    - '!**.md'
-    - '!**.txt'
-  pull_request:
-    branches: [ main, develop ]
-    paths:
-    # Ignore
+    - '!**.yml'
     - '!**.md'
     - '!**.txt'
 
