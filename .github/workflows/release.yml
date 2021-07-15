@@ -12,12 +12,12 @@ on:
   push:
     branches: [ main, develop ]
     paths:
+    - '.github/'
     - 'ext/'
     - 'src/'
     # Ignore
     - '!**.md'
     - '!**.txt'
-
   workflow_dispatch: # Allow manual runs
 
  # A workflow run is made up of one or more jobs that can run sequentially or in parallel
