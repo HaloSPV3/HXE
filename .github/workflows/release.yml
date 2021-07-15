@@ -1,0 +1,162 @@
+# Ref: Building .NET Framework Applications with Github Actions
+# https://www.codingwithcalvin.net/building-net-framework-applications-with-github-actions/
+
+name: release
+# TODO: Set up Unit Tests: https://docs.microsoft.com/en-us/visualstudio/test/unit-test-basics?view=vs-2019
+# TODO: https://github.com/dorny/test-reporter
+# TODO: Use Semantic Release for GitHub Releases
+# TODO: https://github.com/actions/upload-artifact
+# TODO: https://github.com/dawidd6/action-download-artifact
+
+on:
+  push:
+    branches: [ main, develop ]
+    paths:
+    # Ignore
+    - '!**.md'
+    - '!**.txt'
+  pull_request:
+    branches: [ main, develop ]
+    paths:
+    # Ignore
+    - '!**.md'
+    - '!**.txt'
+
+  workflow_dispatch: # Allow manual runs
+
+ # A workflow run is made up of one or more jobs that can run sequentially or in parallel
+ # However, each Job uses separate Runners
+jobs:
+  build:
+    name: Build
+    runs-on: windows-latest # The type of runner that the job will run on
+
+    strategy:
+     fail-fast: false
+     matrix:
+      build-cfg: [ Release, Debug ]
+
+    steps:
+      ################
+      # SETUP
+      ################
+
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0 # Required by tj-actions/changed-files and GitVersion
+
+      - name: Navigate to Workspace # https://www.codingwithcalvin.net/building-net-framework-applications-with-github-actions/
+        run: cd $GITHUB_WORKSPACE
+
+      - name: Init-Update Git Submodules
+        run: git submodule update --init --recursive
+
+      - name: Extract branch name
+        uses: nelonoel/branch-name@v1
+        id: extract_branch
+
+      - name: Setup Node
+        uses: actions/setup-node@v2
+        # Dependents: Semantic Release
+      - name: Setup NPM
+        uses: bahmutov/npm-install@v1
+        # Dependents: Semantic Release
+
+      # https://github.com/marketplace/actions/setup-msbuild
+      - name: Add msbuild to PATH
+        uses: microsoft/setup-msbuild@v1
+
+      ################
+      # BUILD
+      ################
+
+      # Package restore handled by MSBuild '-t:restore' flag, but we'll do this anyway
+      - name: Restore NuGet Packages
+        working-directory: ./src/
+        run: nuget restore HXE.sln;
+
+      # https://docs.microsoft.com/en-us/nuget/reference/msbuild-targets#restoring-and-building-with-one-msbuild-command  
+      - name: Build Solutions
+        working-directory: ./src/
+        run: msbuild.exe -nr:false -p:DeleteExistingFiles=True -p:platform="Any CPU" -p:configuration="{{matrix.build-cfg}}" HXE.sln;
+
+        # TODO: Finish Post-Build commands
+
+        # .NET Framework apps cannot be built by DotNet CLI
+        # We have to fallback to MSBuild
+        # This section will remain until our apps are ported to .NET 5 or 6
+      #- name: DotNet build prep
+      #  run: dotnet build /p:ContinuousIntegrationBuild=true
+      #- name: Build
+      #  run: dotnet build /p:Version="$env:{{ steps.gitversion.outputs.assemblySemVer }}"
+      #- name: Pack
+      #  run: dotnet pack /p:PackageVersion="$env:{{ steps.gitversion.outputs.semVer}}-$env:{{ steps.gitversion.outputs.shortSha }}"
+
+      ################
+      # UNIT TESTS     
+      # TODO: Move Unit Tests to separate worflows
+      ################
+
+#      - name: Setup OpenCover, XUnit for .NET Framework
+#        run: |
+#         choco install opencover.portable
+#         choco install xunit
+#
+#      # docs: https://github.com/codecov/example-csharp
+#      - name: Write Unit Test Reports
+#        working-directory: ./src/
+#        run: OpenCover.Console.exe -register:user -target:"xunit.console.x86.exe" -targetargs:"..\MyUnitTests\bin\Debug\MyUnitTests.dll -noshadow" -filter:"+[UnitTestTargetProject*]* -[MyUnitTests*]*" -output:"..\hxe_coverage.xml"
+#
+#      - name: Upload unit test reports to CodeCoverage
+#        uses: codecov/codecov-action@v1
+#        with:
+#          # token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos
+#          files: ./hxe_coverage.xml
+#          flags: unittests # optional
+#          functionalities: recursesubs # search for code in git submodules as well
+#          # name: codecov-umbrella # optional
+#          # fail_ci_if_error: true # optional (default = false)
+#          # verbose: true # optional (default = false)
+
+      ################
+      # RELEASE
+      ################
+
+      # https://github.com/marketplace/actions/gittools
+      - name: Setup GitTools
+        uses: GitTools/actions@v0.9.9
+
+      - name: Setup GitVersion
+        uses: GitTools/actions/gitversion/setup@v0.9.9
+        id: gitV
+        with:
+          versionSpec: '5.x'
+      - run: echo "${{ steps.gitversion.outputs.fullSemVer }}"
+
+      # https://github.com/GitTools/actions/blob/main/docs/examples/github/gitreleasemanager/index.md
+      - name: Setup GitReleaseManager
+        id: gitRM
+        uses: gittools/actions/gitreleasemanager/setup@v0.9.9
+        with:
+          versionSpec: '0.10.x'
+
+      - name: Setup Semantic Release
+        run: npx semantic-release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.SEMANTIC_RELEASE_BOT_NPM_TOKEN }}
+
+      - name: Git branch name
+        id: git-branch-name
+        uses: EthanSK/git-branch-name-action@v1
+      - name: Echo the branch name
+        run: echo "Branch name ${GIT_BRANCH_NAME}"
+
+      #- name: Determine if Release needed
+      #  if: ${{ env.GIT_BRANCH_NAME == 'main' }}
+
+      # GitReleaseManager or Semantic Release?
+
+      #- name: Publish via GitReleaseManager
+      #  run:

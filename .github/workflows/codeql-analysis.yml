@@ -1,0 +1,53 @@
+# You may wish to alter this file to override the set of languages analyzed,
+# or to provide custom queries or build logic.
+name: "CodeQL"
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    # https://docs.github.com/en/code-security/secure-coding/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-code-scanning#avoiding-unnecessary-scans-of-pull-requests
+  schedule:
+    - cron: '35 19 * * 6'
+
+jobs:
+  analyze:
+    name: Analyze
+    runs-on: windows-latest
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+
+    strategy:
+      fail-fast: false
+      matrix:
+        language: [ 'csharp' ]
+          # CodeQL supports [ 'cpp', 'csharp', 'go', 'java', 'javascript', 'python' ]
+          # https://docs.github.com/en/free-pro-team@latest/github/finding-security-vulnerabilities-and-errors-in-your-code/configuring-code-scanning#changing-the-languages-that-are-analyzed
+        solution: [ 'hxe', 'spv3' ]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Checkout Git Submodules
+        run: git submodule update --init --recursive
+
+      - name: Add msbuild to PATH
+        uses: microsoft/setup-msbuild@v1
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v1
+        with:
+          config-file: .github/codeql/codeql-config.yml
+          languages: ${{ matrix.language }}
+
+      # -p:UseSharedCompilation=false is necessary for CodeQL to analyze .NET Framework builds.
+      # See #5 in https://docs.github.com/en/code-security/secure-coding/automatically-scanning-your-code-for-vulnerabilities-and-errors/troubleshooting-the-codeql-workflow#no-code-found-during-the-build
+      - name: Build Solutions
+        working-directory: ./src/
+        run: msbuild.exe -restore -p:platform="Any CPU" -p:configuration="Debug" -p:UseSharedCompilation=False -detailedSummary:True HXE.sln;
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v1
