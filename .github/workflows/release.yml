@@ -55,9 +55,6 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v2
         # Dependents: Semantic Release
-      - name: Setup NPM
-        uses: bahmutov/npm-install@v1
-        # Dependents: Semantic Release
 
       # https://github.com/marketplace/actions/setup-msbuild
       - name: Add msbuild to PATH
