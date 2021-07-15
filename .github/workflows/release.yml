@@ -120,10 +120,10 @@ jobs:
 
       # https://github.com/marketplace/actions/gittools
       - name: Setup GitTools
-        uses: GitTools/actions@v0.9.9
+        uses: GitTools/actions@v0.9.10
 
       - name: Setup GitVersion
-        uses: GitTools/actions/gitversion/setup@v0.9.9
+        uses: GitTools/actions/gitversion/setup@v0.9.10
         id: gitV
         with:
           versionSpec: '5.x'
@@ -132,7 +132,7 @@ jobs:
       # https://github.com/GitTools/actions/blob/main/docs/examples/github/gitreleasemanager/index.md
       - name: Setup GitReleaseManager
         id: gitRM
-        uses: gittools/actions/gitreleasemanager/setup@v0.9.9
+        uses: gittools/actions/gitreleasemanager/setup@v0.9.10
         with:
           versionSpec: '0.10.x'
 
