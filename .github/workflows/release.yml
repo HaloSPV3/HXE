@@ -18,7 +18,6 @@ on:
     # Ignore
     - '!**.md'
     - '!**.txt'
-  workflow_dispatch: # Allow manual runs
 
  # A workflow run is made up of one or more jobs that can run sequentially or in parallel
  # However, each Job uses separate Runners
