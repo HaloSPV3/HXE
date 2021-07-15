@@ -145,12 +145,8 @@
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
+      <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="..\..\..\ext\halo-ce-patches\patches.crk">
-      <Link>HCE\patches.crk</Link>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

@@ -7,8 +7,7 @@
 =================================
 A HCE wrapper and kernel for SPV3
 ---------------------------------
-:: https://source.n2.network/spv3
-:: https://builds.n2.network/spv3
+:: https://github.com/HaloSPV3/hxe
 ---------------------------------
 
 HXE can be invoked with the following arguments:

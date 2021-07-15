@@ -70,15 +70,14 @@ namespace HXE.Properties {
         ///=================================
         ///A HCE wrapper and kernel for SPV3
         ///---------------------------------
-        ///:: https://source.n2.network/spv3
-        ///:: https://builds.n2.network/spv3
+        ///:: https://github.com/HaloSPV3/hxe
         ///---------------------------------
         ///
         ///HXE can be invoked with the following arguments:
         ///
         ///      --config               Opens configuration GUI
         ///      --positions            Opens positions GUI
-        ///   [rest of string was truncated]&quot;;.
+        ///      --load                 Initiat [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string Banner {
             get {
@@ -96,7 +95,7 @@ namespace HXE.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to https://source.n2.network/spv3/tag/?h=build-{0}.
+        ///   Looks up a localized string similar to https://github.com/HaloSPV3/HXE/tag/build-{0}.
         /// </summary>
         internal static string BannerBuildSource {
             get {

@@ -1,5 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31410.223
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HXE", "HXE.csproj", "{ACAA5D9F-B23D-43E1-B2DF-8C03230975A1}"
 EndProject
 Global
@@ -12,5 +15,11 @@ Global
 		{ACAA5D9F-B23D-43E1-B2DF-8C03230975A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ACAA5D9F-B23D-43E1-B2DF-8C03230975A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ACAA5D9F-B23D-43E1-B2DF-8C03230975A1}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {198FDD89-0D41-4FEE-94C3-B8F26C781D1F}
 	EndGlobalSection
 EndGlobal
