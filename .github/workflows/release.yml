@@ -52,6 +52,14 @@ jobs:
       - name: Add msbuild to PATH
         uses: microsoft/setup-msbuild@v1
 
+      # https://github.com/GitTools/actions/blob/main/docs/examples/github/gitversion/index.md
+      - name: Setup GitVersion
+        uses: GitTools/actions/gitversion/setup@v0.9.10
+        id: gitversion
+        with:
+          versionSpec: '5.x'
+      - run: echo "${{ steps.gitversion.outputs.fullSemVer }}"
+
       ################
       # BUILD
       ################
@@ -63,34 +71,31 @@ jobs:
 
       - run: echo ${{matrix.build-cfg}}
 
+      # keeping this as reference until DotNet CLI build works
       # https://docs.microsoft.com/en-us/nuget/reference/msbuild-targets#restoring-and-building-with-one-msbuild-command
       - name: Build Solutions
         working-directory: ./src/
         run: msbuild.exe -nr:false -p:DeleteExistingFiles=True -p:platform="Any CPU" -p:configuration="${{matrix.build-cfg}}" HXE.sln;
 
-        # TODO: Finish Post-Build commands
-
-        # .NET Framework apps cannot be built by DotNet CLI
-        # We have to fallback to MSBuild
-        # This section will remain until our apps are ported to .NET 5 or 6
-      #- name: DotNet build prep
-      #  run: dotnet build /p:ContinuousIntegrationBuild=true
-      #- name: Build
-      #  run: dotnet build /p:Version="$env:{{ steps.gitversion.outputs.assemblySemVer }}"
-      #- name: Pack
-      #  run: dotnet pack /p:PackageVersion="$env:{{ steps.gitversion.outputs.semVer}}-$env:{{ steps.gitversion.outputs.shortSha }}"
+      - name: DotNet build prep
+        run: dotnet build /p:ContinuousIntegrationBuild=true
+      - name: Build
+        run: dotnet build /p:Version="$env:{{ steps.gitversion.outputs.assemblySemVer }}"
+      - name: Pack
+        run: dotnet pack /p:PackageVersion="$env:{{ steps.gitversion.outputs.semVer}}-$env:{{ steps.gitversion.outputs.shortSha }}"
 
       ################
       # UNIT TESTS
       # TODO: Move Unit Tests to separate worflows
       ################
 
-#      - name: Setup OpenCover, XUnit for .NET Framework
-#        run: |
-#         choco install opencover.portable
-#         choco install xunit
-#
-#      # docs: https://github.com/codecov/example-csharp
+      - name: Setup OpenCover, XUnit for .NET Framework
+        run: |
+         choco install opencover.portable
+         choco install xunit
+
+      # docs: https://github.com/codecov/example-csharp
+      # TODO: Set up unit tests
 #      - name: Write Unit Test Reports
 #        working-directory: ./src/
 #        run: OpenCover.Console.exe -register:user -target:"xunit.console.x86.exe" -targetargs:"..\MyUnitTests\bin\Debug\MyUnitTests.dll -noshadow" -filter:"+[UnitTestTargetProject*]* -[MyUnitTests*]*" -output:"..\hxe_coverage.xml"
@@ -110,23 +115,12 @@ jobs:
       # RELEASE
       ################
 
-      # https://github.com/marketplace/actions/gittools
-#      - name: Setup GitTools
-#        uses: GitTools/actions@v0.9.10
-
-      - name: Setup GitVersion
-        uses: GitTools/actions/gitversion/setup@v0.9.10
-        id: gitV
-        with:
-          versionSpec: '5.x'
-      - run: echo "${{ steps.gitversion.outputs.fullSemVer }}"
-
       # https://github.com/GitTools/actions/blob/main/docs/examples/github/gitreleasemanager/index.md
       - name: Setup GitReleaseManager
         id: gitRM
         uses: gittools/actions/gitreleasemanager/setup@v0.9.10
         with:
-          versionSpec: '0.10.x'
+          versionSpec: '0.12.x'
 
       - name: Setup Semantic Release
         run: npx semantic-release
