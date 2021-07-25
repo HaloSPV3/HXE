@@ -5,6 +5,10 @@
     </p>
 </html>
 
+[![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg?style=flat-square)](http://commitizen.github.io/cz-cli/)
+[![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg?style=flat-square)](https://conventionalcommits.org)
+[![Codecov](https://img.shields.io/codecov/c/github/HaloSPV3/HXE.svg?style=flat-square)](https://codecov.io/gh/HaloSPV3/HXE)
+
 # Introduction
 
 This tree contains the source code & documentation for HXE, a versatile
@@ -20,12 +24,13 @@ Here are some of the main features the kernel provides:
     -   Custom native video resolution
     -   Border-less HCE window mode
 -   Support for the SPV3 mod
-    -   SPV3.2 loading, updating, installing
-    -   SPV3.2/Lumoria campaign resuming
-    -   SPV3.2 post-processing tweaking
+    -   SPV3 loading, updating, installing
+    -   SPV3/Lumoria campaign resuming
+    -   SPV3 post-processing tweaking
     -   Backwards compatibility with SPV3.1
         -   Campaign resume
         -   Maps unlocking
+    -   Backwards compatibility with SPV3.2
 -   Automatic profile detection
 
 # Usage
