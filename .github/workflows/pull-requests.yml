@@ -11,3 +11,4 @@ jobs:
         with:
           access_token: ${{ secrets.GITHUB_TOKEN }}
           check_draft: true
+          ignore_bot: true
