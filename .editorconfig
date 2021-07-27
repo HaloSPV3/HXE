@@ -7,6 +7,10 @@ end_of_line              = crlf
 indent_size              = 2
 insert_final_newline     = true
 trim_trailing_whitespace = true
+indent_style             = space
+
+[*.{xml,xaml}]
+indent_style = tab
 
 [*.cs]
 #Core editorconfig formatting - indentation
