@@ -5,8 +5,8 @@ on:
     branches: [ main, develop ]
     paths-ignore:
     - '.github/'
-    - '**.md'
-    - '**.txt'
+    - '**/*.md'
+    - '**/*.txt'
   pull_request:
     types: [opened, reopened, ready_for_review]
     # https://docs.github.com/en/code-security/secure-coding/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-code-scanning#avoiding-unnecessary-scans-of-pull-requests
@@ -31,6 +31,12 @@ jobs:
         uses: actions/checkout@v2
         with:
           submodules: ''
+       
+      - name: Setup DotNet
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '6'
+          include-prerelease: true
 
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v1
@@ -39,8 +45,11 @@ jobs:
           languages: 'csharp'
           source-root: src
 
-      - name: Autobuild
-        uses: github/codeql-action/autobuild@v1
+      # -p:UseSharedCompilation=false is necessary for CodeQL to analyze .NET Framework builds.
+      # See #5 in https://docs.github.com/en/code-security/secure-coding/automatically-scanning-your-code-for-vulnerabilities-and-errors/troubleshooting-the-codeql-workflow#no-code-found-during-the-build
+      - name: Build Solutions
+        working-directory: ./src/
+        run: dotnet build HXE.sln -c "Debug" -p:platform="Any CPU" -p:UseSharedCompilation=False;
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v1
