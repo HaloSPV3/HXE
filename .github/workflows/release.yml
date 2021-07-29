@@ -75,7 +75,7 @@ jobs:
     - name: Build and Pack
       working-directory: ./src/
       run: |
-        dotnet build HXE.sln -c {{ matrix.build-cfg }} -p:platform="Any CPU" -p:Version="$env:{{ steps.gitversion.outputs.assemblySemVer }}" -p:PackageVersion="$env:{{ steps.gitversion.outputs.semVer}}-$env:{{ steps.gitversion.outputs.shortSha }}" -p:ContinuousIntegrationBuild=true
+        dotnet build HXE.sln -c $env:{{ matrix.build-cfg }} -p:platform="Any CPU" -p:Version="$env:{{ steps.gitversion.outputs.assemblySemVer }}" -p:PackageVersion="$env:{{ steps.gitversion.outputs.semVer}}-$env:{{ steps.gitversion.outputs.shortSha }}" -p:ContinuousIntegrationBuild=true
         dotnet pack --no-build
 
 
