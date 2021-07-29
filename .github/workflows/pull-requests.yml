@@ -1,4 +1,4 @@
-on:
+﻿on:
   pull_request:
     types: [opened, reopened, ready_for_review] # Currently, this action only support these events
 

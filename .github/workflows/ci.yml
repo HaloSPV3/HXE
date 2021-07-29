@@ -2,7 +2,11 @@
 
 on:
   push:
-    branches: [main, develop]
+    branches: [ main, develop ]
+    paths-ignore:
+    - '.github/workflows/'
+    - '**/*.md'
+    - '**/*.txt'
 
 jobs:
   build:
