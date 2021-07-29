@@ -1,4 +1,4 @@
-name: release
+﻿name: release
 # Ref: Building .NET Framework Applications with Github Actions
 # https://www.codingwithcalvin.net/building-net-framework-applications-with-github-actions/
 
@@ -10,7 +10,7 @@ name: release
 
 on:
   push:
-    branches: [ main, develop ]
+    branches: [ main ]
 
  # A workflow run is made up of one or more jobs that can run sequentially or in parallel
  # However, each Job uses separate Runners
@@ -25,119 +25,112 @@ jobs:
       build-cfg: [ Release, Debug ]
 
     steps:
-      ################
-      # SETUP
-      ################
+    ################
+    # SETUP
+    ################
 
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
-        with:
-          fetch-depth: 0 # Required by tj-actions/changed-files and GitVersion
+    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0 # Required by tj-actions/changed-files and GitVersion
+        submodules: ''
 
-      - name: Navigate to Workspace # https://www.codingwithcalvin.net/building-net-framework-applications-with-github-actions/
-        run: cd $GITHUB_WORKSPACE
+    - name: Navigate to Workspace # https://www.codingwithcalvin.net/building-net-framework-applications-with-github-actions/
+      run: cd $GITHUB_WORKSPACE
 
-      - name: Init-Update Git Submodules
-        run: git submodule update --init --recursive
+    - name: Extract branch name
+      uses: nelonoel/branch-name@v1.0.1
+      id: extract_branch
 
-      - name: Extract branch name
-        uses: nelonoel/branch-name@v1.0.1
-        id: extract_branch
+    - name: Setup Node
+      uses: actions/setup-node@v2
+    # Dependents: Semantic Release
 
-      - name: Setup Node
-        uses: actions/setup-node@v2
-        # Dependents: Semantic Release
+    # Authenticates packages to push to GPR
+    - uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '6.0.x' # SDK Version to use.
+        source-url: https://nuget.pkg.github.com/HaloSPV3/index.json
+        include-prerelease: true
+      env:
+        NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
-      # https://github.com/marketplace/actions/setup-msbuild
-      - name: Add msbuild to PATH
-        uses: microsoft/setup-msbuild@v1
+    # https://github.com/GitTools/actions/blob/main/docs/examples/github/gitversion/index.md
+    - name: Setup GitVersion
+      uses: GitTools/actions/gitversion/setup@v0.9.10
+      id: gitversion
+      with:
+        versionSpec: '5.x'
+        updateAssemblyInfo: true
+    - run: echo ${{ steps.gitversion.outputs.fullSemVer }}
 
-      # https://github.com/GitTools/actions/blob/main/docs/examples/github/gitversion/index.md
-      - name: Setup GitVersion
-        uses: GitTools/actions/gitversion/setup@v0.9.10
-        id: gitversion
-        with:
-          versionSpec: '5.x'
-      - run: echo "${{ steps.gitversion.outputs.fullSemVer }}"
+    ################
+    # BUILD
+    ################
+    # https://docs.microsoft.com/en-us/nuget/reference/msbuild-targets#restoring-and-building-with-one-msbuild-command
+    - name: Build and Pack
+      working-directory: ./src/
+      run: |
+        dotnet build HXE.sln -c {{ matrix.build-cfg }} -p:platform="Any CPU" -p:Version="$env:{{ steps.gitversion.outputs.assemblySemVer }}" -p:PackageVersion="$env:{{ steps.gitversion.outputs.semVer}}-$env:{{ steps.gitversion.outputs.shortSha }}" -p:ContinuousIntegrationBuild=true
+        dotnet pack --no-build
 
-      ################
-      # BUILD
-      ################
 
-      # Package restore handled by MSBuild '-t:restore' flag, but we'll do this anyway
-      - name: Restore NuGet Packages
-        working-directory: ./src/
-        run: nuget restore HXE.sln;
+    ################
+    # TESTS
+    # TODO: Move Unit Tests to separate worflows
+    # TODO: Set up unit tests for HXE.csproj
+    ################
 
-      - run: echo ${{matrix.build-cfg}}
+    #- name: Setup OpenCover, XUnit for .NET Framework
+    #  run: |
+    #    choco install opencover.portable
+    #    choco install xunit
+    #
+    # docs: https://github.com/codecov/example-csharp
+    # - name: Write Unit Test Reports
+    #   working-directory: ./src/
+    #   run: OpenCover.Console.exe -register:user -target:"xunit.console.x86.exe" -targetargs:"..\MyUnitTests\bin\Debug\MyUnitTests.dll -noshadow" -filter:"+[UnitTestTargetProject*]* -[MyUnitTests*]*" -output:"..\hxe_coverage.xml"
+    #
+    # - name: Upload unit test reports to CodeCoverage
+    #   uses: codecov/codecov-action@v1
+    #   with:
+    #     # token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos
+    #     files: ./hxe_coverage.xml
+    #     flags: unittests # optional
+    #     functionalities: recursesubs # search for code in git submodules as well
+    #     # name: codecov-umbrella # optional
+    #     # fail_ci_if_error: true # optional (default = false)
+    #     # verbose: true # optional (default = false)
 
-      # keeping this as reference until DotNet CLI build works
-      # https://docs.microsoft.com/en-us/nuget/reference/msbuild-targets#restoring-and-building-with-one-msbuild-command
-      - name: Build Solutions
-        working-directory: ./src/
-        run: msbuild.exe -nr:false -p:DeleteExistingFiles=True -p:platform="Any CPU" -p:configuration="${{matrix.build-cfg}}" HXE.sln;
+    ################
+    # RELEASE
+    ################
 
-      - name: DotNet build prep
-        run: dotnet build /p:ContinuousIntegrationBuild=true
-      - name: Build
-        run: dotnet build /p:Version="$env:{{ steps.gitversion.outputs.assemblySemVer }}"
-      - name: Pack
-        run: dotnet pack /p:PackageVersion="$env:{{ steps.gitversion.outputs.semVer}}-$env:{{ steps.gitversion.outputs.shortSha }}"
+    - name: Git branch name
+      id: git-branch-name
+      uses: EthanSK/git-branch-name-action@v1
 
-      ################
-      # UNIT TESTS
-      # TODO: Move Unit Tests to separate worflows
-      ################
+    - name: Is branch Main?
+      if: ${{ env.GIT_BRANCH_NAME == 'main' }}
+      run: $env.canRelease = true
 
-      - name: Setup OpenCover, XUnit for .NET Framework
-        run: |
-         choco install opencover.portable
-         choco install xunit
+    # https://github.com/GitTools/actions/blob/main/docs/examples/github/gitreleasemanager/index.md
+    - name: Setup GitReleaseManager
+      id: gitRM
+      uses: gittools/actions/gitreleasemanager/setup@v0.9.10
+      with:
+        versionSpec: '0.12.x'
 
-      # docs: https://github.com/codecov/example-csharp
-      # TODO: Set up unit tests
-#      - name: Write Unit Test Reports
-#        working-directory: ./src/
-#        run: OpenCover.Console.exe -register:user -target:"xunit.console.x86.exe" -targetargs:"..\MyUnitTests\bin\Debug\MyUnitTests.dll -noshadow" -filter:"+[UnitTestTargetProject*]* -[MyUnitTests*]*" -output:"..\hxe_coverage.xml"
-#
-#      - name: Upload unit test reports to CodeCoverage
-#        uses: codecov/codecov-action@v1
-#        with:
-#          # token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos
-#          files: ./hxe_coverage.xml
-#          flags: unittests # optional
-#          functionalities: recursesubs # search for code in git submodules as well
-#          # name: codecov-umbrella # optional
-#          # fail_ci_if_error: true # optional (default = false)
-#          # verbose: true # optional (default = false)
+    - name: Setup Semantic Release
+      run: npx semantic-release
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        NPM_TOKEN: ${{ secrets.SEMANTIC_RELEASE_BOT_NPM_TOKEN }}
 
-      ################
-      # RELEASE
-      ################
+    # https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-nuget-registry#authenticating-with-a-personal-access-token
+    # https://github.com/marketplace/actions/setup-net-core-sdk#usage
+    - name: Authorize Pushing
+      run: dotnet nuget add source --username USERNAME --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/OWNER/index.json"
 
-      # https://github.com/GitTools/actions/blob/main/docs/examples/github/gitreleasemanager/index.md
-      - name: Setup GitReleaseManager
-        id: gitRM
-        uses: gittools/actions/gitreleasemanager/setup@v0.9.10
-        with:
-          versionSpec: '0.12.x'
 
-      - name: Setup Semantic Release
-        run: npx semantic-release
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.SEMANTIC_RELEASE_BOT_NPM_TOKEN }}
-
-      - name: Git branch name
-        id: git-branch-name
-        uses: EthanSK/git-branch-name-action@v1
-      - name: Echo the branch name
-        run: echo "Branch name ${GIT_BRANCH_NAME}"
-
-      #- name: Determine if Release needed
-      #  if: ${{ env.GIT_BRANCH_NAME == 'main' }}
-
-      # GitReleaseManager or Semantic Release?
-
-      #- name: Publish via GitReleaseManager
-      #  run:
+    # GitReleaseManager or Semantic Release?
