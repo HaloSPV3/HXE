@@ -1,0 +1,37 @@
+﻿name: ci
+
+on:
+  push:
+    branches: [main, develop]
+
+jobs:
+  build:
+    name: Build
+    runs-on: windows-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        build-cfg: [ Release, Debug ]
+
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: ''
+
+    # Authenticates packages to push to GPR
+    - uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '6' # SDK Version to use.
+        source-url: https://nuget.pkg.github.com/HaloSPV3/index.json
+        include-prerelease: true
+      env:
+        NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+
+    ################
+    # BUILD
+    ################
+    # https://docs.microsoft.com/en-us/nuget/reference/msbuild-targets#restoring-and-building-with-one-msbuild-command
+    - name: Build and Pack
+      working-directory: ./src/
+      run: dotnet pack HXE.sln -c {{ matrix.build-cfg }} -p:platform="Any CPU" -p:ContinuousIntegrationBuild=true
