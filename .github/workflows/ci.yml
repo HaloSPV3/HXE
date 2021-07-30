@@ -40,4 +40,4 @@ jobs:
 
     - name: Build and Pack
       working-directory: ./src/
-      run: dotnet pack HXE.sln -c ${{ matrix.buildConfig }}
+      run: dotnet pack HXE.csproj -c ${{ matrix.buildConfig }}
