@@ -18,7 +18,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        build-cfg: [ Release, Debug ]
+        buildConfig: [ Release, Debug ]
 
     steps:
     - uses: actions/checkout@v2
@@ -40,4 +40,4 @@ jobs:
 
     - name: Build and Pack
       working-directory: ./src/
-      run: dotnet pack HXE.sln -c $env:matrix.build-cfg
+      run: dotnet pack HXE.sln -c $env:matrix.buildConfig
