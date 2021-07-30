@@ -1,4 +1,6 @@
 ﻿name: ci
+# This workflow demonstrates the minimal requirements for building the Solution with DotNet CLI
+
 
 on:
   push:
@@ -35,6 +37,7 @@ jobs:
     ################
     # BUILD
     ################
+
     - name: Build and Pack
       working-directory: ./src/
-      run: dotnet pack HXE.sln -c ${Env:matrix.build-cfg}
+      run: dotnet pack HXE.sln -c $env:matrix.build-cfg
