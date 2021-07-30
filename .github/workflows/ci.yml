@@ -37,4 +37,4 @@ jobs:
     ################
     - name: Build and Pack
       working-directory: ./src/
-      run: dotnet pack HXE.sln -c ${Env:matrix.build-cfg} -p:ContinuousIntegrationBuild=true
+      run: dotnet pack HXE.sln -c ${Env:matrix.build-cfg}
