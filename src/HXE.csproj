@@ -11,21 +11,23 @@
       variable. However, at MSBuild time, these properties are mapped to
       MSBuild properties that are prefixed with GitVersion_. This prevents
       conflicts with other properties in the pipeline.
+
       In addition, the following MSBuild properties are set when
       UpdateVersionProperties is true (the default):
         Version, VersionPrefix, VersionSuffix, PackageVersion,
         InformationalVersion, AssemblyVersion and FileVersion.
       These are used by the built-in tasks for generating AssemblyInfo's and
       NuGet package versions.
+
+      For SDK-style projects, UpdateVersionProperties controls setting the
+      default variables:
+        Version, VersionPrefix, VersionSuffix, PackageVersion,
+        InformationalVersion, AssemblyVersion and FileVersion.
       -->
+    <PlatformTarget>anycpu</PlatformTarget>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <ProductName>HXE</ProductName>
     <PublisherName>Halo SPV3 Team</PublisherName>
-    <!--<ApplicationRevision>0</ApplicationRevision>-->
-    <!--<ApplicationVersion>1.0.0.%2a</ApplicationVersion>-->
-    <ApplicationVersion>${GitVersion_AssemblyVersion}</ApplicationVersion>
-    <UseApplicationTrust>true</UseApplicationTrust>
-    <BootstrapperEnabled>true</BootstrapperEnabled>
     <!-- Application | General -->
     <OutputType>Exe</OutputType>
     <TargetFramework>net462</TargetFramework>
@@ -59,11 +61,15 @@
     <Copyright>Copyright © 2019 Emilian Roman</Copyright>
     <PackageIcon>icon.png</PackageIcon>
     <PackageReadmeFile>readme.md</PackageReadmeFile>
+    <PackageVersion>$(GitVersion_NugGetVersion)</PackageVersion>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <!-- Misc -->
     <ProjectGuid>{ACAA5D9F-B23D-43E1-B2DF-8C03230975A1}</ProjectGuid>
     <EnableNETAnalyzers>true</EnableNETAnalyzers>
+    <UseApplicationTrust>true</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <ToolCommandName>hxe</ToolCommandName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
