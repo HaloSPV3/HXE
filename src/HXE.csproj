@@ -3,37 +3,67 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{ACAA5D9F-B23D-43E1-B2DF-8C03230975A1}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <!-- Populate some MSBuild properties with version metadata
+      The sub-task GitVersion.MsBuild.GetVersion will write all  the derived
+      variables to MSBuild properties so the information can be used by other
+      tooling in the build pipeline.
+      The class for GitVersion.MsBuild.GetVersion has a property for each
+      variable. However, at MSBuild time, these properties are mapped to
+      MSBuild properties that are prefixed with GitVersion_. This prevents
+      conflicts with other properties in the pipeline.
+      In addition, the following MSBuild properties are set when
+      UpdateVersionProperties is true (the default):
+        Version, VersionPrefix, VersionSuffix, PackageVersion,
+        InformationalVersion, AssemblyVersion and FileVersion.
+      These are used by the built-in tasks for generating AssemblyInfo's and
+      NuGet package versions.
+      -->
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>HXE</RootNamespace>
-    <AssemblyName>HXE</AssemblyName>
-    <TargetFramework>net462</TargetFramework>
-    <FileAlignment>512</FileAlignment>
     <ProductName>HXE</ProductName>
     <PublisherName>Halo SPV3 Team</PublisherName>
-    <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <!--<ApplicationRevision>0</ApplicationRevision>-->
+    <!--<ApplicationVersion>1.0.0.%2a</ApplicationVersion>-->
+    <ApplicationVersion>${GitVersion_AssemblyVersion}</ApplicationVersion>
     <UseApplicationTrust>true</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <EnableNETAnalyzers>true</EnableNETAnalyzers>
-    <ApplicationIcon>Assets\icon.ico</ApplicationIcon>
+    <!-- Application | General -->
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net462</TargetFramework>
     <StartupObject>HXE.Program</StartupObject>
+    <AssemblyName>HXE</AssemblyName>
+    <RootNamespace>HXE</RootNamespace>
+    <!-- Application | Resources -->
+    <ApplicationIcon>Assets\icon.ico</ApplicationIcon>
     <GenerateManifests>true</GenerateManifests>
     <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
-    <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
+    <!-- Build | General -->
+    <Deterministic>true</Deterministic>
+    <FileAlignment>512</FileAlignment>
+    <!-- Build | Error and warnings -->
+    <WarningLevel>4</WarningLevel>
+    <!-- Build | Output -->
+    <!-- Build | Events -->
+    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+    <!-- Build | Strong Naming -->
+    <SignAssembly>False</SignAssembly>
     <!-- NuGet Packaging -->
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <PackageProjectUrl></PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/HaloSPV3/HXE</PackageProjectUrl>
     <RepositoryUrl>https://github.com/HaloSPV3/HXE</RepositoryUrl>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <PackageTags>Halo</PackageTags>
     <PackageLicenseExpression>Zlib</PackageLicenseExpression>
-    <SignAssembly>False</SignAssembly>
     <Authors>HaloSPV3</Authors>
     <Company>github/HaloSPV3</Company>
     <Description>A HCE wrapper and SPV3 loader</Description>
     <Copyright>Copyright © 2019 Emilian Roman</Copyright>
     <PackageIcon>icon.png</PackageIcon>
+    <PackageReadmeFile>readme.md</PackageReadmeFile>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <!-- Misc -->
+    <ProjectGuid>{ACAA5D9F-B23D-43E1-B2DF-8C03230975A1}</ProjectGuid>
+    <EnableNETAnalyzers>true</EnableNETAnalyzers>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -43,18 +73,18 @@
     <OutputPath>..\bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
+    <AllowUnsafeBlocks>False</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugType>pdbonly</DebugType>
+    <DebugType>embedded</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>..\bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
+    <AllowUnsafeBlocks>False</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
     <!-- Campaign Support -->
@@ -72,19 +102,14 @@
     </ContentWithTargetPath>
     <!-- Assets -->
     <EmbeddedResource Include="Assets\banner.txt" />
+    <EmbeddedResource Include="Assets\343I_DER.cer" />
     <Content Include="Assets\icon.ico" />
-    <None Include="Assets\icon.png" Pack="true" PackagePath="\" />
     <!-- XAML Pages -->
     <Page Include="Positions.xaml" />
     <Page Include="Settings.xaml" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Assets\343I_DER.cer" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Properties\app.manifest" />
-  </ItemGroup>
-  <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.6.1">
       <Visible>False</Visible>
       <ProductName>Microsoft .NET Framework 4.6.1 %28x86 and x64%29</ProductName>
@@ -92,6 +117,20 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <!-- NuGet Package Items -->
+    <None Include="Assets\icon.png" Pack="true" PackagePath="\" />
+    <None Include="..\readme.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
+  <ItemGroup>
+    <!-- Package References -->
+    <PackageReference Include="GitVersion.MsBuild" Version="5.6.11">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.2">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Microsoft.SourceLink.GitHub">
       <Version>1.1.0-beta-20204-02</Version>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -99,6 +138,7 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
+    <!-- Assembly References -->
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System.IO.Compression" />
@@ -107,11 +147,6 @@
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xaml" />
     <Reference Include="WindowsBase" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Update="Assets\icon.png">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
         Other similar extension points exist, see Microsoft.Common.targets.
