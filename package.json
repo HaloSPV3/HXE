@@ -1,5 +1,5 @@
 {
-  "name": "conventionnal-commit-template",
+  "name": "HXE",
   "description": "Automate commit messages quality, automate changelog and release generation",
   "version": "1.0.0",
   "devDependencies": {
@@ -15,15 +15,15 @@
   "config": {
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
+    },
+    "husky": {
+      "hooks": {
+        "prepare-commit-msg": "exec < /dev/tty && git cz --hook || true"
+      }
     }
   },
   "scripts": {
-    "commit": "cz"
+    "cm": "cz",
     "prepare": "husky install"
-  },
-  "husky": {
-    "hooks": {
-      "prepare-commit-msg": "exec < /dev/tty && git cz --hook || true"
-    }
   }
 }
