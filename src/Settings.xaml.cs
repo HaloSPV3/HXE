@@ -63,15 +63,11 @@ namespace HXE
             Configuration.Load();
 
             try { AssignConfig(); }
-            catch (Exception e)
+            catch (Exception e) when (e.Message.Equals("Kernel Mode not recognized."))
             {
-                if (e.Message == "Kernel Mode not recognized.")
-                {
-                    Configuration = new Kernel.Configuration(Configuration.Path);
-                    Configuration.Save();
-                    AssignConfig();
-                }
-                else throw e;
+                Configuration = new Kernel.Configuration(Configuration.Path);
+                Configuration.Save();
+                AssignConfig();
             }
         }
 
@@ -185,7 +181,9 @@ namespace HXE
             PrintConfiguration();
 
             if (_process.ProcessName == "hxe")
+            {
                 Exit.WithCode(Exit.Code.Success);
+            }
             else
             {
                 DialogResult = true;
