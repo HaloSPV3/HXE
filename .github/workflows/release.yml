@@ -122,13 +122,13 @@ jobs:
     - name: Setup GitReleaseManager
       id: gitRM
       uses: gittools/actions/gitreleasemanager/setup@v0.9.10
-        with:
+      with:
         versionSpec: '0.12.x'
 
     - name: Setup Semantic Release
       run: npx semantic-release
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         NPM_TOKEN: ${{ secrets.SEMANTIC_RELEASE_BOT_NPM_TOKEN }}
 
     # https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-nuget-registry#authenticating-with-a-personal-access-token
