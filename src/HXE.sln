@@ -1,9 +1,34 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31410.223
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31612.314
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HXE", "HXE.csproj", "{ACAA5D9F-B23D-43E1-B2DF-8C03230975A1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HXE", "HXE.csproj", "{ACAA5D9F-B23D-43E1-B2DF-8C03230975A1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "root", "root", "{C6F8651C-6B79-4335-96B6-B263D9C8CDE0}"
+	ProjectSection(SolutionItems) = preProject
+		..\.cz.toml = ..\.cz.toml
+		..\.editorconfig = ..\.editorconfig
+		..\.gitignore = ..\.gitignore
+		..\.gitmodules = ..\.gitmodules
+		..\.hgignore = ..\.hgignore
+		..\.pre-commit-config.yaml = ..\.pre-commit-config.yaml
+		..\.releaserc.yaml = ..\.releaserc.yaml
+		..\.whitesource = ..\.whitesource
+		..\CodeMaid.config = ..\CodeMaid.config
+		..\commitlint.config.js = ..\commitlint.config.js
+		..\CONTRIBUTING.md = ..\CONTRIBUTING.md
+		..\COPYRIGHT = ..\COPYRIGHT
+		..\GitVersion.yml = ..\GitVersion.yml
+		..\package-lock.json = ..\package-lock.json
+		..\package.json = ..\package.json
+		..\README.md = ..\README.md
+		..\release.config.js = ..\release.config.js
+		..\renovate.json = ..\renovate.json
+		..\SCREENSHOT.png = ..\SCREENSHOT.png
+		..\SETUP.sh = ..\SETUP.sh
+		..\USAGE = ..\USAGE
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
