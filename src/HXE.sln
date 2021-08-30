@@ -15,7 +15,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "root", "root", "{C6F8651C-6
 		..\.pre-commit-config.yaml = ..\.pre-commit-config.yaml
 		..\.releaserc.yaml = ..\.releaserc.yaml
 		..\.whitesource = ..\.whitesource
-		..\CodeMaid.config = ..\CodeMaid.config
 		..\commitlint.config.js = ..\commitlint.config.js
 		..\CONTRIBUTING.md = ..\CONTRIBUTING.md
 		..\COPYRIGHT = ..\COPYRIGHT
@@ -28,6 +27,52 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "root", "root", "{C6F8651C-6
 		..\SCREENSHOT.png = ..\SCREENSHOT.png
 		..\SETUP.sh = ..\SETUP.sh
 		..\USAGE = ..\USAGE
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{DCA1AD2E-059B-4853-966C-D796C06961D4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{F60D542B-7585-4F69-8882-B0091CFE6EA6}"
+	ProjectSection(SolutionItems) = preProject
+		..\.github\workflows\ci.yml = ..\.github\workflows\ci.yml
+		..\.github\workflows\codeql-analysis.yml = ..\.github\workflows\codeql-analysis.yml
+		..\.github\workflows\conv-pull-requests.yml = ..\.github\workflows\conv-pull-requests.yml
+		..\.github\workflows\release.yml = ..\.github\workflows\release.yml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "codeql", "codeql", "{6958AF54-63E5-4C4B-982E-042C406340F6}"
+	ProjectSection(SolutionItems) = preProject
+		..\.github\codeql\codeql-config.yml = ..\.github\codeql\codeql-config.yml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{EFA9CCBA-46A2-47D3-A50A-8FF0478A48BF}"
+	ProjectSection(SolutionItems) = preProject
+		..\doc\_ExampleDoc.txt = ..\doc\_ExampleDoc.txt
+		..\doc\audio.txt = ..\doc\audio.txt
+		..\doc\blamsav.txt = ..\doc\blamsav.txt
+		..\doc\bless.txt = ..\doc\bless.txt
+		..\doc\chimera.txt = ..\doc\chimera.txt
+		..\doc\developer.txt = ..\doc\developer.txt
+		..\doc\exceptions.txt = ..\doc\exceptions.txt
+		..\doc\exit.txt = ..\doc\exit.txt
+		..\doc\haloce.txt = ..\doc\haloce.txt
+		..\doc\initc.txt = ..\doc\initc.txt
+		..\doc\initiation.txt = ..\doc\initiation.txt
+		..\doc\input.txt = ..\doc\input.txt
+		..\doc\kernel.txt = ..\doc\kernel.txt
+		..\doc\lastprof.txt = ..\doc\lastprof.txt
+		..\doc\opensauce.txt = ..\doc\opensauce.txt
+		..\doc\patching.txt = ..\doc\patching.txt
+		..\doc\readme.txt = ..\doc\readme.txt
+		..\doc\release.txt = ..\doc\release.txt
+		..\doc\reset.txt = ..\doc\reset.txt
+		..\doc\resume.txt = ..\doc\resume.txt
+		..\doc\savegame.txt = ..\doc\savegame.txt
+		..\doc\shaders.txt = ..\doc\shaders.txt
+		..\doc\tweaks.txt = ..\doc\tweaks.txt
+		..\doc\unlock.txt = ..\doc\unlock.txt
+		..\doc\update.txt = ..\doc\update.txt
+		..\doc\video.txt = ..\doc\video.txt
+		..\doc\waypoint.txt = ..\doc\waypoint.txt
 	EndProjectSection
 EndProject
 Global
@@ -43,6 +88,10 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{F60D542B-7585-4F69-8882-B0091CFE6EA6} = {DCA1AD2E-059B-4853-966C-D796C06961D4}
+		{6958AF54-63E5-4C4B-982E-042C406340F6} = {DCA1AD2E-059B-4853-966C-D796C06961D4}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {198FDD89-0D41-4FEE-94C3-B8F26C781D1F}
