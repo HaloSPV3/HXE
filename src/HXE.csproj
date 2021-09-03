@@ -114,7 +114,7 @@
     <Content Include="Assets\icon.ico" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Properties\app.manifest" />
+    <EmbeddedResource Include="Properties\app.manifest" />
     <BootstrapperPackage Include=".NETFramework,Version=v4.6.2">
       <Visible>False</Visible>
       <ProductName>Microsoft .NET Framework 4.6.2 %28x86 and x64%29</ProductName>
