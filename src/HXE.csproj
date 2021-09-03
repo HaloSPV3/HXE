@@ -48,8 +48,6 @@
     <RootNamespace>HXE</RootNamespace>
     <!-- Application | Resources -->
     <ApplicationIcon>Assets\icon.ico</ApplicationIcon>
-    <GenerateManifests>true</GenerateManifests>
-    <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
     <!-- Build | General -->
     <Deterministic>true</Deterministic>
     <FileAlignment>512</FileAlignment>
@@ -84,8 +82,6 @@
     <ProductName>HXE</ProductName>
     <PublisherName>Halo SPV3 Team</PublisherName>
     <EnableNETAnalyzers>true</EnableNETAnalyzers>
-    <UseApplicationTrust>true</UseApplicationTrust>
-    <BootstrapperEnabled>true</BootstrapperEnabled>
     <ToolCommandName>hxe</ToolCommandName>
     <UseWPF>true</UseWPF>
   </PropertyGroup>
