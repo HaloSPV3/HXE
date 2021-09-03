@@ -4,16 +4,28 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <!-- GitVersion Auto-Patch
-      From https://gitversion.net/docs/usage/msbuild
+      ref: https://gitversion.net/docs/usage/msbuild
 
       The sub-task named GitVersion.MsBuild.UpdateAssemblyInfo will inject
       version metadata into the assembly where GitVersion.MsBuild has been
       added to.
+      A temporary AssemblyInfo.g.cs will be generated in the output directory
+      with three assembly info attributes:
+
+      ```cs
+      using System.Reflection;
+
+      [assembly: AssemblyFileVersion("1.1.1.0")]
+      [assembly: AssemblyVersion("1.1.1.0")]
+      [assembly: AssemblyInformationalVersion("1.1.1-ci.194+Branch.main.Sha.524f19d2e8e572cb55fda09d42a668dd33dbd8d0")]
+      ```
+
+      By default, they are assigned as such:
       - AssemblyVersion              = ${GitVersion_AssemblySemVer}
       - AssemblyFileVersion          = ${GitVersion_MajorMinorPatch}.0
       - AssemblyInformationalVersion = ${GitVersion_InformationalVersion}
 
-      The sub-task GitVersion.MsBuild.GetVersion will write all the derived
+      Additionally, the sub-task GitVersion.MsBuild.GetVersion will write all the derived
       variables to MSBuild properties so the information can be used by other
       tooling in the build pipeline UpdateVersionProperties is true (the default):
        - Version
@@ -23,6 +35,10 @@
        - InformationalVersion
        - AssemblyVersion
        - FileVersion
+
+      Note: GenerateAssemblyFileVersionAttribute must be disabled to prevent
+            conflicting with GitVersion's generated values. Attributes
+            which inherit FileVersion will instead inherit GitVersion's values.
       -->
     <!-- Application | General -->
     <OutputType>Exe</OutputType>
@@ -57,7 +73,7 @@
     <Copyright>Copyright © 2019 Emilian Roman</Copyright>
     <PackageIcon>icon.png</PackageIcon>
     <PackageReadmeFile>readme.md</PackageReadmeFile>
-    <!-- NuGet Packaging | error NU5039: The readme file 'readme.md' does not exist in the package. -->
+    <!-- NuGet Packaging -->
     <IncludeSymbols>false</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <!-- GitVersion DotNet SDK Compatibility -->
