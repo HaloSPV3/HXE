@@ -49,7 +49,7 @@ jobs:
       # See #5 in https://docs.github.com/en/code-security/secure-coding/automatically-scanning-your-code-for-vulnerabilities-and-errors/troubleshooting-the-codeql-workflow#no-code-found-during-the-build
       - name: Build Solutions
         working-directory: ./src/
-        run: dotnet build HXE.sln -c "Debug" -p:platform="Any CPU" -p:UseSharedCompilation=False;
+        run: dotnet build --no-incremental HXE.sln
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v1
