@@ -43,7 +43,6 @@ jobs:
         with:
           config-file: '.github/codeql/codeql-config.yml'
           languages: 'csharp'
-          source-root: src
 
       # -p:UseSharedCompilation=false is necessary for CodeQL to analyze .NET Framework builds.
       # See #5 in https://docs.github.com/en/code-security/secure-coding/automatically-scanning-your-code-for-vulnerabilities-and-errors/troubleshooting-the-codeql-workflow#no-code-found-during-the-build
