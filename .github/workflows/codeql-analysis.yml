@@ -25,6 +25,11 @@ jobs:
       contents: read
       security-events: write
 
+    strategy:
+     fail-fast: false
+     matrix:
+      strat: [ Auto, Manual ]
+
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -47,9 +52,14 @@ jobs:
 
       # -p:UseSharedCompilation=false is necessary for CodeQL to analyze .NET Framework builds.
       # See #5 in https://docs.github.com/en/code-security/secure-coding/automatically-scanning-your-code-for-vulnerabilities-and-errors/troubleshooting-the-codeql-workflow#no-code-found-during-the-build
-      - name: Build Solutions
+      - if:  matrix.strat == 'Manual'
+        name: Build Solutions
         working-directory: ./src/
-        run: dotnet build HXE.sln -c "Debug" -p:platform="Any CPU" -p:UseSharedCompilation=False;
+        run: dotnet build
+
+      - if: matrix.strat == 'Auto'
+        name: Autobuild
+        uses: github/codeql-action/autobuild@v1
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v1
