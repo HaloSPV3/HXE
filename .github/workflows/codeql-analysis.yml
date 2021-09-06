@@ -40,7 +40,7 @@ jobs:
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v1
         with:
-          config-file: '.github/codeql/codeql-config.yml'
+          config-file: 'lgtm.yml'
           languages: 'csharp'
 
       # -p:UseSharedCompilation=false is necessary for CodeQL to analyze .NET Framework builds.
