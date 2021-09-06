@@ -5,10 +5,12 @@
 on:
   push:
     branches: [ main, develop ]
-    paths-ignore:
-    - '.github/**/*.*'
-    - '**/*.md'
-    - '**/*.txt'
+    paths:
+    - '!.github/**/*.*'
+    - '!**/*.md'
+    - '!**/*.txt'
+    - '.github/workflows/ci.yml'
+
   pull_request:
     types:
     - opened
