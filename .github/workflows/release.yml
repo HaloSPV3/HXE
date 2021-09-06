@@ -52,11 +52,6 @@ jobs:
       env:
         NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
-    # https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-nuget-registry#authenticating-with-a-personal-access-token
-    # https://github.com/marketplace/actions/setup-net-core-sdk#usage
-    - name: Authorize Pushing
-      run: dotnet nuget add source --username USERNAME --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/HaloSPV3/index.json"
-
     # https://github.com/GitTools/actions/blob/main/docs/examples/github/gitversion/index.md
     # GitVersion.MSBuild is already used to stamp the assembly/package versions.
     # This action is used to ensure we can pass the appropriate variables to Semantic Release
