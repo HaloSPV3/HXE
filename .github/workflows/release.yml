@@ -24,11 +24,6 @@ jobs:
     name: Build
     runs-on: windows-latest # The type of runner that the job will run on
 
-    strategy:
-     fail-fast: false
-     matrix:
-      build-cfg: [ Release, Debug ]
-
     steps:
     ################
     # SETUP
@@ -76,8 +71,7 @@ jobs:
     - name: Build and Pack
       working-directory: ./src/
       run: |
-        dotnet build HXE.sln -c $env:{{ matrix.build-cfg }} -p:platform="Any CPU" -p:Version="$env:{{ steps.gitversion.outputs.assemblySemVer }}" -p:PackageVersion="$env:{{ steps.gitversion.outputs.semVer}}-$env:{{ steps.gitversion.outputs.shortSha }}" -p:ContinuousIntegrationBuild=true
-        dotnet pack --no-build
+        dotnet build HXE.sln -c Release -p:ContinuousIntegrationBuild=true
 
 
     ################
