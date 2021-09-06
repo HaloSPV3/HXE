@@ -12,6 +12,9 @@ on:
   schedule:
     - cron: '35 19 * * 6'
 
+env:
+  DOTNET_NOLOGO: true
+
 jobs:
   analyze:
     name: Analyze
