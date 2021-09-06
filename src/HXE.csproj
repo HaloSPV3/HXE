@@ -160,6 +160,6 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-    <Exec Command="pwsh .\.msb.prebuild.ps1" />
+    <Exec Command="pwsh ./.msb.prebuild.ps1" />
   </Target>
 </Project>
