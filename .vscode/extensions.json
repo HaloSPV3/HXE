@@ -5,6 +5,7 @@
         "ms-dotnettools.csharp",
         "github.vscode-pull-request-github",
         "eamodio.gitlens",
-        "visualstudioexptteam.vscodeintellicode"
+        "visualstudioexptteam.vscodeintellicode",
+        "vivaxy.vscode-conventional-commits"
     ]
 }
