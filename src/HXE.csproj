@@ -107,6 +107,31 @@
     <AllowUnsafeBlocks>False</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
+    <None Include="../*.*">
+      <Link>.root\%(Filename)%(Extension)</Link>
+      <CopyToOutputDirectory>false</CopyToOutputDirectory>
+    </None>
+    <None Include="../.github/**/*.*">
+     <Link>.root\.github\%(RecursiveDir)%(Filename)%(Extension)</Link>
+    </None>
+    <None Include="../doc/**/*.*">
+      <Link>.docs\%(RecursiveDir)%(Filename)%(Extension)</Link>
+      <CopyToOutputDirectory>false</CopyToOutputDirectory>
+    </None>
+    <None Include="../*.md">
+      <Link>.docs-misc\%(Filename)%(Extension)</Link>
+      <CopyToOutputDirectory>false</CopyToOutputDirectory>
+    </None>
+    <None Include="*.txt">
+      <Link>.docs-misc\%(Filename)%(Extension)</Link>
+      <CopyToOutputDirectory>false</CopyToOutputDirectory>
+    </None>
+    <None Include="src.licenseheader">
+      <Link>.docs-misc\%(Filename)%(Extension)</Link>
+      <CopyToOutputDirectory>false</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
     <!-- Campaign Support -->
     <Content Include="Campaigns\SPV31.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -134,7 +159,9 @@
   <ItemGroup>
     <!-- NuGet Package Items -->
     <None Include="Assets\icon.png" Pack="true" PackagePath="\" />
-    <None Include="..\readme.md" Pack="true" PackagePath="\" />
+    <None Include="..\readme.md" Pack="true" PackagePath="\">
+      <Link>.docs-misc\readme.md</Link>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <!-- Package References -->
