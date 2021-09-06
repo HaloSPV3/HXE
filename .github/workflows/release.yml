@@ -1,4 +1,4 @@
-name: release
+﻿name: release
 # Ref: Building .NET Framework Applications with Github Actions
 # https://www.codingwithcalvin.net/building-net-framework-applications-with-github-actions/
 
@@ -34,9 +34,6 @@ jobs:
       with:
         fetch-depth: 0 # Required by tj-actions/changed-files and GitVersion
         submodules: 'recursive'
-
-    - name: Navigate to Workspace # https://www.codingwithcalvin.net/building-net-framework-applications-with-github-actions/
-      run: cd $GITHUB_WORKSPACE
 
     - name: Extract branch name
       uses: nelonoel/branch-name@v1.0.1
