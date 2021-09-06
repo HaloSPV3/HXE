@@ -9,6 +9,9 @@
 [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg?style=flat-square)](https://conventionalcommits.org)
 [![Codecov](https://img.shields.io/codecov/c/github/HaloSPV3/HXE.svg?style=flat-square)](https://codecov.io/gh/HaloSPV3/HXE)
 
+Main: [![ci - main](https://github.com/HaloSPV3/HXE/actions/workflows/ci.yml/badge.svg)](https://github.com/HaloSPV3/HXE/actions/workflows/ci.yml)
+Develop: [![ci - develop](https://github.com/HaloSPV3/HXE/actions/workflows/ci.yml/badge.svg?branch=develop)](https://github.com/HaloSPV3/HXE/actions/workflows/ci.yml)
+
 # Introduction
 
 This tree contains the source code & documentation for HXE, a versatile
