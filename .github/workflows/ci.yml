@@ -71,29 +71,3 @@ jobs:
     - name: Build and Publish
       working-directory: ./src/
       run: dotnet publish HXE.csproj -c ${{ matrix.buildConfig }}
-
-  ################
-  # BUILD AND PACK
-  ################
-  pack:
-    name: Pack
-    runs-on: windows-latest
-
-    steps:
-    - uses: actions/checkout@v2
-      with:
-        submodules: 'recursive'
-        fetch-depth: 0
-
-    # Authenticates packages to push to GPR
-    - uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: '6.0.x' # SDK Version to use.
-        source-url: https://nuget.pkg.github.com/HaloSPV3/index.json
-        include-prerelease: true
-      env:
-        NUGET_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-    - name: Build and Pack
-      working-directory: ./src/
-      run: dotnet pack HXE.csproj -c Release
