@@ -21,20 +21,20 @@ loader for SPV3 and wrapper for HCE.
 
 Here are some of the main features the kernel provides:
 
--   Wrapper around the HCE executable
--   Compatibility with HCE arguments (-window, -vidmode, etc.)
--   Automatic video/audio enhancements
-    -   Custom native video resolution
-    -   Border-less HCE window mode
--   Support for the SPV3 mod
-    -   SPV3 loading, updating, installing
-    -   SPV3/Lumoria campaign resuming
-    -   SPV3 post-processing tweaking
-    -   Backwards compatibility with SPV3.1
-        -   Campaign resume
-        -   Maps unlocking
-    -   Backwards compatibility with SPV3.2
--   Automatic profile detection
+- Wrapper around the HCE executable
+- Compatibility with HCE arguments (-window, -vidmode, etc.)
+- Automatic video/audio enhancements
+  - Custom native video resolution
+  - Border-less HCE window mode
+- Support for the SPV3 mod
+  - SPV3 loading, updating, installing
+  - SPV3/Lumoria campaign resuming
+  - SPV3 post-processing tweaking
+  - Backwards compatibility with SPV3.1
+    - Campaign resume
+    - Maps unlocking
+  - Backwards compatibility with SPV3.2
+- Automatic profile detection
 
 # Usage
 
