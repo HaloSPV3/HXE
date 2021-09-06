@@ -1,5 +1,5 @@
-name: ci
-# This workflow demonstrates the minimal requirements for building the Solution with DotNet CLI
+﻿name: ci
+# This workflow demonstrates the minimal requirements for building, publishing, and packing the Solution with DotNet CLI
 
 
 on:
@@ -16,12 +16,15 @@ on:
     - ready_for_review
 
 jobs:
+  ################
+  # BUILD
+  ################
   build:
     name: Build
     runs-on: windows-latest
 
     strategy:
-      fail-fast: true
+      fail-fast: false
       matrix:
         buildConfig: [ "Release", "Debug" ]
 
@@ -29,6 +32,56 @@ jobs:
     - uses: actions/checkout@v2
       with:
         submodules: 'recursive'
+        depth: 0
+
+    - uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '6.0.x' # SDK Version to use.
+        include-prerelease: true
+
+    - name: Build
+      working-directory: ./src/
+      run: dotnet build HXE.csproj -c ${{ matrix.buildConfig }}
+
+  ################
+  # BUILD AND PUBLISH
+  ################
+  publish:
+    name: Publish
+    runs-on: windows-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        buildConfig: [ "Release", "Debug" ]
+
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: 'recursive'
+        depth: 0
+
+    - uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '6.0.x' # SDK Version to use.
+        include-prerelease: true
+
+    - name: Build and Publish
+      working-directory: ./src/
+      run: dotnet publish HXE.csproj -c ${{ matrix.buildConfig }}
+
+  ################
+  # BUILD AND PACK
+  ################
+  pack:
+    name: Pack
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: 'recursive'
+        depth: 0
 
     # Authenticates packages to push to GPR
     - uses: actions/setup-dotnet@v1
@@ -39,10 +92,6 @@ jobs:
       env:
         NUGET_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-    ################
-    # BUILD
-    ################
-
     - name: Build and Pack
       working-directory: ./src/
-      run: dotnet pack HXE.csproj -c ${{ matrix.buildConfig }}
+      run: dotnet pack HXE.csproj -c Release
