@@ -115,10 +115,10 @@ jobs:
         NPM_TOKEN: ${{ secrets.SEMANTIC_RELEASE_BOT_NPM_TOKEN }}
 
     - name: Publish the package to GPR
-      run: dotnet nuget push hxe/bin/Release/*.nupkg
+      run: dotnet nuget push bin/Release/*.nupkg
 
     - name: Publish the package to nuget.org
-      run: dotnet nuget push hxe/bin/Release/*.nupkg -k $NUGET_AUTH_TOKEN -s https://api.nuget.org/v3/index.json
+      run: dotnet nuget push bin/Release/*.nupkg -k $NUGET_AUTH_TOKEN -s https://api.nuget.org/v3/index.json
       env:
         NUGET_AUTH_TOKEN: ${{ secrets.NUGET_TOKEN }}
 
