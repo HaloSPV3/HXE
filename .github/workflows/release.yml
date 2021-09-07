@@ -104,7 +104,7 @@ jobs:
     # It seems the implicitly executed nuget packaging is ignored in the CI
     - name: DotNet Pack
       working-directory: src
-      run: dotnet pack
+      run: dotnet pack -c Release
 
     # https://github.com/GitTools/actions/blob/main/docs/examples/github/gitreleasemanager/index.md
     - name: Setup GitReleaseManager
