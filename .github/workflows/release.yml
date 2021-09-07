@@ -1,4 +1,4 @@
-name: release
+﻿name: release
 # Ref: Building .NET Framework Applications with Github Actions
 # https://www.codingwithcalvin.net/building-net-framework-applications-with-github-actions/
 
@@ -11,11 +11,10 @@ name: release
 on:
   push:
     branches: [ main ]
-    paths:
-    - '!.github/**/*.*'
-    - '!**/*.md'
-    - '!**/*.txt'
-    - '.github/workflows/release.yml'
+    paths-ignore:
+    - '.github/workflows/'
+    - '**/*.md'
+    - '**/*.txt'
 
  # A workflow run is made up of one or more jobs that can run sequentially or in parallel
  # However, each Job uses separate Runners
