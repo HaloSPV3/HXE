@@ -15,7 +15,7 @@ function prebuild
 
     # 0. Announce
     Write-Host  "0. GitVersion cannot determine the next version in shallow reposistories.`n",
-                "We will determine if the current repository is needs to be un-shallowed.`n`n",
+                "We will determine if the current repository needs to be un-shallowed.`n`n",
                 "Note: Git is required to 'unshallow' the repository so GitVersion can work.`n",
                 "Checking if Git is available...`n"
 
