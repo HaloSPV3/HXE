@@ -186,4 +186,7 @@
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
     <Exec Command="pwsh ./.msb.prebuild.ps1" />
   </Target>
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="del $(TargetPath).config" />
+  </Target>
 </Project>
