@@ -154,9 +154,6 @@
     <Content Include="Assets\icon.ico" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Properties\app.manifest" />
-  </ItemGroup>
-  <ItemGroup>
     <!-- NuGet Package Items -->
     <None Include="Assets\icon.png" Pack="true" PackagePath="\" />
     <None Include="..\readme.md" Pack="true" PackagePath="\">
