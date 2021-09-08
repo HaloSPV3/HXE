@@ -66,9 +66,7 @@ jobs:
     ################
     - name: Build and Pack
       working-directory: ./src/
-      run: |
-        dotnet build HXE.sln -c Release -p:ContinuousIntegrationBuild=true
-
+      run: dotnet build HXE.sln -c Release -p:ContinuousIntegrationBuild=true
 
     ################
     # TESTS
