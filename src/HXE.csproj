@@ -84,6 +84,7 @@
     <!-- Not supported when targeting net4xx
     <PublishSingleFile>true</PublishSingleFile>-->
     <PublishTrimmed>true</PublishTrimmed>
+    <RuntimeIdentifier>win</RuntimeIdentifier>
     <EnableNETAnalyzers>true</EnableNETAnalyzers>
     <ToolCommandName>hxe</ToolCommandName>
     <UseWPF>true</UseWPF>
