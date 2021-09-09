@@ -187,6 +187,6 @@
     <Exec Command="pwsh ./.msb.prebuild.ps1" />
   </Target>
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="del $(TargetPath).config" />
+    <Exec Command="pwsh ./.msb.postbuild.ps1" />
   </Target>
 </Project>
