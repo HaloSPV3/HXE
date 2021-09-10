@@ -192,7 +192,7 @@
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
     <Exec Command="pwsh ./.msb.prebuild.ps1" />
   </Target>
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="pwsh ./.msb.postbuild.ps1" />
+  <Target Name="NoConfig" AfterTargets="PostBuildEvent;AfterPublish">
+    <Exec Command="pwsh ./.msb.noConfig.ps1" />
   </Target>
 </Project>
