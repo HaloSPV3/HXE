@@ -9,32 +9,11 @@
       The sub-task named GitVersion.MsBuild.UpdateAssemblyInfo will inject
       version metadata into the assembly where GitVersion.MsBuild has been
       added to.
-      A temporary AssemblyInfo.g.cs will be generated in the output directory
-      with three assembly info attributes:
-
-      ```cs
-      using System.Reflection;
-
-      [assembly: AssemblyFileVersion("1.1.1.0")]
-      [assembly: AssemblyVersion("1.1.1.0")]
-      [assembly: AssemblyInformationalVersion("1.1.1-ci.194+Branch.main.Sha.524f19d2e8e572cb55fda09d42a668dd33dbd8d0")]
-      ```
 
       By default, they are assigned as such:
       - AssemblyVersion              = ${GitVersion_AssemblySemVer}
       - AssemblyFileVersion          = ${GitVersion_MajorMinorPatch}.0
       - AssemblyInformationalVersion = ${GitVersion_InformationalVersion}
-
-      Additionally, the sub-task GitVersion.MsBuild.GetVersion will write all the derived
-      variables to MSBuild properties so the information can be used by other
-      tooling in the build pipeline UpdateVersionProperties is true (the default):
-       - Version
-       - VersionPrefix
-       - VersionSuffix
-       - PackageVersion
-       - InformationalVersion
-       - AssemblyVersion
-       - FileVersion
 
       Note: GenerateAssemblyFileVersionAttribute must be disabled to prevent
             conflicting with GitVersion's generated values. Attributes
