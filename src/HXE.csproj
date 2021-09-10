@@ -91,18 +91,18 @@
     <AllowUnsafeBlocks>False</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
-    <None Include="../*.*">
+    <None Include="..\*.*">
       <Link>.root\%(Filename)%(Extension)</Link>
       <CopyToOutputDirectory>false</CopyToOutputDirectory>
     </None>
-    <None Include="../.github/**/*.*">
+    <None Include="..\.github/**/*.*">
      <Link>.root\.github\%(RecursiveDir)%(Filename)%(Extension)</Link>
     </None>
-    <None Include="../doc/**/*.*">
+    <None Include="..\doc/**/*.*">
       <Link>.docs\%(RecursiveDir)%(Filename)%(Extension)</Link>
       <CopyToOutputDirectory>false</CopyToOutputDirectory>
     </None>
-    <None Include="../*.md">
+    <None Include="..\*.md">
       <Link>.docs-misc\%(Filename)%(Extension)</Link>
       <CopyToOutputDirectory>false</CopyToOutputDirectory>
     </None>
