@@ -1,4 +1,20 @@
 {
   "branches": ["main"],
-  "plugins": ['@semantic-release/commit-analyzer', '@semantic-release/release-notes-generator', '@semantic-release/github']
+  "plugins": [
+  ["@semantic-release/commit-analyzer", {
+      # https://github.com/semantic-release/commit-analyzer/blob/master/lib/default-release-rules.js
+      # General:
+      # - {breaking: true, release: 'major'},
+      # - {revert: true, release: 'patch'},
+      # Angular (Default Preset)
+      # - {type: 'feat', release: 'minor'},
+      # - {type: 'fix', release: 'patch'},
+      # - {type: 'perf', release: 'patch'},
+      # - ...and more, but they don't bump versions
+      "parserOpts": {
+        "noteKeywords": ["BREAKING CHANGE", "BREAKING CHANGES"]
+      }
+    }],
+  '@semantic-release/release-notes-generator',
+  '@semantic-release/github']
 }
