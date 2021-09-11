@@ -65,8 +65,11 @@ jobs:
     # BUILD
     ################
     - name: Build and Pack
-      working-directory: ./src/
-      run: dotnet build HXE.sln -c Release -p:ContinuousIntegrationBuild=true
+      run: dotnet build src -c Release -p:ContinuousIntegrationBuild=true
+
+    - name: DotNet Publish
+      run: dotnet publish src --self-contained -c Release --use-current-runtime --os win
+
 
     ################
     # TESTS
