@@ -2,9 +2,7 @@
   # docs: https://semantic-release.gitbook.io/semantic-release/usage/workflow-configuration#branch-types
   "branches": [
     {name: "main" },
-    {name: "develop", channel: "alpha", prerelease: "alpha"},
-    {name: "feature/**", channel: "beta", prerelease: "beta"},
-    {name: "hotfix/**", channel: "beta", prerelease: "beta"}
+    {name: "develop", channel: "alpha", prerelease: "alpha"}
   ],
   "plugins": [
   ["@semantic-release/commit-analyzer", {
