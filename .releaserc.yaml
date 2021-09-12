@@ -1,8 +1,14 @@
 {
-  "branches": ["main"],
+  # docs: https://semantic-release.gitbook.io/semantic-release/usage/workflow-configuration#branch-types
+  "branches": [
+    {name: "main" },
+    {name: "develop", channel: "alpha", prerelease: "alpha"},
+    {name: "feature/**", channel: "beta", prerelease: "beta"},
+    {name: "hotfix/**", channel: "beta", prerelease: "beta"}
+  ],
   "plugins": [
   ["@semantic-release/commit-analyzer", {
-      # https://github.com/semantic-release/commit-analyzer/blob/master/lib/default-release-rules.js
+      # docs: https://github.com/semantic-release/commit-analyzer/blob/master/lib/default-release-rules.js
       # General:
       # - {breaking: true, release: 'major'},
       # - {revert: true, release: 'patch'},
