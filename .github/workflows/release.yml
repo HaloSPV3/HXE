@@ -64,8 +64,10 @@ jobs:
     ################
     # BUILD
     ################
-    - name: Build and Pack
-      run: dotnet build src -c Release -p:ContinuousIntegrationBuild=true
+    - name: Build, Pack, and prep for Publish
+      run: |
+        dotnet publish src -c Release --self-contained --use-current-runtime -p:ContinuousIntegrationBuild=true
+        ./.msb.noConfig.ps1
 
     - name: DotNet Publish
       run: dotnet publish src --self-contained -c Release --use-current-runtime --os win
