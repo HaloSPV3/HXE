@@ -69,9 +69,9 @@ jobs:
         dotnet publish src -c Release --self-contained --use-current-runtime -p:ContinuousIntegrationBuild=true
         ./.msb.noConfig.ps1
 
-    - name: DotNet Publish
-      run: dotnet publish src --self-contained -c Release --use-current-runtime --os win
-
+    - name: Compress Publish Artifacts
+      working-directory: bin/release/win/publish
+      run: 7z a "HXE.{{ steps.gitversion.outputs.fullSemVer }}" *.xml *.exe
 
     ################
     # TESTS
