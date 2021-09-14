@@ -124,10 +124,14 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         NPM_TOKEN: ${{ secrets.SEMANTIC_RELEASE_BOT_NPM_TOKEN }}
 
-    - name: Publish the package to GPR
-      run: dotnet nuget push bin/Release/*.nupkg
+    - name: Publish to GitHub Packages
+      working-directory: bin/Release
+      run: dotnet nuget push *.nupkg -k $NUGET_AUTH_TOKEN -s https://nuget.pkg.github.com/HaloSPV3/index.json
+      env:
+        NUGET_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Publish the package to nuget.org
-      run: dotnet nuget push bin/Release/*.nupkg -k $NUGET_AUTH_TOKEN -s https://api.nuget.org/v3/index.json
+    - name: Publish to nuget.org
+      working-directory: bin/Release
+      run: dotnet nuget push *.nupkg -k $NUGET_AUTH_TOKEN -s https://api.nuget.org/v3/index.json
       env:
         NUGET_AUTH_TOKEN: ${{ secrets.NUGET_TOKEN }}
