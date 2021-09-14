@@ -137,8 +137,8 @@ jobs:
 
     - name: Publish to GitHub Packages
       working-directory: bin/Release
-      run: dotnet nuget push *.nupkg -u USERNAME -p ${{ secrets.GITHUB_TOKEN }} -s "github"
+      run: dotnet nuget push *.nupkg -s "github"
 
     - name: Publish to nuget.org
       working-directory: bin/Release
-      run: dotnet nuget push *.nupkg -u USERNAME -p ${{ secrets.NUGET_TOKEN }} -s "nuget"
+      run: dotnet nuget push *.nupkg -s "nuget"
