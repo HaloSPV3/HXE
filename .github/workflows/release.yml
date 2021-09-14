@@ -79,6 +79,11 @@ jobs:
     # TODO: Set up unit tests for HXE.csproj
     ################
 
+    # TODO: HXE dry-run
+    #- name: Test x86 compatibility
+    #  run: |
+    #    dotnet run --project src/ -r win-x86 -- --config
+
     #- name: Setup OpenCover, XUnit for .NET Framework
     #  run: |
     #    choco install opencover.portable
