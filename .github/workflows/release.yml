@@ -42,6 +42,8 @@ jobs:
       uses: actions/setup-node@v2
     # Dependents: Semantic Release
 
+    - run: npm install
+
     # Authenticates packages to push to GPR
     - uses: actions/setup-dotnet@v1
       with:
