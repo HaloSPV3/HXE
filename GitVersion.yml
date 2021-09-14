@@ -1,3 +1,4 @@
+# https://github.com/GitTools/GitVersion/blob/main/docs/input/docs/reference/configuration.md
 tag-prefix: '[vV]'
 mode: ContinuousDeployment
 major-version-bump-message: "^(breaking|build|chore|ci|docs|feat|fix|perf|refactor|revert|style|test)(\\([\\w\\s]*\\))?(!:|:.*\\n\\n((.+\\n)+\\n)?BREAKING CHANGE:\\s.+)"
