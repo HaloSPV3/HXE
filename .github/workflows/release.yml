@@ -70,7 +70,7 @@ jobs:
         src/.msb.noConfig.ps1
 
     - name: Compress Publish Artifacts
-      working-directory: bin/release/win/publish
+      working-directory: bin/release/win-x64/publish
       run: 7z a "HXE.$fullSemVer.zip" *.xml *.exe
       env:
         fullSemVer: ${{ steps.gitversion.outputs.fullSemVer }}
@@ -129,7 +129,8 @@ jobs:
     - name: Upload Artifact
       uses: actions/upload-artifact@v2
       with:
-        name: bin/release/win/publish
+        name: publish-artifacts
+        path: bin/release/win-x64/publish
 
     - name: Publish to GitHub Packages
       working-directory: bin/Release
