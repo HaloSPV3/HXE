@@ -108,6 +108,7 @@ jobs:
     ################
     # RELEASE
     ################
+    # GitReleaseManager or Semantic Release?
 
     # https://github.com/GitTools/actions/blob/main/docs/examples/github/gitreleasemanager/index.md
     - name: Setup GitReleaseManager
@@ -116,6 +117,7 @@ jobs:
       with:
         versionSpec: '0.12.x'
 
+    # https://github.com/marketplace/actions/action-for-semantic-release
     - name: Setup Semantic Release
       run: npx semantic-release
       env:
@@ -129,5 +131,3 @@ jobs:
       run: dotnet nuget push bin/Release/*.nupkg -k $NUGET_AUTH_TOKEN -s https://api.nuget.org/v3/index.json
       env:
         NUGET_AUTH_TOKEN: ${{ secrets.NUGET_TOKEN }}
-
-    # GitReleaseManager or Semantic Release?
