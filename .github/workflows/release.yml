@@ -75,7 +75,7 @@ jobs:
 
     ################
     # TESTS
-    # TODO: Move Unit Tests to separate worflows
+    # TODO: Move Unit Tests to separate workflows
     # TODO: Set up unit tests for HXE.csproj
     ################
 
