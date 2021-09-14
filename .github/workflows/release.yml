@@ -51,7 +51,7 @@ jobs:
         source-url: https://nuget.pkg.github.com/HaloSPV3/index.json
         include-prerelease: true
       env:
-        NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+        NUGET_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     # https://github.com/GitTools/actions/blob/main/docs/examples/github/gitversion/index.md
     # GitVersion.MSBuild is already used to stamp the assembly/package versions.
@@ -134,12 +134,8 @@ jobs:
 
     - name: Publish to GitHub Packages
       working-directory: bin/Release
-      run: dotnet nuget push *.nupkg -k $NUGET_AUTH_TOKEN -s https://nuget.pkg.github.com/HaloSPV3/index.json
-      env:
-        NUGET_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: dotnet nuget push *.nupkg --username USERNAME --password ${{ secrets.GITHUB_TOKEN }} -s "https://nuget.pkg.github.com/HaloSPV3/index.json"
 
     - name: Publish to nuget.org
       working-directory: bin/Release
-      run: dotnet nuget push *.nupkg -k $NUGET_AUTH_TOKEN -s https://api.nuget.org/v3/index.json
-      env:
-        NUGET_AUTH_TOKEN: ${{ secrets.NUGET_TOKEN }}
+      run: dotnet nuget push *.nupkg -k ${{ secrets.NUGET_TOKEN }} -s https://api.nuget.org/v3/index.json
