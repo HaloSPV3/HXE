@@ -13,7 +13,7 @@
       "preset": "conventionalcommits",
       "presetConfig": [ ],
       "releaseRules": [
-        {"type": "revert", "subject": "!(feat|fix|perf)", "release": "false"}
+        {"type": "revert", "subject": "!(feat|fix|perf)", "release": false}
       ]
     }],
     ["@semantic-release/release-notes-generator",{
@@ -23,7 +23,7 @@
       "preset": "conventionalcommits",
       "presetConfig": [ ],
       "releaseRules": [
-        {"type": "revert", "subject": "!(feat|fix|perf)", "release": "false"}
+        {"type": "revert", "subject": "!(feat|fix|perf)", "release": false}
       ]
     }],
     '@semantic-release/github': [
