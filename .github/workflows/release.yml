@@ -52,6 +52,9 @@ jobs:
     - name: Add GitHub Package Repository
       run: dotnet nuget add source https://nuget.pkg.github.com/HaloSPV3/index.json -n "github" -u USERNAME -p ${{ secrets.GITHUB_TOKEN }}--store-password-in-clear-text
 
+    - name: (TEMP) list nuget sources
+      run: dotnet nuget list source
+
     - name: Set NuGet.org Credentials
       run: dotnet nuget update source Nuget -u USERNAME -p ${{ secrets.NUGET_TOKEN }} --store-password-in-clear-text
 
