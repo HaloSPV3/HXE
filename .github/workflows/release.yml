@@ -52,8 +52,16 @@ jobs:
     - name: Add GitHub Package Repository
       run: dotnet nuget add source https://nuget.pkg.github.com/HaloSPV3/index.json -n "github" -u USERNAME -p ${{ secrets.GITHUB_TOKEN }}--store-password-in-clear-text
 
+      #Registered Sources:
+      #  1.  nuget.org [Enabled]
+      #      https://api.nuget.org/v3/index.json
+      #  2.  github [Enabled]
+      #      https://nuget.pkg.github.com/HaloSPV3/index.json
+      #  3.  Microsoft Visual Studio Offline Packages [Enabled]
+      #      C:\Program Files (x86)\Microsoft SDKs\NuGetPackages\
+
     - name: Set NuGet.org Credentials
-      run: dotnet nuget update source Nuget -u USERNAME -p ${{ secrets.NUGET_TOKEN }} --store-password-in-clear-text
+      run: dotnet nuget update source "nuget.org" -u USERNAME -p ${{ secrets.NUGET_TOKEN }} --store-password-in-clear-text
 
     # https://github.com/GitTools/actions/blob/main/docs/examples/github/gitversion/index.md
     # GitVersion.MSBuild is already used to stamp the assembly/package versions.
