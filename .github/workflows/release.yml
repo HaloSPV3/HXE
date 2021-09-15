@@ -148,4 +148,4 @@ jobs:
 
     - name: Publish to nuget.org
       working-directory: bin/Release
-      run: dotnet nuget push *.nupkg -s "nuget"
+      run: dotnet nuget push *.nupkg -s "nuget.org" -k ${{ secrets.NUGET_TOKEN }}
