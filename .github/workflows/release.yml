@@ -83,7 +83,7 @@ jobs:
 
     - name: Compress Publish Artifacts
       working-directory: bin/release/win-x64/publish
-      run: 7z a "HXE.$GitVersion_FullSemVer.zip" *.xml *.exe
+      run: 7z a "HXE.$env:GitVersion_FullSemVer.zip" *.xml *.exe
 
     ################
     # TESTS
