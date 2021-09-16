@@ -13,7 +13,19 @@
       "preset": "conventionalcommits",
       "presetConfig": [ ],
       "releaseRules": [
-        {"type": "revert", "subject": "!(feat|fix|perf)", "release": false}
+#[2:55:09 PM] [semantic-release] [@semantic-release/commit-analyzer] » i  Analyzing commit: Revert "ci(release): change paths-ignore to mixed paths filter"
+#[2:55:09 PM] [semantic-release] [@semantic-release/commit-analyzer] » i  The release type for the commit is patch
+#[2:55:09 PM] [semantic-release] [@semantic-release/commit-analyzer] » i  Analyzing commit: Revert "ci(release): add step DotNet Pack"
+#[2:55:09 PM] [semantic-release] [@semantic-release/commit-analyzer] » i  The release type for the commit is patch
+#[2:55:09 PM] [semantic-release] [@semantic-release/commit-analyzer] » i  Analysis of 193 commits complete: patch release
+#[2:55:09 PM] [semantic-release] » √  Completed step "analyzeCommits" of plugin "@semantic-release/commit-analyzer"
+#[2:55:09 PM] [semantic-release] » i  The next release version is 1.0.3
+#[2:55:09 PM] [semantic-release] » i  Start step "generateNotes" of plugin "@semantic-release/release-notes-generator"
+#[2:55:09 PM] [semantic-release] » √  Completed step "generateNotes" of plugin "@semantic-release/release-notes-generator"
+#[2:55:12 PM] [semantic-release] » √  Created tag v1.0.3
+#[2:55:12 PM] [semantic-release] » √  Published release 1.0.3 on default channel
+        {"type": "revert", "subject": "!(feat|fix|perf)", "release": false},
+        {"type": "revert", "subject": "(build|chore|ci|docs|refactor|revert|style|test)", "release": false}
       ]
     }],
     ["@semantic-release/release-notes-generator",{
