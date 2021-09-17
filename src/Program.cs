@@ -57,6 +57,7 @@ namespace HXE
         /// </summary>
         /// <param name="args">
         ///   --help              Displays commands list                        <br/>
+        ///   --test              Start a dry run of HXE to self-test           <br/>
         ///   --config            Opens configuration GUI                       <br/>
         ///   --positions         Opens first-person model positions GUI        <br/>
         ///   --install=VALUE     Installs HCE/SPV3   to destination            <br/>
@@ -74,13 +75,13 @@ namespace HXE
         ///   --exec=VALUE        Loads HCE           with custom init file     <br/>
         ///   --vidmode=VALUE     Loads HCE           with custom res. and Hz   <br/>
         ///   --refresh=VALUE     Loads HCE           with custom refresh rate  <br/>
-        ///   --test              HXE dryrun
         /// </param>
         private static void InvokeProgram(string[] args)
         {
             Directory.CreateDirectory(Paths.Directory);
 
             var help = false;            /* Displays commands list              */
+            var test = false;            /* Start a dry run of HXE to self-test */
             var config = false;          /* Opens configuration GUI             */
             var positions = false;       /* Opens positions GUI                 */
             var install = string.Empty;  /* Installs HCE/SPV3 to destination    */
@@ -101,6 +102,7 @@ namespace HXE
 
             var options = new OptionSet()
               .Add("help", "Displays commands list", s => help = s != null)                                  /* hxe command   */
+              .Add("test", "Start a dry run of HXE to self-test", s => test =s != null)                      /* hxe command   */
               .Add("config", "Opens configuration GUI", s => config = s != null)                             /* hxe command   */
               .Add("positions", "Opens positions GUI", s => positions = s != null)                           /* hxe command   */
               .Add("install=", "Installs HCE/SPV3 to destination", s => install = s)                         /* hxe parameter */
@@ -130,6 +132,38 @@ namespace HXE
             {
                 options.WriteOptionDescriptions(Out);
                 Exit(0);
+            }
+
+            if (test)
+            {
+                // TODO: Move to Test.cs; reduce Program.cs bloat
+                var test_config = new Kernel.Configuration(Path.Combine(Path.GetTempPath(), "kernel.bin"));
+                int app = 0;
+                try
+                {
+                    Logs("Testing Settings window...");
+                    var test_settings = new Settings(test_config);
+                    app = new Application().Run(test_settings);
+                    test_settings.Hide();
+                    Logs("Settings Test: Succeeded");
+                }
+                catch(Exception e)
+                {
+                    Error("Settings window threw an exception!" + NewLine + e.Message);
+                }
+
+                try
+                {
+                    Logs("Testing Positions window...");
+                    var test_positions = new Positions();
+                    app = new Application().Run(test_positions);
+                    test_positions.Hide();
+                    Logs("Positions Test: Succeeded");
+                }
+                catch(Exception e)
+                {
+                    Error("Positions window threw an exception!" + NewLine + e.Message);
+                }
             }
 
             if (config)
