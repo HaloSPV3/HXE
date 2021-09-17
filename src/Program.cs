@@ -56,61 +56,70 @@ namespace HXE
         ///   Console API to the HXE kernel, installer and compiler.
         /// </summary>
         /// <param name="args">
-        ///   --config            Opens configuration GUI
-        ///   --load              Initiates HCE/SPV3
-        ///   --install=VALUE     Installs HCE/SPV3   to destination
-        ///   --compile=VALUE     Compiles HCE/SPV3   to destination
-        ///   --console           Loads HCE           with console mode
-        ///   --devmode           Loads HCE           with developer mode
-        ///   --screenshot        Loads HCE           with screenshot ability
-        ///   --window            Loads HCE           in window mode
-        ///   --nogamma           Loads HCE           without gamma overriding
-        ///   --adapter=VALUE     Loads HCE           on monitor X
-        ///   --path=VALUE        Loads HCE           with custom profile path
-        ///   --vidmode=VALUE     Loads HCE           with video mode
+        ///   --help              Displays commands list                        <br/>
+        ///   --test              Start a dry run of HXE to self-test           <br/>
+        ///   --config            Opens configuration GUI                       <br/>
+        ///   --positions         Opens first-person model positions GUI        <br/>
+        ///   --install=VALUE     Installs HCE/SPV3   to destination            <br/>
+        ///   --compile=VALUE     Compiles HCE/SPV3   to destination            <br/>
+        ///   --update=VALUE      Updates directory with specified manifest     <br/>
+        ///   --registry=VALUE    Write to Windows Registry                     <br/>
+        ///   --infer             Infer the running Halo executable             <br/>
+        ///   --console           Loads HCE           with console mode         <br/>
+        ///   --devmode           Loads HCE           with developer mode       <br/>
+        ///   --screenshot        Loads HCE           with screenshot ability   <br/>
+        ///   --window            Loads HCE           in window mode            <br/>
+        ///   --nogamma           Loads HCE           without gamma overriding  <br/>
+        ///   --adapter=VALUE     Loads HCE           on monitor X              <br/>
+        ///   --path=VALUE        Loads HCE           with custom profile path  <br/>
+        ///   --exec=VALUE        Loads HCE           with custom init file     <br/>
+        ///   --vidmode=VALUE     Loads HCE           with custom res. and Hz   <br/>
+        ///   --refresh=VALUE     Loads HCE           with custom refresh rate  <br/>
         /// </param>
         private static void InvokeProgram(string[] args)
         {
             Directory.CreateDirectory(Paths.Directory);
 
-            var help = false;        /* Displays commands list              */
-            var config = false;        /* Opens configuration GUI             */
-            var positions = false;        /* Opens positions GUI                 */
-            var install = string.Empty; /* Installs HCE/SPV3 to destination    */
-            var compile = string.Empty; /* Compiles HCE/SPV3 to destination    */
-            var update = string.Empty; /* Updates directory using manifest    */
+            var help = false;            /* Displays commands list              */
+            var test = false;            /* Start a dry run of HXE to self-test */
+            var config = false;          /* Opens configuration GUI             */
+            var positions = false;       /* Opens positions GUI                 */
+            var install = string.Empty;  /* Installs HCE/SPV3 to destination    */
+            var compile = string.Empty;  /* Compiles HCE/SPV3 to destination    */
+            var update = string.Empty;   /* Updates directory using manifest    */
             var registry = string.Empty; /* Write to Windows Registry           */
-            var infer = false;        /* Infer the running Halo executable   */
-            var console = false;        /* Loads HCE with console mode         */
-            var devmode = false;        /* Loads HCE with developer mode       */
-            var screenshot = false;        /* Loads HCE with screenshot ability   */
-            var window = false;        /* Loads HCE in window mode            */
-            var nogamma = false;        /* Loads HCE without gamma overriding  */
-            var adapter = string.Empty; /* Loads HCE on monitor X              */
-            var path = string.Empty; /* Loads HCE with custom profile path  */
-            var exec = string.Empty; /* Loads HCE with custom init file     */
-            var vidmode = string.Empty; /* Loads HCE with custom res. and Hz   */
-            var refresh = string.Empty; /* Loads HCE with custom refresh rate  */
+            var infer = false;           /* Infer the running Halo executable   */
+            var console = false;         /* Loads HCE with console mode         */
+            var devmode = false;         /* Loads HCE with developer mode       */
+            var screenshot = false;      /* Loads HCE with screenshot ability   */
+            var window = false;          /* Loads HCE in window mode            */
+            var nogamma = false;         /* Loads HCE without gamma overriding  */
+            var adapter = string.Empty;  /* Loads HCE on monitor X              */
+            var path = string.Empty;     /* Loads HCE with custom profile path  */
+            var exec = string.Empty;     /* Loads HCE with custom init file     */
+            var vidmode = string.Empty;  /* Loads HCE with custom res. and Hz   */
+            var refresh = string.Empty;  /* Loads HCE with custom refresh rate  */
 
             var options = new OptionSet()
-              .Add("help", "Displays commands list", s => help = s != null)  /* hxe command   */
-              .Add("config", "Opens configuration GUI", s => config = s != null)  /* hxe command   */
-              .Add("positions", "Opens positions GUI", s => positions = s != null)  /* hxe command   */
-              .Add("install=", "Installs HCE/SPV3 to destination", s => install = s)          /* hxe parameter */
-              .Add("compile=", "Compiles HCE/SPV3 to destination", s => compile = s)          /* hxe parameter */
-              .Add("update=", "Updates directory using manifest", s => update = s)          /* hxe parameter */
-              .Add("registry=", "Create Registry keys for Retail, Custom, Trial, or HEK", s => registry = s)          /* hxe parameter */
-              .Add("infer", "Infer the running Halo executable", s => infer = s != null)  /* hxe parameter */
-              .Add("console", "Loads HCE with console mode", s => console = s != null)  /* hce parameter */
-              .Add("devmode", "Loads HCE with developer mode", s => devmode = s != null)  /* hce parameter */
-              .Add("screenshot", "Loads HCE with screenshot ability", s => screenshot = s != null)  /* hce parameter */
-              .Add("window", "Loads HCE in window mode", s => window = s != null)  /* hce parameter */
-              .Add("nogamma", "Loads HCE without gamma overriding", s => nogamma = s != null)  /* hce parameter */
-              .Add("adapter=", "Loads HCE on monitor X", s => adapter = s)          /* hce parameter */
-              .Add("path=", "Loads HCE with custom profile path", s => path = s)          /* hce parameter */
-              .Add("exec=", "Loads HCE with custom init file", s => exec = s)          /* hce parameter */
-              .Add("vidmode=", "Loads HCE with custom res. and Hz", s => vidmode = s)          /* hce parameter */
-              .Add("refresh=", "Loads HCE with custom refresh rate", s => refresh = s);         /* hce parameter */
+              .Add("help", "Displays commands list", s => help = s != null)                                  /* hxe command   */
+              .Add("test", "Start a dry run of HXE to self-test", s => test =s != null)                      /* hxe command   */
+              .Add("config", "Opens configuration GUI", s => config = s != null)                             /* hxe command   */
+              .Add("positions", "Opens positions GUI", s => positions = s != null)                           /* hxe command   */
+              .Add("install=", "Installs HCE/SPV3 to destination", s => install = s)                         /* hxe parameter */
+              .Add("compile=", "Compiles HCE/SPV3 to destination", s => compile = s)                         /* hxe parameter */
+              .Add("update=", "Updates directory using manifest", s => update = s)                           /* hxe parameter */
+              .Add("registry=", "Create Registry keys for Retail, Custom, Trial, or HEK", s => registry = s) /* hxe parameter */
+              .Add("infer", "Infer the running Halo executable", s => infer = s != null)                     /* hxe parameter */
+              .Add("console", "Loads HCE with console mode", s => console = s != null)                       /* hce parameter */
+              .Add("devmode", "Loads HCE with developer mode", s => devmode = s != null)                     /* hce parameter */
+              .Add("screenshot", "Loads HCE with screenshot ability", s => screenshot = s != null)           /* hce parameter */
+              .Add("window", "Loads HCE in window mode", s => window = s != null)                            /* hce parameter */
+              .Add("nogamma", "Loads HCE without gamma overriding", s => nogamma = s != null)                /* hce parameter */
+              .Add("adapter=", "Loads HCE on monitor X", s => adapter = s)                                   /* hce parameter */
+              .Add("path=", "Loads HCE with custom profile path", s => path = s)                             /* hce parameter */
+              .Add("exec=", "Loads HCE with custom init file", s => exec = s)                                /* hce parameter */
+              .Add("vidmode=", "Loads HCE with custom res. and Hz", s => vidmode = s)                        /* hce parameter */
+              .Add("refresh=", "Loads HCE with custom refresh rate", s => refresh = s);                      /* hce parameter */
 
             var input = options.Parse(args);
 
@@ -123,6 +132,38 @@ namespace HXE
             {
                 options.WriteOptionDescriptions(Out);
                 Exit(0);
+            }
+
+            if (test)
+            {
+                // TODO: Move to Test.cs; reduce Program.cs bloat
+                var test_config = new Kernel.Configuration(Path.Combine(Path.GetTempPath(), "kernel.bin"));
+                int app = 0;
+                try
+                {
+                    Logs("Testing Settings window...");
+                    var test_settings = new Settings(test_config);
+                    app = new Application().Run(test_settings);
+                    test_settings.Hide();
+                    Logs("Settings Test: Succeeded");
+                }
+                catch(Exception e)
+                {
+                    Error("Settings window threw an exception!" + NewLine + e.Message);
+                }
+
+                try
+                {
+                    Logs("Testing Positions window...");
+                    var test_positions = new Positions();
+                    app = new Application().Run(test_positions);
+                    test_positions.Hide();
+                    Logs("Positions Test: Succeeded");
+                }
+                catch(Exception e)
+                {
+                    Error("Positions window threw an exception!" + NewLine + e.Message);
+                }
             }
 
             if (config)
