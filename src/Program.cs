@@ -227,6 +227,8 @@ namespace HXE
             {
                 // TODO: Set up registry functionality
                 Error("Argument 'registry' not implemented (yet!)");
+                Info("Press any key to continue...");
+                ReadKey(intercept: true);
             }
 
             /**
