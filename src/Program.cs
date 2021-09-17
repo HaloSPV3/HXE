@@ -232,7 +232,7 @@ namespace HXE
             }
 
             /**
-             * Implicit verification for legal HCE installations.
+             * Lazy search for HaloCE installations.
              */
 
             try
@@ -241,7 +241,11 @@ namespace HXE
             }
             catch (Exception e)
             {
-                var msg = " -- Legal copy of HCE needs to be installed for loading!\n Error:  " + e.ToString() + "\n";
+                string msg = " -- Unable to find HaloCE.exe!" + NewLine +
+                             " -- Looked in working directory, Program Files, and Registry." + NewLine +
+                             " -- The working directory is " + CurrentDirectory + NewLine +
+                             " -- Error:  " + NewLine +
+                             e.ToString() + NewLine;
                 var log = (File) Paths.Exception;
                 log.AppendAllText(msg);
                 Error(msg);
