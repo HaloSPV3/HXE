@@ -224,6 +224,8 @@ namespace HXE
 
             if (!string.IsNullOrWhiteSpace(registry))
             {
+                // TODO: Set up registry functionality
+                Error("Argument 'registry' not implemented (yet!)");
             }
 
             /**
