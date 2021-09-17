@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Copyright (c) 2019 Emilian Roman
  * Copyright (c) 2021 Noah Sherwin
  *
@@ -187,6 +187,7 @@ namespace HXE
                   {Process.Type.HCE,      "Halo: Custom Edition"},
                   {Process.Type.Steam,    "Halo: MCC - CEA (Steam)"},
                   {Process.Type.StoreOld, "Halo: MCC - CEA (Store)"},
+                  {Process.Type.Store,    "Halo: MCC - CEA (Store)"}
                 };
 
                 Info($"Inferred the following Halo process: {descriptions[Process.Infer()]}");
