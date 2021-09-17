@@ -149,7 +149,7 @@ namespace HXE
                 }
                 catch(Exception e)
                 {
-                    Error("Settings window threw an exception!" + NewLine + e.Message);
+                    Error("Settings window threw an exception!" + NewLine + e.ToString());
                 }
 
                 try
@@ -162,7 +162,7 @@ namespace HXE
                 }
                 catch(Exception e)
                 {
-                    Error("Positions window threw an exception!" + NewLine + e.Message);
+                    Error("Positions window threw an exception!" + NewLine + e.ToString());
                 }
             }
 
