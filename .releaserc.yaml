@@ -28,7 +28,7 @@
     ['@semantic-release/github',
       {
         "assets": [
-          {"path": "bin/release/win-x64/publish", "label": "If unsure, choose the zip archive."}
+          {"path": "bin/release/win-x64/publish"}
         ]
       }
     ]
