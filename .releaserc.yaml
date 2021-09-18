@@ -5,7 +5,7 @@
     {name: "develop", channel: "alpha", prerelease: "alpha"}
   ],
   "plugins": [
-    ["@semantic-release/commit-analyzer", {
+    ["@semantic-release/commit-analyzer",{
       # docs: https://github.com/semantic-release/commit-analyzer/blob/master/lib/default-release-rules.js
       "parserOpts": {
         "noteKeywords": ["BREAKING CHANGE", "BREAKING CHANGES", "BREAKING"]
@@ -19,15 +19,13 @@
     }],
     ["@semantic-release/release-notes-generator",{
       "parserOpts": {
-        "noteKeywords": ["BREAKING CHANGE", "BREAKING CHANGES", "BREAKING"]
-      },
+        "noteKeywords": ["BREAKING CHANGE", "BREAKING CHANGES", "BREAKING"]},
       "preset": "conventionalcommits",
       "presetConfig": [ ],
       "releaseRules": [
-        {"type": "revert", "subject": "!(feat|fix|perf)", "release": false}
-      ]
+        {"type": "revert", "subject": "!(feat|fix|perf)", "release": false}]
     }],
-    '@semantic-release/github': [
+    ['@semantic-release/github',
       {
         "assets": [
           {"path": "bin/release/win-x64/publish", "label": "If unsure, choose the zip archive."}
