@@ -1,4 +1,4 @@
-[submodule "ext/halo-ce-patches"]
+[submodule "halo-ce-patches"]
 	path = ext/halo-ce-patches
 	url = https://github.com/pR0Ps/halo-ce-patches.git
 	branch = master
