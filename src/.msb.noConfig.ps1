@@ -1,6 +1,6 @@
 $originalPath = $(Get-Location).Path
 
 Set-Location $PSScriptRoot\..\bin
-Get-ChildItem -Path "HXE.exe.config" -Recurse | Remove-Item
+Get-ChildItem -Path "*.exe.config" -Recurse | Remove-Item
 
 Set-Location $originalPath
