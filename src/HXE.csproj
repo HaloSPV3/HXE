@@ -50,7 +50,6 @@
     <Copyright>Copyright © 2019 Emilian Roman</Copyright>
     <PackageIcon>icon.png</PackageIcon>
     <PackageReadmeFile>readme.md</PackageReadmeFile>
-    <!-- NuGet Packaging -->
     <IncludeSymbols>false</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <!-- GitVersion DotNet SDK Compatibility -->
