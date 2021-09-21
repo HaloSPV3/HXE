@@ -21,7 +21,7 @@
       -->
     <!-- Application | General -->
     <OutputType>Exe</OutputType>
-    <TargetFramework>net462</TargetFramework>
+    <TargetFramework>net6.0-windows</TargetFramework>
     <StartupObject>HXE.Program</StartupObject>
     <AssemblyName>HXE</AssemblyName>
     <RootNamespace>HXE</RootNamespace>
