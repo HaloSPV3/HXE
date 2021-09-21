@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Copyright (c) 2021 Emilian Roman
  * 
  * This software is provided 'as-is', without any express or implied
@@ -365,7 +365,7 @@ namespace HXE
 			public DirectoryInfo Target { get; set; } = new DirectoryInfo(CurrentDirectory).Parent;
 			public string        Filter { get; set; } = "*";
 
-			public FileInfo Executable { get; set; } = new FileInfo(GetEntryAssembly()?.Location
+			public FileInfo Executable { get; set; } = new FileInfo(System.AppContext.BaseDirectory
 			                                                        ?? throw new InvalidOperationException());
 		}
 	}
