@@ -65,6 +65,7 @@
     <EnableNETAnalyzers>true</EnableNETAnalyzers>
     <ToolCommandName>hxe</ToolCommandName>
     <UseWPF>true</UseWPF>
+    <UseWindowsForms>true</UseWindowsForms>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
