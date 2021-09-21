@@ -60,6 +60,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <ProductName>HXE</ProductName>
     <PublisherName>Halo SPV3 Team</PublisherName>
+    <PublishSingleFile>true</PublishSingleFile>
       <!-- Not supported when targeting net4xx
     <PublishSingleFile>true</PublishSingleFile>-->
     <PublishTrimmed>true</PublishTrimmed>
