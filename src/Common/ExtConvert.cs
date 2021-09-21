@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Copyright (c) 2019 Emilian Roman
  * Copyright (c) 2021 Noah Sherwin
  *
@@ -20,7 +20,6 @@
  */
 
 using System;
-using System.Runtime.Remoting.Metadata.W3cXsd2001;
 
 namespace HXE.Common
 {
@@ -28,8 +27,8 @@ namespace HXE.Common
     {
         public static byte[] StringToByteArray(string hex)
         {
-            // alternatively, long.Parse(hex, System.Globalization.NumberStyles.HexNumber)
-            return SoapHexBinary.Parse(hex).Value;
+            var parsedHex = long.Parse(hex, System.Globalization.NumberStyles.HexNumber);
+            return BitConverter.GetBytes(parsedHex);
         }
 
         public static uint ByteArrayToUInt(byte[] bytes)
