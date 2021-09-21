@@ -22,17 +22,16 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
-using System.Net.Cache;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
+using System.Net.Http;
 using HXE.Exceptions;
 using HXE.Properties;
 using static System.Environment;
 using static System.IO.Compression.ZipFile;
 using static System.IO.File;
 using static System.IO.Path;
-using static System.Net.Cache.HttpRequestCacheLevel;
 using static HXE.Console;
 
 namespace HXE
@@ -78,12 +77,16 @@ namespace HXE
       {
         Info("Inferred web request manifest - " + uri);
 
-        var req = WebRequest.Create(uri);
-        req.CachePolicy = new HttpRequestCachePolicy(NoCacheNoStore);
+        var httpClient = new HttpClient(){
+            BaseAddress = new Uri(uri),
+            Timeout = new TimeSpan(0, 0, 2)
+        };
 
-        using (var wr = (HttpWebResponse) req.GetResponse())
-        using (var rs = wr.GetResponseStream())
-        using (var sr = new StreamReader(rs ?? throw new NullReferenceException("No response for manifest.")))
+        var taskGetStream = httpClient.GetStreamAsync(uri);
+        taskGetStream.RunSynchronously();
+
+
+        using (var sr = new StreamReader(taskGetStream.Result ?? throw new NullReferenceException("No response.")))
         {
           data = sr.ReadToEnd();
         }
