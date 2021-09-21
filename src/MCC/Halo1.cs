@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Copyright (c) 2019 Emilian Roman
  * Copyright (c) 2021 Noah Sherwin
  *
@@ -112,7 +112,7 @@ namespace HXE.MCC
             /** Get 343 Industries' Public Key from internet source. */
             // TODO: Add OFFICIAL URI for web-accessible public key
             var uri = "https://github.com/HaloSPV3/HCE/releases/download/updates/343I_DER.exp2022-04-27.cer";
-            var remoteCert = new X509Certificate();
+            X509Certificate remoteCert = null;
             var remoteFailedOrTimedOut = false;
             try
             {
