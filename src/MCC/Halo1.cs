@@ -22,8 +22,7 @@
 using System;
 using System.IO;
 using System.Linq;
-using System.Net;
-using System.Net.Cache;
+using System.Net.Http;
 using System.Reflection;
 using System.Security.Cryptography.X509Certificates;
 using HXE.Steam;
@@ -152,13 +151,16 @@ namespace HXE.MCC
         public static MemoryStream GetWebStream(string uri)
         {
             MemoryStream dataStream = new MemoryStream();
-            var webRequest = WebRequest.Create(uri);
-            webRequest.CachePolicy = new HttpRequestCachePolicy(HttpRequestCacheLevel.NoCacheNoStore);
-            webRequest.Timeout = 200; // in milliseconds
+            var httpClient = new HttpClient(){
+                BaseAddress = new Uri(uri),
+                Timeout = new TimeSpan(0, 0, 2)
+            };
 
-            using (var wr = (HttpWebResponse) webRequest.GetResponse())
-            using (var rs = wr.GetResponseStream())
-            using (var sr = new StreamReader(rs ?? throw new NullReferenceException("No response.")))
+            var taskGetStream = httpClient.GetStreamAsync(uri);
+            taskGetStream.RunSynchronously();
+
+
+            using (var sr = new StreamReader(taskGetStream.Result ?? throw new NullReferenceException("No response.")))
             {
                 sr.BaseStream.CopyTo(dataStream);
             }
