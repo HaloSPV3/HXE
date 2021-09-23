@@ -10,6 +10,21 @@ namespace System.Net.Http
 
     public static class DownloadWithProgress
     {
+        /// <summary>
+        ///     An amalgamation of StackOverflow Answers
+        /// </summary>
+        /// <remarks>
+        ///     EXAMPLE:                                                                        <br/>
+        ///     ```cs                                                                           <br/>
+        ///     await DownloadWithProgress.ExecuteAsync(                                        <br/>
+        ///            HttpClients.General, assetUrl, downloadFilePath, progressHandler, () =>  <br/>
+        ///     {                                                                               <br/>
+        ///         var requestMessage = new HttpRequestMessage(HttpMethod.Get, assetUrl);      <br/>
+        ///         requestMessage.Headers.Accept.TryParseAdd("application/octet-stream");      <br/>
+        ///         return requestMessage;                                                      <br/>
+        ///     });                                                                             <br/>
+        ///     ```
+        /// </remarks>
         public static async Task ExecuteAsync(HttpClient httpClient, string downloadPath, string destinationPath, DownloadProgressHandler progress, Func<HttpRequestMessage> requestMessageBuilder = null, CancellationToken? cancellationToken = null)
         {
             requestMessageBuilder ??= GetDefaultRequestBuilder(downloadPath);
@@ -27,29 +42,34 @@ namespace System.Net.Http
 
     internal class HttpClientDownloadWithProgress
     {
-        private readonly string _downloadUrl;
         private readonly string _destinationFilePath;
         private readonly CancellationToken? _cancellationToken;
 
-        private HttpClient _httpClient;
+        private readonly HttpClient _httpClient;
 
         public delegate void ProgressChangedHandler(long? totalFileSize, long totalBytesDownloaded, double? progressPercentage);
 
         public event DownloadProgressHandler ProgressChanged;
 
-        public HttpClientDownloadWithProgress(string downloadUrl, string destinationFilePath, CancellationToken? cancellationToken = null)
+        private readonly Func<HttpRequestMessage> _requestMessageBuilder;
+        private readonly int _bufferSize = 8192;
+
+        public HttpClientDownloadWithProgress(HttpClient httpClient, string destinationFilePath, Func<HttpRequestMessage> requestMessageBuilder, CancellationToken? cancellationToken)
         {
-            _downloadUrl = downloadUrl;
-            _destinationFilePath = destinationFilePath;
+            _httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
+            _destinationFilePath = destinationFilePath ?? throw new ArgumentNullException(nameof(destinationFilePath));
+            _requestMessageBuilder = requestMessageBuilder ?? throw new ArgumentNullException(nameof(requestMessageBuilder));
             _cancellationToken = cancellationToken;
         }
 
+        /// <summary>
+        /// TODO. SendAsync is way more complex than GetAsync. I don'tunderstand it at all.
+        /// </summary>
         public async Task StartDownload()
         {
-            _httpClient = new HttpClient { Timeout = TimeSpan.FromDays(1) };
-
-            using (var response = await _httpClient.GetAsync(_downloadUrl, HttpCompletionOption.ResponseHeadersRead))
-                await DownloadAsync(response)
+            using (var requestMessage = _requestMessageBuilder.Invoke())
+            using (var response = await _httpClient.SendAsync(requestMessage, HttpCompletionOption.ResponseHeadersRead))
+                await DownloadAsync(response);
         }
 
         private async Task DownloadAsync(HttpResponseMessage response)
@@ -116,12 +136,7 @@ namespace System.Net.Http
             if (totalDownloadSize.HasValue)
                 progressPercentage = Math.Round((double)totalBytesRead / totalDownloadSize.Value * 100, 2);
 
-            ProgressChanged(totalDownloadSize, totalBytesRead, progressPercentage);
-        }
-
-        public void Dispose()
-        {
-            _httpClient?.Dispose();
+            ProgressChanged?.Invoke(totalDownloadSize, totalBytesRead, progressPercentage);
         }
     }
 }
