@@ -176,8 +176,7 @@ namespace HXE
 
         var target = Combine(CurrentDirectory, asset.Path, asset.Name);
 
-        if (Exists(target))
-          if (new FileInfo(target).Length == asset.Size)
+        if (Exists(target) && new FileInfo(target).Length == asset.Size)
             continue;
 
         asset.Request(progress); /* grab our package */
