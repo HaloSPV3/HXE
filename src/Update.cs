@@ -1,14 +1,14 @@
 /**
  * Copyright (c) 2019 Emilian Roman
- * 
+ *
  * This software is provided 'as-is', without any express or implied
  * warranty. In no event will the authors be held liable for any damages
  * arising from the use of this software.
- * 
+ *
  * Permission is granted to anyone to use this software for any purpose,
  * including commercial applications, and to alter it and redistribute it
  * freely, subject to the following restrictions:
- * 
+ *
  * 1. The origin of this software must not be misrepresented; you must not
  *    claim that you wrote the original software. If you use this software
  *    in a product, an acknowledgment in the product documentation would be
@@ -21,8 +21,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Net;
-using System.Net.Cache;
+using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
@@ -32,7 +31,6 @@ using static System.Environment;
 using static System.IO.Compression.ZipFile;
 using static System.IO.File;
 using static System.IO.Path;
-using static System.Net.Cache.HttpRequestCacheLevel;
 using static HXE.Console;
 
 namespace HXE
@@ -78,12 +76,16 @@ namespace HXE
       {
         Info("Inferred web request manifest - " + uri);
 
-        var req = WebRequest.Create(uri);
-        req.CachePolicy = new HttpRequestCachePolicy(NoCacheNoStore);
+        var httpClient = new HttpClient(){
+            BaseAddress = new Uri(uri),
+            Timeout = new TimeSpan(0, 0, 2)
+        };
 
-        using (var wr = (HttpWebResponse) req.GetResponse())
-        using (var rs = wr.GetResponseStream())
-        using (var sr = new StreamReader(rs ?? throw new NullReferenceException("No response for manifest.")))
+        var taskGetStream = httpClient.GetStreamAsync(uri);
+        taskGetStream.RunSynchronously();
+
+
+        using (var sr = new StreamReader(taskGetStream.Result ?? throw new NullReferenceException("No response.")))
         {
           data = sr.ReadToEnd();
         }
@@ -167,15 +169,14 @@ namespace HXE
         /**
          * If the asset matches a file which exists at the target destination on the file system, then re-installing it
          * would be pointless.
-         * 
+         *
          * Using byte length for comparing file sizes is particularly naïve, but it does the job for now. Should use a
          * hash later on!
          */
 
         var target = Combine(CurrentDirectory, asset.Path, asset.Name);
 
-        if (Exists(target))
-          if (new FileInfo(target).Length == asset.Size)
+        if (Exists(target) && new FileInfo(target).Length == asset.Size)
             continue;
 
         asset.Request(progress); /* grab our package */
@@ -204,21 +205,19 @@ namespace HXE
          * Let's just hope that this isn't invoked from a read-only directory.
          */
 
-        using (var client = new WebClient())
+        using (var httpClient = new HttpClientDownloadWithProgress(URL, File))
         {
-          client.DownloadProgressChanged += (s, e) =>
+          httpClient.ProgressChanged += (totalFileSize, totalBytesDownloaded, progressPercentage) =>
           {
             progress?.Report(new Status
             {
-              Current     = e.BytesReceived,
-              Total       = e.TotalBytesToReceive,
-              Description = $"Requesting: {Name} ({(decimal) e.BytesReceived / e.TotalBytesToReceive:P})"
+              Current     = totalBytesDownloaded,
+              Total       = (long) totalFileSize,
+              Description = $"Requesting: {Name} ({ progressPercentage:P})"
             });
           };
 
-          var task = new Task(() => { client.DownloadFile(URL, File); });
-
-          task.Start();
+          Task task = httpClient.StartDownload();
 
           Wait($"Started asset download - {Name} - {URL} ");
 
