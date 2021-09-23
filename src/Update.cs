@@ -21,11 +21,10 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Net;
+using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
-using System.Net.Http;
 using HXE.Exceptions;
 using HXE.Properties;
 using static System.Environment;
@@ -207,21 +206,19 @@ namespace HXE
          * Let's just hope that this isn't invoked from a read-only directory.
          */
 
-        using (var client = new WebClient())
+        using (var httpClient = new HttpClientDownloadWithProgress(URL, File))
         {
-          client.DownloadProgressChanged += (s, e) =>
+          httpClient.ProgressChanged += (totalFileSize, totalBytesDownloaded, progressPercentage) =>
           {
             progress?.Report(new Status
             {
-              Current     = e.BytesReceived,
-              Total       = e.TotalBytesToReceive,
-              Description = $"Requesting: {Name} ({(decimal) e.BytesReceived / e.TotalBytesToReceive:P})"
+              Current     = totalBytesDownloaded,
+              Total       = (long) totalFileSize,
+              Description = $"Requesting: {Name} ({ progressPercentage:P})"
             });
           };
 
-          var task = new Task(() => { client.DownloadFile(URL, File); });
-
-          task.Start();
+          Task task = httpClient.StartDownload();
 
           Wait($"Started asset download - {Name} - {URL} ");
 
