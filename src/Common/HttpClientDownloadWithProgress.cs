@@ -11,7 +11,7 @@ namespace System.Net.Http
     public static class DownloadWithProgress
     {
         /// <summary>
-        ///     An amalgamation of StackOverflow Answers
+        ///     An amalgamation of StackOverflow Answers: 
         /// </summary>
         /// <remarks>
         ///     EXAMPLE:                                                                        <br/>
