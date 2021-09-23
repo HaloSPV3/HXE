@@ -1,6 +1,7 @@
 /// https://stackoverflow.com/a/43169927/14894786
 using System.Threading.Tasks;
 using System.IO;
+using System.Threading;
 
 namespace System.Net.Http
 {
@@ -8,6 +9,7 @@ namespace System.Net.Http
     {
         private readonly string _downloadUrl;
         private readonly string _destinationFilePath;
+        private readonly CancellationToken? _cancellationToken;
 
         private HttpClient _httpClient;
 
@@ -15,10 +17,11 @@ namespace System.Net.Http
 
         public event ProgressChangedHandler ProgressChanged;
 
-        public HttpClientDownloadWithProgress(string downloadUrl, string destinationFilePath)
+        public HttpClientDownloadWithProgress(string downloadUrl, string destinationFilePath, CancellationToken? cancellationToken = null)
         {
             _downloadUrl = downloadUrl;
             _destinationFilePath = destinationFilePath;
+            _cancellationToken = cancellationToken;
         }
 
         public async Task StartDownload()
@@ -51,7 +54,16 @@ namespace System.Net.Http
             {
                 do
                 {
-                    var bytesRead = await contentStream.ReadAsync(buffer, 0, buffer.Length);
+                    int bytesRead;
+                    if (_cancellationToken.HasValue)
+                    {
+                        bytesRead = await contentStream.ReadAsync(buffer, 0, buffer.Length, _cancellationToken.Value);
+                    }
+                    else
+                    {
+                        bytesRead = await contentStream.ReadAsync(buffer, 0, buffer.Length);
+                    }
+
                     if (bytesRead == 0)
                     {
                         isMoreToRead = false;
@@ -68,7 +80,11 @@ namespace System.Net.Http
                         TriggerProgressChanged(totalDownloadSize, totalBytesRead);
                 }
                 while (isMoreToRead);
+
             }
+
+            //the last progress trigger should occur after the file handle has been released or you may get file locked error
+            TriggerProgressChanged(totalDownloadSize, totalBytesRead);
         }
 
         private void TriggerProgressChanged(long? totalDownloadSize, long totalBytesRead)
