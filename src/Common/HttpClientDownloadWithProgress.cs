@@ -67,7 +67,7 @@ namespace System.Net.Http
                     if (bytesRead == 0)
                     {
                         isMoreToRead = false;
-                        TriggerProgressChanged(totalDownloadSize, totalBytesRead);
+                        ReportProgress(totalDownloadSize, totalBytesRead);
                         continue;
                     }
 
@@ -77,17 +77,17 @@ namespace System.Net.Http
                     readCount += 1;
 
                     if (readCount % 100 == 0)
-                        TriggerProgressChanged(totalDownloadSize, totalBytesRead);
+                        ReportProgress(totalDownloadSize, totalBytesRead);
                 }
                 while (isMoreToRead);
 
             }
 
             //the last progress trigger should occur after the file handle has been released or you may get file locked error
-            TriggerProgressChanged(totalDownloadSize, totalBytesRead);
+            ReportProgress(totalDownloadSize, totalBytesRead);
         }
 
-        private void TriggerProgressChanged(long? totalDownloadSize, long totalBytesRead)
+        private void ReportProgress(long? totalDownloadSize, long totalBytesRead)
         {
             if (ProgressChanged == null)
                 return;
