@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using System.IO;
 using System.Threading;
+using System.Buffers;
 
 namespace System.Net.Http
 {
@@ -38,7 +39,6 @@ namespace System.Net.Http
 
             var totalBytes = response.Content.Headers.ContentLength;
 
-
             using (Stream contentStream = await response.Content.ReadAsStreamAsync())
                 await ProcessContentStream(totalBytes, contentStream);
         }
@@ -47,10 +47,10 @@ namespace System.Net.Http
         {
             var totalBytesRead = 0L;
             var readCount = 0L;
-            var buffer = new byte[8192];
+            var buffer = ArrayPool<byte>.Shared.Rent(_bufferSize);
             var isMoreToRead = true;
 
-            using (var fileStream = new FileStream(_destinationFilePath, FileMode.Create, FileAccess.Write, FileShare.None, 8192, true))
+            using (var fileStream = new FileStream(_destinationFilePath, FileMode.Create, FileAccess.Write, FileShare.None, _bufferSize, true))
             {
                 do
                 {
