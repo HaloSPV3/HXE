@@ -30,10 +30,10 @@ namespace System.Net.Http
             _httpClient = new HttpClient { Timeout = TimeSpan.FromDays(1) };
 
             using (var response = await _httpClient.GetAsync(_downloadUrl, HttpCompletionOption.ResponseHeadersRead))
-                await DownloadFileFromHttpResponseMessage(response);
+                await DownloadAsync(response)
         }
 
-        private async Task DownloadFileFromHttpResponseMessage(HttpResponseMessage response)
+        private async Task DownloadAsync(HttpResponseMessage response)
         {
             response.EnsureSuccessStatusCode();
 
