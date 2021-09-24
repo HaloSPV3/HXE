@@ -26,6 +26,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 using HXE.Exceptions;
+using HXE.Net.Http;
 using HXE.Properties;
 using static System.Environment;
 using static System.IO.Compression.ZipFile;
@@ -205,30 +206,28 @@ namespace HXE
          * Let's just hope that this isn't invoked from a read-only directory.
          */
 
-        using (var httpClient = new HttpClientDownloadWithProgress(URL, File))
+        var httpClient = new HttpClientDownloadWithProgress(URL, File);
+        httpClient.ProgressChanged += (totalFileSize, totalBytesDownloaded, progressPercentage) =>
         {
-          httpClient.ProgressChanged += (totalFileSize, totalBytesDownloaded, progressPercentage) =>
-          {
             progress?.Report(new Status
             {
-              Current     = totalBytesDownloaded,
-              Total       = (long) totalFileSize,
-              Description = $"Requesting: {Name} ({ progressPercentage:P})"
+                Current     = totalBytesDownloaded,
+                Total       = (long) totalFileSize,
+                Description = $"Requesting: {Name} ({ progressPercentage:P})"
             });
-          };
+        };
 
-          Task task = httpClient.StartDownload();
+        Task task = httpClient.StartDownload();
 
-          Wait($"Started asset download - {Name} - {URL} ");
+        Wait($"Started asset download - {Name} - {URL} ");
 
-          while (!task.IsCompleted)
-          {
-            System.Console.Write(Resources.Progress);
-            Thread.Sleep(1000);
-          }
-
-          Done("Asset request has been successfully completed");
+        while (!task.IsCompleted)
+        {
+        System.Console.Write(Resources.Progress);
+        Thread.Sleep(1000);
         }
+
+        Done("Asset request has been successfully completed");
       }
 
       /// <summary>
