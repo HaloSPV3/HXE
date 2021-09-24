@@ -16,7 +16,7 @@ namespace HXE.Net.Http
     public class HttpClientDownloadWithProgress
     {
         private readonly string _downloadUrl;
-        private readonly string _destinationFilePath;
+        private string _destinationFilePath;
 
         public Stream stream { get; }
 
@@ -33,7 +33,7 @@ namespace HXE.Net.Http
         public async Task StartDownload()
         {
             using (var response = await StaticHttpClient.GetAsync(_downloadUrl, HttpCompletionOption.ResponseHeadersRead))
-                await DownloadFileFromHttpResponseMessage(response);
+                await DownloadFromHttpResponseMessage(response);
         }
 
         private async Task DownloadFromHttpResponseMessage(HttpResponseMessage response)
@@ -52,12 +52,22 @@ namespace HXE.Net.Http
             var readCount = 0L;
             var buffer = new byte[8192];
             var isMoreToRead = true;
-            var downloadFile = !string.IsNullOrWhiteSpace(_destinationFilePath);
+            var largeContent = totalDownloadSize > 0x80000000; // 2 gibibytes
+            var contentIsFile = !string.IsNullOrWhiteSpace(_destinationFilePath);
 
-            using (FileStream fileStream = downloadFile ?
+            /** If the content is large, but not a file, download to temp file */
+            if (largeContent && !contentIsFile)
+            {
+                _destinationFilePath = Path.Combine(Path.GetTempPath(), Path.GetTempFileName());
+                contentIsFile = true;
+            }
+
+            using (FileStream fileStream = contentIsFile ?
                     new FileStream(_destinationFilePath, FileMode.Create, FileAccess.Write, FileShare.None, 8192, true):
                     null
                     )
+            using (MemoryStream memoryStream = !largeContent ?
+                    new MemoryStream(): null)
             {
                 do
                 {
@@ -69,8 +79,9 @@ namespace HXE.Net.Http
                         continue;
                     }
 
-                    if (downloadFile)
+                    if (contentIsFile)
                         await fileStream.WriteAsync(buffer, 0, bytesRead);
+                    /** else, access the stream variable */
 
                     totalBytesRead += bytesRead;
                     readCount++;
