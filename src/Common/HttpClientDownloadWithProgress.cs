@@ -30,6 +30,13 @@ namespace HXE.Net.Http
             _destinationFilePath = destinationFilePath;
         }
 
+        /// <summary>
+        ///     Start a download with the specified download URL
+        /// </summary>
+        /// <remarks>
+        ///     If you want only the response header, <br/>
+        ///     consider using `await StaticHttpClient.GetAsync(Uri, ResponseHeadersRead)` <br/>
+        /// </remarks>
         public async Task StartDownload()
         {
             using (var response = await StaticHttpClient.GetAsync(_downloadUrl, HttpCompletionOption.ResponseHeadersRead))
@@ -66,8 +73,6 @@ namespace HXE.Net.Http
                     new FileStream(_destinationFilePath, FileMode.Create, FileAccess.Write, FileShare.None, 8192, true):
                     null
                     )
-            using (MemoryStream memoryStream = !largeContent ?
-                    new MemoryStream(): null)
             {
                 do
                 {
