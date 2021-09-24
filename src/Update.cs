@@ -33,6 +33,7 @@ using static System.IO.Compression.ZipFile;
 using static System.IO.File;
 using static System.IO.Path;
 using static HXE.Console;
+using static HXE.Net.Http.GlobalHttpClient;
 
 namespace HXE
 {
@@ -52,7 +53,7 @@ namespace HXE
     /// <param name="uri">
     ///   Location of the file. Can be either a file on the filesystem, or a HTTP(S) URI.
     /// </param>
-    public void Import(string uri)
+    public async void Import(string uri)
     {
       string data;
 
@@ -77,16 +78,8 @@ namespace HXE
       {
         Info("Inferred web request manifest - " + uri);
 
-        var httpClient = new HttpClient(){
-            BaseAddress = new Uri(uri),
-            Timeout = new TimeSpan(0, 0, 2)
-        };
-
-        var taskGetStream = httpClient.GetStreamAsync(uri);
-        taskGetStream.RunSynchronously();
-
-
-        using (var sr = new StreamReader(taskGetStream.Result ?? throw new NullReferenceException("No response.")))
+        using (var rm = await StaticHttpClient.GetAsync(uri))
+        using (var sr = new StreamReader(rm.Content.ReadAsStream() ?? throw new NullReferenceException("No response.")))
         {
           data = sr.ReadToEnd();
         }
