@@ -7,6 +7,12 @@ using System.Net.Http;
 
 namespace HXE.Net.Http
 {
+    /// <summary>
+    ///     A wrapper for a static HttpClient, with progress reporting.
+    /// </summary>
+    /// <remarks>
+    ///     If you don't need to report download progress, use a plain, static HttpClient
+    /// </remarks>
     public class HttpClientDownloadWithProgress
     {
         private readonly string _downloadUrl;
