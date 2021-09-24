@@ -18,7 +18,7 @@ namespace HXE.Net.Http
         private readonly string _downloadUrl;
         private string _destinationFilePath;
 
-        public Stream stream { get; }
+        public Stream ContentStream;
 
         public delegate void ProgressChangedHandler(long? totalFileSize, long totalBytesDownloaded, double? progressPercentage);
 
@@ -95,6 +95,8 @@ namespace HXE.Net.Http
                         TriggerProgressChanged(totalDownloadSize, totalBytesRead);
                 }
                 while (isMoreToRead);
+                if (!contentIsFile)
+                    ContentStream = contentStream;
             }
         }
 
