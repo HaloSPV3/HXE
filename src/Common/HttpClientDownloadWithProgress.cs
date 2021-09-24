@@ -1,10 +1,13 @@
 /// https://stackoverflow.com/a/43169927/14894786
 using System.Threading.Tasks;
 using System.IO;
+using System;
+using static HXE.Net.Http.GlobalHttpClient;
+using System.Net.Http;
 
-namespace System.Net.Http
+namespace HXE.Net.Http
 {
-    public class HttpClientDownloadWithProgress : IDisposable
+    public class HttpClientDownloadWithProgress
     {
         private readonly string _downloadUrl;
         private readonly string _destinationFilePath;
@@ -23,9 +26,7 @@ namespace System.Net.Http
 
         public async Task StartDownload()
         {
-            _httpClient = new HttpClient { Timeout = TimeSpan.FromDays(1) };
-
-            using (var response = await _httpClient.GetAsync(_downloadUrl, HttpCompletionOption.ResponseHeadersRead))
+            using (var response = await StaticHttpClient.GetAsync(_downloadUrl, HttpCompletionOption.ResponseHeadersRead))
                 await DownloadFileFromHttpResponseMessage(response);
         }
 
@@ -81,11 +82,6 @@ namespace System.Net.Http
                 progressPercentage = Math.Round((double)totalBytesRead / totalDownloadSize.Value * 100, 2);
 
             ProgressChanged(totalDownloadSize, totalBytesRead, progressPercentage);
-        }
-
-        public void Dispose()
-        {
-            _httpClient?.Dispose();
         }
     }
 }
