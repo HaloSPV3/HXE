@@ -34,12 +34,12 @@ namespace HXE.Steam
         /// </summary>
         public File LibFoldersVdf = (File) Paths.Steam.Libraries;
 
-        public List<string> LibList = new List<string>();  /// Arbitrary limit of 16 libraries. If you go over this, you're insane.
-        public List<string> ReturnPaths = new List<string>(); /// Arbitrary limit of 16 results per search.
+        public List<string> LibList = new List<string>();
+        public List<string> ReturnPaths = new List<string>();
 
-                                                              /// <summary>
-                                                              /// Read Steam's "libraryfolders.vdf" and assign the library folders to an index array.
-                                                              /// </summary>
+        /// <summary>
+        ///     Read Steam's "libraryfolders.vdf" and assign the library folders to an index array.
+        /// </summary>
         public void ParseLibraries()
         {
             if (!LibFoldersVdf.Exists() || LibFoldersVdf.Path == null)
