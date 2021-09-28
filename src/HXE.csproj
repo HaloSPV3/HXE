@@ -2,7 +2,6 @@
 <Project Sdk="Microsoft.NET.Sdk" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <!-- GitVersion Auto-Patch
       ref: https://gitversion.net/docs/usage/msbuild
 
@@ -20,7 +19,10 @@
             which inherit FileVersion will instead inherit GitVersion's values.
       -->
     <!-- Application | General -->
+    <OutputPath>..\bin\$(Configuration)</OutputPath>
+    <Platform>AnyCPU</Platform>
     <OutputType>Exe</OutputType>
+    <Prefer32Bit>false</Prefer32Bit>
     <TargetFrameworks>net6.0-windows;net5.0-windows</TargetFrameworks>
     <StartupObject>HXE.Program</StartupObject>
     <AssemblyName>HXE</AssemblyName>
@@ -68,25 +70,10 @@
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>..\bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <Prefer32Bit>false</Prefer32Bit>
-    <AllowUnsafeBlocks>False</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugType>embedded</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>..\bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <Prefer32Bit>false</Prefer32Bit>
-    <AllowUnsafeBlocks>False</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
     <None Include="..\*.*">
