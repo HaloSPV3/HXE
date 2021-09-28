@@ -8,34 +8,33 @@
 
 function prebuild
 {
-    $minVer_isShallow = [version]('2.15.0.0');
-    $minVer_unshallow = "2.1.4.0";
+    $minVer_isShallow = [version]'2.15.0.0';
+    $minVer_unshallow = [version]'2.1.4.0';
     $gitBinVer = "";
     $isShallow = $true;
 
     # 0. Announce
     Write-Host  "0. GitVersion cannot determine the next version in shallow reposistories.`n",
-                "We will determine if the current repository needs to be un-shallowed.`n`n",
-                "Note: Git is required to 'unshallow' the repository so GitVersion can work.`n",
-                "Checking if Git is available...`n"
+                "`tWe will use Git to determine if the current repository needs to be un-shallowed.`n",
+                "Checking if Git is available...";
 
     # 1. Ensure Git is available
     try
     {
         Write-Host "1. Git was found.`n",
         "It is $(git --version) at...`n",
-        "$($(Get-Command -Name git).path)`n"
+        (Get-Command -Name git).path
 
-        $gitBinVer = $([version]('{2}.{3}.{4}.{6}' -f $(git --version).split(' ').split('.')))
+        $gitBinVer = [version]('{2}.{3}.{4}.{6}' -f (git --version).split(' ').split('.'))
     }
     catch
     {
-        Write-Error "Git is not installed or it is not in PATH!"
-        Write-Host "`n"
+        Write-Error "Git is not installed or it is not in PATH!";
+        throw
     }
 
     # 2. Check if the repository is shallow
-    Write-Host "2. Checking if repository is shallow...`n"
+    Write-Host "2. Checking if repository is shallow..."
     if ($gitBinVer -gt $minVer_isShallow) # GitVersion >= 2.15.0.0
     {
         $isShallow = git rev-parse --is-shallow-repository
@@ -61,7 +60,7 @@ function prebuild
     }
     else
     {
-        Write-Host "3. Repository is complete. Proceeding to Build...`n"
+        Write-Host "3. Repository is complete. Proceeding to Build..."
     }
 }
 
