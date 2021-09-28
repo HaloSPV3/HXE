@@ -56,19 +56,25 @@
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <!-- GitVersion DotNet SDK Compatibility -->
     <GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
+    <!-- Publish -->
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <GenerateRuntimeConfigurationFiles>false</GenerateRuntimeConfigurationFiles>
+    <!--<IsTrimmable>true</IsTrimmable> Not compatible with WinForms/WPF -->
+    <!--<PublishTrimmed>true</PublishTrimmed> Not compatible with WinForms/WPF -->
+    <PublishSingleFile>true</PublishSingleFile>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <Self-Contained>false</Self-Contained>
+    <TrimMode>link</TrimMode>
+    <TrimmerDefaultAction>link</TrimmerDefaultAction>
     <!-- Misc -->
     <ProjectGuid>{ACAA5D9F-B23D-43E1-B2DF-8C03230975A1}</ProjectGuid>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <ProductName>HXE</ProductName>
     <PublisherName>Halo SPV3 Team</PublisherName>
-    <PublishSingleFile>true</PublishSingleFile>
-    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
     <EnableNETAnalyzers>true</EnableNETAnalyzers>
     <ToolCommandName>hxe</ToolCommandName>
     <UseWPF>true</UseWPF>
     <UseWindowsForms>true</UseWindowsForms>
-    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-    <GenerateRuntimeConfigurationFiles>false</GenerateRuntimeConfigurationFiles>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DefineConstants>DEBUG;TRACE</DefineConstants>
