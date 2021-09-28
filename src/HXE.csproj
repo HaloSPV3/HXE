@@ -38,19 +38,19 @@
     <!-- Build | Strong Naming -->
     <SignAssembly>False</SignAssembly>
     <!-- NuGet Packaging -->
-    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <PackageProjectUrl>https://github.com/HaloSPV3/HXE</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/HaloSPV3/HXE</RepositoryUrl>
-    <PublishRepositoryUrl>true</PublishRepositoryUrl>
-    <PackageTags>Halo</PackageTags>
-    <PackageLicenseExpression>Zlib</PackageLicenseExpression>
     <Authors>HaloSPV3</Authors>
     <Company>github/HaloSPV3</Company>
-    <Description>A HCE wrapper and SPV3 loader</Description>
     <Copyright>Copyright © 2019 Emilian Roman</Copyright>
-    <PackageIcon>icon.png</PackageIcon>
-    <PackageReadmeFile>readme.md</PackageReadmeFile>
+    <Description>A HCE wrapper and SPV3 loader</Description>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <IncludeSymbols>false</IncludeSymbols>
+    <PackageLicenseExpression>Zlib</PackageLicenseExpression>
+    <PackageIcon>icon.png</PackageIcon>
+    <PackageProjectUrl>https://github.com/HaloSPV3/HXE</PackageProjectUrl>
+    <PackageReadmeFile>readme.md</PackageReadmeFile>
+    <PackageTags>Halo</PackageTags>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <RepositoryUrl>https://github.com/HaloSPV3/HXE</RepositoryUrl>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <!-- GitVersion DotNet SDK Compatibility -->
     <GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
