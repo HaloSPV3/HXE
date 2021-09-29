@@ -115,15 +115,7 @@ jobs:
     # RELEASE
     ################
 
-    # https://github.com/GitTools/actions/blob/main/docs/examples/github/gitreleasemanager/index.md
-    - name: Setup GitReleaseManager
-      id: gitRM
-      uses: gittools/actions/gitreleasemanager/setup@v0.9.10
-      with:
-        versionSpec: '0.12.x'
-
-    # https://github.com/marketplace/actions/action-for-semantic-release
-    - name: Setup Semantic Release
+    - name: Semantic Release
       run: npx semantic-release
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
