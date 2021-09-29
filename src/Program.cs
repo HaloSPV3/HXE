@@ -138,16 +138,17 @@ namespace HXE
             {
                 // TODO: Move to Test.cs; reduce Program.cs bloat
                 var test_config = new Kernel.Configuration(Path.Combine(Path.GetTempPath(), "kernel.bin"));
-                int app = 0;
+                Application app;
                 try
                 {
                     Logs("Testing Settings window...");
                     var test_settings = new Settings(test_config);
-                    app = new Application().Run(test_settings);
-                    test_settings.Hide();
+                    app = new Application();
+                    _ = app.Run(test_settings);
+                    app.Shutdown();
                     Logs("Settings Test: Succeeded");
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     Error("Settings window threw an exception!" + NewLine + e.ToString());
                 }
@@ -156,8 +157,9 @@ namespace HXE
                 {
                     Logs("Testing Positions window...");
                     var test_positions = new Positions();
-                    app = new Application().Run(test_positions);
-                    test_positions.Hide();
+                    app = new Application();
+                    _ = app.Run(test_positions);
+                    app.Shutdown();
                     Logs("Positions Test: Succeeded");
                 }
                 catch(Exception e)
