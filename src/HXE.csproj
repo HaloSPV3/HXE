@@ -21,8 +21,8 @@
     <!-- Application | General -->
     <OutputPath>..\bin\$(Configuration)</OutputPath>
     <Platform>AnyCPU</Platform>
-    <OutputType>Exe</OutputType>
     <Prefer32Bit>false</Prefer32Bit>
+    <OutputType>Exe</OutputType>
     <TargetFramework>net5.0-windows</TargetFramework>
     <TargetFrameworks>net5.0-windows;net6.0-windows</TargetFrameworks>
     <StartupObject>HXE.Program</StartupObject>
