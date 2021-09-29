@@ -162,7 +162,7 @@ namespace HXE
                     app.Shutdown();
                     Logs("Positions Test: Succeeded");
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     Error("Positions window threw an exception!" + NewLine + e.ToString());
                 }
@@ -170,13 +170,13 @@ namespace HXE
 
             if (config)
             {
-                new Application().Run(new Settings());
+                _ = new Application().Run(new Settings());
                 Exit(0);
             }
 
             if (positions)
             {
-                new Application().Run(new Positions());
+                _ = new Application().Run(new Positions());
                 Exit(0);
             }
 
@@ -194,11 +194,12 @@ namespace HXE
 
                 Info($"Inferred the following Halo process: {descriptions[Process.Infer()]}");
                 Info("Press any key to exit.");
-                ReadLine();
+                _ = ReadLine();
                 Exit(0);
             }
 
             if (!string.IsNullOrWhiteSpace(install))
+            {
                 Run(() =>
                 {
                     SFX.Extract(new SFX.Configuration
@@ -206,8 +207,10 @@ namespace HXE
                         Target = new DirectoryInfo(install)
                     });
                 });
+            }
 
             if (!string.IsNullOrWhiteSpace(compile))
+            {
                 Run(() =>
                 {
                     SFX.Compile(new SFX.Configuration
@@ -216,21 +219,24 @@ namespace HXE
                         Target = new DirectoryInfo(compile)
                     });
                 });
+            }
 
             if (!string.IsNullOrWhiteSpace(update))
+            {
                 Run(() =>
                 {
                     var updateModule = new Update();
                     updateModule.Import(update);
                     updateModule.Commit();
                 });
+            }
 
             if (!string.IsNullOrWhiteSpace(registry))
             {
                 // TODO: Set up registry functionality
                 Error("Argument 'registry' not implemented (yet!)");
                 Info("Press any key to continue...");
-                ReadKey(intercept: true);
+                _ = ReadKey(intercept: true);
             }
 
             /**
