@@ -71,9 +71,10 @@ jobs:
     # BUILD
     ################
     - name: Build, Pack, and prep for Publish
+      working-directory: src
       run: |
-        dotnet publish src -c Release --self-contained --use-current-runtime -p:ContinuousIntegrationBuild=true
-        src/.msb.noConfig.ps1
+        dotnet publish HXE.csproj -c Release --self-contained false -p:ContinuousIntegrationBuild=true
+        ./.msb.noConfig.ps1
 
     - name: Compress Publish Artifacts
       working-directory: bin/release/win-x64/publish
