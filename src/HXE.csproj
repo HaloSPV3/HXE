@@ -64,7 +64,6 @@
     <!--<PublishTrimmed>true</PublishTrimmed> Not compatible with WinForms/WPF -->
     <PublishSingleFile>true</PublishSingleFile>
     <RuntimeIdentifier>win-x64</RuntimeIdentifier>
-    <Self-Contained>false</Self-Contained>
     <TrimMode>link</TrimMode>
     <TrimmerDefaultAction>link</TrimmerDefaultAction>
     <!-- Misc -->
