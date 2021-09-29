@@ -60,8 +60,6 @@ jobs:
       run: dotnet nuget update source "nuget.org" -u USERNAME -p ${{ secrets.NUGET_TOKEN }} --store-password-in-clear-text
 
     # https://github.com/GitTools/actions/blob/main/docs/examples/github/gitversion/index.md
-    # GitVersion.MSBuild is already used to stamp the assembly/package versions.
-    # This action is used to ensure we can pass the appropriate variables to Semantic Release
     - name: Setup GitVersion
       uses: GitTools/actions/gitversion/setup@v0.9.10
       id: gitversion
@@ -116,7 +114,6 @@ jobs:
     ################
     # RELEASE
     ################
-    # GitReleaseManager or Semantic Release?
 
     # https://github.com/GitTools/actions/blob/main/docs/examples/github/gitreleasemanager/index.md
     - name: Setup GitReleaseManager
