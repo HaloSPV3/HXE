@@ -23,7 +23,8 @@
     <Platform>AnyCPU</Platform>
     <OutputType>Exe</OutputType>
     <Prefer32Bit>false</Prefer32Bit>
-    <TargetFrameworks>net6.0-windows;net5.0-windows</TargetFrameworks>
+    <TargetFramework>net5.0-windows</TargetFramework>
+    <TargetFrameworks>net5.0-windows;net6.0-windows</TargetFrameworks>
     <StartupObject>HXE.Program</StartupObject>
     <AssemblyName>HXE</AssemblyName>
     <RootNamespace>HXE</RootNamespace>
