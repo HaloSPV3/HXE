@@ -109,20 +109,9 @@
   </ItemGroup>
   <ItemGroup>
     <!-- Campaign Support -->
-    <Content Include="Campaigns\SPV31.xml">
+    <Content Include="Campaigns\*.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-      <TargetPath>spv31.xml</TargetPath>
-    </Content>
-    <Content Include="Campaigns\SPV32.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-      <TargetPath>spv32.xml</TargetPath>
-    </Content>
-    <Content Include="Campaigns\SPV33.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-      <TargetPath>spv33.xml</TargetPath>
+      <TargetPath>%(FileName).xml</TargetPath>
     </Content>
     <!-- Assets -->
     <EmbeddedResource Include="Assets\banner.txt" />
