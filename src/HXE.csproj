@@ -58,7 +58,6 @@
     <!-- GitVersion DotNet SDK Compatibility -->
     <GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
     <!-- Publish -->
-    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <GenerateRuntimeConfigurationFiles>false</GenerateRuntimeConfigurationFiles>
     <!--<IsTrimmable>true</IsTrimmable> Not compatible with WinForms/WPF -->
     <!--<PublishTrimmed>true</PublishTrimmed> Not compatible with WinForms/WPF -->
