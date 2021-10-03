@@ -32,7 +32,7 @@ using static System.IO.Compression.ZipFile;
 using static System.IO.File;
 using static System.IO.Path;
 using static HXE.Console;
-using static HXE.DefaultHttpClient;
+using static HXE.Net.DefaultHttpClient;
 
 namespace HXE
 {
