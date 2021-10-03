@@ -25,7 +25,7 @@ namespace HXE.Common
     public static class ExtPath
     {
         /// <summary>
-        ///
+        ///     Ensure all path separators in a string are correct for this platform
         /// </summary>
         /// <param name="path">The path to sanitize.</param>
         /// <param name="doubleEscape">If true, escape backslash characters. Useful when writing to .reg files.</param>
