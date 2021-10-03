@@ -35,7 +35,7 @@ namespace HXE.Net.Http
         /// </summary>
         /// <remarks>
         ///     If you want only the response header, <br/>
-        ///     consider using `await StaticHttpClient.GetAsync(Uri, ResponseHeadersRead)` <br/>
+        ///     consider using `await HXE.Net.DefaultHttpClient.GetAsync(Uri, ResponseHeadersRead)` <br/>
         /// </remarks>
         public async Task StartDownload()
         {
