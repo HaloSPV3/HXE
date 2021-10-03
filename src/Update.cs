@@ -21,7 +21,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
@@ -33,14 +32,14 @@ using static System.IO.Compression.ZipFile;
 using static System.IO.File;
 using static System.IO.Path;
 using static HXE.Console;
-using static HXE.Net.Http.GlobalHttpClient;
+using static HXE.DefaultHttpClient;
 
 namespace HXE
 {
-  /// <summary>
-  ///   Module for updating assets from a specified manifest file.
-  /// </summary>
-  public class Update
+    /// <summary>
+    ///   Module for updating assets from a specified manifest file.
+    /// </summary>
+    public class Update
   {
     /// <summary>
     ///   Assets available to download for updating.
@@ -78,7 +77,7 @@ namespace HXE
       {
         Info("Inferred web request manifest - " + uri);
 
-        using (var rm = await StaticHttpClient.GetAsync(uri))
+        using (var rm = await Client.GetAsync(uri))
         using (var sr = new StreamReader(rm.Content.ReadAsStream() ?? throw new NullReferenceException("No response.")))
         {
           data = sr.ReadToEnd();

@@ -22,11 +22,12 @@
 using System;
 using System.IO;
 using System.Linq;
-using System.Net.Http;
 using System.Reflection;
 using System.Security.Cryptography.X509Certificates;
+using System.Threading.Tasks;
 using HXE.Steam;
 using static System.IO.File;
+using static HXE.DefaultHttpClient;
 using static HXE.Paths.MCC;
 
 namespace HXE.MCC
@@ -104,7 +105,7 @@ namespace HXE.MCC
             }
             catch (Exception e)
             {
-                throw new Exception("Failed to read our embedded copy of 343 Inudstries' code certificate",
+                throw new Exception("Failed to read our embedded copy of 343 Industries' code certificate",
                   e);
             }
 
@@ -115,7 +116,8 @@ namespace HXE.MCC
             var remoteFailedOrTimedOut = false;
             try
             {
-                MemoryStream ms = GetWebStream(uri);
+                var response = Client.GetAsync(uri).Result;
+                MemoryStream ms = (MemoryStream) response.Content.ReadAsStream();
                 byte[] msArray = ms.ToArray();
                 remoteCert = new X509Certificate(msArray);
             }
@@ -146,26 +148,6 @@ namespace HXE.MCC
         {
             Steam,
             WinStore
-        }
-
-        public static MemoryStream GetWebStream(string uri)
-        {
-            MemoryStream dataStream = new MemoryStream();
-            var httpClient = new HttpClient(){
-                BaseAddress = new Uri(uri),
-                Timeout = new TimeSpan(0, 0, 2)
-            };
-
-            var taskGetStream = httpClient.GetStreamAsync(uri);
-            taskGetStream.RunSynchronously();
-
-
-            using (var sr = new StreamReader(taskGetStream.Result ?? throw new NullReferenceException("No response.")))
-            {
-                sr.BaseStream.CopyTo(dataStream);
-            }
-
-            return dataStream;
         }
     }
 }
