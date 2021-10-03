@@ -27,7 +27,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using HXE.Steam;
 using static System.IO.File;
-using static HXE.DefaultHttpClient;
+using static HXE.Net.DefaultHttpClient;
 using static HXE.Paths.MCC;
 
 namespace HXE.MCC
