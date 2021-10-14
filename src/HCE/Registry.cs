@@ -586,7 +586,7 @@ namespace HXE.HCE
             public string PID = Registry.PID;
             public string Version = "";
             public string VersionType = "";
-            public readonly string Zone = "http://www.zone.com/asp/script/default.asp?Game=Halo&password=Password";
+            public string Zone = "http://www.zone.com/asp/script/default.asp?Game=Halo&password=Password";
 
             /// SubKey Examples
             /** Halo
