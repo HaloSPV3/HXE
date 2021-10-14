@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Copyright (c) 2019 Emilian Roman
  * Copyright (c) 2021 Noah Sherwin
  *
@@ -35,8 +35,8 @@ namespace HXE.HCE
     {
         //  private static string _dpid   = BogusDPID;
 
-        public const string x86 = @"SOFTWARE\Microsoft\Microsoft Games";
-        public const string x86_64 = @"SOFTWARE\WOW6432Node\Microsoft\Microsoft Games";
+        public const string RegPathX86 = @"SOFTWARE\Microsoft\Microsoft Games";
+        public const string RegPathX64 = @"SOFTWARE\WOW6432Node\Microsoft\Microsoft Games";
         public const string Retail = "Halo";
         public const string Custom = "Halo CE";
         public const string Trial = "Halo Trial";
@@ -82,7 +82,7 @@ namespace HXE.HCE
 
         public static string WoWCheck()
         {
-            return Environment.Is64BitOperatingSystem ? x86_64 : x86;
+            return Environment.Is64BitOperatingSystem ? RegPathX64 : RegPathX86;
         }
 
         public static bool GameExists(Game game)
