@@ -31,7 +31,7 @@ using WinReg = Microsoft.Win32.Registry;
 
 namespace HXE.HCE
 {
-    public class Registry
+    public static class Registry
     {
         //  private static string _dpid   = BogusDPID;
 
