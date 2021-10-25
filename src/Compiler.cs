@@ -1,14 +1,14 @@
 /**
  * Copyright (c) 2019 Emilian Roman
- * 
+ *
  * This software is provided 'as-is', without any express or implied
  * warranty. In no event will the authors be held liable for any damages
  * arising from the use of this software.
- * 
+ *
  * Permission is granted to anyone to use this software for any purpose,
  * including commercial applications, and to alter it and redistribute it
  * freely, subject to the following restrictions:
- * 
+ *
  * 1. The origin of this software must not be misrepresented; you must not
  *    claim that you wrote the original software. If you use this software
  *    in a product, an acknowledgment in the product documentation would be
@@ -79,11 +79,11 @@ namespace HXE
       /**
        * We declare the manifest file to be in the target directory, because the target directory is expected to be the
        * distributed with the installer.
-       * 
+       *
        * We recursively retrieve a list of files in the source directory, for the purpose of creating packages and
        * manifest entries for each of them.
-       * 
-       * Given that the manifest is represented by 0x00, the subsequent packages should be represented by a >=1 ID. 
+       *
+       * Given that the manifest is represented by 0x00, the subsequent packages should be represented by a >=1 ID.
        */
 
       var manifest    = (Manifest) Combine(target, Paths.Manifest);
@@ -104,8 +104,8 @@ namespace HXE
 
       /**
        * For any file found in the source, we create a DEFLATE package for it . We also declare an entry for it in the
-       * manifest. This permits permits both decompression and verification.
-       * 
+       * manifest. This permits both decompression and verification.
+       *
        * The manifest information seeks to be compatible and portable, by recording only relative paths to the source
        * directory.
        *
@@ -156,7 +156,7 @@ namespace HXE
              * X:\Development\HCE                  - source absolute path
              * X:\Development\HCE\content\Gallery  - current directory path
              *                   |---------------| - relative path to source
-             * 
+             *
              * With the above diagram in mind, we can essentially remove the source path portion (and trailing slash)
              * from the full absolute path, and thus declare the relative path as the package's path.
              *
