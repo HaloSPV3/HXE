@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Copyright (c) 2021 Emilian Roman
  *
  * This software is provided 'as-is', without any express or implied
