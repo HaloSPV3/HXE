@@ -2,23 +2,6 @@
 <Project Sdk="Microsoft.NET.Sdk" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <!-- GitVersion Auto-Patch
-      ref: https://gitversion.net/docs/usage/msbuild
-
-      The sub-task named GitVersion.MsBuild.UpdateAssemblyInfo will inject
-      version metadata into the assembly where GitVersion.MsBuild has been
-      added to.
-
-      By default, they are assigned as such:
-      - AssemblyVersion              = ${GitVersion_AssemblySemVer}
-      - AssemblyFileVersion          = ${GitVersion_MajorMinorPatch}.0
-      - AssemblyInformationalVersion = ${GitVersion_InformationalVersion}
-
-      Note: GenerateAssemblyFileVersionAttribute must be disabled to prevent
-            conflicting with GitVersion's generated values. Attributes
-            which inherit FileVersion will instead inherit GitVersion's values.
-      -->
-    <!-- Application | General -->
     <OutputPath>..\bin\$(Configuration)</OutputPath>
     <Platform>AnyCPU</Platform>
     <Prefer32Bit>false</Prefer32Bit>
