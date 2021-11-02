@@ -33,9 +33,6 @@
     <!-- Build | General -->
     <Deterministic>true</Deterministic>
     <FileAlignment>512</FileAlignment>
-    <!-- Build | Error and warnings -->
-    <WarningLevel>4</WarningLevel>
-    <!-- Build | Output -->
     <!-- Build | Events -->
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
     <!-- Build | Strong Naming -->
