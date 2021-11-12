@@ -19,7 +19,6 @@
     <!-- Build | Events -->
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
     <!-- Build | Strong Naming -->
-    <SignAssembly>False</SignAssembly>
     <!-- NuGet Packaging -->
     <Authors>HaloSPV3</Authors>
     <Company>github/HaloSPV3</Company>
