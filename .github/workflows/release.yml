@@ -61,7 +61,7 @@ jobs:
 
     # https://github.com/GitTools/actions/blob/main/docs/examples/github/gitversion/index.md
     - name: Setup GitVersion
-      uses: GitTools/actions/gitversion/setup@v0.9.10
+      uses: GitTools/actions/gitversion/setup@v0.9.11
       id: gitversion
       with:
         versionSpec: '5.x'
