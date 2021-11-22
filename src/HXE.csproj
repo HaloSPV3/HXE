@@ -33,8 +33,6 @@
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <RepositoryUrl>https://github.com/HaloSPV3/HXE</RepositoryUrl>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-    <!-- GitVersion DotNet SDK Compatibility -->
-    <GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
     <!-- Publish -->
     <GenerateRuntimeConfigurationFiles>false</GenerateRuntimeConfigurationFiles>
     <!--<IsTrimmable>true</IsTrimmable> Not compatible with WinForms/WPF -->
