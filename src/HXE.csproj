@@ -68,10 +68,10 @@
       <Link>.root\%(Filename)%(Extension)</Link>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </None>
-    <None Include="..\.github/**/*.*">
+    <None Include="..\.github\**\*.*">
      <Link>.root\.github\%(RecursiveDir)%(Filename)%(Extension)</Link>
     </None>
-    <None Include="..\doc/**/*.*">
+    <None Include="..\doc\**\*.*">
       <Link>.docs\%(RecursiveDir)%(Filename)%(Extension)</Link>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </None>
@@ -120,9 +120,9 @@
     <PackageReference Include="Microsoft.Windows.Compatibility" Version="6.0.0" />
   </ItemGroup>
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-    <Exec Command="pwsh $(MSBuildProjectDirectory)/.msb.prebuild.ps1" />
+    <Exec Command="pwsh $(MSBuildProjectDirectory)\.msb.prebuild.ps1" />
   </Target>
   <Target Name="NoConfig" AfterTargets="PostBuildEvent;AfterPublish">
-    <Exec Command="pwsh $(MSBuildProjectDirectory)/.msb.noConfig.ps1" />
+    <Exec Command="pwsh $(MSBuildProjectDirectory)\.msb.noConfig.ps1" />
   </Target>
 </Project>
