@@ -37,9 +37,7 @@
     <!--<IsTrimmable>true</IsTrimmable> -->
     <!--<PublishTrimmed>true</PublishTrimmed> -->
     <PublishSingleFile>true</PublishSingleFile>
-    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
-    <TrimMode>link</TrimMode>
-    <TrimmerDefaultAction>link</TrimmerDefaultAction>
+    <RuntimeIdentifier>win-x86</RuntimeIdentifier>
     <!-- Misc -->
     <ProjectGuid>{ACAA5D9F-B23D-43E1-B2DF-8C03230975A1}</ProjectGuid>
     <AppDesignerFolder>Properties</AppDesignerFolder>
