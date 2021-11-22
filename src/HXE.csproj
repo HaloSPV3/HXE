@@ -15,7 +15,6 @@
     <ApplicationIcon>Assets\icon.ico</ApplicationIcon>
     <!-- Build | General -->
     <Deterministic>true</Deterministic>
-    <FileAlignment>512</FileAlignment>
     <!-- Build | Events -->
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
     <!-- Build | Strong Naming -->
