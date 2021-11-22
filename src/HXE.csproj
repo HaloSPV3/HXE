@@ -38,6 +38,7 @@
     <!--<PublishTrimmed>true</PublishTrimmed> -->
     <PublishSingleFile>true</PublishSingleFile>
     <RuntimeIdentifier>win-x86</RuntimeIdentifier>
+    <!--<SelfContained>false</SelfContained> This will need to be in a top-level project -->
     <!-- Misc -->
     <ProjectGuid>{ACAA5D9F-B23D-43E1-B2DF-8C03230975A1}</ProjectGuid>
     <AppDesignerFolder>Properties</AppDesignerFolder>
