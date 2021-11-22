@@ -34,9 +34,8 @@
     <RepositoryUrl>https://github.com/HaloSPV3/HXE</RepositoryUrl>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <!-- Publish -->
-    <GenerateRuntimeConfigurationFiles>false</GenerateRuntimeConfigurationFiles>
-    <!--<IsTrimmable>true</IsTrimmable> Not compatible with WinForms/WPF -->
-    <!--<PublishTrimmed>true</PublishTrimmed> Not compatible with WinForms/WPF -->
+    <!--<IsTrimmable>true</IsTrimmable> -->
+    <!--<PublishTrimmed>true</PublishTrimmed> -->
     <PublishSingleFile>true</PublishSingleFile>
     <RuntimeIdentifier>win-x64</RuntimeIdentifier>
     <TrimMode>link</TrimMode>
