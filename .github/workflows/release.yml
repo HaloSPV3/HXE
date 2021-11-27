@@ -59,14 +59,6 @@ jobs:
     - name: Set NuGet.org Credentials
       run: dotnet nuget update source "nuget.org" -u USERNAME -p ${{ secrets.NUGET_TOKEN }} --store-password-in-clear-text
 
-    # https://github.com/GitTools/actions/blob/main/docs/examples/github/gitversion/index.md
-    - name: Setup GitVersion
-      uses: GitTools/actions/gitversion/setup@v0.9.10
-      id: gitversion
-      with:
-        versionSpec: '5.x'
-    - run: echo {{ steps.gitversion.outputs.fullSemVer }}
-
     ################
     # BUILD
     ################
