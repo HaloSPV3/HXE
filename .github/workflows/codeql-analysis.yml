@@ -1,11 +1,11 @@
-﻿name: "CodeQL"
+﻿name: CodeQL Analysis
 
 on:
   push:
   pull_request:
     types: [opened, reopened, ready_for_review]
   schedule:
-  - cron '35 19 * * 6'
+  - cron: '0 0 * * *'
 
 jobs:
   analyze:
@@ -39,7 +39,7 @@ jobs:
         config-file: 'lgtm.yml'
         languages: ${{ matrix.language }}
 
-	- name: Autobuild
+    - name: Autobuild
       uses: github/codeql-action/autobuild@v1
 
     - name: Perform CodeQL Analysis
