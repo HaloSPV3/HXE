@@ -1,18 +1,15 @@
 ﻿name: Conventional Pull Request
+# See https://github.com/Namchee/conventional-pr
 
 on:
   pull_request:
-    types: [opened, reopened, ready_for_review] # Currently, this action only support these events
+    types: [opened, reopened, ready_for_review]
 
 jobs:
   hqprs:
     runs-on: ubuntu-latest
     steps:
       - name: conventional-pr
-        uses: Namchee/conventional-pr@v0.6.0
+        uses: Namchee/conventional-pr@v0.7.0
         with:
           access_token: ${{ secrets.GITHUB_TOKEN }}
-          check_draft: true
-          ignore_bot: true
-          close: false
-          link_issue: false
