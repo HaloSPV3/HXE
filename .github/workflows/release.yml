@@ -21,7 +21,7 @@ jobs:
       RID: "win-x86"
       TFM: "net5.0-windows"
       ASSEMBLYNAME: "HXE"
-      PROJPATH: "./src/${{ env.ASSEMBLYNAME }}.csproj"
+      PROJPATH: "./src/HXE.csproj"
 
     steps:
     ################
