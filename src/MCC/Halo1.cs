@@ -42,7 +42,7 @@ namespace HXE.MCC
                 case Platform.Steam:
                     var mccH1 = Path.Combine(HTMCC, H1Dir, H1dll);
                     Steam.Libraries.ParseLibraries();
-                    Halo1Path = Steam.Libraries.FindInLibraries(mccH1).First();
+                    Halo1Path = Steam.Libraries.FindInLibraries(mccH1)[0];
                     break;
 
                 case Platform.WinStore:
