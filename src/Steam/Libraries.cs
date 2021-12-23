@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Copyright (c) 2019 Emilian Roman
  * Copyright (c) 2021 Noah Sherwin
  *
@@ -34,31 +34,74 @@ namespace HXE.Steam
         /// </summary>
         public File LibFoldersVdf = (File) Paths.Steam.Libraries;
 
-        public List<string> LibList = new List<string>();
+        public static List<string> LibList = new List<string>();
         public List<string> ReturnPaths = new List<string>();
 
         /// <summary>
-        ///     Read Steam's "libraryfolders.vdf" and assign the library folders to an index array.
+        ///     Search for LibraryFolders.vdf under a given root directory or Steam's directory.
         /// </summary>
-        public void ParseLibraries()
+        /// <param name="rootDir">If unspecified, defaults to current value of <c>HXE.Paths.Steam.Directory</c>.</param>
+        /// <returns>A list of LibraryFolders.vdf files.</returns>
+        static List<FileInfo> FindLibrariesRecursively(DirectoryInfo rootDir = null)
         {
-            if (!LibFoldersVdf.Exists() || LibFoldersVdf.Path == null)
-                throw new FileNotFoundException("Steam Library list not found.");
-
-            try
+            /// If <c>root</c> is null, check if <c>HXE.Paths.Steam.Directory</c> is null, empty, or whitespace.
+            ///     If `HXE.Paths.Steam.Directory` is null, empty, or whitespace, then throw ArgumentNullException.
+            ///     Otherwise, assign its value to the `root` parameter as a DirectoryInfo object.
+            if (rootDir == null)
             {
-                var text = LibFoldersVdf.ReadAllText();
-
-                List<string> libs = text.Split(new char[] { '\"' }, System.StringSplitOptions.RemoveEmptyEntries).ToList();
-                libs = libs.Where(line => line.Contains(":")).ToList();
-                foreach (string line in libs)
+                if (string.IsNullOrWhiteSpace(Paths.Steam.Directory))
                 {
-                    LibList.Add(line.Replace("\\\\", "\\"));
+                    const string msg = "Steam's root directory was not specified.\n"
+                        + "The values of both `HXE.Steam.Libraries.FindLibrariesRecursively().root` and `HXE.Paths.Steam.Directory` were not set, are empty, or are only whitespace.";
+                    throw new System.ArgumentNullException(nameof(rootDir), msg);
+                }
+                else
+                {
+                    rootDir = new DirectoryInfo(Paths.Steam.Directory);
                 }
             }
-            catch (System.Exception e)
+
+            /// <summary>
+            ///     Recursively search the directory indicated via the <c>root</c> variable for "LibraryFolders.vdf".
+            /// </summary>
+            /// <value>Return a list of located files.</value>
+            try
             {
-                throw new System.Exception("Failed to Parse Steam Libraries file", e);
+                FileInfo[] searchResults = rootDir.GetFiles("LibraryFolders.vdf", SearchOption.AllDirectories); /// System.IO.DirectoryNotFoundException(), System.Security.SecurityException("The caller does not have the required permission.")
+                if (searchResults.Length == 0)
+                {
+                    throw new FileNotFoundException($"Search succeeded, but no files match 'LibraryFolders.vdf'.");
+                }
+
+                return searchResults.ToList();
+            }
+            catch(System.Exception e)
+            {
+                throw new System.Exception($"Failed the search for 'LibraryFolders.vdf' in '{rootDir}'. Reason:\n" + e.ToString(), e);
+            }
+        }
+
+        /// <summary>
+        ///     Read Steam's "libraryfolders.vdf" files(s) and assign the library folders to a List.
+        /// </summary>
+        /// TODO: utilize package 'Gameloop.Vdf'
+        public void ParseLibraries()
+        {
+            foreach (var file in FindLibrariesRecursively()) /// May throw wrapped exceptions.
+            {
+                try
+                {
+                    ParseLibrary(new File { Path = file.Name }.ReadAllText());
+                }
+                catch (System.Exception e)
+                {
+                    throw new System.Exception("Failed to Parse Steam Libraries file", e);
+                }
+            }
+
+            if (LibList.Count == 0)
+            {
+                throw new System.Exception("One or more files matching 'LibraryFolders.vdf' were found and read, but no paths of libraries were read from the file(s).");
             }
         }
 
@@ -73,6 +116,26 @@ namespace HXE.Steam
         {
             LibFoldersVdf.Path = path;
             ParseLibraries();
+        }
+
+        public static void ParseLibrary(File libraryFoldersVdf = null)
+        {
+            string text = libraryFoldersVdf.ReadAllText();
+
+            List<string> libs = text.Split("\n").ToList(); /// Start by adding each line to a list.
+            libs = libs.Where(line => line.Contains("\"path\"")).ToList(); /// Filter the list for entries containing `"path"`.
+
+            foreach (string line in libs)
+            {
+                string entry = line; /// Copy the current line to a modifiable variable named `entry`.
+                entry = entry.Replace("\"path\"", ""); /// remove `"path"` from the entry, leaving only the value of `path` enclosed by double quotes.
+                entry = entry.Trim(); /// remove whitespace from the start and end of the string.
+                entry = entry.Replace("\"", ""); /// Assuming the value of `path` is the remainder, strip the enclosing double quotes.
+                if (!string.IsNullOrWhiteSpace(entry)) /// If the remainder is not null, empty, or whitespace, add it to the main Library list.
+                {
+                    LibList.Add(entry);
+                }
+            }
         }
 
         /// <summary>
