@@ -26,7 +26,7 @@ using static System.IO.Path;
 
 namespace HXE.Steam
 {
-    public class Libraries : File
+    public static class Libraries
     {
         public static List<string> LibList = new List<string>();
 
@@ -144,7 +144,7 @@ namespace HXE.Steam
         /// If only one result is expected, it can be accessed as ReturnPath[0]. <br/>
         /// If there are multiple results, implement another While loop to filter them.
         /// </remarks>
-        public List<string> FindInLibraries(string pathInLibrary)
+        public static List<string> FindInLibraries(string pathInLibrary)
         {
             List<string> list = new List<string>();
             try
