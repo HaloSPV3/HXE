@@ -28,14 +28,7 @@ namespace HXE.Steam
 {
     public class Libraries : File
     {
-        /// <summary>
-        /// Create an object representing LibraryFolders.vdf on the file system.
-        /// Local functions will read the contents of this file object.
-        /// </summary>
-        public File LibFoldersVdf = (File) Paths.Steam.Libraries;
-
         public static List<string> LibList = new List<string>();
-        public List<string> ReturnPaths = new List<string>();
 
         /// <summary>
         ///     Search for LibraryFolders.vdf under a given root directory or Steam's directory.
@@ -103,19 +96,6 @@ namespace HXE.Steam
             {
                 throw new System.Exception("One or more files matching 'LibraryFolders.vdf' were found and read, but no paths of libraries were read from the file(s).");
             }
-        }
-
-        /// <summary>
-        /// Pass a file path to replace the inferred Libraries path. Then execute ParseLibraries().
-        /// </summary>
-        /// <param name="path">A non-standard path to LibraryFolderss.vdf.</param>
-        /// <remarks>
-        /// The inferred path will work 99% of the time. This will probably be removed later.
-        /// </remarks>
-        public void ParseLibraries(string path)
-        {
-            LibFoldersVdf.Path = path;
-            ParseLibraries();
         }
 
         public static void ParseLibrary(File libraryFoldersVdf = null)
