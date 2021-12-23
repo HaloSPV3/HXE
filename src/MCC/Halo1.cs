@@ -65,7 +65,7 @@ namespace HXE.MCC
 
             // this works, but it might not be worth the maintenance workload.
             //if (!Halo1DLLIsCertified())
-            //    throw new CryptographicException("Halo1.dll is digital signature is invalid.");
+            //    throw new CryptographicException("Halo1.dll's digital signature is invalid.");
         }
 
         /// <summary>
