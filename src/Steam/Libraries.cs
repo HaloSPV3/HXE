@@ -162,7 +162,7 @@ namespace HXE.Steam
             }
 
             if (list.Count == 0)
-                throw new FileNotFoundException($"Failed to find {Path} in Steam Libraries.");
+                throw new FileNotFoundException($"Failed to find \"{pathInLibrary}\" in Steam Libraries.");
 
             return list;
         }
