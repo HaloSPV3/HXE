@@ -24,7 +24,6 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Security.Cryptography.X509Certificates;
-using HXE.Steam;
 using static System.IO.File;
 using static HXE.Net.DefaultHttpClient;
 using static HXE.Paths.MCC;
@@ -42,9 +41,8 @@ namespace HXE.MCC
             {
                 case Platform.Steam:
                     var mccH1 = Path.Combine(HTMCC, H1Dir, H1dll);
-                    var libraries = new Libraries();
-                    libraries.ParseLibraries();
-                    Halo1Path = libraries.FindInLibraries(mccH1).First();
+                    Steam.Libraries.ParseLibraries();
+                    Halo1Path = Steam.Libraries.FindInLibraries(mccH1)[0];
                     break;
 
                 case Platform.WinStore:
