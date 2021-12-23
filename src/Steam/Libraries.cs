@@ -98,7 +98,7 @@ namespace HXE.Steam
             {
                 try
                 {
-                    ParseLibrary(new File { Path = file.Name }.ReadAllText());
+                    ParseLibrary(new File { Path = file.Name });
                 }
                 catch (System.Exception e)
                 {
