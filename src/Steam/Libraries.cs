@@ -77,10 +77,14 @@ namespace HXE.Steam
         /// <summary>
         ///     Read Steam's "libraryfolders.vdf" files(s) and assign the library folders to a List.
         /// </summary>
+        /// <param name="rootDir">
+        ///     The root directory to recursively search for "LibraryFolders.vdf".<br/>
+        ///     Default: HXE.Paths.Steam.Directory
+        /// </param>
         /// TODO: utilize package 'Gameloop.Vdf'
-        public void ParseLibraries()
+        public void ParseLibraries(DirectoryInfo rootDir = null)
         {
-            foreach (var file in FindLibrariesRecursively()) /// May throw wrapped exceptions.
+            foreach (var file in FindLibrariesRecursively(rootDir)) /// May throw wrapped exceptions.
             {
                 try
                 {
