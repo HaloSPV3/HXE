@@ -94,6 +94,7 @@ namespace HXE.Steam
 
             if (LibList.Count == 0)
             {
+                /// Severity: WARNING
                 throw new System.Exception("One or more files matching 'LibraryFolders.vdf' were found and read, but no paths of libraries were read from the file(s).");
             }
         }
