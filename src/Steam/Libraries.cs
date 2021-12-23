@@ -82,9 +82,17 @@ namespace HXE.Steam
         ///     Default: HXE.Paths.Steam.Directory
         /// </param>
         /// TODO: utilize package 'Gameloop.Vdf'
-        public void ParseLibraries(DirectoryInfo rootDir = null)
+        public void ParseLibraries(DirectoryInfo rootDir = null, FileInfo libraryFolderVdf = null)
         {
-            foreach (var file in FindLibrariesRecursively(rootDir)) /// May throw wrapped exceptions.
+            List<FileInfo> libraryFoldersVdfList = FindLibrariesRecursively(rootDir);
+
+            if (libraryFoldersVdf != null)
+            {
+                /// Add the specified LibraryFolders.vdf file to the beginning of the list.
+                libraryFoldersVdfList = new List<FileInfo> { libraryFolderVdf }.AddRange(libraryFoldersVdfList);
+            }
+
+            foreach (var file in libraryFoldersVdfList) /// May throw wrapped exceptions.
             {
                 try
                 {
