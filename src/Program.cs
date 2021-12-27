@@ -337,7 +337,13 @@ namespace HXE
             /// TODO: rename bn (buildId?), refactor to multiple variables
             var bn = GitVersionInformation.InformationalVersion;
 
-            var bannerLineDecorations = new string('-', BannerBuildSource.Length + 1);
+            int longestStringLength = GetLongestStringLength(new string[]{
+                Banner,
+                string.Format(BannerBuildNumber, bn),
+                string.Format(BannerBuildSource, bn)
+            });
+
+            var bannerLineDecorations = new string('-', longestStringLength + 1);
 
             /// Print()
             ForegroundColor = ConsoleColor.Green; /* the colour of the one */
@@ -347,6 +353,33 @@ namespace HXE
             WriteLine(BannerBuildSource, GitVersionInformation.Sha); /* reference link */
             WriteLine(bannerLineDecorations);     /* separator */
             ForegroundColor = ConsoleColor.White; /* end banner */
+        }
+
+        internal static int GetLongestStringLength(string[] strings)
+        {
+            int longestStringLength = 0;
+            var lines = new List<string>();
+
+            /// Split strings to individual lines
+            foreach (string s in strings)
+            {
+                foreach (string line in s.Split('\n'))
+                {
+                    lines.AddRange(line.Split('\r', StringSplitOptions.RemoveEmptyEntries));
+                }
+            }
+
+            /// Get the length of the longest line
+            foreach (string line in lines)
+            {
+
+                if (line.Length > longestStringLength)
+                {
+                    longestStringLength = line.Length;
+                }
+            }
+
+            return longestStringLength;
         }
     }
 }
