@@ -334,7 +334,7 @@ namespace HXE
         /// </summary>
         private static void DisplayBanner()
         {
-            var bn = Assembly.GetEntryAssembly()?.GetName().Version.Major.ToString("D4");
+            var bn = GitVersionInformation.InformationalVersion;
 
             var bannerLineDecorations = new string('-', BannerBuildSource.Length + 1);
 
