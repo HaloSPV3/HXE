@@ -334,15 +334,17 @@ namespace HXE
         /// </summary>
         private static void DisplayBanner()
         {
+            /// TODO: rename bn (buildId?), refactor to multiple variables
             var bn = GitVersionInformation.InformationalVersion;
 
             var bannerLineDecorations = new string('-', BannerBuildSource.Length + 1);
 
+            /// Print()
             ForegroundColor = ConsoleColor.Green; /* the colour of the one */
             WriteLine(Banner);                    /* ascii art and usage */
             WriteLine(BannerBuildNumber, bn);     /* reference build */
             WriteLine(bannerLineDecorations);     /* separator */
-            WriteLine(BannerBuildSource, bn);     /* reference link */
+            WriteLine(BannerBuildSource, GitVersionInformation.Sha); /* reference link */
             WriteLine(bannerLineDecorations);     /* separator */
             ForegroundColor = ConsoleColor.White; /* end banner */
         }
