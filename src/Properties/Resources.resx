@@ -122,7 +122,7 @@
   </data>
   <!--TODO: Rename to BannerBuildVersion-->
   <data name="BannerBuildNumber" xml:space="preserve">
-    <value>This binary has been compiled using build-{0}</value>
+    <value>This binary has been compiled using commit {0}</value>
   </data>
   <!--TODO: Refactor to BannerBuildUrlCommit and BannerBuildUrlRelease-->
   <data name="BannerBuildSource" xml:space="preserve">
