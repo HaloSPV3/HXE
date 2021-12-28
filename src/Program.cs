@@ -335,14 +335,19 @@ namespace HXE
         private static void DisplayBanner()
         {
             /// TODO: rename bn (buildId?), refactor to multiple variables
+            bool release = GitVersionInformation.CommitsSinceVersionSource == "0";
             var bn = GitVersionInformation.InformationalVersion;
+            string bannerBuildSource = release ? /// TODO: handle pre-releases
+                string.Format(BannerBuildSourceRelease, GitVersionInformation.MajorMinorPatch) :
+                string.Format(BannerBuildSourceCommit, GitVersionInformation.ShortSha);
+
 
             int longestStringLength = GetLongestStringLength(new string[]{
                 Banner,
                 string.Format(BannerBuildNumber, bn),
-                string.Format(BannerBuildSource, bn)
+                string.Format(BannerBuildSourceCommit, GitVersionInformation.ShortSha),
+                string.Format(BannerBuildSourceRelease, GitVersionInformation.MajorMinorPatch)
             });
-
             var bannerLineDecorations = new string('-', longestStringLength + 1);
 
             /// Print()
@@ -350,7 +355,7 @@ namespace HXE
             WriteLine(Banner);                    /* ascii art and usage */
             WriteLine(BannerBuildNumber, bn);     /* reference build */
             WriteLine(bannerLineDecorations);     /* separator */
-            WriteLine(BannerBuildSource, GitVersionInformation.Sha); /* reference link */
+            WriteLine(bannerBuildSource);         /* reference link */
             WriteLine(bannerLineDecorations);     /* separator */
             ForegroundColor = ConsoleColor.White; /* end banner */
         }

@@ -120,13 +120,14 @@
   <data name="Banner" xml:space="preserve">
     <value>..\Assets\banner.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
-  <!--TODO: Rename to BannerBuildVersion-->
   <data name="BannerBuildNumber" xml:space="preserve">
     <value>This binary has been compiled using commit {0}</value>
   </data>
-  <!--TODO: Refactor to BannerBuildUrlCommit and BannerBuildUrlRelease-->
-  <data name="BannerBuildSource" xml:space="preserve">
+  <data name="BannerBuildSourceCommit" xml:space="preserve">
     <value>https://github.com/HaloSPV3/HXE/commit/{0}</value>
+  </data>
+  <data name="BannerBuildSourceRelease" xml:space="preserve">
+    <value>https://github.com/HaloSPV3/HXE/release/v{0}</value>
   </data>
   <data name="patches" xml:space="preserve">
     <value>..\..\ext\halo-ce-patches\patches.crk;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>

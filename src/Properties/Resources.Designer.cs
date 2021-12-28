@@ -96,11 +96,20 @@ namespace HXE.Properties {
         }
 
         /// <summary>
-        ///   Looks up a localized string similar to https://github.com/HaloSPV3/HXE/tag/build-{0}.
+        ///   Looks up a localized string similar to https://github.com/HaloSPV3/HXE/commit/{0}.
         /// </summary>
-        internal static string BannerBuildSource {
+        internal static string BannerBuildSourceCommit {
             get {
-                return ResourceManager.GetString("BannerBuildSource", resourceCulture);
+                return ResourceManager.GetString("BannerBuildSourceCommit", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to https://github.com/HaloSPV3/HXE/release/{0}.
+        /// </summary>
+        internal static string BannerBuildSourceRelease {
+            get {
+                return ResourceManager.GetString("BannerBuildSourceRelease", resourceCulture);
             }
         }
 
