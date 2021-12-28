@@ -61,23 +61,24 @@ namespace HXE.Properties {
         }
 
         /// <summary>
-        ///   Looks up a localized string similar to  _    ___   ________
-        ///| |  | \ \ / /  ____|
-        ///| |__| |\ V /| |__
-        ///|  __  | &gt; &lt; |  __|
-        ///| |  | |/ . \| |____
-        ///|_|  |_/_/ \_\______| :: Halo XE
-        ///=================================
-        ///A HCE wrapper and kernel for SPV3
-        ///---------------------------------
-        ///:: https://github.com/HaloSPV3/hxe
-        ///---------------------------------
-        ///
-        ///HXE can be invoked with the following arguments:
-        ///
-        ///      --config               Opens configuration GUI
-        ///      --positions            Opens positions GUI
-        ///      --load                 Initiat [rest of string was truncated]&quot;;.
+        ///   Looks up a localized string similar to &quot;<br/>
+        /// _    ___   ________                      <br/>
+        ///| |  | \ \ / /  ____|                     <br/>
+        ///| |__| |\ V /| |__                        <br/>
+        ///|  __  | &gt; &lt; |  __|                 <br/>
+        ///| |  | |/ . \| |____                      <br/>
+        ///|_|  |_/_/ \_\______| :: Halo XE          <br/>
+        ///=================================         <br/>
+        ///A HCE wrapper and kernel for SPV3         <br/>
+        ///---------------------------------         <br/>
+        ///:: https://github.com/HaloSPV3/hxe        <br/>
+        ///---------------------------------         <br/>
+        ///                                                                           <br/>
+        ///HXE can be invoked with the following arguments:                           <br/>
+        ///                                                                           <br/>
+        ///      --config               Opens configuration GUI                       <br/>
+        ///      --positions            Opens positions GUI                           <br/>
+        ///      --load                 Initiat [rest of string was truncated]&quot;;.<br/>
         /// </summary>
         internal static string Banner {
             get {
