@@ -334,17 +334,56 @@ namespace HXE
         /// </summary>
         private static void DisplayBanner()
         {
-            var bn = Assembly.GetEntryAssembly()?.GetName().Version.Major.ToString("D4");
+            bool release = GitVersionInformation.CommitsSinceVersionSource == "0";
+            var infoVersion = GitVersionInformation.InformationalVersion;
+            string bannerBuildSource = release ? /// TODO: handle pre-releases
+                string.Format(BannerBuildSourceRelease, GitVersionInformation.MajorMinorPatch) :
+                string.Format(BannerBuildSourceCommit, GitVersionInformation.ShortSha);
 
-            var bannerLineDecorations = new string('-', BannerBuildSource.Length + 1);
 
-            ForegroundColor = ConsoleColor.Green; /* the colour of the one */
-            WriteLine(Banner);                    /* ascii art and usage */
-            WriteLine(BannerBuildNumber, bn);     /* reference build */
-            WriteLine(bannerLineDecorations);     /* separator */
-            WriteLine(BannerBuildSource, bn);     /* reference link */
-            WriteLine(bannerLineDecorations);     /* separator */
-            ForegroundColor = ConsoleColor.White; /* end banner */
+            int longestStringLength = GetLongestStringLength(new string[]{
+                Banner,
+                string.Format(BannerBuildNumber, infoVersion),
+                string.Format(BannerBuildSourceCommit, GitVersionInformation.ShortSha),
+                string.Format(BannerBuildSourceRelease, GitVersionInformation.MajorMinorPatch)
+            });
+            var bannerLineDecorations = new string('-', longestStringLength + 1);
+
+            /// Print()
+            ForegroundColor = ConsoleColor.Green;      /* the colour of the one */
+            WriteLine(Banner);                         /* ascii art and usage */
+            WriteLine(BannerBuildNumber, infoVersion); /* reference build */
+            WriteLine(bannerLineDecorations);          /* separator */
+            WriteLine(bannerBuildSource);              /* reference link */
+            WriteLine(bannerLineDecorations);          /* separator */
+            ForegroundColor = ConsoleColor.White;      /* end banner */
+        }
+
+        internal static int GetLongestStringLength(string[] strings)
+        {
+            int longestStringLength = 0;
+            var lines = new List<string>();
+
+            /// Split strings to individual lines
+            foreach (string s in strings)
+            {
+                foreach (string line in s.Split('\n'))
+                {
+                    lines.AddRange(line.Split('\r', StringSplitOptions.RemoveEmptyEntries));
+                }
+            }
+
+            /// Get the length of the longest line
+            foreach (string line in lines)
+            {
+
+                if (line.Length > longestStringLength)
+                {
+                    longestStringLength = line.Length;
+                }
+            }
+
+            return longestStringLength;
         }
     }
 }
