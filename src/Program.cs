@@ -334,9 +334,8 @@ namespace HXE
         /// </summary>
         private static void DisplayBanner()
         {
-            /// TODO: rename bn (buildId?), refactor to multiple variables
             bool release = GitVersionInformation.CommitsSinceVersionSource == "0";
-            var bn = GitVersionInformation.InformationalVersion;
+            var infoVersion = GitVersionInformation.InformationalVersion;
             string bannerBuildSource = release ? /// TODO: handle pre-releases
                 string.Format(BannerBuildSourceRelease, GitVersionInformation.MajorMinorPatch) :
                 string.Format(BannerBuildSourceCommit, GitVersionInformation.ShortSha);
@@ -344,20 +343,20 @@ namespace HXE
 
             int longestStringLength = GetLongestStringLength(new string[]{
                 Banner,
-                string.Format(BannerBuildNumber, bn),
+                string.Format(BannerBuildNumber, infoVersion),
                 string.Format(BannerBuildSourceCommit, GitVersionInformation.ShortSha),
                 string.Format(BannerBuildSourceRelease, GitVersionInformation.MajorMinorPatch)
             });
             var bannerLineDecorations = new string('-', longestStringLength + 1);
 
             /// Print()
-            ForegroundColor = ConsoleColor.Green; /* the colour of the one */
-            WriteLine(Banner);                    /* ascii art and usage */
-            WriteLine(BannerBuildNumber, bn);     /* reference build */
-            WriteLine(bannerLineDecorations);     /* separator */
-            WriteLine(bannerBuildSource);         /* reference link */
-            WriteLine(bannerLineDecorations);     /* separator */
-            ForegroundColor = ConsoleColor.White; /* end banner */
+            ForegroundColor = ConsoleColor.Green;      /* the colour of the one */
+            WriteLine(Banner);                         /* ascii art and usage */
+            WriteLine(BannerBuildNumber, infoVersion); /* reference build */
+            WriteLine(bannerLineDecorations);          /* separator */
+            WriteLine(bannerBuildSource);              /* reference link */
+            WriteLine(bannerLineDecorations);          /* separator */
+            ForegroundColor = ConsoleColor.White;      /* end banner */
         }
 
         internal static int GetLongestStringLength(string[] strings)
