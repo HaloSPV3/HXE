@@ -53,9 +53,7 @@ jobs:
     # BUILD
     ################
     - name: dotnet-publish
-      run: |
-        dotnet publish $env:CSPROJ_RELPATH -c Release --no-self-contained -p:ContinuousIntegrationBuild=true
-        src/.msb.noConfig.ps1
+      run: dotnet publish $env:CSPROJ_RELPATH -c Release --no-self-contained -p:ContinuousIntegrationBuild=true
 
     # required variables: TargetFramework, RuntimeIdentifier, GitVersion_FullSemVer
     - name: Compress-PublishArtifacts
