@@ -34,6 +34,7 @@
     <RepositoryUrl>https://github.com/HaloSPV3/HXE</RepositoryUrl>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <!-- Publish -->
+    <EnableTrimAnalyzer>true</EnableTrimAnalyzer>
     <!--<IsTrimmable>true</IsTrimmable> -->
     <!--<PublishTrimmed>true</PublishTrimmed> -->
     <PublishSingleFile>true</PublishSingleFile>
