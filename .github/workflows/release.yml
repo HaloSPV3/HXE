@@ -43,7 +43,7 @@ jobs:
     # Authenticates packages to push to GPR
     - uses: actions/setup-dotnet@v3.0.3
       with:
-        dotnet-version: "6.0.x" # SDK Version to use.
+        dotnet-version: "6.0.x"
         include-prerelease: true
 
     - name: Add GitHub Package Repository
