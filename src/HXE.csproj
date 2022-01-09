@@ -34,7 +34,7 @@
     <RepositoryUrl>https://github.com/HaloSPV3/HXE</RepositoryUrl>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <!-- Publish -->
-    <!--<IsTrimmable>true</IsTrimmable> -->
+    <IsTrimmable>true</IsTrimmable>
     <!--<PublishTrimmed>true</PublishTrimmed> -->
     <SelfContained>true</SelfContained>
     <RuntimeIdentifier Condition="'RuntimeIdentifier' == ''">win-x64</RuntimeIdentifier>
