@@ -15,5 +15,11 @@
         "conv-pr", // Conventional Pull Request config
         "commitizen",
         "pull-requests" // pull requests workflow
-    ]
+    ],
+    "markdownlint.config": {
+        "MD028": false,
+        "MD025": {
+            "front_matter_title": ""
+        }
+    }
 }
