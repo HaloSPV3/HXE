@@ -22,7 +22,6 @@
 using System;
 using System.IO;
 using System.IO.Compression;
-using System.Management;
 using System.Threading;
 using System.Threading.Tasks;
 using HXE.Properties;
@@ -70,18 +69,20 @@ namespace HXE
 
             if (!Directory.Exists(target))
                 Directory.CreateDirectory(target);
-            if (enableLZNT1)
+            if (enableLZNT1) /// TODO: refactor to new Method for use from other Classes.
             {
-                var dirInfo = new DirectoryInfo(target);
-                if ((dirInfo.Attributes & FileAttributes.Compressed) != FileAttributes.Compressed)
+                string[] directories = Directory.GetDirectories(target);
+                string[] files = Directory.GetFiles(target);
+                foreach (string directoryPath in directories)
                 {
-                    var objPath = $"Win32_Directory.Name='{target}'";
-                    using (var dir = new ManagementObject(objPath))
-                    {
-                        var outParams = dir.InvokeMethod("Compress", null, null);
-                        uint ret = (uint) outParams.Properties["ReturnValue"].Value;
-                    }
+                    new DirectoryInfo(directoryPath).Attributes |= FileAttributes.Compressed;
                 }
+                foreach (string filePath in files)
+                {
+                    new FileInfo(filePath).Attributes |= FileAttributes.Compressed;
+                }
+
+                /// TODO: Introduce and display progress of changes using Events
             }
 
             Info("Gracefully created target directory");
