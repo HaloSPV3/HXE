@@ -18,7 +18,7 @@ jobs:
     name: Build
     runs-on: windows-latest
     env:
-      TFM: "net5.0-windows"
+      TFM: "net6.0-windows"
       ASSEMBLYNAME: "HXE"
       PROJPATH: "./src/HXE.csproj"
     strategy:
