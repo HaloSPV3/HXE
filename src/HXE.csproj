@@ -36,6 +36,7 @@
     <!-- Publish -->
     <!--<IsTrimmable>true</IsTrimmable> -->
     <!--<PublishTrimmed>true</PublishTrimmed> -->
+    <RuntimeIdentifier Condition="'RuntimeIdentifier' == ''">win-x64</RuntimeIdentifier>
     <PublishSingleFile>true</PublishSingleFile>
     <EnableCompressionInSingleFile>true</EnableCompressionInSingleFile><!-- requires SelfContained -->
     <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
