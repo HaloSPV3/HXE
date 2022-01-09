@@ -18,7 +18,7 @@ jobs:
     name: Build
     runs-on: windows-latest
     env:
-      TFM: "net5.0-windows"
+      TFM: "net6.0-windows"
       ASSEMBLYNAME: "HXE"
       PROJPATH: "./src/HXE.csproj"
     strategy:
@@ -43,7 +43,7 @@ jobs:
     # Authenticates packages to push to GPR
     - uses: actions/setup-dotnet@v3.0.3
       with:
-        dotnet-version: "6.0.x" # SDK Version to use.
+        dotnet-version: "6.0.x"
         include-prerelease: true
 
     - name: Add GitHub Package Repository
@@ -56,7 +56,7 @@ jobs:
     # BUILD
     ################
     - name: dotnet-publish
-      run: dotnet publish $env:CSPROJ_RELPATH -c Release --no-self-contained -t ${{ env.TFM }} --RID ${{ matrix.RID }} -p:ContinuousIntegrationBuild=true
+      run: dotnet publish ${{ env.CSPROJ_RELPATH }} -c Release -t ${{ env.TFM }} --RID ${{ matrix.RID }} -p:ContinuousIntegrationBuild=true
 
     # required variables: TargetFramework, RuntimeIdentifier, GitVersion_FullSemVer
     - name: Compress-PublishArtifacts
@@ -64,7 +64,7 @@ jobs:
         $publishPath = Resolve-Path ".\bin\Release\$env:TFM\$env:RID\publish";
         $archiveName = "$env:ASSEMBLYNAME.$env:TFM-$env:RID.$env:GitVersion_FullSemVer.zip";
         Set-Location $publishPath;
-        Compress-Archive -Path $publishPath -DestinationPath $archiveName -CompressionLevel Optimal;
+        Compress-Archive -Path $publishPath -DestinationPath ${{ github.workspace }}\bin\Release\publish\$archiveName -CompressionLevel Optimal;
 
     ################
     # RELEASE
@@ -80,7 +80,7 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: publish-artifacts
-        path: bin/Release/${{ env.TFM }}/${{ matrix.RID }}/publish
+        path: bin/Release/publish
 
     - name: Publish to GitHub Packages
       working-directory: bin/Release

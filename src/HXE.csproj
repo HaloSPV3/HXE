@@ -34,11 +34,13 @@
     <RepositoryUrl>https://github.com/HaloSPV3/HXE</RepositoryUrl>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <!-- Publish -->
-    <!--<IsTrimmable>true</IsTrimmable> -->
+    <IsTrimmable>true</IsTrimmable>
     <!--<PublishTrimmed>true</PublishTrimmed> -->
+    <SelfContained>true</SelfContained>
+    <RuntimeIdentifier Condition="'RuntimeIdentifier' == ''">win-x64</RuntimeIdentifier>
     <PublishSingleFile>true</PublishSingleFile>
-    <RuntimeIdentifier>win-x86</RuntimeIdentifier>
-    <!--<SelfContained>false</SelfContained> This will need to be in a top-level project -->
+    <EnableCompressionInSingleFile>true</EnableCompressionInSingleFile><!-- requires SelfContained -->
+    <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
     <!-- Misc -->
     <ProjectGuid>{ACAA5D9F-B23D-43E1-B2DF-8C03230975A1}</ProjectGuid>
     <AppDesignerFolder>Properties</AppDesignerFolder>
