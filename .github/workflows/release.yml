@@ -56,7 +56,7 @@ jobs:
     # BUILD
     ################
     - name: dotnet-publish
-      run: dotnet publish $env:CSPROJ_RELPATH -c Release --no-self-contained -t ${{ env.TFM }} --RID ${{ matrix.RID }} -p:ContinuousIntegrationBuild=true
+      run: dotnet publish ${{ env.CSPROJ_RELPATH }} -c Release -t ${{ env.TFM }} --RID ${{ matrix.RID }} -p:ContinuousIntegrationBuild=true
 
     # required variables: TargetFramework, RuntimeIdentifier, GitVersion_FullSemVer
     - name: Compress-PublishArtifacts
