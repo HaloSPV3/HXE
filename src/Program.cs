@@ -160,6 +160,9 @@ namespace HXE
                     app = new Application();
                     _ = app.Run(test_positions);
                     app.Shutdown();
+                    //string target = Path.Combine(CurrentDirectory, "positions.bin");
+                    //Positions.Run(source, target);
+                    Logs("TODO: Positions test requires an OpenSauce.User.xml file.");
                     Logs("Positions Test: Succeeded");
                 }
                 catch (Exception e)
