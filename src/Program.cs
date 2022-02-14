@@ -372,7 +372,7 @@ namespace HXE
             {
                 foreach (string line in s.Split('\n'))
                 {
-                    lines.AddRange(line.Split('\r', StringSplitOptions.RemoveEmptyEntries));
+                    lines.AddRange(line.Split('\r').Where(l => !string.IsNullOrWhiteSpace(l)));
                 }
             }
 

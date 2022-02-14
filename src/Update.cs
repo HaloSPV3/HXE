@@ -78,7 +78,7 @@ namespace HXE
         Info("Inferred web request manifest - " + uri);
 
         using (var rm = await Client.GetAsync(uri))
-        using (var sr = new StreamReader(rm.Content.ReadAsStream() ?? throw new NullReferenceException("No response.")))
+        using (var sr = new StreamReader(await rm.Content.ReadAsStreamAsync() ?? throw new NullReferenceException("No response.")))
         {
           data = sr.ReadToEnd();
         }
