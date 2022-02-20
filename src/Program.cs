@@ -266,9 +266,9 @@ namespace HXE
                              " -- Looked in working directory, Program Files, and Registry." + NewLine +
                              " -- The working directory is " + CurrentDirectory + NewLine +
                              " -- Error:  " + NewLine +
-                             e.ToString() + NewLine;
+                             e.ToString();
                 var log = (File) Paths.Exception;
-                log.AppendAllText(msg);
+                log.AppendAllText(msg + NewLine);
                 Error(msg);
             }
 
