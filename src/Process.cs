@@ -79,9 +79,29 @@ namespace HXE
             catch (System.Exception e)
             {
                 ErrorOutput(e, "");
+                LastResult.Success = false;
+                LastResult.Type = Type.Unknown;
+                LastResult.Message = "An unhandled exception occurred" + NewLine + e.ToString();
             }
 
-            return processCandidate?.Type ?? Type.Unknown;
+            if (processCandidate?.Type == null)
+            {
+                LastResult.Success = false;
+                LastResult.Type = Type.Unknown;
+                LastResult.Message =
+                    "No running processes matched the following criteria:" + NewLine +
+                    "halo.exe v1.0.10.621" + NewLine +
+                    "haloce.exe v1.0.10.621" + NewLine +
+                    "MCC-Win64-Shipping.exe with CEA DLC" + NewLine +
+                    "MCC-Win64-Shipping-WinStore.exe with CEA DLC" + NewLine +
+                    "MCCWinStore-Win64-Shipping.exe with CEA DLC";
+                return Type.Unknown;
+            }
+            else
+            {
+                /// LastResult has already been set by DeeperCheck()
+                return processCandidate.Type;
+            }
         }
 
         private static bool DeeperCheck(Candidate candidate, List<System.Diagnostics.Process> processList)
