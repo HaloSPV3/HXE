@@ -166,7 +166,7 @@ namespace HXE
         {
             if (SettingsCore.ProcessName == "hxe")
                 Exit.WithCode(Exit.Code.Success);
-            else Hide();
+            else Close();
         }
     }
 }
