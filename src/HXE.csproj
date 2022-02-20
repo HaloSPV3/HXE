@@ -36,11 +36,9 @@
     <!-- Publish -->
     <IsTrimmable>true</IsTrimmable>
     <!--<PublishTrimmed>true</PublishTrimmed> -->
-    <SelfContained>true</SelfContained>
-    <RuntimeIdentifier Condition="'RuntimeIdentifier' == ''">win-x64</RuntimeIdentifier>
-    <PublishSingleFile>true</PublishSingleFile>
-    <EnableCompressionInSingleFile>true</EnableCompressionInSingleFile><!-- requires SelfContained -->
-    <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
+    <PublishSingleFile Condition="'$(PublishSingleFile)' == '' AND $(RuntimeIdentifier.Equals(''))">false</PublishSingleFile>
+    <RuntimeIdentifier Condition="'$(RuntimeIdentifier)' == '' AND '$(PublishSingleFile)' == 'true'">win-x86</RuntimeIdentifier>
+    <SelfContained Condition="'$(SelfContained)' == '' AND '$(RuntimeIdentifier)' != ''">true</SelfContained>
     <!-- Misc -->
     <ProjectGuid>{ACAA5D9F-B23D-43E1-B2DF-8C03230975A1}</ProjectGuid>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -68,6 +66,11 @@
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <CopyOutputSymbolsToPublishDirectory>false</CopyOutputSymbolsToPublishDirectory>
     <DefineConstants>TRACE</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(PublishSingleFile)' == 'true'">
+    <SelfContained>true</SelfContained>
+    <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
+    <EnableCompressionInSingleFile>true</EnableCompressionInSingleFile>
   </PropertyGroup>
   <ItemGroup>
     <None Include="..\*.*">
