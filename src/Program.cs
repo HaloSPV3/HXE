@@ -154,6 +154,7 @@ namespace HXE
                 catch (Exception e)
                 {
                     Error("Settings window threw an exception!" + NewLine + e.ToString());
+                    throw;
                 }
 
                 try
@@ -171,6 +172,7 @@ namespace HXE
                 catch (Exception e)
                 {
                     Error("Positions window threw an exception!" + NewLine + e.ToString());
+                    throw;
                 }
                 WithCode(Code.Success);
             }
