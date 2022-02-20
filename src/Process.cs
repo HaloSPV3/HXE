@@ -77,11 +77,7 @@ namespace HXE
             }
             catch (System.Exception e)
             {
-                var msg = $" -- Process Inference failed{NewLine}Error:  { e }{NewLine}";
-                var log = (File) Paths.Exception;
-                log.AppendAllText(msg);
-                Console.Info(msg);
-                throw;
+                ErrorOutput(e, "");
             }
 
             return processCandidate?.Type ?? Type.Unknown;
@@ -128,10 +124,9 @@ namespace HXE
                         }
                         catch (System.Exception e)
                         {
-                            var msg2 = string.Empty;
-                            msg2 += Is64BitProcess ? "Current process is 64-bit." : "Current process is not 32-bit.";
-                            msg2 += NewLine;
-                            msg2 += Is64BitOperatingSystem ? "Operating system is 64-bit." : "Operating system is NOT 64-bit.";
+                            string msg2 = "MCC process found, but failed to inspect loaded modules for halo1.dll" + NewLine
+                                + (Is64BitProcess ? "Current process is 64-bit." : "Current process is not 32-bit.") + NewLine
+                                + (Is64BitOperatingSystem ? "Operating system is 64-bit." : "Operating system is NOT 64-bit.");
                             ErrorOutput(e, msg2);
                             return false;
                         }
@@ -140,13 +135,15 @@ namespace HXE
                 default:
                     return false;
             }
-            void ErrorOutput(System.Exception e, string msg2)
-            {
-                var msg = $" -- Process Inference failed{NewLine}{msg2}{NewLine}Error:  { e }{NewLine}";
-                var log = (File) Paths.Exception;
-                log.AppendAllText(msg);
-                Console.Error(msg); ;
-            }
+        }
+
+        private static void ErrorOutput(System.Exception e, string msg2)
+        {
+            string msg = ExceptionHeader + NewLine
+                + msg2 + NewLine
+                + "Error:  " + e.ToString();
+            ((File)Paths.Exception).AppendAllText(msg + NewLine);
+            Console.Error(msg);
         }
 
         public class Candidate
