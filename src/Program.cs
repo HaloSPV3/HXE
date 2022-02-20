@@ -30,6 +30,7 @@ using static System.Environment;
 using static HXE.Console;
 using static HXE.Exit;
 using static HXE.Properties.Resources;
+using System.Linq;
 
 namespace HXE
 {
