@@ -50,11 +50,11 @@
     <ToolCommandName>hxe</ToolCommandName>
     <UseWPF>true</UseWPF>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(RuntimeIdentifer)' == 'win-x64' ">
+  <PropertyGroup Condition=" $(RuntimeIdentifer.Contains('x64'))">
     <Platform>x64</Platform>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(RuntimeIdentifer)' == 'win-x86' ">
+  <PropertyGroup Condition=" $(RuntimeIdentifer.Contains('x86'))">
     <Platform>x86</Platform>
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
