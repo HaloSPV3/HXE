@@ -50,6 +50,7 @@
     <ToolCommandName>hxe</ToolCommandName>
     <UseWPF>true</UseWPF>
     <SatelliteResourceLanguages>en-US</SatelliteResourceLanguages>
+    <InvariantGlobalization>true</InvariantGlobalization>
   </PropertyGroup>
   <PropertyGroup Condition=" $(RuntimeIdentifer.Contains('x64'))">
     <Platform>x64</Platform>
