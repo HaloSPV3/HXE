@@ -206,7 +206,7 @@ namespace HXE
                 };
 
                 Info($"Inferred the following Halo process: {descriptions[Process.Infer()]}");
-                Info("Press any key to exit.");
+                Info("Press Enter to exit");
                 _ = ReadLine();
                 Exit(0);
             }
