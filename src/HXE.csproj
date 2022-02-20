@@ -49,7 +49,6 @@
     <EnableNETAnalyzers>true</EnableNETAnalyzers>
     <ToolCommandName>hxe</ToolCommandName>
     <UseWPF>true</UseWPF>
-    <UseWindowsForms>true</UseWindowsForms>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(RuntimeIdentifer)' == 'win-x64' ">
     <Platform>x64</Platform>
