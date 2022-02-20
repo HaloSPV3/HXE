@@ -99,18 +99,13 @@ namespace HXE
             switch (process.ProcessName)
             {
                 case "halo":
+                    LastResult.Success = InspectHPC();
+                    LastResult.Type = Type.Retail;
+                    return LastResult.Success;
                 case "haloce":
-                    {
-                        try
-                        {
-                            return process.MainModule.FileVersionInfo.FileVersion == "01.00.10.0621";
-                        }
-                        catch (System.Exception e)
-                        {
-                            ErrorOutput(e, "Failed to assess Halo/HaloCE process.");
-                            return false;
-                        }
-                    }
+                    LastResult.Success = InspectHPC();
+                    LastResult.Type = Type.HCE;
+                    return LastResult.Success;
 
                 case string a when a.Contains("MCC") && a.Contains("WinStore"): // redundant, but good practice
                 case "MCC-Win64-Shipping-WinStore":
@@ -135,6 +130,26 @@ namespace HXE
 
                 default:
                     return false;
+            }
+
+            bool InspectHPC()
+            {
+                try
+                {
+                    bool isValid = process.MainModule.FileVersionInfo.FileVersion == "01.00.10.0621";
+                    LastResult.Message = isValid ?
+                        "Valid Halo/HaloCE process found" :
+                        "Discovered a Halo/HaloCE process, but its version does not match 01.00.10.0621";
+                    return isValid;
+                }
+                catch (System.Exception e)
+                {
+                    const string msg = "Failed to assess Halo/HaloCE process";
+                    LastResult.Success = false;
+                    LastResult.Message = msg;
+                    ErrorOutput(e, msg);
+                    return false;
+                }
             }
         }
 
