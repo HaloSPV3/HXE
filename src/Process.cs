@@ -39,13 +39,13 @@ namespace HXE
         }
 
         public static IEnumerable<Candidate> Candidates { get; } = new List<Candidate>
-    {
-      new Candidate { Type = Type.Retail,   Name = "halo"                        },
-      new Candidate { Type = Type.HCE,      Name = "haloce"                      },
-      new Candidate { Type = Type.Steam,    Name = "MCC-Win64-Shipping"          },
-      new Candidate { Type = Type.StoreOld, Name = "MCC-Win64-Shipping-WinStore" },
-      new Candidate { Type = Type.Store,    Name = "MCCWinStore-Win64-Shipping"  }
-    };
+        {
+          new Candidate { Type = Type.Retail,   Name = "halo"                        },
+          new Candidate { Type = Type.HCE,      Name = "haloce"                      },
+          new Candidate { Type = Type.Steam,    Name = "MCC-Win64-Shipping"          },
+          new Candidate { Type = Type.StoreOld, Name = "MCC-Win64-Shipping-WinStore" },
+          new Candidate { Type = Type.Store,    Name = "MCCWinStore-Win64-Shipping"  }
+        };
 
         /// <summary>
         /// Infers the running Halo executable, with support for HCE, HCE and MCC (Steam & Windows Store).
