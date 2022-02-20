@@ -51,6 +51,7 @@
     <UseWPF>true</UseWPF>
     <SatelliteResourceLanguages>en-US</SatelliteResourceLanguages>
     <InvariantGlobalization>true</InvariantGlobalization>
+    <Win7SF>$([MSBuild]::VersionGreaterThanOrEquals($(NETCoreSdkVersion), '6.0.300'))</Win7SF>
   </PropertyGroup>
   <PropertyGroup Condition=" $(RuntimeIdentifer.Contains('x64'))">
     <Platform>x64</Platform>
