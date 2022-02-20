@@ -49,6 +49,12 @@ namespace HXE
 
         public static Result LastResult { get; internal set; } // TODO: Upon success/failure, update CurrentStatus with appropriate Status from Results
 
+        public static Result InferResult()
+        {
+            _ = Infer();
+            return LastResult;
+        }
+
         /// <summary>
         ///     Infers the running Halo executable, with support for Halo Retail, Halo Custom Edition, and MCC (Steam & Windows Store).
         /// </summary>
