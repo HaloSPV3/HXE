@@ -47,7 +47,7 @@ namespace HXE
           new Candidate { Type = Type.Store,    Name = "MCCWinStore-Win64-Shipping"  }
         };
 
-        public static Result LastResult { get; internal set; } // TODO: Upon success/failure, update CurrentStatus with appropriate Status from Results
+        public static Result LastResult { get; internal set; }
 
         /// <summary>
         ///     An informative alternative to Infer() <br/>
