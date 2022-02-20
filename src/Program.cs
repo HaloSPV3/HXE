@@ -180,7 +180,15 @@ namespace HXE
 
             if (config)
             {
-                _ = new Application().Run(new Settings());
+                var core = new SettingsCore(new Kernel.Configuration(Paths.Configuration));
+                if (cli)
+                {
+                    new CLI.Settings(core).Invoke();
+                }
+                else
+                {
+                    _ = new Application().Run(new Settings(core));
+                }
                 WithCode(Code.Success);
             }
 
