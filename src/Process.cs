@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Copyright (c) 2021 Emilian Roman
  *
  * This software is provided 'as-is', without any express or implied
@@ -27,6 +27,7 @@ namespace HXE
 {
     public class Process
     {
+        private const string ExceptionHeader = " -- Process Inference failed";
         public enum Type
         {
             Unknown,
