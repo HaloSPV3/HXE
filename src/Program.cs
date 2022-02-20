@@ -77,6 +77,7 @@ namespace HXE
         ///   --vidmode=VALUE     Loads HCE           with custom res. and Hz   <br/>
         ///   --refresh=VALUE     Loads HCE           with custom refresh rate  <br/>
         /// </param>
+        /// TODO: implement --silent to run CLI without user prompts;
         private static void InvokeProgram(string[] args)
         {
             Directory.CreateDirectory(Paths.Directory);
