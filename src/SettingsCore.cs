@@ -90,6 +90,25 @@ namespace HXE
         /// TODO: refactor to output all settings, their description, if they're locked, and their value
         public void PrintConfiguration()
         {
+            /* example:
+                class Test
+                {
+                    public string Name { get; set; }
+                }
+
+                Test instance = new Test();
+                Type type = typeof(Test);
+
+                Dictionary<string, object> properties = new Dictionary<string, object>();
+                foreach (PropertyInfo prop in type.GetProperties())
+                    properties.Add(prop.Name, prop.GetValue(instance));
+            */
+            var props = new System.Collections.Generic.Dictionary<string, Type>();
+            foreach (System.Reflection.PropertyInfo prop in typeof(Kernel.Configuration).GetProperties())
+            {
+                props.Add(prop.Name, prop.PropertyType);
+            }
+
             if (ProcessIsSPV3)
             {
                 Console.Info("Mode and Main settings are locked by SPV3");
