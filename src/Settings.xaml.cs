@@ -87,24 +87,7 @@ namespace HXE
             MainStart.IsEnabled = SettingsCore.MainStartUnlocked;
             MainResume.IsEnabled = SettingsCore.MainResumeUnlocked;
 
-            switch (Configuration.Mode)
-            {
-                case Kernel.Configuration.ConfigurationMode.HCE:
-                    Mode.SelectedIndex = 0;
-                    break;
-
-                case Kernel.Configuration.ConfigurationMode.SPV32:
-                    Mode.SelectedIndex = 1;
-                    break;
-
-                case Kernel.Configuration.ConfigurationMode.SPV33:
-                    Mode.SelectedIndex = 2;
-                    break;
-
-                default:
-                    throw new ArgumentOutOfRangeException("Switch (Configuration.Mode)", "Kernel Mode not recognized.");
-            }
-
+            Mode.SelectedIndex = (int) Configuration.Mode;
             MainReset.IsChecked = Configuration.Main.Reset;
             MainPatch.IsChecked = Configuration.Main.Patch;
             MainStart.IsChecked = Configuration.Main.Start;
@@ -133,24 +116,7 @@ namespace HXE
         {
             Console.Info("Saving kernel settings");
 
-            switch (Mode.SelectedIndex)
-            {
-                case 0:
-                    Configuration.Mode = Kernel.Configuration.ConfigurationMode.HCE;
-                    break;
-
-                case 1:
-                    Configuration.Mode = Kernel.Configuration.ConfigurationMode.SPV32;
-                    break;
-
-                case 2:
-                    Configuration.Mode = Kernel.Configuration.ConfigurationMode.SPV33;
-                    break;
-
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
-
+            Configuration.Mode = (Kernel.Configuration.ConfigurationMode) Mode.SelectedIndex;
             Configuration.Main.Reset = MainReset.IsChecked == true;
             Configuration.Main.Patch = MainPatch.IsChecked == true;
             Configuration.Main.Start = MainStart.IsChecked == true;
