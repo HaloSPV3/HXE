@@ -110,23 +110,13 @@ namespace HXE
                 case string a when a.Contains("MCC") && a.Contains("WinStore"): // redundant, but good practice
                 case "MCC-Win64-Shipping-WinStore":
                 case "MCCWinStore-Win64-Shipping":
+                    LastResult.Success = InspectMCC();
+                    LastResult.Type = Type.Store;
+                    return LastResult.Success;
                 case "MCC-Win64-Shipping":
-                    {
-                        try
-                        {
-                            return process.Modules
-                              .Cast<System.Diagnostics.ProcessModule>()
-                              .Any(module => module.ModuleName == Paths.MCC.H1dll);
-                        }
-                        catch (System.Exception e)
-                        {
-                            string msg2 = "MCC process found, but failed to inspect loaded modules for halo1.dll" + NewLine
-                                + (Is64BitProcess ? "Current process is 64-bit." : "Current process is not 32-bit.") + NewLine
-                                + (Is64BitOperatingSystem ? "Operating system is 64-bit." : "Operating system is NOT 64-bit.");
-                            ErrorOutput(e, msg2);
-                            return false;
-                        }
-                    }
+                    LastResult.Success = InspectMCC();
+                    LastResult.Type = Type.Steam;
+                    return LastResult.Success;
 
                 default:
                     return false;
@@ -145,7 +135,34 @@ namespace HXE
                 catch (System.Exception e)
                 {
                     const string msg = "Failed to assess Halo/HaloCE process";
-                    LastResult.Success = false;
+                    LastResult.Message = msg;
+                    ErrorOutput(e, msg);
+                    return false;
+                }
+            }
+
+            bool InspectMCC()
+            {
+                try
+                {
+                    bool isValid = process.Modules
+                        .Cast<System.Diagnostics.ProcessModule>()
+                        .Any(module => module.ModuleName == Paths.MCC.H1dll);
+                    LastResult.Message = "Found MCC process with halo1.dll loaded";
+                    return isValid;
+                }
+                catch (System.ComponentModel.Win32Exception e)
+                {
+                    string msg = "MCC process found, but cannot inspect its modules because 32-bit processes cannot inspect 64-bit processes" + NewLine
+                        + (Is64BitProcess ? "Current process is 64-bit." : "Current process NOT 64-bit.") + NewLine
+                        + (Is64BitOperatingSystem ? "Operating system is 64-bit." : "Operating system is NOT 64-bit.");
+                    LastResult.Message = msg;
+                    ErrorOutput(e, msg);
+                    return false;
+                }
+                catch (System.Exception e)
+                {
+                    const string msg = "MCC process found, but failed to inspect loaded modules for halo1.dll for an unknown reason";
                     LastResult.Message = msg;
                     ErrorOutput(e, msg);
                     return false;
