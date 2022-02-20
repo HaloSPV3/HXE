@@ -134,7 +134,7 @@ namespace HXE
             if (help)
             {
                 options.WriteOptionDescriptions(Out);
-                Exit(0);
+                WithCode(Code.Success);
             }
 
             if (test)
@@ -172,12 +172,13 @@ namespace HXE
                 {
                     Error("Positions window threw an exception!" + NewLine + e.ToString());
                 }
+                WithCode(Code.Success);
             }
 
             if (config)
             {
                 _ = new Application().Run(new Settings());
-                Exit(0);
+                WithCode(Code.Success);
             }
 
             if (positions)
@@ -190,7 +191,7 @@ namespace HXE
                 {
                     _ = new Application().Run(new Positions());
                 }
-                WithCode(0);
+                WithCode(Code.Success);
             }
 
             if (infer)
@@ -208,7 +209,7 @@ namespace HXE
                 Info($"Inferred the following Halo process: {descriptions[Process.Infer()]}");
                 Info("Press Enter to exit");
                 _ = ReadLine();
-                Exit(0);
+                WithCode(Code.Success);
             }
 
             if (!string.IsNullOrWhiteSpace(install))
