@@ -60,6 +60,7 @@ namespace HXE
         ///   --test              Start a dry run of HXE to self-test           <br/>
         ///   --config            Opens configuration GUI                       <br/>
         ///   --positions         Opens first-person model positions GUI        <br/>
+        ///   --cli               Opens CLI instead of GUI where available      <br/>
         ///   --install=VALUE     Installs HCE/SPV3   to destination            <br/>
         ///   --compile=VALUE     Compiles HCE/SPV3   to destination            <br/>
         ///   --update=VALUE      Updates directory with specified manifest     <br/>
@@ -84,6 +85,7 @@ namespace HXE
             var test = false;            /* Start a dry run of HXE to self-test */
             var config = false;          /* Opens configuration GUI             */
             var positions = false;       /* Opens positions GUI                 */
+            var cli = false;             /* Opens CLI instead of GUI where available */
             var install = string.Empty;  /* Installs HCE/SPV3 to destination    */
             var compile = string.Empty;  /* Compiles HCE/SPV3 to destination    */
             var update = string.Empty;   /* Updates directory using manifest    */
@@ -105,6 +107,7 @@ namespace HXE
               .Add("test", "Start a dry run of HXE to self-test", s => test =s != null)                      /* hxe command   */
               .Add("config", "Opens configuration GUI", s => config = s != null)                             /* hxe command   */
               .Add("positions", "Opens positions GUI", s => positions = s != null)                           /* hxe command   */
+              .Add("cli", "Enable CLI of Positions or Config", s => cli = s != null)                         /* hxe parameter */
               .Add("install=", "Installs HCE/SPV3 to destination", s => install = s)                         /* hxe parameter */
               .Add("compile=", "Compiles HCE/SPV3 to destination", s => compile = s)                         /* hxe parameter */
               .Add("update=", "Updates directory using manifest", s => update = s)                           /* hxe parameter */
@@ -179,8 +182,15 @@ namespace HXE
 
             if (positions)
             {
-                _ = new Application().Run(new Positions());
-                Exit(0);
+                if (cli)
+                {
+                    CLI.Positions.Run();
+                }
+                else
+                {
+                    _ = new Application().Run(new Positions());
+                }
+                WithCode(0);
             }
 
             if (infer)
