@@ -47,6 +47,21 @@ namespace HXE
           new Candidate { Type = Type.Store,    Name = "MCCWinStore-Win64-Shipping"  }
         };
 
+        public static IEnumerable<Result> Results { get; } = new List<Result>
+        {
+            new Result { Success = true, Message = "Found Halo Retail/CD or Halo Custom Edition"},
+            new Result { Success = true, Message = "Found MCC with CEA DLC"},
+            new Result { Success = false, Message = "Found MCC, but CEA DLC is missing"},
+            new Result { Success = false, Message =
+                "No running processes matched the following criteria:" + NewLine +
+                "halo.exe v1.0.10.621" + NewLine +
+                "haloce.exe v1.0.10.621" + NewLine +
+                "MCC-Win64-Shipping.exe with CEA DLC" + NewLine +
+                "MCC-Win64-Shipping-WinStore.exe with CEA DLC" + NewLine +
+                "MCCWinStore-Win64-Shipping.exe with CEA DLC"},
+            new Result { Success = false, Message = "Unknown error occurred."}
+        };
+
         /// <summary>
         /// Infers the running Halo executable, with support for HCE, HCE and MCC (Steam & Windows Store).
         /// </summary>
@@ -138,6 +153,12 @@ namespace HXE
         {
             public Type Type { get; set; }
             public string Name { get; set; }
+        }
+
+        public class Result
+        {
+            public bool Success { get; set; }
+            public string Message { get; set; }
         }
     }
 }
