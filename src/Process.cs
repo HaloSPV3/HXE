@@ -101,6 +101,12 @@ namespace HXE
                 return false; /// No processes match current candidate
             }
 
+            /// Each case sets assigns Success, Type, and Message to LastResult.
+            /// If a valid process is found...
+            /// ...LastResult.Success is set to true (else, false)
+            /// ...LastResult.Type is set to the matching Type (else, unknown)
+            /// ...LastResult.Message is set to an informative string (else, still informative)
+            /// ...DeeperCheck returns a bool representing whether the current Candidate is a match
             switch (process.ProcessName)
             {
                 case "halo":
