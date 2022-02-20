@@ -68,12 +68,11 @@ namespace HXE
         /// <returns>Type of Platform</returns>
         public static Type Infer()
         {
-            var processCandidate = new Candidate();
+            Candidate processCandidate = null;
+            List<System.Diagnostics.Process> processList = GetProcesses().ToList();
             try
             {
-                processCandidate = Candidates
-                  .FirstOrDefault(x => DeeperCheck(GetProcesses()
-                    .FirstOrDefault(Processname => Processname.ProcessName == x.Name), x.Name));
+                processCandidate = Candidates.First(x => DeeperCheck(x, processList));
             }
             catch (System.Exception e)
             {
@@ -83,16 +82,16 @@ namespace HXE
             return processCandidate?.Type ?? Type.Unknown;
         }
 
-        private static bool DeeperCheck(System.Diagnostics.Process process, string candidateName)
+        private static bool DeeperCheck(Candidate candidate, List<System.Diagnostics.Process> processList)
         {
-            /** Check for NullReferenceException (no processes match current candidate) */
+            System.Diagnostics.Process process;
             try
             {
-                bool check = process.ProcessName == candidateName;
+                process = processList.First(p => p.ProcessName == candidate.Name);
             }
-            catch (System.NullReferenceException)
+            catch (System.InvalidOperationException)
             {
-                return false;
+                return false; /// No processes match current candidate
             }
 
             switch (process.ProcessName)
