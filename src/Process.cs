@@ -62,6 +62,8 @@ namespace HXE
             new Result { Success = false, Message = "Unknown error occurred."}
         };
 
+        public static Result LastResult { get; internal set; } // TODO: Upon success/failure, update CurrentStatus with appropriate Status from Results
+
         /// <summary>
         ///     Infers the running Halo executable, with support for Halo Retail, Halo Custom Edition, and MCC (Steam & Windows Store).
         /// </summary>
