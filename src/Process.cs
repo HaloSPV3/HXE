@@ -154,13 +154,8 @@ namespace HXE
         public class Result
         {
             public bool Success { get; set; }
-            public string Message { get; set; }
-        }
-
-        public class ResultAndType
-        {
-            public Result Result { get; set; }
             public Type Type { get; set; }
+            public string Message { get; set; }
         }
     }
 }
