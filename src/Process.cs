@@ -63,7 +63,7 @@ namespace HXE
         };
 
         /// <summary>
-        /// Infers the running Halo executable, with support for HCE, HCE and MCC (Steam & Windows Store).
+        ///     Infers the running Halo executable, with support for Halo Retail, Halo Custom Edition, and MCC (Steam & Windows Store).
         /// </summary>
         /// <returns>Type of Platform</returns>
         public static Type Infer()
