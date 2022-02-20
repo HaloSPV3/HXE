@@ -25,7 +25,7 @@ using static System.Environment;
 
 namespace HXE
 {
-    public class Process
+    public static class Process
     {
         private const string ExceptionHeader = " -- Process Inference failed";
         public enum Type
