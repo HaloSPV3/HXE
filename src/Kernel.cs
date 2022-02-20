@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Copyright (c) 2019 Emilian Roman
  * Copyright (c) 2021 Noah Sherwin
  *
@@ -1078,7 +1078,7 @@ namespace HXE
 
             public class ConfigurationVideo
             {
-                public bool ResolutionEnabled { get; set; } = false; /* custom resolution */
+                public bool ResolutionEnabled { get; set; } = false; /* auto resolution */
                 public bool Uncap { get; set; } = true;  /* unlock framerate   */
                 public bool Quality { get; set; }          /* set to false by default for optimisation */
                 public bool GammaOn { get; set; } = false; /* enable hce gamma   */
