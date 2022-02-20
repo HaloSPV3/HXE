@@ -31,7 +31,6 @@ using static System.Environment;
 using static System.IO.Directory;
 using static System.IO.Path;
 using static System.Text.Encoding;
-using static System.Windows.Forms.Screen;
 using static HXE.Console;
 using static HXE.HCE.Profile.ProfileAudio;
 using static HXE.HCE.Profile.ProfileVideo;
@@ -436,19 +435,22 @@ namespace HXE
                 {
                     if (!configuration.Video.ResolutionEnabled)
                     {
+                        var w = System.Windows.SystemParameters.PrimaryScreenWidth;
+                        var h = System.Windows.SystemParameters.PrimaryScreenHeight;
+
                         // infer from resolution if Native Resoluton preferred.
                         if (executable.Video.Width == 0 || executable.Video.Height == 0)
                         {
-                            executable.Video.Width = (ushort) PrimaryScreen.Bounds.Width;
-                            executable.Video.Height = (ushort) PrimaryScreen.Bounds.Height;
+                            executable.Video.Width = (ushort) System.Windows.SystemParameters.PrimaryScreenWidth;
+                            executable.Video.Height = (ushort) System.Windows.SystemParameters.PrimaryScreenHeight;
 
                             Core("BLAM.VIDEO.RESOLUTION: No resolution provided. Applied native resolution to executable.");
                         }
-                        else if (executable.Video.Width > (ushort) PrimaryScreen.Bounds.Width ||
-                                 executable.Video.Height > (ushort) PrimaryScreen.Bounds.Height)
+                        else if (executable.Video.Width > (ushort) System.Windows.SystemParameters.PrimaryScreenWidth ||
+                                 executable.Video.Height > (ushort) System.Windows.SystemParameters.PrimaryScreenHeight)
                         {
-                            executable.Video.Width = (ushort) PrimaryScreen.Bounds.Width;
-                            executable.Video.Height = (ushort) PrimaryScreen.Bounds.Height;
+                            executable.Video.Width = (ushort) System.Windows.SystemParameters.PrimaryScreenWidth;
+                            executable.Video.Height = (ushort) System.Windows.SystemParameters.PrimaryScreenHeight;
 
                             Core("BLAM.VIDEO.RESOLUTION: Resolution out of bounds. Applied native resolution to executable.");
                         }
