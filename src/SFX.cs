@@ -365,7 +365,7 @@ namespace HXE
 			public string        Filter { get; set; } = "*";
 
 			public FileInfo Executable { get; set; } = new FileInfo(System.AppContext.BaseDirectory
-			                                                        ?? throw new InvalidOperationException());
+																	?? throw new InvalidOperationException());
 		}
 	}
 }
