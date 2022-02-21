@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -42,30 +42,41 @@ namespace HXE
     {
       /* Get patches.crk resource from assembly resources */
       /* Read strings from memory to...array? */
+            string rn = System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceNames().First(r => r.EndsWith("patches.crk")); // probably "HXE.Assets.patches.crk"
       var nl         = new string[]{ "\r\n" };
       var byteSep    = new string[]{": ", " "};
       var list       = new List<PatchGroup>();
       var patchGroup = new PatchGroup();
-      var file       = Properties.Resources.patches.Split(nl, StringSplitOptions.RemoveEmptyEntries).ToList();
+            List<string> fileText = null;
+            using (Stream s = System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream(rn))
+            using (var sr = new StreamReader(s, detectEncodingFromByteOrderMarks: true))
+            {
+                fileText = sr.ReadToEnd().Split(nl, StringSplitOptions.None).ToList();
+            }
 
-      file.RemoveAt(0);
+            if (fileText == null)
+            {
+                throw new IOException("Failed to read contents of embedded resource 'patches.crk'");
+            }
+
+      fileText.RemoveAt(0);
 
       /* Remove comments from list */
       {
         var file2 = new List<string>();
-        foreach (var line in file)
+        foreach (var line in fileText)
         {
           if (!line.StartsWith(";"))
             file2.Add(line);
         }
-        file = file2;
+        fileText = file2;
       }
 
       /* Add Name, exe, and patch data to list */
-      for (var index = 0; index < file.Count; index++)
+      for (var index = 0; index < fileText.Count; index++)
       {
         /// If the first char in the line is a letter...     */
-        while (index < file.Count && char.IsLetter(file.ElementAt(index).ToCharArray().First()))
+        while (index < fileText.Count && char.IsLetter(fileText.ElementAt(index).ToCharArray().First()))
         {
           /** ...skip Name and Executable. Go to patch data. */
           index += 2;
@@ -73,20 +84,20 @@ namespace HXE
           /** ...assign patch name,                          */
           /** ...assign filename,                            */
           /** ...and then read patch data.                   */
-          while (index < file.Count && char.IsDigit(file.ElementAt(index).ToCharArray().First()))
+          while (index < fileText.Count && char.IsDigit(fileText.ElementAt(index).ToCharArray().First()))
           {
             patchGroup = new PatchGroup() { DataSets = new List<DataSet>(),
-                                            Name = file.ElementAt(index - 2),
-                                            Executable = file.ElementAt(index - 1) };
+                                            Name = fileText.ElementAt(index - 2),
+                                            Executable = fileText.ElementAt(index - 1) };
 
-            while (index < file.Count && char.IsDigit(file.ElementAt(index).ToCharArray().First()))
+            while (index < fileText.Count && char.IsDigit(fileText.ElementAt(index).ToCharArray().First()))
             {
               /** Read Patch Data to List, ...
               * Assign values{offset, original, patch}
               * proceed to next Patch Data,
               * then check if line is Patch Data
               */
-              List<string> values = file.
+              List<string> values = fileText.
                                     ElementAt(index).Split(byteSep, StringSplitOptions.RemoveEmptyEntries).
                                     ToList();
               patchGroup.DataSets.Add(new DataSet { Offset   = int.Parse(values[0], System.Globalization.NumberStyles.HexNumber),
