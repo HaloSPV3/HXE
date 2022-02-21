@@ -34,13 +34,13 @@ namespace HXE
         /// <summary>
         /// The list of patch groups specified by pR0ps' halo ce patches.
         /// </summary>
-        public static List<PatchGroup> Patches = Reader(); // See Write() for tmp overrides
+        private static readonly List<PatchGroup> _patches = Reader(); // See Write() for tmp overrides
 
         /// <summary>
         /// Reads PatchGroups from patches.crk to this instance.
         /// </summary>
         /// <returns>A list of PatchGroups read from the patches.crk file resource.</returns>
-        /// <remarks>This is only used for Patches list initialization.</remarks>
+        /// <remarks>This is only used for _patches list initialization.</remarks>
         public static List<PatchGroup> Reader()
         {
             /* Get patches.crk resource from assembly resources */
@@ -120,7 +120,7 @@ namespace HXE
             }
 
 
-            /* Parse the data to members "PatchGroup" of list "Patches" */
+            /* Parse the data to members "PatchGroup" of list "_patches" */
 
             /* return list */
             return list;
@@ -156,7 +156,7 @@ namespace HXE
             /** Filter PatchGroups for those requested
              * NOTE: Update String matches as needed.
              */
-            foreach (var pg in Patches)
+            foreach (var pg in _patches)
             {
                 if (pg.Executable == "haloce.exe" && pg.Name.Contains("large address aware"))
                 {
