@@ -156,7 +156,7 @@ namespace HXE
             /** Filter PatchGroups for those requested
              * NOTE: Update String matches as needed.
              */
-            foreach (var pg in _patches)
+            foreach (PatchGroup pg in _patches)
             {
                 if (pg.Executable == "haloce.exe" && pg.Name.Contains("large address aware"))
                 {
@@ -250,9 +250,9 @@ namespace HXE
                         using (var bw = new BinaryWriter(ms))
                         using (var br = new BinaryReader(ms))
                         {
-                            foreach (var PatchGroup in FilteredPatches)
+                            foreach (PatchGroup PatchGroup in FilteredPatches)
                             {
-                                foreach (var DataSet in PatchGroup.DataSets)
+                                foreach (DataSet DataSet in PatchGroup.DataSets)
                                 {
                                     byte value = PatchGroup.Toggle ? DataSet.Patch : DataSet.Original;
                                     long offset = DataSet.Offset;
