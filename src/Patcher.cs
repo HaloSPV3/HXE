@@ -79,7 +79,7 @@ namespace HXE
             for (var index = 0; index < fileText.Count; index++)
             {
                 /// If the first char in the line is a letter...     */
-                while (index < fileText.Count && char.IsLetter(fileText.ElementAt(index).ToCharArray().First()))
+                while (index < fileText.Count && char.IsLetter(fileText[index].ToCharArray().First()))
                 {
                     /** ...skip Name and Executable. Go to patch data. */
                     index += 2;
@@ -87,24 +87,23 @@ namespace HXE
                     /** ...assign patch name,                          */
                     /** ...assign filename,                            */
                     /** ...and then read patch data.                   */
-                    while (index < fileText.Count && char.IsDigit(fileText.ElementAt(index).ToCharArray().First()))
+                    while (index < fileText.Count && char.IsDigit(fileText[index].ToCharArray().First()))
                     {
                         patchGroup = new PatchGroup()
                         {
                             DataSets = new List<DataSet>(),
-                            Name = fileText.ElementAt(index - 2),
-                            Executable = fileText.ElementAt(index - 1)
+                            Name = fileText[index - 2],
+                            Executable = fileText[index - 1]
                         };
 
-                        while (index < fileText.Count && char.IsDigit(fileText.ElementAt(index).ToCharArray().First()))
+                        while (index < fileText.Count && char.IsDigit(fileText[index].ToCharArray().First()))
                         {
                             /** Read Patch Data to List, ...
                             * Assign values{offset, original, patch}
                             * proceed to next Patch Data,
                             * then check if line is Patch Data
                             */
-                            List<string> values = fileText.
-                                                  ElementAt(index).Split(byteSep, StringSplitOptions.RemoveEmptyEntries).
+                            List<string> values = fileText[index].Split(byteSep, StringSplitOptions.RemoveEmptyEntries).
                                                   ToList();
                             patchGroup.DataSets.Add(new DataSet
                             {
