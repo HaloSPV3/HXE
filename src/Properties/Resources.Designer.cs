@@ -61,32 +61,6 @@ namespace HXE.Properties {
         }
 
         /// <summary>
-        ///   Looks up a localized string similar to &quot;<br/>
-        /// _    ___   ________                      <br/>
-        ///| |  | \ \ / /  ____|                     <br/>
-        ///| |__| |\ V /| |__                        <br/>
-        ///|  __  | &gt; &lt; |  __|                 <br/>
-        ///| |  | |/ . \| |____                      <br/>
-        ///|_|  |_/_/ \_\______| :: Halo XE          <br/>
-        ///=================================         <br/>
-        ///A HCE wrapper and kernel for SPV3         <br/>
-        ///---------------------------------         <br/>
-        ///:: https://github.com/HaloSPV3/hxe        <br/>
-        ///---------------------------------         <br/>
-        ///                                                                           <br/>
-        ///HXE can be invoked with the following arguments:                           <br/>
-        ///                                                                           <br/>
-        ///      --config               Opens configuration GUI                       <br/>
-        ///      --positions            Opens positions GUI                           <br/>
-        ///      --load                 Initiat [rest of string was truncated]&quot;;.<br/>
-        /// </summary>
-        internal static string Banner {
-            get {
-                return ResourceManager.GetString("Banner", resourceCulture);
-            }
-        }
-
-        /// <summary>
         ///   Looks up a localized string similar to This binary has been compiled using build-{0}.
         /// </summary>
         internal static string BannerBuildNumber {
