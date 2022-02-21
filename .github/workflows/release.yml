@@ -18,13 +18,8 @@ jobs:
     name: Build
     runs-on: windows-latest
     env:
-      TFM: "net6.0-windows"
       ASSEMBLYNAME: "HXE"
       PROJPATH: "./src/HXE.csproj"
-    strategy:
-      fail-fast: false
-      matrix:
-        RID: [ "win-x86", "win-x64" ]
 
     steps:
     ################
@@ -56,13 +51,13 @@ jobs:
     # BUILD
     ################
     - name: dotnet-publish
-      run: dotnet publish ${{ env.CSPROJ_RELPATH }} -c Release -t ${{ env.TFM }} --RID ${{ matrix.RID }} -p:ContinuousIntegrationBuild=true
+      run: dotnet publish ${{ env.CSPROJ_RELPATH }} -c Release -p:ContinuousIntegrationBuild=true
 
     # required variables: TargetFramework, RuntimeIdentifier, GitVersion_FullSemVer
     - name: Compress-PublishArtifacts
       run: |
-        $publishPath = Resolve-Path ".\bin\Release\$env:TFM\$env:RID\publish";
-        $archiveName = "$env:ASSEMBLYNAME.$env:TFM-$env:RID.$env:GitVersion_FullSemVer.zip";
+        $publishPath = Resolve-Path ".\bin\Release\**\publish";
+        $archiveName = "$env:ASSEMBLYNAME.$env:GitVersion_FullSemVer.zip";
         Set-Location $publishPath;
         Compress-Archive -Path $publishPath -DestinationPath ${{ github.workspace }}\bin\Release\publish\$archiveName -CompressionLevel Optimal;
 
