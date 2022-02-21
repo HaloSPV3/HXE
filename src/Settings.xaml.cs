@@ -157,7 +157,19 @@ namespace HXE
             }
             else
             {
-                DialogResult = true;
+                try
+                {
+                    DialogResult = true;
+                }
+                catch (InvalidOperationException ex) when (ex.Message == "DialogResult can be set only after Window is created and shown as dialog.")
+                {
+                    // This exception can't be prevented nor handled in any other way...
+                    /** Exceptions
+                    * InvalidOperationException
+                    * DialogResult is set before a window is opened by calling ShowDialog().
+                    * -or-
+                    * DialogResult is set on a window that is opened by calling Show().
+                    */                }
                 Close();
             }
         }
@@ -165,8 +177,27 @@ namespace HXE
         private void Cancel(object sender, RoutedEventArgs e)
         {
             if (SettingsCore.ProcessName == "hxe")
+            {
                 Exit.WithCode(Exit.Code.Success);
-            else Close();
+            }
+            else
+            {
+                try
+                {
+                    DialogResult = false;
+                }
+                catch (InvalidOperationException ex) when (ex.Message == "DialogResult can be set only after Window is created and shown as dialog.")
+                {
+                    // This exception can't be prevented nor handled in any other way...
+                    /** Exceptions
+                    * InvalidOperationException
+                    * DialogResult is set before a window is opened by calling ShowDialog().
+                    * -or-
+                    * DialogResult is set on a window that is opened by calling Show().
+                    */
+                }
+                Close();
+            }
         }
     }
 }
