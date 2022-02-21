@@ -264,7 +264,7 @@ namespace HXE
 
                                     if (br.ReadByte() != value)
                                     {
-                                        if (PatchGroup.Name.Contains("DRM") && PatchGroup.Toggle == false)
+                                        if (PatchGroup.Name.Contains("DRM") && !PatchGroup.Toggle)
                                             return;
 
                                         ms.Position--; /** restore position */
