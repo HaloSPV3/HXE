@@ -104,6 +104,10 @@
       <TargetPath>%(FileName).xml</TargetPath>
     </Content>
     <!-- Assets -->
+    <EmbeddedResource Include="..\ext\halo-ce-patches\patches.crk">
+      <Link>Assets\%(Filename)%(Extension)</Link>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </EmbeddedResource>
     <EmbeddedResource Include="Assets\343I_DER.cer" />
     <Content Include="Assets\icon.ico" />
   </ItemGroup>
