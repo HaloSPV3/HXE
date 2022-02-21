@@ -104,7 +104,6 @@
       <TargetPath>%(FileName).xml</TargetPath>
     </Content>
     <!-- Assets -->
-    <EmbeddedResource Include="Assets\banner.txt" />
     <EmbeddedResource Include="Assets\343I_DER.cer" />
     <Content Include="Assets\icon.ico" />
   </ItemGroup>
