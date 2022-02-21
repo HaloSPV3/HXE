@@ -9,7 +9,7 @@ using Microsoft.Win32.SafeHandles;
 
 namespace HXE.Common
 {
-    internal static class FSCompression
+    internal static class FileSystemCompression
     {
         private const int FSCTL_SET_COMPRESSION = 0x9C040;
         private const short COMPRESSION_FORMAT_DEFAULT = 1;
