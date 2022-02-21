@@ -249,6 +249,7 @@ namespace HXE
                         using (var ms = new MemoryStream(0x24B000))
                         using (var bw = new BinaryWriter(ms))
                         using (var br = new BinaryReader(ms))
+                        {
                             foreach (var PatchGroup in FilteredPatches)
                             {
                                 foreach (var DataSet in PatchGroup.DataSets)
@@ -283,9 +284,13 @@ namespace HXE
                                         }
                                     }
                                     else
+                                    {
                                         Info($"HCE executable already patched with \"{PatchGroup.Name}\"");
+                                    }
                                 }
                             }
+                        }
+
                         isFileReady = true;
                     }
                     catch (IOException)
