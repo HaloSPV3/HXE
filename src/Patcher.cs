@@ -214,7 +214,6 @@ namespace HXE
                 }
                 if (pg.Executable == "haloce.exe" && pg.Name.Contains("mouse acceleration"))
                 {
-
                     pg.Toggle = NoMouseAccel;
                     FilteredPatches.Add(pg);
                     continue;
