@@ -8,11 +8,14 @@ namespace HXE
 {
     public class Patcher
     {
-        /// Read patches.crk to Patches list
-        /// foreach containing exe:haloce.exe, get and apply requested patches.
-        /// if a patch is no longer requested (enabled), restore the original value.
-        /// Patches will be passed to and stored in Kernel via bit-wise integer.
-        /// Later, some patches may be configured in SPV3 loader. Perhaps via The "Advanced" menu aka HXE's Configuration UserControl. Bring it full circle.
+        /// <summary>
+        /// Read patches.crk to Patches list <br/>
+        /// foreach containing exe:haloce.exe, get and apply requested patches. <br/>
+        /// if a patch is no longer requested (enabled), restore the original value. <br/>
+        /// Patches will be passed to and stored in Kernel via bit-wise integer. <br/>
+        /// Later, some patches may be configured in SPV3 loader. <br/>
+        /// Perhaps via The "Advanced" menu aka HXE's Configuration UserControl. Bring it full circle. <br/>
+        /// </summary>
         public class PatchGroup
         {
             public string Name { get; set; } = string.Empty;   /** Make large address aware */
