@@ -119,6 +119,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
+    <PackageReference Include="pinvoke.kernel32" Version="0.7.104" />
   </ItemGroup>
   <ItemGroup Condition="$(TargetFramework.Contains('net4'))">
     <Reference Include="System.Net.Http" />
