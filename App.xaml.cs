@@ -22,6 +22,10 @@ namespace test_fody
                 flagsAndAttributes: CreateFileFlags.FILE_FLAG_BACKUP_SEMANTICS,
                 templateFile: null
             ) ?? throw new NullReferenceException();
+
+            hDirectory.Dispose();
+
+            _ = GitVersionInformation.FullSemVer;
         }
     }
 }

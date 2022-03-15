@@ -1,0 +1,7 @@
+mode: ContinuousDelivery
+branches:
+  main:
+    regex: examples/GitVersion-Deps
+ignore:
+  sha: []
+merge-message-formats: {}
