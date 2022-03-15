@@ -56,17 +56,6 @@ The USAGE document goes into detail on how to use HXE. In a nutshell:
 | ---------------------------------------- | -----------
 | Windows 7 SP1 32-bit (w/ addl. software) | Windows 10 64-bit
 
-## .NET 6.0
-
-Because HXE is built on the relatively new .NET 6, you may need to download the [.NET 6.0 Desktop Runtime](https://dotnet.microsoft.com/en-us/download/dotnet/6.0) for this app to work. Hopefully, this will be distributed via Windows Updates to Windows 10 and Windows 11 sooner rather than later.
-For 64-bit PCs: [Dotnet Runtime (Desktop) 6.0.1 Windows x64 Installer](https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/runtime-desktop-6.0.1-windows-x64-installer)
-For 32-bit PCs: [Dotnet Runtime (Desktop) 6.0.1 Windows x86 Installer](https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/runtime-desktop-6.0.1-windows-x86-installer)
-
-### Windows 7/8.1
-
-Additional software dependencies to be installed for this .NET-based app to work on Windows 8.1 and Windows 7
-Read the [Microsoft docs](https://docs.microsoft.com/en-us/dotnet/core/install/windows?tabs=net60#additional-deps) to learn what you need and how to get it.
-
 ## Note: Upgrading To Windows 10
 
 Using the [Windows Installation Media Creation Tool](https://www.microsoft.com/en-us/software-download/windows10?36261b60-2f68-4336-abe2-4b00f210b6aa=True), you can still upgrade to Windows 10 with your Windows 7/8/8.1 license.
