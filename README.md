@@ -5,7 +5,6 @@
     </p>
 </html>
 
-[![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg?style=flat-square)](http://commitizen.github.io/cz-cli/)
 [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg?style=flat-square)](https://conventionalcommits.org)
 [![Codecov](https://img.shields.io/codecov/c/github/HaloSPV3/HXE.svg?style=flat-square)](https://codecov.io/gh/HaloSPV3/HXE)
 
