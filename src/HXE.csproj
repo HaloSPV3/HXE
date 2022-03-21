@@ -48,7 +48,7 @@
     <EnableNETAnalyzers>true</EnableNETAnalyzers>
     <ToolCommandName>hxe</ToolCommandName>
     <UseWPF>true</UseWPF>
-    <SatelliteResourceLanguages>en-US</SatelliteResourceLanguages>
+    <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
     <InvariantGlobalization>true</InvariantGlobalization>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
