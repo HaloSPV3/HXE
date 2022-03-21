@@ -102,15 +102,13 @@
     <EmbeddedResource Include="Assets\343I_DER.cer" />
     <Content Include="Assets\icon.ico" />
   </ItemGroup>
-  <ItemGroup>
-    <!-- NuGet Package Items -->
+  <ItemGroup Label="NuGet Package Items">
     <None Include="Assets\icon.png" Pack="true" PackagePath="\" />
     <None Include="..\readme.md" Pack="true" PackagePath="\">
       <Link>.docs-misc\readme.md</Link>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <!-- Package References -->
+  <ItemGroup Label="Package References">
     <PackageReference Include="GitVersion.MsBuild" Version="5.8.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
