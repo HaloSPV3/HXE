@@ -24,6 +24,7 @@ using System.IO;
 using System.IO.Compression;
 using System.Threading;
 using System.Threading.Tasks;
+using HXE.Common;
 using HXE.Properties;
 using static System.IO.File;
 using static System.IO.Path;
@@ -71,16 +72,10 @@ namespace HXE
                 Directory.CreateDirectory(target);
             if (enableLZNT1) /// TODO: refactor to new Method for use from other Classes.
             {
-                string[] directories = Directory.GetDirectories(target);
-                string[] files = Directory.GetFiles(target);
-                foreach (string directoryPath in directories)
-                {
-                    new DirectoryInfo(directoryPath).Attributes |= FileAttributes.Compressed;
-                }
-                foreach (string filePath in files)
-                {
-                    new FileInfo(filePath).Attributes |= FileAttributes.Compressed;
-                }
+                /// Because there will probably be no files in the target directory,
+                /// this will be rather fast.
+                var directoryInfo = new DirectoryInfo(target);
+                directoryInfo.Compress(compressFiles:true, recurse:true, progress: progress);
 
                 /// TODO: Introduce and display progress of changes using Events
             }
