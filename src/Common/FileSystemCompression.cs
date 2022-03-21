@@ -34,18 +34,22 @@ namespace HXE.Common
         /// <exception cref="FileNotFoundException">The file is not found.</exception>
         /// <exception cref="UnauthorizedAccessException">file path is read-only.</exception>
         /// <exception cref="Win32Exception">DeviceIoControl operation failed. See <see cref="Win32Exception.NativeErrorCode"/> for exception data.</exception>
-        public static void Compress(this DirectoryInfo directoryInfo, bool compressFiles = true, bool recurse = false, IProgress<int> progress = null)
+        public static void Compress(this DirectoryInfo directoryInfo, bool compressFiles = true, bool recurse = false, IProgress<Status> progress = null)
         {
             /* Progress */
             bool withProgress = progress != null;
-            int itemsCompleted = 0;
-            int itemsTotal = 1;
+            var status = withProgress ? new Status
+            {
+                Description = $"Compressing '{directoryInfo.FullName}' and its descendents...",
+                Current = 0,
+                Total = 1
+            } : null;
 
             void UpdateProgress(int n)
             {
-                if (withProgress) return; // not necessary, but it's here just in case.
-                itemsCompleted += n;
-                progress.Report(itemsCompleted * 100 / itemsTotal);
+                if (!withProgress) return; // not necessary, but it's here just in case.
+                status.Current += n;
+                progress.Report(status);
             }
 
             /* Get files, subdirectories */
@@ -64,11 +68,11 @@ namespace HXE.Common
             {
                 if (files != null)
                 {
-                    itemsTotal += files.Length;
+                    status.Total += files.Length;
                 }
                 if (directories != null)
                 {
-                    itemsTotal += directories.Length;
+                    status.Total += directories.Length;
                 }
 
                 UpdateProgress(0);
