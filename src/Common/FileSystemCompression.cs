@@ -92,7 +92,7 @@ namespace HXE.Common
             SetCompression(hDirectory);
             hDirectory.Close();
             if (withProgress)
-                UpdateProgress(itemsCompleted++);
+                UpdateProgress(1);
 
             /* Compress sub-directories */
             if (recurse)
@@ -101,7 +101,7 @@ namespace HXE.Common
                 {
                     directory.Compress();
                     if (withProgress)
-                        UpdateProgress(itemsCompleted++);
+                        UpdateProgress(1);
                 }
             }
 
@@ -112,7 +112,7 @@ namespace HXE.Common
                 {
                     file.Compress();
                     if (withProgress)
-                        UpdateProgress(itemsCompleted++);
+                        UpdateProgress(1);
                 }
             }
         }
