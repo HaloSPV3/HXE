@@ -20,7 +20,7 @@
     <!-- NuGet Packaging -->
     <Authors>HaloSPV3</Authors>
     <Company>github/HaloSPV3</Company>
-    <Copyright>Copyright © 2019 Emilian Roman</Copyright>
+    <Copyright>Copyright © 2022 Noah Sherwin</Copyright>
     <Description>A HCE wrapper and SPV3 loader</Description>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <IncludeSymbols>false</IncludeSymbols>
