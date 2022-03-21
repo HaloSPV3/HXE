@@ -34,10 +34,12 @@
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <!-- Publish -->
     <IsTrimmable>true</IsTrimmable>
-    <!--<PublishTrimmed>true</PublishTrimmed> -->
-    <PublishSingleFile Condition="'$(PublishSingleFile)' == '' AND $(RuntimeIdentifier.Equals(''))">false</PublishSingleFile>
-    <RuntimeIdentifier Condition="'$(RuntimeIdentifier)' == '' AND '$(PublishSingleFile)' == 'true'">win-x86</RuntimeIdentifier>
+    <!--<PublishTrimmed>true</PublishTrimmed> --><!-- Waiting for trim-compatible WPF -->
+    <PublishSingleFile>true</PublishSingleFile>
+    <RuntimeIdentifier Condition="'$(RuntimeIdentifier)' == '' AND '$(PublishSingleFile)' == 'true'">win7-x86</RuntimeIdentifier>
     <SelfContained Condition="'$(SelfContained)' == '' AND '$(RuntimeIdentifier)' != ''">true</SelfContained>
+    <Win7SF>$([MSBuild]::VersionGreaterThanOrEquals($(NETCoreSdkVersion), '6.0.300'))</Win7SF>
+    <PublishSingleFile Condition="'$(PublishSingleFile)' == 'true' AND $(RuntimeIdentifier.Contains('win7'))">$(Win7SF)</PublishSingleFile>
     <!-- Misc -->
     <ProjectGuid>{ACAA5D9F-B23D-43E1-B2DF-8C03230975A1}</ProjectGuid>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -48,16 +50,6 @@
     <UseWPF>true</UseWPF>
     <SatelliteResourceLanguages>en-US</SatelliteResourceLanguages>
     <InvariantGlobalization>true</InvariantGlobalization>
-    <Win7SF>$([MSBuild]::VersionGreaterThanOrEquals($(NETCoreSdkVersion), '6.0.300'))</Win7SF>
-    <PublishSingleFile Condition="'$(PublishSingleFile)' == 'true' AND $(RuntimeIdentifier.Contains('win7'))">$(Win7SF)</PublishSingleFile>
-  </PropertyGroup>
-  <PropertyGroup Condition=" $(RuntimeIdentifer.Contains('x64'))">
-    <Platform>x64</Platform>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition=" $(RuntimeIdentifer.Contains('x86'))">
-    <Platform>x86</Platform>
-    <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DefineConstants>DEBUG;TRACE</DefineConstants>
@@ -69,7 +61,7 @@
   <PropertyGroup Condition="'$(PublishSingleFile)' == 'true'">
     <SelfContained>true</SelfContained>
     <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
-    <EnableCompressionInSingleFile>true</EnableCompressionInSingleFile>
+    <EnableCompressionInSingleFile Condition="$(TargetFramework.Contains('net6')">true</EnableCompressionInSingleFile>
   </PropertyGroup>
   <ItemGroup>
     <None Include="..\*.*">
