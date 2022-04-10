@@ -36,7 +36,7 @@
     <IsTrimmable>true</IsTrimmable>
     <!--<PublishTrimmed>true</PublishTrimmed> --><!-- Waiting for trim-compatible WPF -->
     <PublishSingleFile>true</PublishSingleFile>
-    <RuntimeIdentifier Condition="'$(RuntimeIdentifier)' == '' AND '$(PublishSingleFile)' == 'true'">win7-x86</RuntimeIdentifier>
+    <RuntimeIdentifier Condition="'!$(TargetFramework.Contains(net4))' AND '$(RuntimeIdentifier)' == '' AND '$(PublishSingleFile)' == 'true'">win7-x86</RuntimeIdentifier>
     <SelfContained Condition="'$(SelfContained)' == '' AND '$(RuntimeIdentifier)' != ''">true</SelfContained>
     <Win7SF>$([MSBuild]::VersionGreaterThanOrEquals($(NETCoreSdkVersion), '6.0.300'))</Win7SF>
     <PublishSingleFile Condition="'$(PublishSingleFile)' == 'true' AND $(RuntimeIdentifier.Contains('win7'))">$(Win7SF)</PublishSingleFile>
