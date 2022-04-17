@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "HXE": {
+      "commandName": "Project",
+      "commandLineArgs": "--applyLznt1=$(pwd)"
+    }
+  }
+}
