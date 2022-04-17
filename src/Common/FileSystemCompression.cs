@@ -159,7 +159,7 @@ namespace HXE.Common
         /// <exception cref="FileNotFoundException">The file is not found.</exception>
         /// <exception cref="UnauthorizedAccessException">path is read-only or is a directory.</exception>
         /// <exception cref="DirectoryNotFoundException">The specified path is invalid, such as being on an unmapped drive.</exception>
-        /// <exception cref="Win32Exception">DeviceIoControl operation failed. See <see cref="Win32Exception.NativeErrorCode"/> for exception data.</exception>
+        /// <exception cref="InfoWin32Exception">DeviceIoControl operation failed. See <see cref="InfoWin32Exception.NativeErrorCode"/> for exception data.</exception>
         public static void Compress(this FileInfo fileInfo)
         {
             FileStream fileStream = fileInfo.Open(mode: FileMode.Open, access: FileAccess.ReadWrite, share: FileShare.None);
@@ -167,7 +167,12 @@ namespace HXE.Common
             fileStream.Dispose();
         }
 
-
+        /// <summary>
+        /// Get a Win32 SafeFileHandle for the specified directory
+        /// </summary>
+        /// <param name="directoryInfo">An existing directory the current process can access</param>
+        /// <returns>A ReadWrite, NoShare SafeFileHandle representing </returns>
+        /// <exception cref="InfoWin32Exception">A Win32Exception with its Message prefixed with the error code's associated string.</exception>
         public static SafeFileHandle GetHandle(this DirectoryInfo directoryInfo)
         {
             System.Diagnostics.Process.GetCurrentProcess().SetSeBackupPrivilege();
@@ -184,28 +189,63 @@ namespace HXE.Common
 
             if (directoryHandle.IsInvalid)
             {
-                var error = Kernel32.GetLastError();
+                Win32ErrorCode error = Kernel32.GetLastError();
+                /// TODO: Handle the following exceptions:
+                /// ERROR_SHARING_VIOLATION
+                ///   The process cannot access the file because it is being used by another process
+                /// ERROR_ACCESS_DENIED
+                ///     Access is denied.
+                /// ERROR_CANT_ACCESS_FILE
+                ///     The file cannot be accessed by the system. Maybe ACLs?
+                /// ERROR_FILE_CHECKED_OUT
+                ///     This file is checked out or locked for editing by another user.
+                /// ERROR_FILE_ENCRYPTED
+                ///     SKIP
+                /// ERROR_FILE_INVALID ????
+                /// ERROR_FILE_NOT_FOUND
+                ///     After DirectoryInfo instance is created, the fs item may be deleted
+                ///     SKIP
+                /// ERROR_FILE_OFFLINE
+                ///     for network drives, offline files
+                ///     SKIP
+                /// ERROR_FILE_READ_ONLY
+                ///     try temporary disable
+                /// ERROR_FILE_SYSTEM_LIMITATION
+                ///     check for NTFS!
+                /// ERROR_FILE_TOO_LARGE
+                ///     The file size exceeds the limit allowed and cannot be saved.
+                ///     Only files smaller than 30 GiB can be compressed!
+                /// ERROR_TOO_MANY_OPEN_FILES
+                ///     The system cannot open the file.
+                ///     Very rare, but possible.
+                ///     SKIP
+                /// ERROR_USER_MAPPED_FILE
+                ///     SKIP
+                /// ERROR_VIRUS_INFECTED
+                ///     Operation did not complete successfully because the file contains a virus or potentially unwanted software.
+                ///     SKIP
+                /// ERROR_VIRUS_DELETED
+                ///     This file contains a virus or potentially unwanted software and cannot be opened. Due to the nature of this virus or potentially unwanted software, the file has been removed from this location.
+                ///     SKIP
                 switch (error)
                 {
-                    case Win32ErrorCode.ERROR_SHARING_VIOLATION: break;
+                    case Win32ErrorCode.ERROR_SHARING_VIOLATION: // The process cannot access the file because it is being used by another process
+                        /// A: Wait and try again
+                        /// B: Schedule the task to execute after reboot
+                        /// C: Steal the file from the other process
+
+                        // return directoryHandle;
+                        break;
+                    case Win32ErrorCode.ERROR_FILE_SYSTEM_LIMITATION:
+                        throw new InfoWin32Exception(
+                            error,
+                            (
+                                new DriveInfo(Path.GetPathRoot(directoryInfo.FullName)).DriveFormat != "NTFS" ?
+                                "Unknown reason. " : "LZNT1 compression can be applied only on NTFS-formatted drives."
+                            ) + directoryInfo.FullName
+                        );
                 }
-                /// TODO: Handle the following exceptions:
-                /// PInvoke.Win32ErrorCode.ERROR_SHARING_VIOLATION
-                ///   The process cannot access the file because it is being used by another process
-                /// Win32ErrorCode.ERROR_CANT_ACCESS_FILE ???? maybe ACLs
-                /// Win32ErrorCode.ERROR_FILE_CHECKED_OUT ????
-                /// Win32ErrorCode.ERROR_FILE_ENCRYPTED ???? just skip the entry
-                /// Win32ErrorCode.ERROR_FILE_INVALID ????
-                /// Win32ErrorCode.ERROR_FILE_NOT_FOUND ???? After DirectoryInfo instance is created, the fs item may be deleted
-                /// Win32ErrorCode.ERROR_FILE_OFFLINE ???? for network drives, offline files
-                /// Win32ErrorCode.ERROR_FILE_READ_ONLY ???? try temporary disable
-                /// Win32ErrorCode.ERROR_FILE_SYSTEM_LIMITATION ???? check for NTFS!
-                /// Win32ErrorCode.ERROR_FILE_TOO_LARGE ???? Only files smaller than 30 GiB can be compressed!
-                /// Win32ErrorCode.ERROR_OPEN_FILES ????
-                /// Win32ErrorCode.ERROR_TOO_MANY_OPEN_FILES ???? Very rare, but possible
-                /// Win32ErrorCode.ERROR_USER_MAPPED_FILE ???? part of the file is open. not sure if problem
-                ThrowWin32Exception(error);
-                return new SafeFileHandle(IntPtr.Zero, true);
+                throw new InfoWin32Exception(error, directoryInfo.FullName);
             }
             else
             {
@@ -226,7 +266,7 @@ namespace HXE.Common
         ///     P/Invoke DeviceIoControl with the FSCTL_SET_COMPRESSION
         /// </summary>
         /// <param name="handle"></param> //TODO
-        /// <exception cref="Win32Exception">DeviceIoControl operation failed. See <see cref="Win32Exception.NativeErrorCode"/> for exception data.</exception>
+        /// <exception cref="InfoWin32Exception">DeviceIoControl operation failed. See <see cref="InfoWin32Exception.Message"/> for reason.</exception>
         internal static unsafe void SetCompression(SafeFileHandle handle)
         {
             uint defaultFormat = COMPRESSION_FORMAT_DEFAULT;
@@ -242,16 +282,8 @@ namespace HXE.Common
                 lpOverlapped: (Windows.Win32.System.IO.OVERLAPPED*)IntPtr.Zero
                 ))
             {
-                ThrowWin32Exception(Kernel32.GetLastError());
+                throw new InfoWin32Exception(Kernel32.GetLastError());
             }
-        }
-
-        internal static void ThrowWin32Exception(Win32ErrorCode errorCode, string messageAppendix = null)
-        {
-            throw new Win32Exception(
-                error: errorCode,
-                message: errorCode.GetMessage() + " : " + messageAppendix
-            );
         }
     }
 }
