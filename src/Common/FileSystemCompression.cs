@@ -80,7 +80,7 @@ namespace HXE.Common
             {
                 Description = $"Compressing '{directoryInfo.FullName}' and its descendents...",
                 Current = 0,
-                Total = 1
+                Total = 0
             } : null;
 
             void UpdateProgress(int n = 1)
