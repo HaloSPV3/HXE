@@ -33,6 +33,22 @@ namespace HXE.Common
 {
     internal static class FileSystemCompression
     {
+        internal struct SubItems
+        {
+            public DirectoryInfo[] Directories;
+            public FileInfo[] Files;
+        }
+
+        internal static SubItems GetSubItems(this DirectoryInfo rootDir, bool compressFiles, bool recurse = false) => new SubItems
+        {
+            Files = compressFiles ?
+                rootDir.GetFiles(searchPattern: "*", searchOption: recurse ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly) :
+                Array.Empty<FileInfo>(),
+            Directories = recurse ?
+                rootDir.GetDirectories(searchPattern: "*", searchOption: SearchOption.AllDirectories) :
+                Array.Empty<DirectoryInfo>()
+        };
+
         // TODO: Duplicate as non-extension "CompressDirectory()"
         /// <summary>
         ///     Compress the directory represented by the DirectoryInfo object.
@@ -51,7 +67,9 @@ namespace HXE.Common
         /// <exception cref="Win32Exception">DeviceIoControl operation failed. See <see cref="Win32Exception.NativeErrorCode"/> for exception data.</exception>
         public static void Compress(this DirectoryInfo directoryInfo, bool compressFiles = true, bool recurse = false, IProgress<Status> progress = null)
         {
-            /* Progress */
+            ///
+            /// Set up Progress
+            ///
             bool withProgress = progress != null;
             Status status = withProgress ? new Status
             {
@@ -67,37 +85,37 @@ namespace HXE.Common
                 progress.Report(status);
             }
 
-            /* Get files, subdirectories */
-            SearchOption searchOption = recurse ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly;
-            DirectoryInfo[] directories = recurse ? directoryInfo.GetDirectories(
-                searchPattern: "*",
-                searchOption: searchOption
-                ) : null;
-            FileInfo[] files = compressFiles ? directoryInfo.GetFiles(
-                searchPattern: "*",
-                searchOption: searchOption
-                ) : null;
-
-            /* Add files, directories count to itemsTotal; Update progress */
-            if (withProgress)
+            ///
+            /// Get files, subdirectories
+            ///
+            SubItems? subItems = null;
+            if (compressFiles || recurse)
             {
-                if (files != null)
-                {
-                    status.Total += files.Length;
-                }
-                if (directories != null)
-                {
-                    status.Total += directories.Length;
-                }
-
-                UpdateProgress(0);
+                directoryInfo.GetSubItems(compressFiles: compressFiles, recurse: recurse);
             }
 
-            /* Adjust current process permissions */
+            ///
+            /// Add files, directories count to itemsTotal; Update progress
+            ///
+            if (withProgress)
+            {
+                if (subItems != null)
+                {
+                    // if (subItems != null), then (Length is always >= 0).
+                    status.Total += subItems.Value.Files.Length + subItems.Value.Directories.Length;
+                }
+
+                UpdateProgress(0); // Initial update.
+            }
+
+            ///
+            /// Adjust current process permissions
+            ///
             System.Diagnostics.Process.GetCurrentProcess().SetSeBackupPrivilege();
 
-            /* Compress root directory */
-
+            ///
+            /// Compress root directory
+            ///
             SafeFileHandle directoryHandle = directoryInfo.GetHandle();
 
             SetCompression(directoryHandle);
@@ -105,21 +123,25 @@ namespace HXE.Common
             if (withProgress)
                 UpdateProgress();
 
-            /* Compress sub-directories */
+            ///
+            /// Compress sub-directories
+            ///
             if (recurse)
             {
-                foreach (DirectoryInfo directory in directories)
+                foreach (DirectoryInfo directory in subItems.Value.Directories)
                 {
-                    directory.Compress();
+                    directory.Compress(compressFiles: false);
                     if (withProgress)
                         UpdateProgress();
                 }
             }
 
-            /* Compress files*/
+            ///
+            ///  Compress files
+            ///
             if (compressFiles)
             {
-                foreach (FileInfo file in files)
+                foreach (FileInfo file in subItems.Value.Files)
                 {
                     file.Compress();
                     if (withProgress)
