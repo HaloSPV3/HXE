@@ -295,5 +295,41 @@ namespace HXE.Common
                 throw new InfoWin32Exception(Kernel32.GetLastError());
             }
         }
+
+        /// <inheritdoc cref="Windows.Win32.PInvoke.CreateFile(Windows.Win32.Foundation.PCWSTR, FILE_ACCESS_FLAGS, FILE_SHARE_MODE, Windows.Win32.Security.SECURITY_ATTRIBUTES*, FILE_CREATION_DISPOSITION, FILE_FLAGS_AND_ATTRIBUTES, Windows.Win32.Foundation.HANDLE)"/>
+        /// <exception cref="InfoWin32Exception">A Win32Exception with its Message prefixed with the error code's associated string.</exception>
+        internal static unsafe SafeFileHandle CreateFile(string lpFileName, FILE_ACCESS_FLAGS dwDesiredAccess, FILE_SHARE_MODE dwShareMode, Windows.Win32.Security.SECURITY_ATTRIBUTES? lpSecurityAttributes, FILE_CREATION_DISPOSITION dwCreationDisposition, FILE_FLAGS_AND_ATTRIBUTES dwFlagsAndAttributes, SafeHandleZeroOrMinusOneIsInvalid hTemplateFile)
+        {
+            bool hTemplateFileAddRef = false;
+            try
+            {
+                fixed (char* lpFileNameLocal = lpFileName)
+                {
+                    Windows.Win32.Security.SECURITY_ATTRIBUTES lpSecurityAttributesLocal = lpSecurityAttributes ?? default;
+                    Windows.Win32.Foundation.HANDLE hTemplateFileLocal;
+                    if (hTemplateFile is object)
+                    {
+                        hTemplateFile.DangerousAddRef(ref hTemplateFileAddRef);
+                        hTemplateFileLocal = (Windows.Win32.Foundation.HANDLE)hTemplateFile.DangerousGetHandle();
+                    }
+                    else
+                    {
+                        hTemplateFileLocal = default;
+                    }
+
+                    Windows.Win32.Foundation.HANDLE __result = Windows.Win32.PInvoke.CreateFile(lpFileNameLocal, dwDesiredAccess, dwShareMode, lpSecurityAttributes.HasValue ? &lpSecurityAttributesLocal : null, dwCreationDisposition, dwFlagsAndAttributes, hTemplateFileLocal);
+                    var returnHandle = new SafeFileHandle(__result, ownsHandle: true);
+
+                    if (returnHandle.IsInvalid)
+                        throw new InfoWin32Exception(error: Kernel32.GetLastError());
+                    return returnHandle;
+                }
+            }
+            finally
+            {
+                if (hTemplateFileAddRef)
+                    hTemplateFile.DangerousRelease();
+            }
+        }
     }
 }
