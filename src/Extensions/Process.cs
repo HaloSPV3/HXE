@@ -25,6 +25,15 @@ namespace HXE.Extensions
             return principal.IsInRole(WindowsBuiltInRole.Administrator)
                 || principal.IsInRole(DOMAIN_GROUP_RID_ADMINS);
         }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="process"></param>
+        /// <returns></returns>
+        /// <exception cref="NotSupportedException"></exception>
+        /// <exception cref="ArgumentNullException"><paramref name="process"/> is <c>null</c>.</exception>
+        /// <exception cref="InfoWin32Exception"></exception>
         public static bool IsElevated(this System.Diagnostics.Process process)
         {
             if (process == null)
@@ -33,7 +42,7 @@ namespace HXE.Extensions
             if (process.SafeHandle != null && process.Id == 4)
             {
                 // TODO: better exception Type
-                throw new AccessViolationException("System (PID 4) token can't be opened");
+                throw new NotSupportedException("System (PID 4) token can't be opened");
             }
             else
             {
