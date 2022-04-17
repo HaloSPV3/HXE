@@ -10,6 +10,7 @@ using static Windows.Win32.Security.TOKEN_PRIVILEGES_ATTRIBUTES;
 
 namespace HXE.Extensions
 {
+    // TODO: Process.Security member. See https://docs.microsoft.com/en-us/windows/win32/procthread/process-security-and-access-rights
     public static class ExtProcess
     {
         /// <summary>
