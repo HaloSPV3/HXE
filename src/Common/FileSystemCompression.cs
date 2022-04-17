@@ -58,14 +58,19 @@ namespace HXE.Common
         /// <param name="recurse"></param> // TODO
         /// <param name="progress"></param> // TODO
         /// <exception cref="DirectoryNotFoundException">
-        /// The path encapsulated in the System.IO.DirectoryInfo object is invalid, such<br/>
-        /// as being on an unmapped drive.
+        ///     The path encapsulated in the System.IO.DirectoryInfo object is invalid, such<br/>
+        ///     as being on an unmapped drive.
         /// </exception>
+        /// <exception cref="NotSupportedException">The file system is not NTFS.</exception>
+        /// <exception cref="PlatformNotSupportedException">The current operating system is not Microsoft Windows NT or later.</exception>
         /// <exception cref="System.Security.SecurityException">The caller does not have the required permission.</exception>
         /// <exception cref="FileNotFoundException">The file is not found.</exception>
-        /// <exception cref="UnauthorizedAccessException">file path is read-only.</exception>
-        /// <exception cref="Win32Exception">DeviceIoControl operation failed. See <see cref="Win32Exception.NativeErrorCode"/> for exception data.</exception>
-        public static void Compress(this DirectoryInfo directoryInfo, bool compressFiles = true, bool recurse = false, IProgress<Status> progress = null)
+        /// <exception cref="UnauthorizedAccessException">
+        ///     file path is read-only.-or-<br/>
+        ///     This operation is not supported on the current platform.-or-<br/>
+        ///     The caller does not have the required permission.
+        /// </exception>
+        public static void Compress(this DirectoryInfo directoryInfo, bool compressFiles, bool recurse = false, IProgress<Status> progress = null)
         {
             ///
             /// Set up Progress
@@ -259,6 +264,11 @@ namespace HXE.Common
                 FileMode.Open,
                 FileAccess.ReadWrite,
                 FileShare.None);
+            /// System.Security.SecurityException: The caller does not have the required permission.
+            /// System.IO.FileNotFoundException: The file is not found.
+            /// System.UnauthorizedAccessException: path is read-only or is a directory.
+            /// System.IO.DirectoryNotFoundException: The specified path is invalid, such as being on an unmapped drive.
+            /// System.IO.IOException: The file is already open.
             return fileStream.SafeFileHandle;
         }
 
