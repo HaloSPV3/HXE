@@ -120,8 +120,6 @@ namespace HXE.Extensions
             return pfResult != 0;
         }
 
-
-
         [Flags]
         public enum TokenAccessMask : uint
         {
@@ -193,10 +191,9 @@ namespace HXE.Extensions
         /// </summary>
         /// <param name="process"></param>
         /// <param name="enable"></param>
-        /// TODO: Works, but I don't know how it works. If the privilege isn't already present, how does one ADD it?
         public static void SetSeBackupPrivilege(this System.Diagnostics.Process process, bool enable = true)
         {
-            SafeFileHandle processToken = process.GetProcessToken(TokenAccessMask.AdjustPrivileges | TokenQuery);
+            SafeFileHandle processToken = process.GetProcessToken(TokenAccessMask.AdjustPrivileges | TokenAccessMask.Query);
 
             if (!LookupPrivilegeValue(null, SE_BACKUP_NAME, out LUID luidPrivilege))
             {
