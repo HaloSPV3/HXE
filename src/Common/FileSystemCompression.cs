@@ -276,24 +276,39 @@ namespace HXE.Common
         /// <summary>
         ///     P/Invoke DeviceIoControl with the FSCTL_SET_COMPRESSION
         /// </summary>
-        /// <param name="handle"></param> //TODO
-        /// <exception cref="Win32Exception">DeviceIoControl operation failed. See <see cref="Win32Exception.Message"/> for reason.</exception>
+        /// <param name="handle">If a file, then the handle must have READ/WRITE access and NO sharing. The latter prevents data loss by race conditions. If a Directory, then the same ACCESS and SHARE values should be used with the addition of <see cref="FILE_FLAGS_AND_ATTRIBUTES.FILE_FLAG_BACKUP_SEMANTICS"/>.</param>
+        /// <exception cref="ArgumentException">The input buffer length is less than 2, or the handle is not to a file or directory, or the requested CompressionState is not one of the values listed in the table for 'CompressionState' in 'FSCTL_SET_COMPRESSION Request (section 2.3.67)' (see https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-fscc/77f650a3-e3a2-4a25-baac-4bf9b36bcc46).</exception>
+        /// <exception cref="NotSupportedException">The device, driver, or file system does not implement functionality for or support the request '<see cref="FSCTL_SET_COMPRESSION"/>'.</exception>
+        /// <exception cref="IOException">The file could not be compressed because the disk or volume is full.</exception>
+        /// <exception cref="Win32Exception">DeviceIoControl operation failed. See exception's NativeErrorCode (as Win32ErrorCode) and Message for details.</exception>
+        /// TODO: UNIX/POSIX-based OSs and capable file systems. https://unix.stackexchange.com/questions/635016/how-to-get-transparent-drive-or-folder-compression-for-ext4-partition-used-by-de
         internal static unsafe void SetCompression(SafeFileHandle handle)
         {
             uint defaultFormat = COMPRESSION_FORMAT_DEFAULT;
 
+            //TODO: use Nt version instead. Its NTSTATUS responses are documented (as part of "Windows Protocols"), but the win32 API variant's errors are barely documented and sometimes misleading.
             if (!DeviceIoControl(
                 hDevice: handle,
                 dwIoControlCode: FSCTL_SET_COMPRESSION,
                 lpInBuffer: &defaultFormat,
                 nInBufferSize: sizeof(uint), // sizeof(typeof(lpInBuffer.GetType()))
-                lpOutBuffer: (void*)IntPtr.Zero,
+                lpOutBuffer: null,
                 nOutBufferSize: 0,
-                lpBytesReturned: (uint*)IntPtr.Zero,
-                lpOverlapped: (Windows.Win32.System.IO.OVERLAPPED*)IntPtr.Zero
+                lpBytesReturned: null,
+                lpOverlapped: null
                 ))
             {
-                throw new Win32Exception();
+                // https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-fscc/ff42e806-0125-4fc2-adf7-e9db53bea161
+                // https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-fsa/8e2a2e1e-5a90-4251-8b4d-18f1a4c0be43
+                Win32ErrorCode err = (Win32ErrorCode)Marshal.GetLastPInvokeError();
+                if (err is Win32ErrorCode.ERROR_INVALID_PARAMETER)
+                    throw new ArgumentException("The input buffer length is less than 2, or the handle is not to a file or directory, or the requested CompressionState is not one of the values listed in the table for 'CompressionState' in 'FSCTL_SET_COMPRESSION Request (section 2.3.67)' (see https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-fscc/77f650a3-e3a2-4a25-baac-4bf9b36bcc46).", new Win32Exception(err));
+                else if (err is Win32ErrorCode.ERROR_INVALID_FUNCTION) // STATUS_INVALID_DEVICE_REQUEST
+                    throw new NotSupportedException($"The device, driver, or file system does not implement functionality for or support the request '{nameof(FSCTL_SET_COMPRESSION)}'.", new Win32Exception(err));
+                else if (err is Win32ErrorCode.ERROR_DISK_FULL)
+                    throw new IOException("The file could not be compressed because the disk or volume is full.", new Win32Exception(err));
+                else
+                    throw new Win32Exception(err);
             }
         }
 
