@@ -38,7 +38,7 @@ jobs:
     # Dependents: Semantic Release
 
     # Authenticates packages to push to GPR
-    - uses: actions/setup-dotnet@v3.0.3
+    - uses: actions/setup-dotnet@v3.1.0
       with:
         dotnet-version: "6.0.x" # SDK Version to use.
         include-prerelease: true
