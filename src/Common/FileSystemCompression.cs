@@ -259,18 +259,23 @@ namespace HXE.Common
             }
         }
 
-        public static SafeFileHandle GetHandle(this FileInfo fileInfo)
+        /// <summary>
+        /// Open a FileStream (preferably with a using statement) to the selected file with the necessary access and share for (de)compression. Pass the FileStream's SafeFileHandle when necessary. If a using statement was not use and the FileStream is no longer needed, call fileStream.Dipose().
+        /// </summary>
+        /// <param name="fileInfo">An existing file the user (or this code) can access.</param>
+        /// <returns>A FileStream wrapping the SafeFileHandle. Assign in a using statement or call fileStream.Dispose() when no longer needed.</returns>
+        /// <inheritdoc cref="FileInfo.Open(FileMode, FileAccess, FileShare)" path="/exception"/>
+        public static FileStream GetHandle(this FileInfo fileInfo)
         {
-            FileStream fileStream = fileInfo.Open(
-                FileMode.Open,
-                FileAccess.ReadWrite,
-                FileShare.None);
             /// System.Security.SecurityException: The caller does not have the required permission.
             /// System.IO.FileNotFoundException: The file is not found.
             /// System.UnauthorizedAccessException: path is read-only or is a directory.
             /// System.IO.DirectoryNotFoundException: The specified path is invalid, such as being on an unmapped drive.
             /// System.IO.IOException: The file is already open.
-            return fileStream.SafeFileHandle;
+            return fileInfo.Open(
+                FileMode.Open,
+                FileAccess.ReadWrite,
+                FileShare.None);
         }
 
         /// <summary>
