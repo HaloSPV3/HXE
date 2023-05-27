@@ -6,6 +6,7 @@
     <Prefer32Bit>false</Prefer32Bit>
     <OutputType>Exe</OutputType>
     <TargetFramework>net6.0-windows</TargetFramework>
+    <TargetFrameworks>net6.0;net6.0-windows</TargetFrameworks>
     <StartupObject>HXE.Program</StartupObject>
     <AssemblyName>HXE</AssemblyName>
     <RootNamespace>HXE</RootNamespace>
@@ -108,13 +109,6 @@
     </None>
   </ItemGroup>
   <ItemGroup Label="Package References">
-    <PackageReference Include="Costura.Fody" Version="5.7.0">
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
-    <PackageReference Include="Fody" Version="6.6.0">
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
     <PackageReference Include="GitVersion.MsBuild" Version="5.11.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
