@@ -185,7 +185,7 @@ namespace HXE.Common
 
             SafeFileHandle directoryHandle = CreateFile(
                 lpFileName: directoryInfo.FullName,
-                dwDesiredAccess: FILE_ACCESS_FLAGS.FILE_GENERIC_READ | FILE_ACCESS_FLAGS.FILE_GENERIC_WRITE,
+                dwDesiredAccess: FILE_ACCESS_RIGHTS.FILE_GENERIC_READ | FILE_ACCESS_RIGHTS.FILE_GENERIC_WRITE,
                 dwShareMode: FILE_SHARE_MODE.FILE_SHARE_NONE,
                 lpSecurityAttributes: null,
                 dwCreationDisposition: FILE_CREATION_DISPOSITION.OPEN_EXISTING,
@@ -289,14 +289,14 @@ namespace HXE.Common
         /// TODO: UNIX/POSIX-based OSs and capable file systems. https://unix.stackexchange.com/questions/635016/how-to-get-transparent-drive-or-folder-compression-for-ext4-partition-used-by-de
         internal static unsafe void SetCompression(SafeFileHandle handle)
         {
-            uint defaultFormat = COMPRESSION_FORMAT_DEFAULT;
+            COMPRESSION_FORMAT defaultFormat = COMPRESSION_FORMAT.COMPRESSION_FORMAT_DEFAULT;
 
             //TODO: use Nt version instead. Its NTSTATUS responses are documented (as part of "Windows Protocols"), but the win32 API variant's errors are barely documented and sometimes misleading.
             if (!DeviceIoControl(
                 hDevice: handle,
                 dwIoControlCode: FSCTL_SET_COMPRESSION,
                 lpInBuffer: &defaultFormat,
-                nInBufferSize: sizeof(uint), // sizeof(typeof(lpInBuffer.GetType()))
+                nInBufferSize: sizeof(COMPRESSION_FORMAT), // sizeof(typeof(lpInBuffer.GetType()))
                 lpOutBuffer: null,
                 nOutBufferSize: 0,
                 lpBytesReturned: null,
@@ -317,40 +317,12 @@ namespace HXE.Common
             }
         }
 
-        /// <inheritdoc cref="Windows.Win32.PInvoke.CreateFile(Windows.Win32.Foundation.PCWSTR, FILE_ACCESS_FLAGS, FILE_SHARE_MODE, Windows.Win32.Security.SECURITY_ATTRIBUTES*, FILE_CREATION_DISPOSITION, FILE_FLAGS_AND_ATTRIBUTES, Windows.Win32.Foundation.HANDLE)"/>
+        /// <inheritdoc cref="Windows.Win32.PInvoke.CreateFile(Windows.Win32.Foundation.PCWSTR, uint, FILE_SHARE_MODE, Windows.Win32.Security.SECURITY_ATTRIBUTES*, FILE_CREATION_DISPOSITION, FILE_FLAGS_AND_ATTRIBUTES, Windows.Win32.Foundation.HANDLE)"/>
         /// <exception cref="Win32Exception">A Win32Exception with its Message prefixed with the error code's associated string.</exception>
-        internal static unsafe SafeFileHandle CreateFile(string lpFileName, FILE_ACCESS_FLAGS dwDesiredAccess, FILE_SHARE_MODE dwShareMode, Windows.Win32.Security.SECURITY_ATTRIBUTES? lpSecurityAttributes, FILE_CREATION_DISPOSITION dwCreationDisposition, FILE_FLAGS_AND_ATTRIBUTES dwFlagsAndAttributes, SafeHandleZeroOrMinusOneIsInvalid hTemplateFile)
+        internal static unsafe SafeFileHandle CreateFile(string lpFileName, FILE_ACCESS_RIGHTS dwDesiredAccess, FILE_SHARE_MODE dwShareMode, Windows.Win32.Security.SECURITY_ATTRIBUTES? lpSecurityAttributes, FILE_CREATION_DISPOSITION dwCreationDisposition, FILE_FLAGS_AND_ATTRIBUTES dwFlagsAndAttributes, SafeHandleZeroOrMinusOneIsInvalid hTemplateFile)
         {
-            bool hTemplateFileAddRef = false;
-            try
-            {
-                fixed (char* lpFileNameLocal = lpFileName)
-                {
-                    Windows.Win32.Security.SECURITY_ATTRIBUTES lpSecurityAttributesLocal = lpSecurityAttributes ?? default;
-                    Windows.Win32.Foundation.HANDLE hTemplateFileLocal;
-                    if (hTemplateFile is object)
-                    {
-                        hTemplateFile.DangerousAddRef(ref hTemplateFileAddRef);
-                        hTemplateFileLocal = (Windows.Win32.Foundation.HANDLE)hTemplateFile.DangerousGetHandle();
-                    }
-                    else
-                    {
-                        hTemplateFileLocal = default;
-                    }
-
-                    Windows.Win32.Foundation.HANDLE __result = Windows.Win32.PInvoke.CreateFile(lpFileNameLocal, dwDesiredAccess, dwShareMode, lpSecurityAttributes.HasValue ? &lpSecurityAttributesLocal : null, dwCreationDisposition, dwFlagsAndAttributes, hTemplateFileLocal);
-                    var returnHandle = new SafeFileHandle(__result, ownsHandle: true);
-
-                    if (returnHandle.IsInvalid)
-                        throw new Win32Exception();
-                    return returnHandle;
-                }
-            }
-            finally
-            {
-                if (hTemplateFileAddRef)
-                    hTemplateFile.DangerousRelease();
-            }
+            SafeFileHandle __result = Windows.Win32.PInvoke.CreateFile(lpFileName, (uint)dwDesiredAccess, dwShareMode, lpSecurityAttributes, dwCreationDisposition, dwFlagsAndAttributes, hTemplateFile);
+            return __result.IsInvalid ? throw new Win32Exception() : __result;
         }
     }
 }
