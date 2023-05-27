@@ -177,20 +177,21 @@ namespace HXE.Extensions
             return processToken;
         }
 
-        /// AdjustTokenPrivileges(
-        ///     System.Runtime.InteropServices.SafeHandle TokenHandle,
-        ///     BOOL DisableAllPrivileges,
-        ///     TOKEN_PRIVILEGES? NewState,
-        ///     uint BufferLength,
-        ///     TOKEN_PRIVILEGES* PreviousState,
-        ///     uint* ReturnLength)
+        // AdjustTokenPrivileges(
+        //     System.Runtime.InteropServices.SafeHandle TokenHandle,
+        //     BOOL DisableAllPrivileges,
+        //     TOKEN_PRIVILEGES? NewState,
+        //     uint BufferLength,
+        //     TOKEN_PRIVILEGES* PreviousState,
+        //     uint* ReturnLength)
         //public static void AdjustTokenPrivileges(this SafeFileHandle processToken){}
 
         /// <summary>
-        ///
+        /// Enable or disable SE_BACKUP_PRIVILEGE for the given process. This privilege must be enabled to toggle directories' COMPRESSION attributes and flags.
         /// </summary>
-        /// <param name="process"></param>
-        /// <param name="enable"></param>
+        /// <param name="process">The process for which SE_BACKUP_PRIVILEGE will be enabled, if the caller has permission to do so.</param>
+        /// <param name="enable">If <see langword="true"/> (default), SE_BACKUP_PRIVILEGE will be enabled for the given process. Else, the privilege will be disabled for the given process.</param>
+        /// <exception cref="Win32Exception">LookupPrivilegeValue or AdjustTokenPrivileges failed.</exception>
         public static void SetSeBackupPrivilege(this System.Diagnostics.Process process, bool enable = true)
         {
             SafeFileHandle processToken = process.GetProcessToken(TokenAccessMask.AdjustPrivileges | TokenAccessMask.Query);
