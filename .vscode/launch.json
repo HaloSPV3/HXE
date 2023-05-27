@@ -10,7 +10,7 @@
             "request": "launch",
             "preLaunchTask": "build",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/bin/Debug/net462/HXE.exe",
+            "program": "${workspaceFolder}/bin/Debug/net6.0-windows/win7-x86/HXE.dll",
             "args": [],
             "cwd": "${workspaceFolder}/src",
             // For more information about the 'console' field, see https://aka.ms/VSCode-CS-LaunchJson-Console
@@ -23,8 +23,10 @@
             "request": "launch",
             "preLaunchTask": "build",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/bin/Debug/net462/HXE.exe",
-            "args": ["--applyLznt1=${workspaceFolder}"],
+            "program": "${workspaceFolder}/bin/Debug/net6.0-windows/win7-x86/HXE.exe",
+            "args": [
+                "--applyLznt1=${workspaceFolder}"
+            ],
             "cwd": "${workspaceFolder}/src",
             // For more information about the 'console' field, see https://aka.ms/VSCode-CS-LaunchJson-Console
             "console": "internalConsole",
