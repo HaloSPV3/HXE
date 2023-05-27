@@ -5,15 +5,13 @@
     <Platform>AnyCPU</Platform>
     <Prefer32Bit>false</Prefer32Bit>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net6.0</TargetFramework>
-	  <LangVersion>8</LangVersion>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <TargetFrameworks>net6.0;net6.0-windows</TargetFrameworks>
     <StartupObject>HXE.Program</StartupObject>
     <AssemblyName>HXE</AssemblyName>
     <RootNamespace>HXE</RootNamespace>
     <!-- Application | Resources -->
     <ApplicationIcon>Assets\icon.ico</ApplicationIcon>
-    <!-- Build | General -->
-    <Deterministic>true</Deterministic>
     <!-- Build | Events -->
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
     <!-- Build | Strong Naming -->
@@ -111,13 +109,6 @@
     </None>
   </ItemGroup>
   <ItemGroup Label="Package References">
-    <PackageReference Include="Costura.Fody" Version="5.7.0">
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
-    <PackageReference Include="Fody" Version="6.6.0">
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
     <PackageReference Include="GitVersion.MsBuild" Version="5.11.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -127,12 +118,9 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.Windows.CsWin32" Version="0.1.635-beta">
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
-    <PackageReference Include="PInvoke.AdvApi32" Version="0.7.104" />
-    <PackageReference Include="PInvoke.Kernel32" Version="0.7.104" />
+    <PackageReference Include="Microsoft.Windows.CsWin32" Version="0.2.252-beta" />
+    <PackageReference Include="PInvoke.AdvApi32" Version="0.7.124" />
+    <PackageReference Include="PInvoke.Kernel32" Version="0.7.124" />
   </ItemGroup>
   <ItemGroup Condition="$(TargetFramework.Contains('net4'))">
     <Reference Include="System.Net.Http" />
