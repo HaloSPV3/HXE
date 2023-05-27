@@ -126,24 +126,38 @@ namespace HXE.Extensions
         public enum TokenAccessMask : uint
         {
             None = 0,
+            /// <inheritdoc cref="TokenAccessLevels.AssignPrimary"/>
             AssignPrimary = TokenAccessLevels.AssignPrimary,
+            /// <inheritdoc cref="TokenAccessLevels.Duplicate"/>
             Duplicate = TokenAccessLevels.Duplicate,
+            /// <inheritdoc cref="TokenAccessLevels.Impersonate"/>
             Impersonate = TokenAccessLevels.Impersonate,
+            /// <inheritdoc cref="TokenAccessLevels.Query"/>
             Query = TokenAccessLevels.Query,
+            /// <inheritdoc cref="TokenAccessLevels.QuerySource"/>
             QuerySource = TokenAccessLevels.QuerySource,
+            /// <inheritdoc cref="TokenAccessLevels.AdjustPrivileges"/>
             AdjustPrivileges = TokenAccessLevels.AdjustPrivileges,
+            /// <inheritdoc cref="TokenAccessLevels.AdjustGroups"/>
             AdjustGroups = TokenAccessLevels.AdjustGroups,
+            /// <inheritdoc cref="TokenAccessLevels.AdjustDefault"/>
             AdjustDefault = TokenAccessLevels.AdjustDefault,
+            /// <inheritdoc cref="TokenAccessLevels.AdjustSessionId"/>
             AdjustSessionId = TokenAccessLevels.AdjustSessionId,
             Delete = TOKEN_ACCESS_MASK.TOKEN_DELETE,
-            ReadControl = TOKEN_ACCESS_MASK.TOKEN_READ_CONTROL, // STANDARD_RIGHTS_READ
+            /// <summary>STANDARD_RIGHTS_READ</summary>
+            ReadControl = TOKEN_ACCESS_MASK.TOKEN_READ_CONTROL,
+            /// <inheritdoc cref="TokenAccessLevels.Read"/>
             Read = Query | ReadControl,
+            /// <inheritdoc cref="TokenAccessLevels.Write"/>
             Write = ReadControl | AdjustPrivileges | AdjustGroups | AdjustDefault,
             WriteDac = TOKEN_ACCESS_MASK.TOKEN_WRITE_DAC,
             WriteOwner = TOKEN_ACCESS_MASK.TOKEN_WRITE_OWNER,
             // STANDARD_RIGHTS_REQUIRED = 0xF0000 // 983040U
+            /// <inheritdoc cref="TokenAccessLevels.AllAccess"/>
             AllAccess = TokenAccessLevels.AllAccess,
             AccessSystemSecurity = TOKEN_ACCESS_MASK.TOKEN_ACCESS_SYSTEM_SECURITY,
+            /// <inheritdoc cref="TokenAccessLevels.MaximumAllowed"/>
             MaximumAllowed = TokenAccessLevels.MaximumAllowed
         }
 
