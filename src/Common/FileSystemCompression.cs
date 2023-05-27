@@ -23,6 +23,7 @@
 /// - Goz https://stackoverflow.com/users/131140/goz
 using System;
 using System.IO;
+using System.Runtime.InteropServices;
 using HXE.Extensions;
 using Microsoft.Win32.SafeHandles;
 using PInvoke;
@@ -164,7 +165,7 @@ namespace HXE.Common
         /// <exception cref="FileNotFoundException">The file is not found.</exception>
         /// <exception cref="UnauthorizedAccessException">path is read-only or is a directory.</exception>
         /// <exception cref="DirectoryNotFoundException">The specified path is invalid, such as being on an unmapped drive.</exception>
-        /// <exception cref="InfoWin32Exception">DeviceIoControl operation failed. See <see cref="InfoWin32Exception.NativeErrorCode"/> for exception data.</exception>
+        /// <exception cref="Win32Exception">DeviceIoControl operation failed. See <see cref="Win32Exception.NativeErrorCode"/> for exception data.</exception>
         public static void Compress(this FileInfo fileInfo)
         {
             FileStream fileStream = fileInfo.Open(mode: FileMode.Open, access: FileAccess.ReadWrite, share: FileShare.None);
@@ -177,7 +178,7 @@ namespace HXE.Common
         /// </summary>
         /// <param name="directoryInfo">An existing directory the current process can access</param>
         /// <returns>A ReadWrite, NoShare SafeFileHandle representing </returns>
-        /// <exception cref="InfoWin32Exception">A Win32Exception with its Message prefixed with the error code's associated string.</exception>
+        /// <exception cref="Win32Exception">A Win32Exception with its Message prefixed with the error code's associated string.</exception>
         public static SafeFileHandle GetHandle(this DirectoryInfo directoryInfo)
         {
             System.Diagnostics.Process.GetCurrentProcess().SetSeBackupPrivilege();
@@ -194,7 +195,7 @@ namespace HXE.Common
 
             if (directoryHandle.IsInvalid)
             {
-                Win32ErrorCode error = Kernel32.GetLastError();
+                Win32ErrorCode error = (Win32ErrorCode)Marshal.GetLastPInvokeError();
                 /// TODO: Handle the following exceptions:
                 /// ERROR_SHARING_VIOLATION
                 ///   The process cannot access the file because it is being used by another process
@@ -242,7 +243,7 @@ namespace HXE.Common
                         // return directoryHandle;
                         break;
                     case Win32ErrorCode.ERROR_FILE_SYSTEM_LIMITATION:
-                        throw new InfoWin32Exception(
+                        throw new Win32Exception(
                             error,
                             (
                                 new DriveInfo(Path.GetPathRoot(directoryInfo.FullName)).DriveFormat != "NTFS" ?
@@ -250,7 +251,7 @@ namespace HXE.Common
                             ) + directoryInfo.FullName
                         );
                 }
-                throw new InfoWin32Exception(error, directoryInfo.FullName);
+                throw new Win32Exception(error, directoryInfo.FullName);
             }
             else
             {
@@ -276,7 +277,7 @@ namespace HXE.Common
         ///     P/Invoke DeviceIoControl with the FSCTL_SET_COMPRESSION
         /// </summary>
         /// <param name="handle"></param> //TODO
-        /// <exception cref="InfoWin32Exception">DeviceIoControl operation failed. See <see cref="InfoWin32Exception.Message"/> for reason.</exception>
+        /// <exception cref="Win32Exception">DeviceIoControl operation failed. See <see cref="Win32Exception.Message"/> for reason.</exception>
         internal static unsafe void SetCompression(SafeFileHandle handle)
         {
             uint defaultFormat = COMPRESSION_FORMAT_DEFAULT;
@@ -292,12 +293,12 @@ namespace HXE.Common
                 lpOverlapped: (Windows.Win32.System.IO.OVERLAPPED*)IntPtr.Zero
                 ))
             {
-                throw new InfoWin32Exception(Kernel32.GetLastError());
+                throw new Win32Exception();
             }
         }
 
         /// <inheritdoc cref="Windows.Win32.PInvoke.CreateFile(Windows.Win32.Foundation.PCWSTR, FILE_ACCESS_FLAGS, FILE_SHARE_MODE, Windows.Win32.Security.SECURITY_ATTRIBUTES*, FILE_CREATION_DISPOSITION, FILE_FLAGS_AND_ATTRIBUTES, Windows.Win32.Foundation.HANDLE)"/>
-        /// <exception cref="InfoWin32Exception">A Win32Exception with its Message prefixed with the error code's associated string.</exception>
+        /// <exception cref="Win32Exception">A Win32Exception with its Message prefixed with the error code's associated string.</exception>
         internal static unsafe SafeFileHandle CreateFile(string lpFileName, FILE_ACCESS_FLAGS dwDesiredAccess, FILE_SHARE_MODE dwShareMode, Windows.Win32.Security.SECURITY_ATTRIBUTES? lpSecurityAttributes, FILE_CREATION_DISPOSITION dwCreationDisposition, FILE_FLAGS_AND_ATTRIBUTES dwFlagsAndAttributes, SafeHandleZeroOrMinusOneIsInvalid hTemplateFile)
         {
             bool hTemplateFileAddRef = false;
@@ -321,7 +322,7 @@ namespace HXE.Common
                     var returnHandle = new SafeFileHandle(__result, ownsHandle: true);
 
                     if (returnHandle.IsInvalid)
-                        throw new InfoWin32Exception(error: Kernel32.GetLastError());
+                        throw new Win32Exception();
                     return returnHandle;
                 }
             }

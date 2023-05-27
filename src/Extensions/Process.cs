@@ -1,12 +1,12 @@
 using System;
 using System.Security.Principal;
-using HXE.Common;
 using Microsoft.Win32.SafeHandles;
 using PInvoke;
 using Windows.Win32.Foundation;
 using Windows.Win32.Security;
 using static Windows.Win32.PInvoke;
 using static Windows.Win32.Security.TOKEN_PRIVILEGES_ATTRIBUTES;
+using Win32Exception = System.ComponentModel.Win32Exception;
 
 namespace HXE.Extensions
 {
@@ -34,7 +34,7 @@ namespace HXE.Extensions
         /// <returns><see langword="true"/> if the given process is running with elevated permissions. Else, <see langword="false"/>.</returns>
         /// <exception cref="InvalidOperationException">This method cannot operate on fake processes such as System (PID 4).</exception>
         /// <exception cref="ArgumentNullException"><paramref name="process"/> is <c>null</c>.</exception>
-        /// <exception cref="InfoWin32Exception">The native, Win32 error encountered when calling the native function OpenProcessToken. More often than not, this is typically ERROR_ACCESS_DENIED due to the current process having insufficient permission to inspect the target process.</exception>
+        /// <exception cref="Win32Exception">The native, Win32 error encountered when calling the native function OpenProcessToken. More often than not, this is typically ERROR_ACCESS_DENIED due to the current process having insufficient permission to inspect the target process.</exception>
         public static bool IsElevated(this System.Diagnostics.Process process)
         {
             if (process == null)
@@ -48,7 +48,7 @@ namespace HXE.Extensions
                 DesiredAccess: TOKEN_ACCESS_MASK.TOKEN_QUERY,
                 TokenHandle: out SafeFileHandle tokenHandle))
             {
-                throw new InfoWin32Exception(Kernel32.GetLastError());
+                throw new Win32Exception();
             }
 
             TOKEN_ELEVATION_TYPE elevationType;
@@ -95,8 +95,7 @@ namespace HXE.Extensions
                 lpName: SE_BACKUP_NAME,
                 lpLuid: out tokenPrivilege.Privileges._0.Luid))
             {
-                Win32ErrorCode error = Kernel32.GetLastError();
-                throw new Win32Exception(error, error.GetMessage());
+                throw new Win32Exception();
             }
 
             PRIVILEGE_SET requiredPrivileges = new PRIVILEGE_SET
@@ -116,7 +115,7 @@ namespace HXE.Extensions
                 out int pfResult
                 ))
             {
-                throw new InfoWin32Exception(Kernel32.GetLastError());
+                throw new Win32Exception();
             }
             return pfResult != 0;
         }
@@ -160,7 +159,7 @@ namespace HXE.Extensions
                 out SafeFileHandle processToken))
             {
                 //TODO: improve exception handling. Create/Use new exception types
-                throw new InfoWin32Exception(Kernel32.GetLastError());
+                throw new Win32Exception();
             }
 
             return processToken;
@@ -187,7 +186,7 @@ namespace HXE.Extensions
 
             if (!LookupPrivilegeValue(null, SE_BACKUP_NAME, out LUID luidPrivilege))
             {
-                throw new InfoWin32Exception(Kernel32.GetLastError());
+                throw new Win32Exception();
             }
 
             TOKEN_PRIVILEGES privileges;
@@ -206,7 +205,7 @@ namespace HXE.Extensions
                     null
                     ))
                 {
-                    throw new InfoWin32Exception(Kernel32.GetLastError());
+                    throw new Win32Exception();
                 }
             }
         }
