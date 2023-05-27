@@ -28,43 +28,38 @@ namespace HXE.Extensions
         }
 
         /// <summary>
-        ///
+        /// Check if the given process is running with elevated permissions, typically due to being run as Administrator.
         /// </summary>
-        /// <param name="process"></param>
-        /// <returns></returns>
-        /// <exception cref="NotSupportedException"></exception>
+        /// <param name="process">The process to inspect for elevated permissions.</param>
+        /// <returns><see langword="true"/> if the given process is running with elevated permissions. Else, <see langword="false"/>.</returns>
+        /// <exception cref="InvalidOperationException">This method cannot operate on fake processes such as System (PID 4).</exception>
         /// <exception cref="ArgumentNullException"><paramref name="process"/> is <c>null</c>.</exception>
-        /// <exception cref="InfoWin32Exception"></exception>
+        /// <exception cref="InfoWin32Exception">The native, Win32 error encountered when calling the native function OpenProcessToken. More often than not, this is typically ERROR_ACCESS_DENIED due to the current process having insufficient permission to inspect the target process.</exception>
         public static bool IsElevated(this System.Diagnostics.Process process)
         {
             if (process == null)
                 throw new ArgumentNullException(nameof(process));
 
             if (process.SafeHandle != null && process.Id == 4)
+                throw new InvalidOperationException("System (PID 4) token can't be opened");
+
+            if (!(bool)OpenProcessToken(
+                ProcessHandle: process.SafeHandle,
+                DesiredAccess: TOKEN_ACCESS_MASK.TOKEN_QUERY,
+                TokenHandle: out SafeFileHandle tokenHandle))
             {
-                // TODO: better exception Type
-                throw new NotSupportedException("System (PID 4) token can't be opened");
+                throw new InfoWin32Exception(Kernel32.GetLastError());
             }
-            else
+
+            TOKEN_ELEVATION_TYPE elevationType;
+
+            using (tokenHandle)
+            using (Kernel32.SafeObjectHandle objectHandle = new Kernel32.SafeObjectHandle(tokenHandle.DangerousGetHandle()))
             {
-                if (!(bool)OpenProcessToken(
-                    ProcessHandle: process.SafeHandle,
-                    DesiredAccess: TOKEN_ACCESS_MASK.TOKEN_QUERY,
-                    TokenHandle: out SafeFileHandle tokenHandle))
-                {
-                    throw new InfoWin32Exception(Kernel32.GetLastError());
-                }
-
-                TOKEN_ELEVATION_TYPE elevationType;
-
-                using (tokenHandle)
-                using (Kernel32.SafeObjectHandle objectHandle = new Kernel32.SafeObjectHandle(tokenHandle.DangerousGetHandle()))
-                {
-                    elevationType = (TOKEN_ELEVATION_TYPE)AdvApi32.GetTokenElevationType(objectHandle);
-                }
-
-                return elevationType == TOKEN_ELEVATION_TYPE.TokenElevationTypeFull;
+                elevationType = (TOKEN_ELEVATION_TYPE)AdvApi32.GetTokenElevationType(objectHandle);
             }
+
+            return elevationType == TOKEN_ELEVATION_TYPE.TokenElevationTypeFull;
         }
 
         /// <summary>
