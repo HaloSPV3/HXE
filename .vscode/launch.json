@@ -25,7 +25,7 @@
             // If you have changed target frameworks, make sure to update the program path.
             "program": "${workspaceFolder}/bin/Debug/net6.0-windows/win7-x86/HXE.exe",
             "args": [
-                "--applyLznt1=${workspaceFolder}"
+                "--applyLznt1='${workspaceFolder}/README.md'"
             ],
             "cwd": "${workspaceFolder}/src",
             // For more information about the 'console' field, see https://aka.ms/VSCode-CS-LaunchJson-Console
