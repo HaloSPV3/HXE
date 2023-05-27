@@ -11,8 +11,6 @@
     <RootNamespace>HXE</RootNamespace>
     <!-- Application | Resources -->
     <ApplicationIcon>Assets\icon.ico</ApplicationIcon>
-    <!-- Build | General -->
-    <Deterministic>true</Deterministic>
     <!-- Build | Events -->
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
     <!-- Build | Strong Naming -->
