@@ -25,6 +25,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using HXE.Common;
 using HXE.HCE;
 using static System.Console;
 using static System.Environment;
@@ -57,6 +58,7 @@ HXE can be invoked with the following arguments:
       --help                 Displays commands list
       --test                 Start a dry run of HXE to self-test
       --config               Opens configuration GUI
+      --applyLznt1=VALUE     Enables LZNT1 compression for a directory
       --positions            Opens positions GUI
       --cli                  Opens CLI instead of GUI where available
       --install=VALUE        Installs HCE/SPV3 to destination
@@ -97,6 +99,7 @@ HXE can be invoked with the following arguments:
         ///   --test              Start a dry run of HXE to self-test           <br/>
         ///   --config            Opens configuration GUI                       <br/>
         ///   --positions         Opens first-person model positions GUI        <br/>
+        ///   --applyLznt1=VALUE  Enables LZNT1 compression for a directory     <br/>
         ///   --cli               Opens CLI instead of GUI where available      <br/>
         ///   --install=VALUE     Installs HCE/SPV3   to destination            <br/>
         ///   --compile=VALUE     Compiles HCE/SPV3   to destination            <br/>
@@ -119,32 +122,34 @@ HXE can be invoked with the following arguments:
         {
             Directory.CreateDirectory(Paths.Directory);
 
-            var help = false;            /* Displays commands list              */
-            var test = false;            /* Start a dry run of HXE to self-test */
-            var config = false;          /* Opens configuration GUI             */
-            var positions = false;       /* Opens positions GUI                 */
-            var cli = false;             /* Opens CLI instead of GUI where available */
-            var install = string.Empty;  /* Installs HCE/SPV3 to destination    */
-            var compile = string.Empty;  /* Compiles HCE/SPV3 to destination    */
-            var update = string.Empty;   /* Updates directory using manifest    */
-            var registry = string.Empty; /* Write to Windows Registry           */
-            var infer = false;           /* Infer the running Halo executable   */
-            var console = false;         /* Loads HCE with console mode         */
-            var devmode = false;         /* Loads HCE with developer mode       */
-            var screenshot = false;      /* Loads HCE with screenshot ability   */
-            var window = false;          /* Loads HCE in window mode            */
-            var nogamma = false;         /* Loads HCE without gamma overriding  */
-            var adapter = string.Empty;  /* Loads HCE on monitor X              */
-            var path = string.Empty;     /* Loads HCE with custom profile path  */
-            var exec = string.Empty;     /* Loads HCE with custom init file     */
-            var vidmode = string.Empty;  /* Loads HCE with custom res. and Hz   */
-            var refresh = string.Empty;  /* Loads HCE with custom refresh rate  */
+            var help = false;              /* Displays commands list              */
+            var test = false;              /* Start a dry run of HXE to self-test */
+            var config = false;            /* Opens configuration GUI             */
+            var positions = false;         /* Opens positions GUI                 */
+            var applyLznt1 = string.Empty; /* Enables LZNT1 compression for a directory */
+            var cli = false;               /* Opens CLI instead of GUI where available */
+            var install = string.Empty;    /* Installs HCE/SPV3 to destination    */
+            var compile = string.Empty;    /* Compiles HCE/SPV3 to destination    */
+            var update = string.Empty;     /* Updates directory using manifest    */
+            var registry = string.Empty;   /* Write to Windows Registry           */
+            var infer = false;             /* Infer the running Halo executable   */
+            var console = false;           /* Loads HCE with console mode         */
+            var devmode = false;           /* Loads HCE with developer mode       */
+            var screenshot = false;        /* Loads HCE with screenshot ability   */
+            var window = false;            /* Loads HCE in window mode            */
+            var nogamma = false;           /* Loads HCE without gamma overriding  */
+            var adapter = string.Empty;    /* Loads HCE on monitor X              */
+            var path = string.Empty;       /* Loads HCE with custom profile path  */
+            var exec = string.Empty;       /* Loads HCE with custom init file     */
+            var vidmode = string.Empty;    /* Loads HCE with custom res. and Hz   */
+            var refresh = string.Empty;    /* Loads HCE with custom refresh rate  */
 
             var options = new OptionSet()
               .Add("help", "Displays commands list", s => help = s != null)                                  /* hxe command   */
-              .Add("test", "Start a dry run of HXE to self-test", s => test =s != null)                      /* hxe command   */
+              .Add("test", "Start a dry run of HXE to self-test", s => test = s != null)                     /* hxe command   */
               .Add("config", "Opens configuration GUI", s => config = s != null)                             /* hxe command   */
               .Add("positions", "Opens positions GUI", s => positions = s != null)                           /* hxe command   */
+              .Add("applyLznt1=", "Enables LZNT1 compression for a directory", s => applyLznt1 = s)           /* hxe command   */
               .Add("cli", "Enable CLI of Positions or Config", s => cli = s != null)                         /* hxe parameter */
               .Add("install=", "Installs HCE/SPV3 to destination", s => install = s)                         /* hxe parameter */
               .Add("compile=", "Compiles HCE/SPV3 to destination", s => compile = s)                         /* hxe parameter */
@@ -166,6 +171,18 @@ HXE can be invoked with the following arguments:
 
             foreach (var i in input)
                 Info("Discovered CLI command: " + i);
+
+            if (!string.IsNullOrWhiteSpace(applyLznt1))
+            {
+                var directoryInfo = new DirectoryInfo(applyLznt1);
+                IProgress<Status> p = new Progress<Status>(progress =>
+                {
+                    Wait(progress.Description);
+                    Wait(progress.Current + " of " + progress.Total + " items complete.");
+                });
+                directoryInfo.Compress(compressFiles: true, recurse: true, progress: p);
+                WithCode(Code.Success);
+            }
 
             var hce = new Executable();
 

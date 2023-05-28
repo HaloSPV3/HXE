@@ -5,15 +5,13 @@
     <Platform>AnyCPU</Platform>
     <Prefer32Bit>false</Prefer32Bit>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net462</TargetFramework>
-    <TargetFrameworks>net462;net480;net5.0-windows;net6.0-windows</TargetFrameworks>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <!--<TargetFrameworks>net6.0;net6.0-windows</TargetFrameworks>-->
     <StartupObject>HXE.Program</StartupObject>
     <AssemblyName>HXE</AssemblyName>
     <RootNamespace>HXE</RootNamespace>
     <!-- Application | Resources -->
     <ApplicationIcon>Assets\icon.ico</ApplicationIcon>
-    <!-- Build | General -->
-    <Deterministic>true</Deterministic>
     <!-- Build | Events -->
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
     <!-- Build | Strong Naming -->
@@ -36,7 +34,7 @@
     <IsTrimmable>true</IsTrimmable>
     <!--<PublishTrimmed>true</PublishTrimmed> --><!-- Waiting for trim-compatible WPF -->
     <PublishSingleFile>true</PublishSingleFile>
-    <RuntimeIdentifier Condition="'$(RuntimeIdentifier)' == '' AND '$(PublishSingleFile)' == 'true'">win7-x86</RuntimeIdentifier>
+    <RuntimeIdentifier Condition="'!$(TargetFramework.Contains(net4))' AND '$(RuntimeIdentifier)' == '' AND '$(PublishSingleFile)' == 'true'">win7-x86</RuntimeIdentifier>
     <SelfContained Condition="'$(SelfContained)' == '' AND '$(RuntimeIdentifier)' != ''">true</SelfContained>
     <Win7SF>$([MSBuild]::VersionGreaterThanOrEquals($(NETCoreSdkVersion), '6.0.300'))</Win7SF>
     <PublishSingleFile Condition="'$(PublishSingleFile)' == 'true' AND $(RuntimeIdentifier.Contains('win7'))">$(Win7SF)</PublishSingleFile>
@@ -50,6 +48,9 @@
     <UseWPF>true</UseWPF>
     <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
     <InvariantGlobalization>true</InvariantGlobalization>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <SupportedOSPlatformVersion>7.0</SupportedOSPlatformVersion>
+    <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DefineConstants>DEBUG;TRACE</DefineConstants>
@@ -61,7 +62,7 @@
   <PropertyGroup Condition="'$(PublishSingleFile)' == 'true'">
     <SelfContained>true</SelfContained>
     <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
-    <EnableCompressionInSingleFile Condition="$(TargetFramework.Contains('net6')">true</EnableCompressionInSingleFile>
+    <EnableCompressionInSingleFile Condition="$(TargetFramework.Contains('net6'))">true</EnableCompressionInSingleFile>
   </PropertyGroup>
   <ItemGroup>
     <None Include="..\*.*">
@@ -118,6 +119,11 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.Windows.CsWin32" Version="0.2.252-beta" >
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="PInvoke.AdvApi32" Version="0.7.124" />
+    <PackageReference Include="PInvoke.Kernel32" Version="0.7.124" />
   </ItemGroup>
   <ItemGroup Condition="$(TargetFramework.Contains('net4'))">
     <Reference Include="System.Net.Http" />
