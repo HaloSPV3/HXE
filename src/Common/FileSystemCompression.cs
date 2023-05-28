@@ -247,12 +247,12 @@ namespace HXE.Common
                         throw new Win32Exception(
                             error,
                             (
-                                new DriveInfo(Path.GetPathRoot(directoryInfo.FullName)).DriveFormat != "NTFS" ?
-                                "Unknown reason. " : "LZNT1 compression can be applied only on NTFS-formatted drives."
+                                new DriveInfo(Path.GetPathRoot(directoryInfo.FullName)).DriveFormat is "NTFS" ?
+                                "LZNT1 compression can be applied only on NTFS-formatted drives." : "Unknown reason. "
                             ) + directoryInfo.FullName
                         );
                 }
-                throw new Win32Exception(error, directoryInfo.FullName);
+                throw new Win32Exception(error, $"[{directoryInfo.FullName}] : {error.GetMessage()}");
             }
             else
             {
