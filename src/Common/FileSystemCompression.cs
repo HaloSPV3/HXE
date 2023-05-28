@@ -35,7 +35,7 @@ namespace HXE.Common
 {
     internal static class FileSystemCompression
     {
-        internal struct SubItems
+        internal class SubItems
         {
             public DirectoryInfo[] Directories;
             public FileInfo[] Files;
@@ -95,7 +95,7 @@ namespace HXE.Common
             ///
             /// Get files, subdirectories
             ///
-            SubItems? subItems = null;
+            SubItems subItems = null;
             if (compressFiles || recurse)
             {
                 directoryInfo.GetSubItems(compressFiles: compressFiles, recurse: recurse);
@@ -109,7 +109,7 @@ namespace HXE.Common
                 if (subItems != null)
                 {
                     // if (subItems != null), then (Length is always >= 0).
-                    status.Total += subItems.Value.Files.Length + subItems.Value.Directories.Length;
+                    status.Total += subItems.Files.Length + subItems.Directories.Length;
                 }
 
                 UpdateProgress(0); // Initial update.
@@ -135,7 +135,7 @@ namespace HXE.Common
             ///
             if (recurse)
             {
-                foreach (DirectoryInfo directory in subItems.Value.Directories)
+                foreach (DirectoryInfo directory in subItems.Directories)
                 {
                     directory.Compress(compressFiles: false);
                     if (withProgress)
@@ -148,7 +148,7 @@ namespace HXE.Common
             ///
             if (compressFiles)
             {
-                foreach (FileInfo file in subItems.Value.Files)
+                foreach (FileInfo file in subItems.Files)
                 {
                     file.Compress();
                     if (withProgress)
