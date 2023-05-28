@@ -24,6 +24,7 @@
 using System;
 using System.IO;
 using System.Runtime.InteropServices;
+using HXE.Exceptions;
 using HXE.Extensions;
 using Microsoft.Win32.SafeHandles;
 using PInvoke;
@@ -179,6 +180,7 @@ namespace HXE.Common
         /// <param name="directoryInfo">An existing directory the current process can access</param>
         /// <returns>A ReadWrite, NoShare SafeFileHandle representing </returns>
         /// <exception cref="Win32Exception">A Win32Exception with its Message prefixed with the error code's associated string.</exception>
+        /// <exception cref="SharingViolationException">The process cannot access the file because it is being used by another process</exception>
         public static SafeFileHandle GetHandle(this DirectoryInfo directoryInfo)
         {
             System.Diagnostics.Process.GetCurrentProcess().SetSeBackupPrivilege();
@@ -239,9 +241,8 @@ namespace HXE.Common
                         /// A: Wait and try again
                         /// B: Schedule the task to execute after reboot
                         /// C: Steal the file from the other process
-
-                        // return directoryHandle;
-                        break;
+                        //return directoryHandle;
+                        throw new SharingViolationException($"The process cannot access '{directoryInfo.FullName}' because it is being used by another process.", new Win32Exception(error));
                     case Win32ErrorCode.ERROR_FILE_SYSTEM_LIMITATION:
                         throw new Win32Exception(
                             error,
