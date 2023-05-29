@@ -423,7 +423,7 @@ HXE can be invoked with the following arguments:
             {
                 foreach (string line in s.Split('\n'))
                 {
-                    lines.AddRange(line.Split('\r').Where(l => !string.IsNullOrWhiteSpace(l)));
+                    lines.AddRange(line.Split('\r', StringSplitOptions.RemoveEmptyEntries));
                 }
             }
 
