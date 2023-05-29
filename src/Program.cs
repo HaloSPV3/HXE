@@ -142,7 +142,7 @@ HXE can be invoked with the following arguments:
 
             var options = new OptionSet()
               .Add("help", "Displays commands list", s => help = s != null)                                  /* hxe command   */
-              .Add("test", "Start a dry run of HXE to self-test", s => test =s != null)                      /* hxe command   */
+              .Add("test", "Start a dry run of HXE to self-test", s => test = s != null)                      /* hxe command   */
               .Add("config", "Opens configuration GUI", s => config = s != null)                             /* hxe command   */
               .Add("positions", "Opens positions GUI", s => positions = s != null)                           /* hxe command   */
               .Add("cli", "Enable CLI of Positions or Config", s => cli = s != null)                         /* hxe parameter */
@@ -308,7 +308,7 @@ HXE can be invoked with the following arguments:
                              " -- The working directory is " + CurrentDirectory + NewLine +
                              " -- Error:  " + NewLine +
                              e.ToString();
-                var log = (File) Paths.Exception;
+                var log = (File)Paths.Exception;
                 log.AppendAllText(msg + NewLine);
                 Error(msg);
             }
@@ -374,7 +374,7 @@ HXE can be invoked with the following arguments:
                 catch (Exception e)
                 {
                     var msg = " -- EXEC.START HALTED\n Error:  " + e.ToString() + "\n";
-                    var log = (File) Paths.Exception;
+                    var log = (File)Paths.Exception;
                     log.AppendAllText(msg);
                     Error(msg);
                     System.Console.Error.WriteLine("\n\n" + e.StackTrace);
