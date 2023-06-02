@@ -22,7 +22,7 @@ namespace HXE.Common;
  */
 
 // note this class considers dpix = dpiy
-[SupportedOSPlatform("windows")] // TODO: Unix equivalents
+[SupportedOSPlatform("windows5.0")] // TODO: Unix equivalents
 public static class DpiUtilities
 {
     public struct HWND
