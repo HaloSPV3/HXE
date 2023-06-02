@@ -68,6 +68,9 @@ public static class DpiUtilities
         }
     }
 
+    /// <summary>
+    /// Retrieves the current desktop dots per inch (DPI). To refresh this value, call ReloadSystemMetrics.
+    /// </summary>
     /// <remarks>
     ///     Minimal requirements:<br/>
     ///     - Windows 7 (6.1)<br/>
