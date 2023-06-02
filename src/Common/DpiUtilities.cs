@@ -25,9 +25,16 @@ namespace HXE.Common;
 [SupportedOSPlatform("windows")] // TODO: Unix equivalents
 public static class DpiUtilities
 {
+    public struct HWND
+    {
+        public IntPtr Value;
+        public static explicit operator HWND(IntPtr v) => new() { Value = v };
+        public static implicit operator IntPtr(HWND v) => v.Value;
+    }
+
     // you should always use this one and it will fallback if necessary
     // https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-getdpiforwindow
-    public static int GetDpiForWindow(IntPtr hwnd)
+    public static int GetDpiForWindow(HWND hwnd)
     {
         var h = LoadLibrary("user32.dll");
         var ptr = GetProcAddress(h, "GetDpiForWindow"); // Windows 10 1607
@@ -37,7 +44,7 @@ public static class DpiUtilities
         return Marshal.GetDelegateForFunctionPointer<GetDpiForWindowFn>(ptr)(hwnd);
     }
 
-    public static int GetDpiForNearestMonitor(IntPtr hwnd) => GetDpiForMonitor(GetNearestMonitorFromWindow(hwnd));
+    public static int GetDpiForNearestMonitor(HWND hwnd) => GetDpiForMonitor(GetNearestMonitorFromWindow(hwnd));
     public static int GetDpiForNearestMonitor(int x, int y) => GetDpiForMonitor(GetNearestMonitorFromPoint(x, y));
     public static int GetDpiForMonitor(IntPtr monitor, MonitorDpiType type = MonitorDpiType.Effective)
     {
@@ -73,10 +80,10 @@ public static class DpiUtilities
 
     public static IntPtr GetDesktopMonitor() => GetNearestMonitorFromWindow(GetDesktopWindow());
     public static IntPtr GetShellMonitor() => GetNearestMonitorFromWindow(GetShellWindow());
-    public static IntPtr GetNearestMonitorFromWindow(IntPtr hwnd) => MonitorFromWindow(hwnd, MONITOR_DEFAULTTONEAREST);
+    public static IntPtr GetNearestMonitorFromWindow(HWND hwnd) => MonitorFromWindow(hwnd, MONITOR_DEFAULTTONEAREST);
     public static IntPtr GetNearestMonitorFromPoint(int x, int y) => MonitorFromPoint(new POINT { x = x, y = y }, MONITOR_DEFAULTTONEAREST);
 
-    private delegate int GetDpiForWindowFn(IntPtr hwnd);
+    private delegate int GetDpiForWindowFn(HWND hwnd);
     private delegate int GetDpiForMonitorFn(IntPtr hmonitor, MonitorDpiType dpiType, out int dpiX, out int dpiY);
 
     private const int MONITOR_DEFAULTTONEAREST = 2;
@@ -95,15 +102,15 @@ public static class DpiUtilities
 
     [SupportedOSPlatform("windows5.0")]
     [DllImport("user32")]
-    private static extern IntPtr MonitorFromWindow(IntPtr hwnd, int flags);
+    private static extern IntPtr MonitorFromWindow(HWND hwnd, int flags);
 
     [SupportedOSPlatform("windows5.0")]
     [DllImport("user32")]
-    private static extern IntPtr GetDesktopWindow();
+    private static extern HWND GetDesktopWindow();
 
     [SupportedOSPlatform("windows5.0")]
     [DllImport("user32")]
-    private static extern IntPtr GetShellWindow();
+    private static extern HWND GetShellWindow();
 
     private partial struct POINT
     {
