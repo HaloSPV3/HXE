@@ -34,6 +34,7 @@ public static class DpiUtilities
 
     // you should always use this one and it will fallback if necessary
     // https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-getdpiforwindow
+    [SupportedOSPlatform("windows5.1")] // LoadLibrary, GetProcAddress
     public static int GetDpiForWindow(HWND hwnd)
     {
         var h = LoadLibrary("user32.dll");
