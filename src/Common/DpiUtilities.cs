@@ -91,7 +91,6 @@ public static class DpiUtilities
     [DllImport("user32")]
     private static extern IntPtr GetShellWindow();
 
-    [StructLayout(LayoutKind.Sequential)]
     private partial struct POINT
     {
         public int x;
