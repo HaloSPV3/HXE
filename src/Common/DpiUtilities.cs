@@ -48,16 +48,23 @@ public static class DpiUtilities
     public static int GetDpiForNearestMonitor(int x, int y) => GetDpiForMonitor(GetNearestMonitorFromPoint(x, y));
     public static int GetDpiForMonitor(IntPtr monitor, MonitorDpiType type = MonitorDpiType.Effective)
     {
-        var h = LoadLibrary("shcore.dll");
-        var ptr = GetProcAddress(h, "GetDpiForMonitor"); // Windows 8.1
-        if (ptr == IntPtr.Zero)
+        if (OperatingSystem.IsWindowsVersionAtLeast(6, 3))
+        {
+            IntPtr h = LoadLibrary("shcore.dll");
+            IntPtr ptr = GetProcAddress(h, "GetDpiForMonitor"); // Windows 8.1
+            int hr = Marshal.GetDelegateForFunctionPointer<GetDpiForMonitorFn>(ptr)(monitor, type, out int x, out int y);
+            if (hr < 0)
+                return GetDpiForDesktop();
+            return x;
+        }
+        else if (OperatingSystem.IsWindowsVersionAtLeast(6, 0, 6002))
+        {
             return GetDpiForDesktop();
-
-        int hr = Marshal.GetDelegateForFunctionPointer<GetDpiForMonitorFn>(ptr)(monitor, type, out int x, out int y);
-        if (hr < 0)
-            return GetDpiForDesktop();
-
-        return x;
+        }
+        else
+        {
+            throw new PlatformNotSupportedException($"Method {nameof(GetDpiForMonitor)} and fallback method {nameof(GetDpiForDesktop)} are not supported on {Environment.OSVersion}.");
+        }
     }
 
     /// <remarks>
