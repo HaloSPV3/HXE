@@ -22,6 +22,7 @@ namespace HXE.Common;
  */
 
 // note this class considers dpix = dpiy
+[SupportedOSPlatform("windows")] // TODO: Unix equivalents
 public static class DpiUtilities
 {
     // you should always use this one and it will fallback if necessary
@@ -52,6 +53,13 @@ public static class DpiUtilities
         return x;
     }
 
+    /// <remarks>
+    ///     Minimal requirements:<br/>
+    ///     - Windows 7 (6.1)<br/>
+    ///     OR<br/>
+    ///     - Windows Vista (SP2) + Platform Update https://support.microsoft.com/en-us/topic/platform-update-supplement-for-windows-vista-and-for-windows-server-2008-5f6a1e60-0bcd-2080-06ab-85ecc8110d5f<br/>
+    /// </remarks>
+    [SupportedOSPlatform("windows6.0.6002")]
     public static int GetDpiForDesktop()
     {
         int hr = D2D1CreateFactory(D2D1_FACTORY_TYPE.D2D1_FACTORY_TYPE_SINGLE_THREADED, typeof(ID2D1Factory).GUID, IntPtr.Zero, out ID2D1Factory factory);
@@ -73,21 +81,27 @@ public static class DpiUtilities
 
     private const int MONITOR_DEFAULTTONEAREST = 2;
 
+    [SupportedOSPlatform("windows5.1")]
     [DllImport("kernel32", CharSet = CharSet.Auto, SetLastError = true)]
     private static extern IntPtr LoadLibrary(string lpLibFileName);
 
+    [SupportedOSPlatform("windows5.1")]
     [DllImport("kernel32", CharSet = CharSet.Ansi, SetLastError = true)]
     private static extern IntPtr GetProcAddress(IntPtr hModule, string lpProcName);
 
+    [SupportedOSPlatform("windows5.0")]
     [DllImport("user32")]
     private static extern IntPtr MonitorFromPoint(POINT pt, int flags);
 
+    [SupportedOSPlatform("windows5.0")]
     [DllImport("user32")]
     private static extern IntPtr MonitorFromWindow(IntPtr hwnd, int flags);
 
+    [SupportedOSPlatform("windows5.0")]
     [DllImport("user32")]
     private static extern IntPtr GetDesktopWindow();
 
+    [SupportedOSPlatform("windows5.0")]
     [DllImport("user32")]
     private static extern IntPtr GetShellWindow();
 
@@ -97,6 +111,16 @@ public static class DpiUtilities
         public int y;
     }
 
+    /// <summary>
+    /// Creates a factory object that can be used to create Direct2D resources. <see href="https://learn.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-d2d1createfactory"/>
+    /// </summary>
+    /// <remarks>
+    ///     Minimal requirements:<br/>
+    ///     - Windows 7 (6.1)<br/>
+    ///     OR<br/>
+    ///     - Windows Vista (SP2) + Platform Update https://support.microsoft.com/en-us/topic/platform-update-supplement-for-windows-vista-and-for-windows-server-2008-5f6a1e60-0bcd-2080-06ab-85ecc8110d5f<br/>
+    /// </remarks>
+    [SupportedOSPlatform("windows6.0.6002")]
     [DllImport("d2d1")]
     private static extern int D2D1CreateFactory(D2D1_FACTORY_TYPE factoryType, [MarshalAs(UnmanagedType.LPStruct)] Guid riid, IntPtr pFactoryOptions, out ID2D1Factory ppIFactory);
 
