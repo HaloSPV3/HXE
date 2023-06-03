@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<Project Sdk="Microsoft.NET.Sdk" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputPath>..\bin\$(Configuration)</OutputPath>
     <Platform>AnyCPU</Platform>
@@ -15,7 +14,7 @@
     <!-- Build | General -->
     <Deterministic>true</Deterministic>
     <!-- Build | Events -->
-    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent> <!-- Ensures GitVersion, SourceLink tasks only run after successful builds -->
     <!-- Build | Strong Naming -->
     <!-- NuGet Packaging -->
     <Authors>HaloSPV3</Authors>
@@ -34,7 +33,7 @@
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <!-- Publish -->
     <IsTrimmable>true</IsTrimmable>
-    <!--<PublishTrimmed>true</PublishTrimmed> --><!-- Waiting for trim-compatible WPF -->
+    <!--<PublishTrimmed>true</PublishTrimmed> --> <!-- Waiting for trim-compatible WPF -->
     <PublishSingleFile>true</PublishSingleFile>
     <RuntimeIdentifier Condition="'$(RuntimeIdentifier)' == '' AND '$(PublishSingleFile)' == 'true'">win7-x86</RuntimeIdentifier>
     <SelfContained Condition="'$(SelfContained)' == '' AND '$(RuntimeIdentifier)' != ''">true</SelfContained>
