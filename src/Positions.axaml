@@ -27,7 +27,7 @@
     mc:Ignorable="d" d:DesignWidth="240" d:DesignHeight="450"
     WindowStartupLocation="CenterScreen"
     SizeToContent="Height"
-    ResizeMode="NoResize"
+    CanResize="false"
     Width="240">
     <!-- https://github.com/AvaloniaUI/Avalonia/issues/823#issuecomment-692270581 -->
     <Style Selector="HeaderedContentControl">
