@@ -168,11 +168,18 @@ HXE can be invoked with the following arguments:
                 Info("Discovered CLI command: " + i);
 
             var hce = new Executable();
+            Kernel.Configuration? configuration;
 
             if (help)
             {
                 options.WriteOptionDescriptions(Out);
                 WithCode(Code.Success);
+            }
+
+            if (!string.IsNullOrWhiteSpace(path))
+            {
+                hce.Profile.Path = path;
+                configuration = new Kernel.Configuration(Paths.Custom.Configuration(path));
             }
 
             if (test)
@@ -330,9 +337,6 @@ HXE can be invoked with the following arguments:
 
             if (!string.IsNullOrWhiteSpace(adapter))
                 hce.Video.Adapter = byte.Parse(adapter);
-
-            if (!string.IsNullOrWhiteSpace(path))
-                hce.Profile.Path = path;
 
             if (!string.IsNullOrWhiteSpace(exec))
                 hce.Debug.Initiation = exec;
