@@ -69,7 +69,7 @@ namespace HXE
         /// </summary>
         public static void Invoke()
         {
-            Invoke((Executable) Combine(CurrentDirectory, Paths.HCE.Executable));
+            Invoke((Executable)Combine(CurrentDirectory, Paths.HCE.Executable));
         }
 
         /// <summary>
@@ -119,7 +119,7 @@ namespace HXE
                 try
                 {
                     var pathParam = executable.Profile.Path;
-                    var lastprof = (LastProfile) Custom.LastProfile(pathParam);
+                    var lastprof = (LastProfile)Custom.LastProfile(pathParam);
 
                     if (lastprof.Exists())
                     {
@@ -128,7 +128,7 @@ namespace HXE
                         short firstByte = 0x09;
 
                         using (FileStream fs = new FileStream(profilePath, FileMode.Open, FileAccess.ReadWrite))
-                        using (MemoryStream ms = new MemoryStream((int) fs.Length))
+                        using (MemoryStream ms = new MemoryStream((int)fs.Length))
                         using (BinaryReader br = new BinaryReader(ms))
                         {
                             fs.CopyTo(ms);
@@ -166,7 +166,7 @@ namespace HXE
 
             void Init()
             {
-                var init = (Initiation) GetFullPath(executable.Debug.Initiation);
+                var init = (Initiation)GetFullPath(executable.Debug.Initiation);
 
                 Resume(); /* spv3 campaign resume with ui.map compatibility */
                 Tweaks(); /* hce/spv3 start-up miscellaneous tweaks         */
@@ -182,7 +182,7 @@ namespace HXE
                 catch (Exception e)
                 {
                     var msg = " -- MAIN.INIT HALTED.\n Error:  " + e.ToString() + "\n";
-                    var log = (File) Paths.Exception;
+                    var log = (File)Paths.Exception;
                     log.AppendAllText(msg);
                     Error(msg);
                 }
@@ -203,7 +203,7 @@ namespace HXE
 
                     try
                     {
-                        var lastprof = (LastProfile) Custom.LastProfile(executable.Profile.Path);
+                        var lastprof = (LastProfile)Custom.LastProfile(executable.Profile.Path);
 
                         /** Check if lastprof.txt exists
                          * If it exists, load its data
@@ -219,7 +219,7 @@ namespace HXE
                         }
 
                         var name = lastprof.Profile;
-                        var save = (Progress) Custom.Progress(executable.Profile.Path, name);
+                        var save = (Progress)Custom.Progress(executable.Profile.Path, name);
 
                         /** Check for the existence of the blam.sav specified by LastProfile.
                          * If it exists, skip this abomination.
@@ -264,7 +264,7 @@ namespace HXE
                                 NewProfile.Create(executable.Profile.Path, lastprof);
                             }
                             name = lastprof.Profile;
-                            save = (Progress) Custom.Progress(executable.Profile.Path, name);
+                            save = (Progress)Custom.Progress(executable.Profile.Path, name);
                         }
 
                         var campaign = new Campaign(Paths.Campaign(configuration.Mode));
@@ -290,7 +290,7 @@ namespace HXE
                     catch (Exception e)
                     {
                         var msg = " -- INIT.RESUME HALTED\n Error:  " + e.ToString() + "\n";
-                        var log = (File) Paths.Exception;
+                        var log = (File)Paths.Exception;
                         log.AppendAllText(msg);
                         Error(e.Message + " -- INIT.RESUME HALTED");
                     }
@@ -397,15 +397,15 @@ namespace HXE
                 }
                 catch (FileNotFoundException)
                 {
-                    var lastprof = (LastProfile) Custom.LastProfile(executable.Profile.Path);
-                    var prof = (Profile) Custom.Profile(executable.Profile.Path, lastprof.Profile);
+                    var lastprof = (LastProfile)Custom.LastProfile(executable.Profile.Path);
+                    var prof = (Profile)Custom.Profile(executable.Profile.Path, lastprof.Profile);
                     var createScaffold = !lastprof.Exists() || !prof.Exists();
 
                     if (!lastprof.Exists())
                         Core("Lastprof.txt does not exist.");
 
                     if (!prof.Exists())
-                        prof = (Profile) Custom.Profile(executable.Profile.Path, "New001");
+                        prof = (Profile)Custom.Profile(executable.Profile.Path, "New001");
 
                     if (createScaffold)
                         Debug("Savegames scaffold doesn't exist.");
@@ -418,7 +418,7 @@ namespace HXE
                 catch (Exception e)
                 {
                     var msg = " -- MAIN.BLAM HALTED\n Error:  " + e.ToString() + "\n";
-                    var log = (File) Paths.Exception;
+                    var log = (File)Paths.Exception;
                     log.AppendAllText(msg);
                     Error(msg);
                 }
@@ -430,7 +430,6 @@ namespace HXE
                  * Additionally, effects and qualities are enabled and set to the maximum level, respectively. Of course, this
                  * also depends on the provided configuration.
                  */
-
                 void Video()
                 {
                     if (!configuration.Video.ResolutionEnabled)
@@ -456,11 +455,11 @@ namespace HXE
                         }
 
                         if (executable.Video.Window && !configuration.Video.Bless)
-                            if (executable.Video.Width > (ushort) (executable.Video.Width * 0.9) ||
-                                executable.Video.Height > (ushort) (executable.Video.Height * 0.9))
+                            if (executable.Video.Width > (ushort)(executable.Video.Width * 0.9) ||
+                                executable.Video.Height > (ushort)(executable.Video.Height * 0.9))
                             {
-                                executable.Video.Width = (ushort) (executable.Video.Width * 0.9);
-                                executable.Video.Height = (ushort) (executable.Video.Height * 0.9);
+                                executable.Video.Width = (ushort)(executable.Video.Width * 0.9);
+                                executable.Video.Height = (ushort)(executable.Video.Height * 0.9);
 
                                 Core("BLAM.VIDEO.RESOLUTION: Windowed resolution too large. Resolution reduced.");
                             }
@@ -608,7 +607,7 @@ namespace HXE
 
             void Open()
             {
-                var open = (OpenSauce) Custom.OpenSauce(executable.Profile.Path);
+                var open = (OpenSauce)Custom.OpenSauce(executable.Profile.Path);
                 var mod = System.IO.File.Exists("./dinput8.dll") ||
                           System.IO.File.Exists("./mods/opensauce.dll");
 
@@ -658,7 +657,7 @@ namespace HXE
                 catch (Exception e)
                 {
                     var msg = " -- MAIN.OPEN\n Error:  " + e.ToString() + "\n";
-                    var log = (File) Paths.Exception;
+                    var log = (File)Paths.Exception;
                     log.AppendAllText(msg);
                     Error(msg);
                 }
@@ -697,7 +696,7 @@ namespace HXE
                     catch (Exception e)
                     {
                         var msg = " -- MAIN.BLAM HALTED\n Error:  " + e.ToString() + "\n";
-                        var log = (File) Paths.Exception;
+                        var log = (File)Paths.Exception;
                         log.AppendAllText(msg);
                         Info(msg);
                     }
@@ -735,7 +734,7 @@ namespace HXE
                     catch (Exception e)
                     {
                         var msg = " -- EXEC.PATCH HALTED\n Error:  " + e.ToString() + "\n";
-                        var log = (File) Paths.Exception;
+                        var log = (File)Paths.Exception;
                         log.AppendAllText(msg);
                         Error(msg);
                     }
@@ -756,7 +755,7 @@ namespace HXE
                     catch (Exception e)
                     {
                         var msg = " -- EXEC.START HALTED\n Error:  " + e.ToString() + "\n";
-                        var log = (File) Paths.Exception;
+                        var log = (File)Paths.Exception;
                         log.AppendAllText(msg);
                         Error(msg);
                     }
@@ -815,7 +814,7 @@ namespace HXE
 
                             while (!loaded && process.HasExited != true)
                             {
-                                ReadProcessMemory((int) processHandle, LOADED_OFFSET, buffer, buffer.Length, ref bytesRead);
+                                ReadProcessMemory((int)processHandle, LOADED_OFFSET, buffer, buffer.Length, ref bytesRead);
                                 loaded = buffer[0] == 1;
                             }
 
@@ -835,7 +834,7 @@ namespace HXE
                     catch (Exception e)
                     {
                         var msg = " -- EXEC.START HALTED\n Error:  " + e.ToString() + "\n";
-                        var log = (File) Paths.Exception;
+                        var log = (File)Paths.Exception;
                         log.AppendAllText(msg);
                         Error(msg);
                     }
@@ -901,19 +900,19 @@ namespace HXE
 
                     /* signature */
                     {
-                        ms.Position = (byte) Offset.Signature;
+                        ms.Position = (byte)Offset.Signature;
                         bw.Write(Unicode.GetBytes("~yumiris"));
                     }
 
                     /* mode */
                     {
-                        ms.Position = (byte) Offset.Mode;
-                        bw.Write((byte) Mode);
+                        ms.Position = (byte)Offset.Mode;
+                        bw.Write((byte)Mode);
                     }
 
                     /* main */
                     {
-                        ms.Position = (byte) Offset.Main;
+                        ms.Position = (byte)Offset.Main;
                         bw.Write(Main.Reset);
                         bw.Write(Main.Patch);
                         bw.Write(Main.Start);
@@ -923,7 +922,7 @@ namespace HXE
 
                     /* video */
                     {
-                        ms.Position = (byte) Offset.Video;
+                        ms.Position = (byte)Offset.Video;
                         bw.Write(Video.ResolutionEnabled);
                         bw.Write(Video.Uncap);
                         bw.Write(Video.Quality);
@@ -934,20 +933,20 @@ namespace HXE
 
                     /* audio */
                     {
-                        ms.Position = (byte) Offset.Audio;
+                        ms.Position = (byte)Offset.Audio;
                         bw.Write(Audio.Quality);
                         bw.Write(Audio.Enhancements);
                     }
 
                     /* input */
                     {
-                        ms.Position = (byte) Offset.Input;
+                        ms.Position = (byte)Offset.Input;
                         bw.Write(Input.Override);
                     }
 
                     /* tweaks */
                     {
-                        ms.Position = (byte) Offset.Tweaks;
+                        ms.Position = (byte)Offset.Tweaks;
                         bw.Write(Tweaks.CinemaBars);
                         bw.Write(Tweaks.Sensor);
                         bw.Write(Tweaks.Magnetism);
@@ -959,7 +958,7 @@ namespace HXE
 
                     /* shaders */
                     {
-                        ms.Position = (byte) Offset.Shaders;
+                        ms.Position = (byte)Offset.Shaders;
                         bw.Write(Shaders);
                     }
 
@@ -993,13 +992,13 @@ namespace HXE
 
                     /* mode */
                     {
-                        ms.Position = (byte) Offset.Mode;
-                        Mode = (ConfigurationMode) br.ReadByte();
+                        ms.Position = (byte)Offset.Mode;
+                        Mode = (ConfigurationMode)br.ReadByte();
                     }
 
                     /* main */
                     {
-                        ms.Position = (byte) Offset.Main;
+                        ms.Position = (byte)Offset.Main;
                         Main.Reset = br.ReadBoolean();
                         Main.Patch = br.ReadBoolean();
                         Main.Start = br.ReadBoolean();
@@ -1009,7 +1008,7 @@ namespace HXE
 
                     /* video */
                     {
-                        ms.Position = (byte) Offset.Video;
+                        ms.Position = (byte)Offset.Video;
                         Video.ResolutionEnabled = br.ReadBoolean();
                         Video.Uncap = br.ReadBoolean();
                         Video.Quality = br.ReadBoolean();
@@ -1020,20 +1019,20 @@ namespace HXE
 
                     /* audio */
                     {
-                        ms.Position = (byte) Offset.Audio;
+                        ms.Position = (byte)Offset.Audio;
                         Audio.Quality = br.ReadBoolean();
                         Audio.Enhancements = br.ReadBoolean();
                     }
 
                     /* input */
                     {
-                        ms.Position = (byte) Offset.Input;
+                        ms.Position = (byte)Offset.Input;
                         Input.Override = br.ReadBoolean();
                     }
 
                     /* tweaks */
                     {
-                        ms.Position = (byte) Offset.Tweaks;
+                        ms.Position = (byte)Offset.Tweaks;
                         Tweaks.CinemaBars = br.ReadBoolean();
                         Tweaks.Sensor = br.ReadBoolean();
                         Tweaks.Magnetism = br.ReadBoolean();
@@ -1045,7 +1044,7 @@ namespace HXE
 
                     /* shaders */
                     {
-                        ms.Position = (byte) Offset.Shaders;
+                        ms.Position = (byte)Offset.Shaders;
                         Shaders = br.ReadUInt32();
                     }
                 }
