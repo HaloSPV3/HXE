@@ -398,7 +398,6 @@ HXE can be invoked with the following arguments:
                 string.Format(BannerBuildSourceRelease, GitVersionInformation.MajorMinorPatch) :
                 string.Format(BannerBuildSourceCommit, GitVersionInformation.ShortSha);
 
-
             int longestStringLength = GetLongestStringLength(new string[]{
                 Banner,
                 string.Format(BannerBuildNumber, infoVersion),
@@ -434,7 +433,6 @@ HXE can be invoked with the following arguments:
             /// Get the length of the longest line
             foreach (string line in lines)
             {
-
                 if (line.Length > longestStringLength)
                 {
                     longestStringLength = line.Length;
