@@ -63,12 +63,8 @@
     <EnableCompressionInSingleFile Condition="$(TargetFramework.Contains('net6'))">true</EnableCompressionInSingleFile>
   </PropertyGroup>
   <ItemGroup>
-    <None Include="..\*.*">
-      <Link>.root\%(Filename)%(Extension)</Link>
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </None>
     <None Include="..\.github\**\*.*">
-      <Link>.root\.github\%(RecursiveDir)%(Filename)%(Extension)</Link>
+      <Link>.github\%(RecursiveDir)%(Filename)%(Extension)</Link>
     </None>
     <None Include="..\doc\**\*.*">
       <Link>.docs\%(RecursiveDir)%(Filename)%(Extension)</Link>
