@@ -1,4 +1,4 @@
-﻿<!--
+<!--
  Copyright (c) 2019 Emilian Roman
  Copyright (c) 2023 Noah Sherwin
 
@@ -25,7 +25,6 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d" d:DesignWidth="240" d:DesignHeight="450"
-    SnapsToDevicePixels="True"
     WindowStartupLocation="CenterScreen"
     SizeToContent="Height"
     ResizeMode="NoResize"
