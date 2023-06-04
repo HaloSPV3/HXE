@@ -19,9 +19,14 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
+using System;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
+using Avalonia.Controls;
+using Avalonia.Platform.Storage;
 using static System.Environment;
 using static System.IO.Path;
 using static HXE.Console;
@@ -61,25 +66,33 @@ namespace HXE.HCE
             {
                 fullName = hce.FullName;
             }
-            catch (System.Exception e)
+            catch (Exception e)
             {
-                var log = (File) Paths.Exception;
+                var log = (File)Paths.Exception;
                 log.AppendAllText("The inferred executable path was probably malformed or incomplete.\n Error: " + e + "\n");
 
-                var ofd = new Microsoft.Win32.OpenFileDialog
+                var tmpWnd = new Window();
+                var picker = tmpWnd.StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions()
                 {
-                    InitialDirectory = GetFolderPath(SpecialFolder.Desktop),
-                    Filter = "Halo Custom Edition (haloce.exe)|haloce.exe|Halo Retail/Trial (halo.exe)|halo.exe",
-                    FilterIndex = 1,
-                    RestoreDirectory = true
-                };
+                    AllowMultiple = false,
+                    SuggestedStartLocation = tmpWnd.StorageProvider.TryGetFolderFromPathAsync(GetFolderPath(SpecialFolder.Desktop)).Result,
+                    FileTypeFilter = new FilePickerFileType[] { new FilePickerFileType(Paths.Executable) { Patterns = new string[] { Paths.Executable } } }
+                });
 
-                if (ofd.ShowDialog() == true)
-                    fullName = GetFullPath(ofd.FileName);
+                while (!picker.IsCompletedSuccessfully)
+                {
+                    try
+                    {
+                        var path = picker.Result[0].TryGetLocalPath();
+                        if (path is not null)
+                            fullName = path;
+                    }
+                    catch (AggregateException ex) when (ex.InnerExceptions.Any(exx => exx is TaskCanceledException)) { break; }
+                }
             }
 
             if (System.IO.File.Exists(fullName))
-                return (Executable) fullName;
+                return (Executable)fullName;
 
             throw new FileNotFoundException("Could not detect executable on the filesystem.");
         }
