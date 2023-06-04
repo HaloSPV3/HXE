@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Copyright (c) 2019 Emilian Roman
  * Copyright (c) 2021 Noah Sherwin
  *
@@ -23,6 +23,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.InteropServices;
+using Avalonia.Controls;
 using HXE.HCE;
 using HXE.Properties;
 using HXE.SPV3;
@@ -54,6 +55,15 @@ namespace HXE
 
         [DllImport("USER32.DLL")]
         private static extern int GetWindowLong(IntPtr hWnd, int nIndex);
+
+        /// <summary><see href="https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-getsystemmetrics"/></summary>
+        [DllImport("USER32.DLL")]
+        internal static extern int GetSystemMetrics(int nIndex);
+
+        /// <summary>The width of the screen of the primary display monitor, in pixels.This is the same value obtained by calling GetDeviceCaps as follows: <c>GetDeviceCaps(hdcPrimaryMonitor, HORZRES)</c>.</summary>
+        internal const int SM_CXSCREEN = 0;
+        /// <summary>The height of the screen of the primary display monitor, in pixels. This is the same value obtained by calling GetDeviceCaps as follows: <c>GetDeviceCaps( hdcPrimaryMonitor, VERTRES)</c>./// </summary>
+        internal const int SM_CYSCREEN = 1;
 
         [DllImport("KERNEL32.DLL")]
         public static extern IntPtr OpenProcess(int dwDesiredAccess, bool bInheritHandle, int dwProcessId);
@@ -435,22 +445,43 @@ namespace HXE
                 {
                     if (!configuration.Video.ResolutionEnabled)
                     {
-                        var w = System.Windows.SystemParameters.PrimaryScreenWidth;
-                        var h = System.Windows.SystemParameters.PrimaryScreenHeight;
+                        /* https://stackoverflow.com/questions/4631292/how-to-detect-the-current-screen-resolution
+                        /* https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-getactivewindow
+                        /* https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-monitorfromwindow
+                        /* https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-getmonitorinfow
+                        /* or
+                        /* https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-getsystemmetrics
+                        /* and
+                        /* [dpi/scaling]
+                        /* https://stackoverflow.com/questions/1918877/how-can-i-get-the-dpi-in-wpf/32888078#32888078
+                        /* https://learn.microsoft.com/en-us/windows/win32/hidpi/high-dpi-desktop-application-development-on-windows
+                        /*
+                        /*
+                        /*
+                        /* P.S. also, send answer to https://stackoverflow.com/questions/45876870/windows-api-a-way-to-get-monitor-of-the-focus-active-window
+                         */
+
+                        // TODO: use Direct3D interface to stay true to haloce behavior
+                        // TODO: if a display is specified, check that one instead of the Primary
+                        Window wnd = new();
+                        _ = executable.Video.Adapter;
+                        // ! The following function does not account for display scaling. A 1920*1080 display with 125% scaling will return 1536*864
+                        var w = wnd.Screens.Primary?.Bounds.Width ?? GetSystemMetrics(SM_CXSCREEN);
+                        var h = wnd.Screens.Primary?.Bounds.Height ?? GetSystemMetrics(SM_CYSCREEN);
 
                         // infer from resolution if Native Resoluton preferred.
                         if (executable.Video.Width == 0 || executable.Video.Height == 0)
                         {
-                            executable.Video.Width = (ushort) System.Windows.SystemParameters.PrimaryScreenWidth;
-                            executable.Video.Height = (ushort) System.Windows.SystemParameters.PrimaryScreenHeight;
+                            executable.Video.Width = (ushort)w;
+                            executable.Video.Height = (ushort)h;
 
                             Core("BLAM.VIDEO.RESOLUTION: No resolution provided. Applied native resolution to executable.");
                         }
-                        else if (executable.Video.Width > (ushort) System.Windows.SystemParameters.PrimaryScreenWidth ||
-                                 executable.Video.Height > (ushort) System.Windows.SystemParameters.PrimaryScreenHeight)
+                        else if (executable.Video.Width > (ushort)w ||
+                                 executable.Video.Height > (ushort)h)
                         {
-                            executable.Video.Width = (ushort) System.Windows.SystemParameters.PrimaryScreenWidth;
-                            executable.Video.Height = (ushort) System.Windows.SystemParameters.PrimaryScreenHeight;
+                            executable.Video.Width = (ushort)w;
+                            executable.Video.Height = (ushort)h;
 
                             Core("BLAM.VIDEO.RESOLUTION: Resolution out of bounds. Applied native resolution to executable.");
                         }

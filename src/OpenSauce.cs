@@ -24,10 +24,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Xml.Serialization;
+using Avalonia.Controls;
 using static System.IO.Compression.CompressionMode;
 using static System.Math;
 using static System.Text.Encoding;
-using static System.Windows.SystemParameters;
 
 namespace HXE
 {
@@ -199,7 +199,11 @@ namespace HXE
 
             public double CalculateFOV()
             {
-                return CalculateFOV(PrimaryScreenWidth, PrimaryScreenHeight);
+                // TODO: use Direct3D interface
+                var primary = new Window().Screens.Primary;
+                return CalculateFOV(
+                    primary?.Bounds.Width ?? Kernel.GetSystemMetrics(Kernel.SM_CXSCREEN),
+                 primary?.Bounds.Height ?? Kernel.GetSystemMetrics(Kernel.SM_CYSCREEN));
             }
 
             public double CalculateFOV(double width, double height)
