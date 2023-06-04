@@ -19,7 +19,6 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-using static System.Diagnostics.Process;
 using static System.Environment;
 using static System.Environment.SpecialFolder;
 using static System.IO.File;
@@ -37,7 +36,7 @@ namespace HXE
         public const string ConfigNameAndExt = "kernel-0x05.bin";
 
         public static readonly string ProgFiles = GetFolderPath(ProgramFilesX86) ?? GetFolderPath(ProgramFiles);
-        public static readonly string StartDirectory = Combine(GetDirectoryName(GetCurrentProcess().MainModule.FileName));
+        public static readonly string StartDirectory = Combine(GetDirectoryName(ProcessPath));
         public static readonly string Directory = Combine(GetFolderPath(ApplicationData), "HXE");
         public static readonly string Configuration = Combine(Directory, ConfigNameAndExt);
         public static readonly string Exception = Combine(Directory, "exception.log");
