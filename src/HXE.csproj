@@ -5,7 +5,7 @@
     <Prefer32Bit>false</Prefer32Bit>
     <OutputType>Exe</OutputType>
     <TargetFramework>net6.0-windows</TargetFramework>
-    <TargetFrameworks>net6.0-windows</TargetFrameworks>
+    <!-- <TargetFrameworks>net6.0; net7.0</TargetFrameworks> --><!-- If encountering weird build issues, try commenting-out this property -->
     <StartupObject>HXE.Program</StartupObject>
     <AssemblyName>HXE</AssemblyName>
     <RootNamespace>HXE</RootNamespace>
