@@ -16,21 +16,6 @@
     <!-- Build | Events -->
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent> <!-- Ensures GitVersion, SourceLink tasks only run after successful builds -->
     <!-- Build | Strong Naming -->
-    <!-- NuGet Packaging -->
-    <Authors>HaloSPV3</Authors>
-    <Company>github/HaloSPV3</Company>
-    <Copyright>Copyright © 2022 Noah Sherwin</Copyright>
-    <Description>A HCE wrapper and SPV3 loader</Description>
-    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <IncludeSymbols>false</IncludeSymbols>
-    <PackageLicenseExpression>Zlib</PackageLicenseExpression>
-    <PackageIcon>icon.png</PackageIcon>
-    <PackageProjectUrl>https://github.com/HaloSPV3/HXE</PackageProjectUrl>
-    <PackageReadmeFile>readme.md</PackageReadmeFile>
-    <PackageTags>Halo</PackageTags>
-    <PublishRepositoryUrl>true</PublishRepositoryUrl>
-    <RepositoryUrl>https://github.com/HaloSPV3/HXE</RepositoryUrl>
-    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <!-- Publish -->
     <IsTrimmable>true</IsTrimmable>
     <!--<PublishTrimmed>true</PublishTrimmed> --> <!-- Waiting for trim-compatible WPF -->
@@ -61,6 +46,32 @@
     <SelfContained>true</SelfContained>
     <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
     <EnableCompressionInSingleFile Condition="$(TargetFramework.Contains('net6'))">true</EnableCompressionInSingleFile>
+  </PropertyGroup>
+    <PropertyGroup Label="Nuget Properties">
+    <!-- <PackageId>PackageId</PackageId> --><!-- TODO -->
+    <!-- <Title>PackageId</Title> --><!-- TODO -->
+    <!-- <Version>1.0.0</Version> --> <!-- Autofilled by GitVersion -->
+    <Authors>HaloSPV3</Authors>
+    <Company>github/HaloSPV3</Company>
+    <ProductName>HXE</ProductName>
+    <Product>$(ProductName)</Product>
+    <Description>A HCE wrapper and SPV3 loader</Description>
+    <Copyright>Copyright © 2023 Noah Sherwin</Copyright>
+    <PackageLicenseExpression>Zlib</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/HaloSPV3/HXE</PackageProjectUrl>
+    <PackageIconUrl>https://github.com/HaloSPV3/HXE/blob/main/src/Assets/icon.png</PackageIconUrl>
+    <PackageIcon>icon.png</PackageIcon>
+    <PackageTags>Halo</PackageTags>
+    <PackageReadmeFile>readme.md</PackageReadmeFile>
+    <!-- <PackageReleaseNotes>http://Your.ReleaseNotes.Url</PackageReleaseNotes> --><!-- TODO -->
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <RepositoryUrl>https://github.com/HaloSPV3/HXE</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <IncludeSymbols>true</IncludeSymbols>
+    <IncludeSource>true</IncludeSource>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
   </PropertyGroup>
   <ItemGroup>
     <None Include="..\.github\**\*.*">
