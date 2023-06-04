@@ -1,0 +1,108 @@
+﻿<!--
+ Copyright (c) 2019 Emilian Roman
+ Copyright (c) 2023 Noah Sherwin
+
+ This software is provided 'as-is', without any express or implied
+ warranty. In no event will the authors be held liable for any damages
+ arising from the use of this software.
+
+ Permission is granted to anyone to use this software for any purpose,
+ including commercial applications, and to alter it and redistribute it
+ freely, subject to the following restrictions:
+
+ 1. The origin of this software must not be misrepresented; you must not
+    claim that you wrote the original software. If you use this software
+    in a product, an acknowledgment in the product documentation would be
+    appreciated but is not required.
+ 2. Altered source versions must be plainly marked as such, and must not be
+    misrepresented as being the original software.
+ 3. This notice may not be removed or altered from any source distribution.
+-->
+
+<Window x:Class="HXE.Positions"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d" d:DesignWidth="240" d:DesignHeight="450"
+    SnapsToDevicePixels="True"
+    WindowStartupLocation="CenterScreen"
+    SizeToContent="Height"
+    ResizeMode="NoResize"
+    Width="240">
+    <!-- https://github.com/AvaloniaUI/Avalonia/issues/823#issuecomment-692270581 -->
+    <Style Selector="HeaderedContentControl">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Border ZIndex="1" Padding="5,0,5,0" Background="inherit" Margin="5,0,0,0">
+                            <TextBlock TextBlock.FontWeight="Bold" Text="{TemplateBinding Header}" />
+                        </Border>
+                        <Border Grid.RowSpan="2" Grid.ColumnSpan="2" Margin="0,10,0,0"
+                            BorderBrush="{TemplateBinding Background}"
+                            BorderThickness="1">
+                            <ContentPresenter Content="{TemplateBinding Content}" />
+                        </Border>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <StackPanel Margin="10">
+        <Label Content="HXE"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            FontFamily="Inter Light"
+            FontSize="32"
+            Foreground="#8a80ad" />
+
+        <HeaderedContentControl Header="OpenSauce XML">
+            <DockPanel>
+                <Button Content="Browse"
+                    Click="BrowseSource"
+                    DockPanel.Dock="Right"
+                    Margin="1,0,0,0" />
+                <TextBox Name="SourceTextBox"
+                    IsReadOnly="True" />
+            </DockPanel>
+        </HeaderedContentControl>
+
+        <HeaderedContentControl Header="Target Positions Binary">
+            <DockPanel>
+                <Button Content="Browse"
+                    Click="BrowseTarget"
+                    DockPanel.Dock="Right"
+                    Margin="1,0,0,0" />
+                <TextBox Name="TargetTextBox"
+                    IsReadOnly="True" />
+            </DockPanel>
+        </HeaderedContentControl>
+
+        <Grid Margin="0,10,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+
+            <Button Grid.Column="0"
+                Margin="0,0,0.5,0"
+                Content="Save"
+                Click="Save" />
+            <Button Grid.Column="1"
+                Margin="0.5,0,0,0"
+                Content="Cancel"
+                Click="Cancel" />
+        </Grid>
+    </StackPanel>
+
+</Window>
