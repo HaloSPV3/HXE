@@ -857,11 +857,18 @@ namespace HXE
             private const int Length = 256; /* persistence binary length */
             private readonly string _path;        /* persistence binary path   */
 
+            /// <summary>
+            /// Initiate a new Configuration instance. If it exists, a Configuration file (Paths.Configuration) is loaded.
+            /// </summary>
             public Configuration()
             {
                 _path = Paths.Configuration;
             }
 
+            /// <summary>
+            /// Initiate a new Configuration instance.
+            /// </summary>
+            /// <param name="path">The full path to a kernel configuration file. Use <see cref="Custom.Configuration"/> if needed.</param>
             public Configuration(string path)
             {
                 _path = path;
