@@ -22,9 +22,10 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
-using System.Windows;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Controls.ApplicationLifetimes;
 using HXE.HCE;
 using static System.Console;
 using static System.Environment;
@@ -89,6 +90,44 @@ HXE can be invoked with the following arguments:
             InvokeProgram(args); /* burn baby burn */
         }
 
+        // Avalonia configuration, don't remove; also used by visual designer.
+        public static AppBuilder BuildAvaloniaApp()
+            => AppBuilder.Configure<App>()
+                .UsePlatformDetect()
+                .LogToTrace();
+
+        /// <summary>
+        /// Try to start a desktop-style app with the given window as the main window. The window is shown and the app is run.
+        /// </summary>
+        /// <param name="args">command line arguments to pass to the Application instance.</param>
+        /// <param name="window">An instance of a window, ready to be shown.</param>
+        /// <returns><see langword="true"/> if successful. Otherwise, false. If an exception was thrown, it is written to the Console.StandardOut. Additional output is logged to <see cref="System.Diagnostics.Trace"/>.</returns>
+        /// <remarks>Only one desktop-style app instance can be active at a time. Creating a second instance will result in an Exception.</remarks>
+        public static bool TryStartWindowAsApp(string[] args, Window window)
+        {
+            try
+            {
+                var app = AppBuilder
+                    .Configure<Application>()
+                    .UsePlatformDetect()
+                    .LogToTrace()
+                    .WithInterFont()
+                    .SetupWithLifetime(new ClassicDesktopStyleApplicationLifetime() { Args = args, MainWindow = window, })
+                    .Instance;
+                if (app is null)
+                    return false;
+
+                window.Show();
+                app.Run(window);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Error(ex.ToString());
+                return false;
+            }
+        }
+
         /// <summary>
         ///   Console API to the HXE kernel, installer and compiler.
         /// </summary>
@@ -115,6 +154,7 @@ HXE can be invoked with the following arguments:
         ///   --refresh=VALUE     Loads HCE           with custom refresh rate  <br/>
         /// </param>
         /// TODO: implement --silent to run CLI without user prompts;
+        /// TODO: open as GUI by default. Rework MainWindow.cs to be...useful. Lazily dump everything into it? --cli will become more useful, too.
         private static void InvokeProgram(string[] args)
         {
             Directory.CreateDirectory(Paths.Directory);
@@ -185,16 +225,15 @@ HXE can be invoked with the following arguments:
             if (test)
             {
                 // TODO: Move to Test.cs; reduce Program.cs bloat
-                var test_config = new Kernel.Configuration(Path.Combine(Path.GetTempPath(), "kernel.bin"));
-                Application app;
+                bool success;
                 try
                 {
                     Logs("Testing Settings window...");
-                    var test_settings = new Settings(test_config);
-                    app = new Application();
-                    _ = app.Run(test_settings);
-                    app.Shutdown();
-                    Logs("Settings Test: Succeeded");
+                    Settings test_settings = new(new Kernel.Configuration(Path.Combine(Path.GetTempPath(), "kernel.bin"))) { Topmost = false, ShowActivated = true };
+                    test_settings.Show();
+                    success = TryStartWindowAsApp(args, test_settings) && test_settings.IsActive;
+                    test_settings.Close();
+                    Logs(value: "Settings Test: " + (success ? "Succeeded" : "Failed"));
                 }
                 catch (Exception e)
                 {
@@ -205,14 +244,14 @@ HXE can be invoked with the following arguments:
                 try
                 {
                     Logs("Testing Positions window...");
-                    var test_positions = new Positions();
-                    app = new Application();
-                    _ = app.Run(test_positions);
-                    app.Shutdown();
+                    var test_positions = new Positions() { Topmost = false, ShowActivated = true };
+                    test_positions.Show();
+                    success = TryStartWindowAsApp(args, test_positions) && test_positions.IsActive;
+                    test_positions.Close();
                     //string target = Path.Combine(CurrentDirectory, "positions.bin");
                     //Positions.Run(source, target);
                     Logs("TODO: Positions test requires an OpenSauce.User.xml file.");
-                    Logs("Positions Test: Succeeded");
+                    Logs("Positions Test: " + (success ? "Succeeded" : "Failed"));
                 }
                 catch (Exception e)
                 {
@@ -224,20 +263,19 @@ HXE can be invoked with the following arguments:
 
             if (config)
             {
-                _ = new Application().Run(new Settings());
-                WithCode(Code.Success);
+                if (TryStartWindowAsApp(args, new Settings(configuration ?? new Kernel.Configuration())))
+                    WithCode(Code.Success);
+                else
+                    WithCode(Code.Exception);
             }
 
             if (positions)
             {
                 if (cli)
-                {
                     CLI.Positions.Run();
-                }
-                else
-                {
-                    _ = new Application().Run(new Positions());
-                }
+                else if (!TryStartWindowAsApp(args, new Positions()))
+                    WithCode(Code.Exception);
+
                 WithCode(Code.Success);
             }
 
