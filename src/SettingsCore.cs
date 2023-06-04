@@ -38,6 +38,13 @@ namespace HXE
         public static readonly bool MainStartUnlocked = !ProcessIsSPV3;
         public static readonly bool ModeUnlocked = !ProcessIsSPV3;
 
+        public ConfigurationAudio Audio => Configuration.Audio;
+        public ConfigurationInput Input => Configuration.Input;
+        public ConfigurationMain Main => Configuration.Main;
+        public ConfigurationMode Mode => Configuration.Mode;
+        public ConfigurationTweaks Tweaks => Configuration.Tweaks;
+        public ConfigurationVideo Video => Configuration.Video;
+
         public SettingsCore(Kernel.Configuration cfg)
         {
             Configuration = cfg;
