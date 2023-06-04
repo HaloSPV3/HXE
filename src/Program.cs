@@ -362,7 +362,7 @@ HXE can be invoked with the following arguments:
              * Implicitly invoke the HXE kernel with the HCE loading procedure.
              */
 
-            Run(() => { Kernel.Invoke(hce); });
+            Run(() => Kernel.Invoke(hce));
 
             /**
              * This method is used for running code asynchronously and catching exceptions at the highest level.
