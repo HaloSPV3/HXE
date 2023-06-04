@@ -168,7 +168,7 @@ HXE can be invoked with the following arguments:
                 Info("Discovered CLI command: " + i);
 
             var hce = new Executable();
-            Kernel.Configuration? configuration;
+            Kernel.Configuration? configuration = null;
 
             if (help)
             {
