@@ -142,7 +142,7 @@ HXE can be invoked with the following arguments:
 
             var options = new OptionSet()
               .Add("help", "Displays commands list", s => help = s != null)                                  /* hxe command   */
-              .Add("test", "Start a dry run of HXE to self-test", s => test = s != null)                      /* hxe command   */
+              .Add("test", "Start a dry run of HXE to self-test", s => test = s != null)                     /* hxe command   */
               .Add("config", "Opens configuration GUI", s => config = s != null)                             /* hxe command   */
               .Add("positions", "Opens positions GUI", s => positions = s != null)                           /* hxe command   */
               .Add("cli", "Enable CLI of Positions or Config", s => cli = s != null)                         /* hxe parameter */
