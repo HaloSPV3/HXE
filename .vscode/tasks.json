@@ -11,7 +11,41 @@
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
-            "problemMatcher": "$msCompile"
+            "problemMatcher": "$msCompile",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+        {
+            "label": "build (framework, runtime)",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "build",
+                "${workspaceFolder}/src/HXE.csproj",
+                "--framework $(input:framework)",
+                "--runtime $(input:runtime)",
+                "/property:GenerateFullPaths=true",
+                "/consoleloggerparameters:NoSummary"
+            ],
+            "problemMatcher": "$msCompile",
+            "group": "build"
+        },
+        {
+            "label": "build (net6.0, win7-x86)",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "build",
+                "${workspaceFolder}/src/HXE.csproj",
+                "--framework net6.0",
+                "--runtime win7-x86",
+                "/property:GenerateFullPaths=true",
+                "/consoleloggerparameters:NoSummary"
+            ],
+            "problemMatcher": "$msCompile",
+            "group": "build"
         },
         {
             "label": "publish",
@@ -36,6 +70,37 @@
                 "${workspaceFolder}/src/HXE.csproj"
             ],
             "problemMatcher": "$msCompile"
+        }
+    ],
+    "inputs": [
+        {
+            "type": "pickString",
+            "id": "framework",
+            "description": "TargetFramework",
+            "options": [
+                "netstandard2.1",
+                "net6.0",
+                "net6.0-windows",
+                "net7.0",
+                "net7.0-windows",
+                "net8.0"
+            ],
+            "default": "net6.0"
+        },
+        {
+            "type": "pickString",
+            "id": "runtime",
+            "description": "RuntimeIdentifier",
+            "options": [
+                "win7-x86",
+                "win7-x64",
+                "linux-x64",
+                "linux-musl-x64",
+                "linux-arm",
+                "linux-arm64",
+                "linux-bionic-arm64"
+            ],
+            "default": "win7-x86"
         }
     ]
 }
