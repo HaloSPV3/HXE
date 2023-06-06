@@ -148,4 +148,21 @@
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
     <Exec Command="pwsh $(MSBuildProjectDirectory)\.msb.prebuild.ps1" />
   </Target>
+
+  <Target Name="UpdateLatestBuildPath" AfterTargets="PostBuildEvent">
+    <PropertyGroup>
+      <ULBP_LatestBuildPath>$([System.IO.Path]::GetFullPath('..\bin\$(Configuration)\Latest\'))</ULBP_LatestBuildPath>
+      <ULBP_OutputFullPath>$([System.IO.Path]::GetFullPath('$(OutputPath)'))</ULBP_OutputFullPath>
+    </PropertyGroup>
+    <RemoveDir Directories="$(ULBP_LatestBuildPath)" />
+    <ItemGroup>
+      <MySourceFiles Include="$(ULBP_OutputFullPath)\**\*.*" />
+    </ItemGroup>
+    <Message Text="Files to copy: @(MySourceFiles)" />
+    <Copy SourceFiles="@(MySourceFiles)" DestinationFolder="$(ULBP_LatestBuildPath)%(MySourceFiles.RecursiveDir)">
+      <Output TaskParameter="CopiedFiles" ItemName="CopiedSrcFiles" />
+    </Copy>
+    <Message Text="Files Copied: %(CopiedSrcFiles.FullPath)" />
+    <Message Text="Build output copied to '$(ULBP_LatestBuildPath)'" Importance="High" />
+  </Target>
 </Project>
