@@ -39,18 +39,22 @@
     <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
     <GenerateFullPaths>true</GenerateFullPaths>
   </PropertyGroup>
+
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DefineConstants>DEBUG;TRACE</DefineConstants>
   </PropertyGroup>
+
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <DefineConstants>TRACE</DefineConstants>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(PublishSingleFile)' == 'true'">
+
+  <PropertyGroup Condition=" '$(PublishSingleFile)' == 'true'">
     <SelfContained>true</SelfContained>
     <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
     <EnableCompressionInSingleFile Condition="$(TargetFramework.Contains('net6'))">true</EnableCompressionInSingleFile>
   </PropertyGroup>
-    <PropertyGroup Label="Nuget Properties">
+
+  <PropertyGroup Label="Nuget Properties">
     <!-- <PackageId>PackageId</PackageId> --><!-- TODO -->
     <!-- <Title>PackageId</Title> --><!-- TODO -->
     <!-- <Version>1.0.0</Version> --> <!-- Autofilled by GitVersion -->
@@ -76,6 +80,7 @@
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
   </PropertyGroup>
+
   <ItemGroup>
     <None Include="..\.github\**\*.*">
       <Link>.github\%(RecursiveDir)%(Filename)%(Extension)</Link>
@@ -97,6 +102,7 @@
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </None>
   </ItemGroup>
+
   <ItemGroup>
     <!-- Campaign Support -->
     <Content Include="Campaigns\*.xml">
@@ -111,16 +117,19 @@
     <EmbeddedResource Include="Assets\343I_DER.cer" />
     <Content Include="Assets\icon.ico" />
   </ItemGroup>
+
   <ItemGroup Label="NuGet Package Items">
     <None Include="Assets\icon.png" Pack="true" PackagePath="\" />
     <None Include="..\readme.md" Pack="true" PackagePath="\">
       <Link>.docs-misc\readme.md</Link>
     </None>
   </ItemGroup>
+
   <ItemGroup>
     <ProjectCapability Include="Avalonia" />
     <TrimmerRootAssembly Include="Avalonia.Themes.Fluent" />
   </ItemGroup>
+
   <ItemGroup Label="Package References">
     <PackageReference Include="Avalonia" Version="11.0.0-rc1.1" />
     <PackageReference Include="Avalonia.Desktop" Version="11.0.0-rc1.1" />
@@ -135,6 +144,7 @@
     </PackageReference>
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="all" />
   </ItemGroup>
+
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
     <Exec Command="pwsh $(MSBuildProjectDirectory)\.msb.prebuild.ps1" />
   </Target>
