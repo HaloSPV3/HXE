@@ -31,7 +31,6 @@
     <ProductName>HXE</ProductName>
     <PublisherName>Halo SPV3 Team</PublisherName>
     <EnableNETAnalyzers>true</EnableNETAnalyzers>
-    <ToolCommandName>hxe</ToolCommandName>
     <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
     <InvariantGlobalization>true</InvariantGlobalization>
     <Nullable>enable</Nullable>
