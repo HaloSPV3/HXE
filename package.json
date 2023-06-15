@@ -12,5 +12,74 @@
     "extends": [
       "@commitlint/config-conventional"
     ]
+  },
+  "release": {
+    "branches": [
+      "main",
+      {
+        "name": "develop",
+        "channel": "alpha",
+        "prerelease": true
+      }
+    ],
+    "plugins": [
+      [
+        "@semantic-release/commit-analyzer",
+        {
+          "parserOpts": {
+            "noteKeywords": [
+              "BREAKING CHANGE",
+              "BREAKING CHANGES",
+              "BREAKING"
+            ]
+          },
+          "preset": "conventionalcommits",
+          "presetConfig": [],
+          "releaseRules": [
+            {
+              "type": "revert",
+              "subject": "!(feat|fix|perf)",
+              "release": false
+            },
+            {
+              "type": "revert",
+              "subject": "(build|chore|ci|docs|refactor|revert|style|test)",
+              "release": false
+            }
+          ]
+        }
+      ],
+      [
+        "@semantic-release/release-notes-generator",
+        {
+          "parserOpts": {
+            "noteKeywords": [
+              "BREAKING CHANGE",
+              "BREAKING CHANGES",
+              "BREAKING"
+            ]
+          },
+          "preset": "conventionalcommits",
+          "presetConfig": [],
+          "releaseRules": [
+            {
+              "type": "revert",
+              "subject": "!(feat|fix|perf)",
+              "release": false
+            }
+          ]
+        }
+      ],
+      [
+        "@semantic-release/github",
+        {
+          "assets": [
+            {
+              "path": "bin/release/publish"
+            }
+          ]
+        }
+      ]
+    ]
   }
 }
