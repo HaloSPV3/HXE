@@ -14,14 +14,14 @@
             "problemMatcher": "$msCompile"
         },
         {
-            "label": "build (framework, runtime)",
+            "label": "build ({framework}, {runtime})",
             "command": "dotnet",
             "type": "process",
             "args": [
                 "build",
                 "${workspaceFolder}/src/HXE.csproj",
-                "--framework $(input:framework)",
-                "--runtime $(input:runtime)",
+                "--framework ${input:framework}",
+                "--runtime ${input:runtime}",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
