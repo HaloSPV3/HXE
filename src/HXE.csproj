@@ -19,12 +19,6 @@
     <!-- Build | Strong Naming -->
     <!-- Publish -->
     <IsTrimmable>true</IsTrimmable>
-    <!--<PublishTrimmed>true</PublishTrimmed> --> <!-- Waiting for trim-compatible WPF -->
-    <PublishSingleFile>true</PublishSingleFile>
-    <RuntimeIdentifier Condition="'$(RuntimeIdentifier)' == '' AND '$(PublishSingleFile)' == 'true'">win7-x86</RuntimeIdentifier>
-    <SelfContained Condition="'$(SelfContained)' == '' AND '$(RuntimeIdentifier)' != ''">true</SelfContained>
-    <Win7SF>$([MSBuild]::VersionGreaterThanOrEquals($(NETCoreSdkVersion), '6.0.300'))</Win7SF>
-    <PublishSingleFile Condition="'$(PublishSingleFile)' == 'true' AND $(RuntimeIdentifier.Contains('win7'))">$(Win7SF)</PublishSingleFile>
     <!-- Misc -->
     <ProjectGuid>{ACAA5D9F-B23D-43E1-B2DF-8C03230975A1}</ProjectGuid>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -45,7 +39,13 @@
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <!--<PublishTrimmed>true</PublishTrimmed> --> <!-- Waiting for trim-compatible WPF -->
     <DefineConstants>TRACE</DefineConstants>
+    <PublishSingleFile>true</PublishSingleFile>
+    <RuntimeIdentifier Condition="'$(RuntimeIdentifier)' == '' AND '$(PublishSingleFile)' == 'true'">win7-x86</RuntimeIdentifier>
+    <SelfContained Condition="'$(SelfContained)' == '' AND '$(RuntimeIdentifier)' != ''">true</SelfContained>
+    <Win7SF>$([MSBuild]::VersionGreaterThanOrEquals($(NETCoreSdkVersion), '6.0.300'))</Win7SF>
+    <PublishSingleFile Condition="'$(PublishSingleFile)' == 'true' AND $(RuntimeIdentifier.Contains('win7'))">$(Win7SF)</PublishSingleFile>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(PublishSingleFile)' == 'true'">
