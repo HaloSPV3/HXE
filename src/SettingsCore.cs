@@ -28,7 +28,21 @@ namespace HXE
     /// </summary>
     public class SettingsCore
     {
-        public Kernel.Configuration Configuration { get; set; } = new Kernel.Configuration();
+        public SettingsCore()
+        {
+            Console.Wait("Loading kernel settings...");
+            Configuration = new Kernel.Configuration().Load();
+            Console.Info("Kernel settings loaded");
+            Initialize();
+        }
+
+        public SettingsCore(Kernel.Configuration cfg)
+        {
+            Configuration = cfg;
+            Initialize();
+        }
+
+        public Kernel.Configuration Configuration { get; set; }
         public static readonly string ProcessName = System.Diagnostics.Process.GetCurrentProcess().ProcessName.ToLower();
         public static readonly bool ProcessIsSPV3 = ProcessName.Contains("spv3");
         public static readonly bool MainPatchUnlocked = !ProcessIsSPV3;
@@ -81,24 +95,12 @@ namespace HXE
 
         public string Path => Configuration.Path;
 
-        public SettingsCore(Kernel.Configuration cfg)
-        {
-            Configuration = cfg;
-            Initialize();
-        }
-
         /// <summary>
         ///     Load Configuration from file and check Mode for compatibility
         /// </summary>
         /// <remarks>If Mode is incompatible, the Configuration file is reset to default values</remarks>
         private void Initialize()
         {
-            Console.Wait("Loading kernel settings...");
-
-            Configuration.Load();
-
-            Console.Info("Kernel settings loaded");
-
             try { CheckMode(); }
             catch (Exception e)
             {
