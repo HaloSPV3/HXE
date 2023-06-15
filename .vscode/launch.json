@@ -9,13 +9,9 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
-            // If you have changed target frameworks, make sure to update the program path.
             "program": "${workspaceFolder}/bin/Debug/Latest/HXE.dll",
-            "args": [],
             "cwd": "${workspaceFolder}/bin/Debug/Latest/",
-            // For more information about the 'console' field, see https://aka.ms/VSCode-CS-LaunchJson-Console
-            "console": "internalConsole",
-            "stopAtEntry": false
+            "enableStepFiltering": false
         },
         {
             "name": ".NET Core Launch (console, --test)",
