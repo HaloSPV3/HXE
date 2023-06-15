@@ -18,7 +18,7 @@ The following is a set of guidelines for contributing to HXE. Code style is reco
 All requirements are multi-platform.
 
 - [Git](https://git-scm.com/)
-- [Microsoft .NET SDK](https://dotnet.microsoft.com/) (>=5.0)
+- [Microsoft .NET SDK](https://dotnet.microsoft.com/) (>=6.0)
 - [Node.js](https://nodejs.org/) (LTS or Latest)
 - [Powershell](https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell) (>7.1; rec. >=7.2 for command completion)
 
