@@ -1,0 +1,43 @@
+{
+    "conventionalCommits.scopes": [
+        "contributing",
+        "deps",
+        "release",
+        "semantic-release",
+        "HXE",
+        "giversion",
+        "codeql",
+        "ci",
+        "vscode",
+        "editorconfig",
+        "readme",
+        "renovate",
+        "conv-pr",
+        "commitizen",
+        "pull-requests"
+    ],
+    "omnisharp.useModernNet": true,
+    "omnisharp.enableRoslynAnalyzers": true,
+    "omnisharp.organizeImportsOnFormat": true,
+    "cSpell.words": [
+        "haloce",
+        "Avalonia"
+    ],
+    "MS-CST-E.vscode-devskim.ignores.ignoreRulesList": [
+        "DS187371"
+    ],
+    "dotnet.defaultSolution": "disable",
+    "xml.fileAssociations": [
+        {
+            "pattern": "*.axaml",
+            "systemId": "**/AvaloniaSchema-*.xsd"
+        }
+    ],
+    "xml.validation.filters": [
+        {
+            "pattern": "**/AvaloniaSchema-*.xsd",
+            "enabled": false
+        }
+    ],
+    "sarif-viewer.connectToGithubCodeScanning": "off"
+}
