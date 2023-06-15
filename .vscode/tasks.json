@@ -7,7 +7,7 @@
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/src/HXE.csproj",
+                "${workspaceFolder}/src/HXE.sln",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
@@ -48,7 +48,7 @@
             "type": "process",
             "args": [
                 "publish",
-                "${workspaceFolder}/src/HXE.csproj",
+                "${workspaceFolder}/src/HXE.sln",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
@@ -62,7 +62,7 @@
                 "watch",
                 "run",
                 "--project",
-                "${workspaceFolder}/src/HXE.csproj"
+                "${workspaceFolder}/src/HXE.sln"
             ],
             "problemMatcher": "$msCompile"
         }
