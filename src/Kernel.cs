@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Copyright (c) 2019 Emilian Roman
  * Copyright (c) 2023 Noah Sherwin
  *
@@ -1144,6 +1144,10 @@ namespace HXE
                 public bool Unload { get; set; }         /* unload SPV3 shaders   */
                 public uint Patches { get; set; } = 0;    /* haloce exe patches    */ /** See HXE.Patches.KPatches */
             }
+
+            public static explicit operator Configuration(SettingsCore settingsCore) => settingsCore.Configuration;
+            public static explicit operator SettingsCore(Configuration configuration) => new(configuration);
+
         }
     }
 }

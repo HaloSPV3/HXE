@@ -38,12 +38,49 @@ namespace HXE
         public static readonly bool MainStartUnlocked = !ProcessIsSPV3;
         public static readonly bool ModeUnlocked = !ProcessIsSPV3;
 
-        public ConfigurationAudio Audio => Configuration.Audio;
-        public ConfigurationInput Input => Configuration.Input;
-        public ConfigurationMain Main => Configuration.Main;
-        public ConfigurationMode Mode => Configuration.Mode;
-        public ConfigurationTweaks Tweaks => Configuration.Tweaks;
-        public ConfigurationVideo Video => Configuration.Video;
+        public ConfigurationAudio Audio
+        {
+            get => Configuration.Audio;
+            set => Configuration.Audio = value;
+        }
+
+        public ConfigurationInput Input
+        {
+            get => Configuration.Input;
+            set => Configuration.Input = value;
+        }
+
+        public ConfigurationMain Main
+        {
+            get => Configuration.Main;
+            set => Configuration.Main = value;
+        }
+
+        public ConfigurationMode Mode
+        {
+            get => Configuration.Mode;
+            set => Configuration.Mode = value;
+        }
+
+        public ConfigurationTweaks Tweaks
+        {
+            get => Configuration.Tweaks;
+            set => Configuration.Tweaks = value;
+        }
+
+        public ConfigurationVideo Video
+        {
+            get => Configuration.Video;
+            set => Configuration.Video = value;
+        }
+
+        public uint Shaders
+        {
+            get => Configuration.Shaders;
+            set => Configuration.Shaders = value;
+        }
+
+        public string Path => Configuration.Path;
 
         public SettingsCore(Kernel.Configuration cfg)
         {
@@ -122,5 +159,8 @@ namespace HXE
             Console.Info("Audio  | Enable EAX              - " + Configuration.Audio.Enhancements); //DevSkim: ignore DS187371
             Console.Info("Input  | Overwrite Controls      - " + Configuration.Input.Override);
         }
+
+        public static implicit operator Kernel.Configuration(SettingsCore v) => v.Configuration;
+        public static explicit operator SettingsCore(Kernel.Configuration v) => new(v);
     }
 }
