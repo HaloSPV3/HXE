@@ -19,7 +19,6 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 using System;
-using System.Linq;
 using static HXE.Kernel.Configuration;
 
 namespace HXE
@@ -124,8 +123,8 @@ namespace HXE
         /// TODO: refactor or remove
         public void CheckMode()
         {
-            bool valid = Enum.GetValues(typeof(ConfigurationMode)).Cast<ConfigurationMode>().ToList().Exists(m => m == Configuration.Mode);
-            if (!valid) throw new Exception("Kernel Mode not recognized");
+            if (!Enum.IsDefined(Configuration.Mode))
+                throw new Exception("Kernel Mode not recognized");
         }
 
         /// <summary>
