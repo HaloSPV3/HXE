@@ -26,7 +26,7 @@
     "MS-CST-E.vscode-devskim.ignores.ignoreRulesList": [
         "DS187371"
     ],
-    "dotnet.defaultSolution": "disable",
+    "dotnet.defaultSolution": "src\\HXE.sln",
     "xml.fileAssociations": [
         {
             "pattern": "*.axaml",

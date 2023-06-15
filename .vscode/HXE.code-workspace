@@ -33,18 +33,18 @@
 		"MS-CST-E.vscode-devskim.ignores.ignoreRulesList": [
 			"DS187371"
 		],
-		"dotnet.defaultSolution": "disable",
-		"xml.fileAssociations": [
-			{
-				"pattern": "*.axaml",
-				"systemId": "**/AvaloniaSchema-*.xsd"
-			}
-		],
-		"xml.validation.filters": [
-			{
-				"pattern": "**/AvaloniaSchema-*.xsd",
-				"enabled": false
-			}
-		]
-	}
+        "dotnet.defaultSolution": "src\\HXE.sln",
+        "xml.fileAssociations": [
+            {
+                "pattern": "*.axaml",
+                "systemId": "**/AvaloniaSchema-*.xsd"
+            }
+        ],
+        "xml.validation.filters": [
+            {
+                "pattern": "**/AvaloniaSchema-*.xsd",
+                "enabled": false
+            }
+        ]
+    }
 }
