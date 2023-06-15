@@ -1,7 +1,6 @@
 {
     "recommendations": [
         "editorconfig.editorconfig",
-        "codestream.codestream",
         "github.vscode-pull-request-github",
         "eamodio.gitlens",
         "vivaxy.vscode-conventional-commits",
