@@ -7,5 +7,10 @@
   },
   "scripts": {
     "prepare": "husky install"
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
   }
 }
