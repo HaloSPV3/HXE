@@ -24,7 +24,6 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <ProductName>HXE</ProductName>
     <PublisherName>Halo SPV3 Team</PublisherName>
-    <EnableNETAnalyzers>true</EnableNETAnalyzers>
     <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
     <InvariantGlobalization>true</InvariantGlobalization>
     <Nullable>enable</Nullable>
@@ -33,6 +32,13 @@
     <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
     <GenerateFullPaths>true</GenerateFullPaths>
     <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
+  </PropertyGroup>
+
+  <PropertyGroup Label="Analyzers">
+    <RunCodeAnalysis>true</RunCodeAnalysis>
+    <EnableNETAnalyzers>true</EnableNETAnalyzers>
+    <EnableTrimAnalyzer>true</EnableTrimAnalyzer>
+    <EnableSingleFileAnalyzer>true</EnableSingleFileAnalyzer>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
