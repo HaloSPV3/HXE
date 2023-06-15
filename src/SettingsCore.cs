@@ -26,6 +26,7 @@ namespace HXE
     /// <summary>
     /// A CLI tool to change HXE's settings
     /// </summary>
+    /// <remarks>Deprecation notice: may be merged into <see cref="Kernel.Configuration"/> at a later date.</remarks>
     public class SettingsCore
     {
         public SettingsCore()
