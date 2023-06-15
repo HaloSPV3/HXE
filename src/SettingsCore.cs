@@ -139,7 +139,7 @@ namespace HXE
             {
                 Console.Info("Mode and Main settings are locked by SPV3");
             }
-            Console.Info("Mode                             - " + (ModeUnlocked ? "" : "(LOCKED) ") + Configuration.Mode);
+            Console.Info("Mode   |                         - " + (ModeUnlocked ? "" : "(LOCKED) ") + Configuration.Mode);
             Console.Info("Main   | Kill haloce.exe         - " + (MainResetUnlocked ? "" : "(LOCKED) ") + Configuration.Main.Reset);
             Console.Info("Main   | Patch haloce.exe        - " + (MainPatchUnlocked ? "" : "(LOCKED) ") + Configuration.Main.Patch);
             Console.Info("Main   | Continue SPV3           - " + (MainResumeUnlocked ? "" : "(LOCKED) ") + Configuration.Main.Resume);
