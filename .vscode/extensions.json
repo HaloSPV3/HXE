@@ -51,6 +51,7 @@
         "tyriar.windows-terminal",
         "redhat.vscode-xml",
         "rogalmic.vscode-xml-complete",
-        "dotjoshjohnson.xml"
+        "dotjoshjohnson.xml",
+        "joshbolduc.commitlint",
     ]
 }
