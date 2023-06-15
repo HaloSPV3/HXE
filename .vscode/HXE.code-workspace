@@ -34,5 +34,17 @@
 			"DS187371"
 		],
 		"dotnet.defaultSolution": "disable",
+		"xml.fileAssociations": [
+			{
+				"pattern": "*.axaml",
+				"systemId": "**/AvaloniaSchema-*.xsd"
+			}
+		],
+		"xml.validation.filters": [
+			{
+				"pattern": "**/AvaloniaSchema-*.xsd",
+				"enabled": false
+			}
+		]
 	}
 }
