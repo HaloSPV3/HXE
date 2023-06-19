@@ -104,7 +104,10 @@ namespace HXE
       Write(" ] - ");
 
       ForegroundColor = messageColor;
-      Write(message);
+      if (writeLine)
+        WriteLine(message);
+      else
+        Write(message);
     }
   }
 }
