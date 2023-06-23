@@ -91,9 +91,6 @@ namespace HXE
       bool         writeLine = true
     )
     {
-      if (writeLine)
-        WriteLine();
-
       ForegroundColor = Gray;
       Write("> [ ");
 
@@ -105,6 +102,9 @@ namespace HXE
 
       ForegroundColor = messageColor;
       Write(message);
+
+      if (writeLine)
+        WriteLine();
     }
   }
 }
