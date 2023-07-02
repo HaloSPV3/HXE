@@ -32,13 +32,7 @@
     <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
     <GenerateFullPaths>true</GenerateFullPaths>
     <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
-    <CompilerGeneratedFilesOutputPath>Generated</CompilerGeneratedFilesOutputPath>
   </PropertyGroup>
-
-  <ItemGroup>
-    <!-- Exclude the output of source generators from the compilation -->
-    <Compile Remove="$(CompilerGeneratedFilesOutputPath)/**/*.cs" />
-  </ItemGroup>
 
   <PropertyGroup Label="Analyzers">
     <RunCodeAnalysis>true</RunCodeAnalysis>
@@ -131,12 +125,6 @@
     <Content Include="Assets\icon.ico" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Compile
-      Include=".\obj\Debug\net6.0\generated\Avalonia.Generators\Avalonia.Generators.NameGenerator.AvaloniaNameSourceGenerator\*.*"
-      Link="%(Filename)%(Extension)"/>
-  </ItemGroup>
-
   <ItemGroup Label="NuGet Package Items">
     <None Include="Assets\icon.png" Pack="true" PackagePath="\" />
     <None Include="..\readme.md" Pack="true" PackagePath="\">
@@ -146,7 +134,11 @@
 
   <ItemGroup>
     <ProjectCapability Include="Avalonia" />
-    <!-- <TrimmerRootAssembly Include="Avalonia.Themes.Fluent" /> -->
+    <None
+      Generator="Avalonia.Generators.NameGenerator.AvaloniaNameSourceGenerator"
+      Include=".\obj\Debug\net6.0\generated\Avalonia.Generators\Avalonia.Generators.NameGenerator.AvaloniaNameSourceGenerator\*.*"
+      Link="%(Filename)%(Extension)" />
+    <TrimmerRootAssembly Include="Avalonia.Themes.Fluent" />
     <TrimmerRootAssembly Include="Avalonia.Themes.Simple" />
     <AvaloniaResource Include="Assets\icon.ico" />
   </ItemGroup>
