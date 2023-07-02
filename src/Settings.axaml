@@ -27,7 +27,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     WindowStartupLocation="CenterScreen"
-    SizeToContent="Height"
+    SizeToContent="WidthAndHeight"
     CanResize="false"
     x:DataType="hxe:SettingsCore"
     Width="250"
