@@ -141,6 +141,10 @@
     <TrimmerRootAssembly Include="Avalonia.Themes.Fluent" />
     <TrimmerRootAssembly Include="Avalonia.Themes.Simple" />
     <AvaloniaResource Include="Assets\icon.ico" />
+    <AvaloniaResource Include="GUI\**\*.axaml" />
+    <AvaloniaResource Include="GUI\**\*.xaml" />
+    <Watch Include="**\*.axaml" />
+    <Watch Include="**\*.xaml" />
   </ItemGroup>
 
   <ItemGroup Label="Package References">
