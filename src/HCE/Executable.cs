@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Copyright (c) 2019 Emilian Roman
  * Copyright (c) 2021 Noah Sherwin
  *
@@ -22,11 +22,7 @@
 using System;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using Avalonia.Controls;
-using Avalonia.Platform.Storage;
 using static System.Environment;
 using static System.IO.Path;
 using static HXE.Console;
@@ -70,25 +66,6 @@ namespace HXE.HCE
             {
                 var log = (File)Paths.Exception;
                 log.AppendAllText("The inferred executable path was probably malformed or incomplete.\n Error: " + e + "\n");
-
-                var tmpWnd = new Window();
-                var picker = tmpWnd.StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions()
-                {
-                    AllowMultiple = false,
-                    SuggestedStartLocation = tmpWnd.StorageProvider.TryGetFolderFromPathAsync(GetFolderPath(SpecialFolder.Desktop)).Result,
-                    FileTypeFilter = new FilePickerFileType[] { new FilePickerFileType(Paths.Executable) { Patterns = new string[] { Paths.Executable } } }
-                });
-
-                while (!picker.IsCompletedSuccessfully)
-                {
-                    try
-                    {
-                        var path = picker.Result[0].TryGetLocalPath();
-                        if (path is not null)
-                            fullName = path;
-                    }
-                    catch (AggregateException ex) when (ex.InnerExceptions.Any(exx => exx is TaskCanceledException)) { break; }
-                }
             }
 
             if (System.IO.File.Exists(fullName))
