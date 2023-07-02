@@ -207,8 +207,10 @@ HXE can be invoked with the following arguments:
             foreach (var i in input)
                 Info("Discovered CLI command: " + i);
 
+            if (new List<string>(args).Contains("--settings"))
+                Warn("Argument '--settings' does not exist. Did you mean '--config'?");
+
             var hce = new Executable();
-            Kernel.Configuration? configuration = null;
 
             if (help)
             {
