@@ -8,10 +8,43 @@
   "scripts": {
     "prepare": "husky install"
   },
+  "//": [
+    "commitlint.rules.scope-enum only applies to commit message headers matching the patter 'type(scope): ' or 'type(): '. It will not match 'type: '.",
+    "If a new Scope is desired, add it to the scopes array in `commitlint.rules.scope-enum`"
+  ],
   "commitlint": {
     "extends": [
       "@commitlint/config-conventional"
-    ]
+    ],
+    "rules": {
+      "scope-enum": [
+        1,
+        "always",
+        [
+          "ci",
+          "codeql",
+          "commitizen",
+          "contributing",
+          "cpr",
+          "deps-dev",
+          "deps",
+          "dpiutilities",
+          "editorconfig",
+          "gitversion",
+          "gui",
+          "hxe",
+          "npm",
+          "pull-request s",
+          "readme",
+          "release",
+          "renovate",
+          "self-test",
+          "semantic-release",
+          "usage",
+          "vscode"
+        ]
+      ]
+    }
   },
   "release": {
     "branches": [
