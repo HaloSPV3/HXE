@@ -168,6 +168,7 @@ HXE can be invoked with the following arguments:
             var compile = string.Empty;  /* Compiles HCE/SPV3 to destination    */
             var update = string.Empty;   /* Updates directory using manifest    */
             var registry = string.Empty; /* Write to Windows Registry           */
+            var hide = "";     /* Internal. Comma-separated list of windows to hide */
             var infer = false;           /* Infer the running Halo executable   */
             var console = false;         /* Loads HCE with console mode         */
             var devmode = false;         /* Loads HCE with developer mode       */
@@ -190,6 +191,7 @@ HXE can be invoked with the following arguments:
 /* hxe parameter */ .Add("compile=", "Compiles HCE/SPV3 to destination", s => compile = s)
 /* hxe parameter */ .Add("update=", "Updates directory using manifest", s => update = s)
 /* hxe parameter */ .Add("registry=", "Create Registry keys for Retail, Custom, Trial, or HEK", s => registry = s)
+/* hxe parameter */ .Add("hide=", "Internal. Comma-separated list of windows to hide.", s => hide = s)
 /* hxe parameter */ .Add("infer", "Infer the running Halo executable", s => infer = s != null)
 /* hce parameter */ .Add("console", "Loads HCE with console mode", s => console = s != null)
 /* hce parameter */ .Add("devmode", "Loads HCE with developer mode", s => devmode = s != null)
