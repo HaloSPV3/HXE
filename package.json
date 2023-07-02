@@ -23,7 +23,6 @@
         [
           "ci",
           "codeql",
-          "commitizen",
           "contributing",
           "cpr",
           "deps-dev",
