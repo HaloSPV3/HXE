@@ -36,7 +36,7 @@ namespace HXE
     public partial class Positions : Window
     {
         private static readonly FilePickerFileType _fileType = new("OpenSauce Settings") { Patterns = new string[] { "OS_Settings.User.xml" } };
-        private static readonly FilePickerOpenOptions? _openOptions = new()
+        private static readonly FilePickerOpenOptions _openOptions = new()
         {
             Title = "Select OpenSauce Settings File",
             AllowMultiple = false,
