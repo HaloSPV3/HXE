@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Copyright (c) 2019 Emilian Roman
  * Copyright (c) 2023 Noah Sherwin
  *
@@ -145,6 +145,7 @@ namespace HXE
         // /// <remarks>Do not invoke from non-UI thread!</remarks>
         private void ShowError(string v) // TODO refactor to public or internal class. I'll probably use it everywhere where I need an error message dialog box.
         {
+            Error(v);
             MessageBoxManager.GetMessageBoxStandardWindow(new MessageBox.Avalonia.DTO.MessageBoxStandardParams()
             {
                 Icon = MessageBox.Avalonia.Enums.Icon.Error,
