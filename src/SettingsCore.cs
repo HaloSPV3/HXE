@@ -105,7 +105,7 @@ namespace HXE
             try { CheckMode(); }
             catch (Exception e)
             {
-                Console.Error("Kernel Mode compatibility check failed" + Environment.NewLine + e.Message);
+                Console.Error($"Kernel Mode compatibility check failed. If you are implementing a new Mode (Value: {Configuration.Mode}), let us know at https://github.com/HaloSPV3/HXE/issues." + Environment.NewLine + e.Message);
                 Console.Wait("Overwriting configuration file with default values...");
                 Configuration = new Kernel.Configuration(Configuration.Path);
                 Configuration.Save();
