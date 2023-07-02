@@ -164,10 +164,10 @@ HXE can be invoked with the following arguments:
             var config = false;          /* Opens configuration GUI             */
             var positions = false;       /* Opens positions GUI                 */
             var cli = false;             /* Opens CLI instead of GUI where available */
-            var install = string.Empty;  /* Installs HCE/SPV3 to destination    */
-            var compile = string.Empty;  /* Compiles HCE/SPV3 to destination    */
-            var update = string.Empty;   /* Updates directory using manifest    */
-            var registry = string.Empty; /* Write to Windows Registry           */
+            var install = "";  /* Installs HCE/SPV3 to destination    */
+            var compile = "";  /* Compiles HCE/SPV3 to destination    */
+            var update = "";   /* Updates directory using manifest    */
+            var registry = ""; /* Write to Windows Registry           */
             var hide = "";     /* Internal. Comma-separated list of windows to hide */
             var infer = false;           /* Infer the running Halo executable   */
             var console = false;         /* Loads HCE with console mode         */
@@ -175,11 +175,11 @@ HXE can be invoked with the following arguments:
             var screenshot = false;      /* Loads HCE with screenshot ability   */
             var window = false;          /* Loads HCE in window mode            */
             var nogamma = false;         /* Loads HCE without gamma overriding  */
-            var adapter = string.Empty;  /* Loads HCE on monitor X              */
-            var path = string.Empty;     /* Loads HCE with custom profile path  */
-            var exec = string.Empty;     /* Loads HCE with custom init file     */
-            var vidmode = string.Empty;  /* Loads HCE with custom res. and Hz   */
-            var refresh = string.Empty;  /* Loads HCE with custom refresh rate  */
+            var adapter = "";  /* Loads HCE on monitor X              */
+            var path = "";     /* Loads HCE with custom profile path  */
+            var exec = "";     /* Loads HCE with custom init file     */
+            var vidmode = "";  /* Loads HCE with custom res. and Hz   */
+            var refresh = "";  /* Loads HCE with custom refresh rate  */
 
             var options = new OptionSet()
 /* hxe command   */ .Add("help", "Displays commands list", s => help = s != null)
