@@ -24,7 +24,7 @@ using static HXE.Kernel.Configuration;
 namespace HXE
 {
     /// <summary>
-    /// A CLI tool to change HXE's settings
+    /// A soon-to-be-deprecated wrapper for HXE's Kernel.Configuration
     /// </summary>
     /// <remarks>Deprecation notice: may be merged into <see cref="Kernel.Configuration"/> at a later date.</remarks>
     public class SettingsCore
@@ -43,6 +43,10 @@ namespace HXE
             Initialize();
         }
 
+        /// <summary>
+        /// A static property for storing the "current" SettingsCore/Kernel.Configuration instance. It should be initialized in <see cref="Program.InvokeProgram(string[])"/>.
+        /// </summary>
+        public static SettingsCore Current { get; set; } = new();
         public Kernel.Configuration Configuration { get; set; }
         public static readonly string ProcessName = System.Diagnostics.Process.GetCurrentProcess().ProcessName.ToLower();
         public static readonly bool ProcessIsSPV3 = ProcessName.Contains("spv3");
