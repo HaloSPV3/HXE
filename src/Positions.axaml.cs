@@ -26,7 +26,6 @@ using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Platform.Storage;
 using MessageBox.Avalonia;
-using MessageBox.Avalonia.Enums;
 using static HXE.Console;
 
 namespace HXE
@@ -36,37 +35,60 @@ namespace HXE
     /// </summary>
     public partial class Positions : Window
     {
-        private string _source = string.Empty;
-        private string _target = string.Empty;
+        private static readonly FilePickerFileType _fileType = new("OpenSauce Settings") { Patterns = new string[] { "OS_Settings.User.xml" } };
+        private static readonly FilePickerOpenOptions? _openOptions = new()
+        {
+            Title = "Select OpenSauce Settings File",
+            AllowMultiple = false,
+            SuggestedStartLocation = null, // assign instanced data
+            FileTypeFilter = new FilePickerFileType[] { _fileType },
+        };
+        private static readonly FilePickerSaveOptions _saveOptions = new()
+        {
+            FileTypeChoices = new FilePickerFileType[]
+            {
+                new("OpenSauce Weapon Position Binary")
+                { Patterns = new string[] { "*.bin" } }
+            },
+            DefaultExtension = ".bin",
+            ShowOverwritePrompt = true
+        };
 
         public Positions()
         {
             InitializeComponent();
+            if (_openOptions is not null)
+            {
+                _openOptions.SuggestedStartLocation = Task.Run(async () =>
+                {
+                    string? dir = Path.GetDirectoryName(Paths.HCE.OpenSauce);
+                    if (dir is null)
+                        ShowError("Avalonia failed to get accessible path for " + dir);
+                    else if (GetTopLevel(this) is TopLevel topLevel)
+                        return await topLevel.StorageProvider.TryGetFolderFromPathAsync(dir);
+                    return null;
+                }).Result;
+            }
         }
 
         private void Save(object sender, RoutedEventArgs e)
         {
+            if (SourceTextBox.Text is null || TargetTextBox.Text is null)
+                return;
+
             Info("Saving weapon positions ...");
 
-            var openSauce = (OpenSauce)_source;
+            var openSauce = (OpenSauce)SourceTextBox.Text;
 
             if (!openSauce.Exists())
             {
-                MessageBoxManager
-                    .GetMessageBoxStandardWindow(
-                        "Error",
-                        "Source file does not exist.",
-                        ButtonEnum.Ok,
-                        MessageBox.Avalonia.Enums.Icon.Error,
-                        WindowStartupLocation.CenterOwner)
-                    .ShowDialog(this)
-                    .Wait();
+                ShowError("File does not Exist");
                 return;
             }
 
             openSauce.Load();
-            openSauce.Objects.Weapon.Save(_target);
-            openSauce.Objects.Weapon.Load(_target);
+            openSauce.Objects.Weapon.Save(TargetTextBox.Text);
+            openSauce.Objects.Weapon.Load(TargetTextBox.Text);
 
             foreach (var position in openSauce.Objects.Weapon.Positions)
                 Debug($"Weapon: {position.Name} | I/J/K: {position.Position.I}/{position.Position.J}/{position.Position.K}");
@@ -81,101 +103,55 @@ namespace HXE
 
         private void BrowseSource(object sender, RoutedEventArgs e)
         {
-            try
+            // writing this without a task wrapping most of it resulted in OpenFilePickerAsync causing a deadlock.
+            SourceTextBox.Text = Task.Run(async () =>
             {
-                IStorageFolder? suggestedStartLocation = null;
                 try
                 {
-                    suggestedStartLocation = StorageProvider.TryGetFolderFromPathAsync(Path.GetDirectoryName(Paths.HCE.OpenSauce)).Result;
+                    const int cancelled = 0;
+                    var result = await StorageProvider.OpenFilePickerAsync(_openOptions);
+                    if (result.Count is not cancelled)
+                        return result[0].Path.LocalPath;
                 }
-                catch
-                {
-                    MessageBoxManager
-                    .GetMessageBoxStandardWindow(
-                        "Error",
-                        $"Failed to find file '{Paths.HCE.OpenSauce}'. It might not exist.")
-                    .ShowDialog(this)
-                    .Wait();
-                }
-
-                try
-                {
-                    IStorageFile inputFile = StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions()
-                    {
-                        Title = "Select OpenSauce.User.xml",
-                        AllowMultiple = false,
-                        SuggestedStartLocation = suggestedStartLocation,
-                        FileTypeFilter = new FilePickerFileType[]
-                            {
-                            new FilePickerFileType("OpenSauce.*.xml")
-                            {
-                                Patterns = new string[] { "OpenSauce.*.xml" }
-                            }
-                            },
-                    }).Result[0];
-
-                    _source = inputFile.Path.LocalPath;
-                    SourceTextBox.Text = _source;
-                }
-                catch (Exception ex)
-                {
-                    MessageBoxManager
-                        .GetMessageBoxStandardWindow(
-                            "FilePicker Unsuccessful",
-                            ex.ToString(),
-                            ButtonEnum.Ok,
-                            icon: MessageBox.Avalonia.Enums.Icon.Error,
-                            windowStartupLocation: WindowStartupLocation.CenterOwner)
-                        .ShowDialog(this)
-                        .Wait();
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBoxManager
-                    .GetMessageBoxStandardWindow("Error", ex.ToString(), icon: MessageBox.Avalonia.Enums.Icon.Error)
-                    .ShowDialog(this)
-                    .Wait();
-            }
+                catch (Exception ex) { ShowError(ex.ToString()); }
+                return null;
+            }).Result;
         }
 
         private void BrowseTarget(object sender, RoutedEventArgs e)
         {
-            try
+            TargetTextBox.Text = Task.Run(async () =>
             {
-                var types = new FilePickerFileType[]
+                try
                 {
-                    new FilePickerFileType("OpenSauce Weapon Position Binary")
+                    IStorageFile? file = await StorageProvider.SaveFilePickerAsync(_saveOptions);
+
+                    if (file is not null)
                     {
-                        Patterns = new string[] { "*.bin" }
+                        Debug($"File URI is {file.Path}");
+                        Debug($"File's local full path is {file.Path.LocalPath}");
+                        return file.Path.LocalPath;
                     }
-                };
+                }
+                catch (Exception ex) { ShowError(ex.ToString()); }
+                return null;
+            }).Result;
+        }
 
-                IStorageFile? file = StorageProvider
-                    .SaveFilePickerAsync(new FilePickerSaveOptions()
-                    {
-                        FileTypeChoices = types,
-                        DefaultExtension = ".bin",
-                        ShowOverwritePrompt = true
-                    })
-                    .Result ?? throw new TaskCanceledException();
-
-                _target = file.Path.LocalPath;
-                TargetTextBox.Text = _target;
-            }
-            catch (TaskCanceledException) { }
-            catch (Exception ex)
+        /// <summary>
+        /// Write the string via HXE.Console.Error and print it in a MessageBox window.
+        /// </summary>
+        /// <param name="v"></param>
+        // /// <remarks>Do not invoke from non-UI thread!</remarks>
+        private void ShowError(string v) // TODO refactor to public or internal class. I'll probably use it everywhere where I need an error message dialog box.
+        {
+            MessageBoxManager.GetMessageBoxStandardWindow(new MessageBox.Avalonia.DTO.MessageBoxStandardParams()
             {
-                MessageBoxManager
-                    .GetMessageBoxStandardWindow(
-                        "FilePicker Unsuccessful",
-                        ex.ToString(),
-                        ButtonEnum.Ok,
-                        MessageBox.Avalonia.Enums.Icon.Error,
-                        WindowStartupLocation.CenterOwner)
-                    .ShowDialog(this)
-                    .Wait();
-            }
+                Icon = MessageBox.Avalonia.Enums.Icon.Error,
+                ContentTitle = "Error",
+                WindowStartupLocation = WindowStartupLocation.CenterOwner,
+                ContentMessage = v
+            }).ShowDialog(this);
         }
     }
 }
