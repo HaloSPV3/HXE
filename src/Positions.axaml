@@ -1,4 +1,4 @@
-﻿<!--
+<!--
  Copyright (c) 2019 Emilian Roman
  Copyright (c) 2023 Noah Sherwin
 
@@ -28,8 +28,8 @@
     WindowStartupLocation="CenterScreen"
     SizeToContent="Height"
     CanResize="false"
-    Width="240">
-    <!-- https://github.com/AvaloniaUI/Avalonia/issues/823#issuecomment-692270581 -->
+    Width="240"
+    Title="HXE.Positions">
 
     <StackPanel Margin="10">
         <Style Selector="HeaderedContentControl">
