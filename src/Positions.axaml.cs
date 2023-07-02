@@ -59,15 +59,17 @@ namespace HXE
             InitializeComponent();
             if (_openOptions is not null)
             {
-                _openOptions.SuggestedStartLocation = Task.Run(async () =>
+                string? dir = Path.GetDirectoryName(Paths.HCE.OpenSauce);
+                if (dir is null)
                 {
-                    string? dir = Path.GetDirectoryName(Paths.HCE.OpenSauce);
-                    if (dir is null)
-                        ShowError("Avalonia failed to get accessible path for " + dir);
-                    else if (GetTopLevel(this) is TopLevel topLevel)
-                        return await topLevel.StorageProvider.TryGetFolderFromPathAsync(dir);
-                    return null;
-                }).Result;
+                    ShowError("Avalonia failed to get accessible path for " + dir);
+                }
+                else if (GetTopLevel(this) is TopLevel topLevel)
+                {
+                    _openOptions.SuggestedStartLocation = Task.Run(
+                        async () => await topLevel.StorageProvider.TryGetFolderFromPathAsync(dir)
+                    ).Result;
+                }
             }
         }
 
@@ -104,45 +106,40 @@ namespace HXE
         private void BrowseSource(object sender, RoutedEventArgs e)
         {
             // writing this without a task wrapping most of it resulted in OpenFilePickerAsync causing a deadlock.
-            SourceTextBox.Text = Task.Run(async () =>
+            const int cancelled = 0;
+            IReadOnlyList<IStorageFile>? result = null;
+            try
             {
-                try
-                {
-                    const int cancelled = 0;
-                    var result = await StorageProvider.OpenFilePickerAsync(_openOptions);
-                    if (result.Count is not cancelled)
-                        return result[0].Path.LocalPath;
-                }
-                catch (Exception ex) { ShowError(ex.ToString()); }
-                return null;
-            }).Result;
+                result = Task.Run(async () => await StorageProvider.OpenFilePickerAsync(_openOptions)).Result;
+                if (result.Count is not cancelled)
+                    SourceTextBox.Text = result[0].Path.LocalPath;
+            }
+            catch (Exception ex) { ShowError(ex.ToString()); }
         }
 
         private void BrowseTarget(object sender, RoutedEventArgs e)
         {
-            TargetTextBox.Text = Task.Run(async () =>
+            try
             {
-                try
-                {
-                    IStorageFile? file = await StorageProvider.SaveFilePickerAsync(_saveOptions);
+                IStorageFile? file = Task.Run(async () => await StorageProvider.SaveFilePickerAsync(_saveOptions)).Result;
 
-                    if (file is not null)
-                    {
-                        Debug($"File URI is {file.Path}");
-                        Debug($"File's local full path is {file.Path.LocalPath}");
-                        return file.Path.LocalPath;
-                    }
+                if (file is not null)
+                {
+                    Debug($"File URI is {file.Path}");
+                    Debug($"File's local full path is {file.Path.LocalPath}");
+                    TargetTextBox.Text = file.Path.LocalPath;
                 }
-                catch (Exception ex) { ShowError(ex.ToString()); }
-                return null;
-            }).Result;
+            }
+            catch (Exception ex)
+            {
+                ShowError(ex.ToString());
+            }
         }
 
         /// <summary>
         /// Write the string via HXE.Console.Error and print it in a MessageBox window.
         /// </summary>
         /// <param name="v"></param>
-        // /// <remarks>Do not invoke from non-UI thread!</remarks>
         private void ShowError(string v) // TODO refactor to public or internal class. I'll probably use it everywhere where I need an error message dialog box.
         {
             Error(v);
