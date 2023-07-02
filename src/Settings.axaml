@@ -31,6 +31,7 @@
     CanResize="false"
     x:DataType="hxe:SettingsCore"
     Width="250"
+    FontFamily="Inter">
         <!-- https://github.com/AvaloniaUI/Avalonia/issues/823#issuecomment-692270581 -->
         <Style Selector="HeaderedContentControl">
             <Setter Property="Template">
