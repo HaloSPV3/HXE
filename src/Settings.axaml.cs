@@ -72,6 +72,7 @@ namespace HXE
             try { AssignConfig(); }
             catch (Exception e) when (e.Message.Equals("Kernel Mode not recognized."))
             {
+                Console.Error(e.ToString());
                 Configuration = new Kernel.Configuration(Configuration.Path);
                 Configuration.Save();
                 AssignConfig();
