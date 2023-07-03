@@ -26,7 +26,7 @@ using Avalonia.Interactivity;
 namespace HXE
 {
     /// <summary>
-    ///   Interaction logic for Settings.xaml
+    ///   Interaction logic for <see cref="Settings"/>
     /// </summary>
     public partial class Settings : Window
     {
