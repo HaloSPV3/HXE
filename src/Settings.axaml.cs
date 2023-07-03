@@ -30,7 +30,7 @@ namespace HXE
     /// </summary>
     public partial class Settings : Window
     {
-        private SettingsCore _core = new SettingsCore(new Kernel.Configuration(Paths.Configuration));
+        private SettingsCore _core = SettingsCore.Current;
 
         public Kernel.Configuration Configuration
         {
