@@ -66,27 +66,26 @@
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
 
-            <StackPanel Grid.Column="0">
-                <HeaderedContentControl Header="Main">
-                    <StackPanel>
-                        <CheckBox Content="Reset"
-                            Name="MainReset"
-                            ToolTip.Tip="Attempts to kill any potentially running HCE processes before loading a new one." />
-                        <CheckBox Content="Patch"
-                            Name="MainPatch"
-                            ToolTip.Tip="Attempts to patch the inferred HCE executable with Large Address Aware flag." />
-                        <CheckBox Content="Start"
-                            Name="MainStart"
-                            ToolTip.Tip="Attempts to invoke the HCE executable and create a new process." />
-                        <CheckBox Content="Resume"
-                            Name="MainResume"
-                            ToolTip.Tip="Attempts to infer the SPV3 campaign progress and resume it." />
-                        <CheckBox Content="Elevated"
-                            Name="MainElevated"
-                            ToolTip.Tip="Invokes the HCE process with administrative privileges." />
-                    </StackPanel>
-                </HeaderedContentControl>
-            </StackPanel>
+            <HeaderedContentControl
+                Header="Main" Grid.Column="0">
+                <StackPanel>
+                    <CheckBox Content="Reset"
+                        Name="MainReset"
+                        ToolTip.Tip="Attempts to kill any potentially running HCE processes before loading a new one." />
+                    <CheckBox Content="Patch"
+                        Name="MainPatch"
+                        ToolTip.Tip="Attempts to patch the inferred HCE executable with Large Address Aware flag." />
+                    <CheckBox Content="Start"
+                        Name="MainStart"
+                        ToolTip.Tip="Attempts to invoke the HCE executable and create a new process." />
+                    <CheckBox Content="Resume"
+                        Name="MainResume"
+                        ToolTip.Tip="Attempts to infer the SPV3 campaign progress and resume it." />
+                    <CheckBox Content="Elevated"
+                        Name="MainElevated"
+                        ToolTip.Tip="Invokes the HCE process with administrative privileges." />
+                </StackPanel>
+            </HeaderedContentControl>
 
             <HeaderedContentControl Grid.Column="1"
                 Header="Tweaks">
