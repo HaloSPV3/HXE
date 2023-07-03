@@ -21,6 +21,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.IO.Compression;
 using System.Xml.Serialization;
@@ -34,8 +35,11 @@ namespace HXE
     /// <summary>
     ///   Object representing an OpenSauce user configuration.
     /// </summary>
+    // ?? Should we leverage Microsoft.XmlSerializer.Generator for pre-generated serializers/deserializers?
+    [Serializable, DynamicallyAccessedMembers(DynamicallyAccessedPublicFieldsAndProperties)]
     public class OpenSauce : File
     {
+        const DynamicallyAccessedMemberTypes DynamicallyAccessedPublicFieldsAndProperties = DynamicallyAccessedMemberTypes.PublicFields | DynamicallyAccessedMemberTypes.PublicProperties;
         public OpenSauceCacheFiles CacheFiles { get; set; } = new OpenSauceCacheFiles();
         public OpenSauceRasterizer Rasterizer { get; set; } = new OpenSauceRasterizer();
         public OpenSauceCamera Camera { get; set; } = new OpenSauceCamera();
@@ -63,7 +67,7 @@ namespace HXE
         {
             using (var reader = new StringReader(ReadAllText()))
             {
-                var serialiser = new XmlSerializer(typeof(OpenSauce));
+                var serialiser = new XmlSerializer(typeof(OpenSauce)); // if a FileNotFoundException is thrown, don't worry. It's because we don't pre-gen XML serializers.
                 var serialised = (OpenSauce)serialiser.Deserialize(reader);
 
                 CacheFiles = serialised.CacheFiles;
@@ -106,11 +110,13 @@ namespace HXE
             };
         }
 
+        [DynamicallyAccessedMembers(DynamicallyAccessedPublicFieldsAndProperties)]
         public class OpenSauceCacheFiles
         {
             public bool CheckYeloFilesFirst { get; set; } = true;
         }
 
+        [DynamicallyAccessedMembers(DynamicallyAccessedPublicFieldsAndProperties)]
         public class OpenSauceRasterizer
         {
             public RasterizerGBuffer GBuffer { get; set; } = new RasterizerGBuffer();
@@ -118,16 +124,19 @@ namespace HXE
             public RasterizerShaderExtensions ShaderExtensions { get; set; } = new RasterizerShaderExtensions();
             public RasterizerPostProcessing PostProcessing { get; set; } = new RasterizerPostProcessing();
 
+            [DynamicallyAccessedMembers(DynamicallyAccessedPublicFieldsAndProperties)]
             public class RasterizerGBuffer
             {
                 public bool Enabled { get; set; } = true;
             }
 
+            [DynamicallyAccessedMembers(DynamicallyAccessedPublicFieldsAndProperties)]
             public class RasterizerUpgrades
             {
                 public bool MaximumRenderedTriangles { get; set; } = true;
             }
 
+            [DynamicallyAccessedMembers(DynamicallyAccessedPublicFieldsAndProperties)]
             public class RasterizerShaderExtensions
             {
                 public bool Enabled { get; set; } = true;
@@ -135,6 +144,7 @@ namespace HXE
                 public ShaderExtensionsEnvironment Environment { get; set; } = new ShaderExtensionsEnvironment();
                 public ShaderExtensionsEffect Effect { get; set; } = new ShaderExtensionsEffect();
 
+                [DynamicallyAccessedMembers(DynamicallyAccessedPublicFieldsAndProperties)]
                 public class ShaderExtensionsObject
                 {
                     public bool NormalMaps { get; set; } = true;
@@ -143,18 +153,21 @@ namespace HXE
                     public bool SpecularLighting { get; set; } = true;
                 }
 
+                [DynamicallyAccessedMembers(DynamicallyAccessedPublicFieldsAndProperties)]
                 public class ShaderExtensionsEnvironment
                 {
                     public bool DiffuseDirectionalLightmaps { get; set; } = true;
                     public bool SpecularDirectionalLightmaps { get; set; } = true;
                 }
 
+                [DynamicallyAccessedMembers(DynamicallyAccessedPublicFieldsAndProperties)]
                 public class ShaderExtensionsEffect
                 {
                     public bool DepthFade { get; set; } = true;
                 }
             }
 
+            [DynamicallyAccessedMembers(DynamicallyAccessedPublicFieldsAndProperties)]
             public class RasterizerPostProcessing
             {
                 public PostProcessingMotionBlur MotionBlur { get; set; } = new PostProcessingMotionBlur();
@@ -163,27 +176,32 @@ namespace HXE
                 public PostProcessingExternalEffects ExternalEffects { get; set; } = new PostProcessingExternalEffects();
                 public PostProcessingMapEffects MapEffects { get; set; } = new PostProcessingMapEffects();
 
+                [DynamicallyAccessedMembers(DynamicallyAccessedPublicFieldsAndProperties)]
                 public class PostProcessingMotionBlur
                 {
                     public bool Enabled { get; set; } = false;
                     public double BlurAmount { get; set; } = 1.00;
                 }
 
+                [DynamicallyAccessedMembers(DynamicallyAccessedPublicFieldsAndProperties)]
                 public class PostProcessingBloom
                 {
                     public bool Enabled { get; set; } = false;
                 }
 
+                [DynamicallyAccessedMembers(DynamicallyAccessedPublicFieldsAndProperties)]
                 public class PostProcessingAntiAliasing
                 {
                     public bool Enabled { get; set; } = false;
                 }
 
+                [DynamicallyAccessedMembers(DynamicallyAccessedPublicFieldsAndProperties)]
                 public class PostProcessingExternalEffects
                 {
                     public bool Enabled { get; set; } = true;
                 }
 
+                [DynamicallyAccessedMembers(DynamicallyAccessedPublicFieldsAndProperties)]
                 public class PostProcessingMapEffects
                 {
                     public bool Enabled { get; set; } = true;
@@ -191,6 +209,7 @@ namespace HXE
             }
         }
 
+        [DynamicallyAccessedMembers(DynamicallyAccessedPublicFieldsAndProperties)]
         public class OpenSauceCamera
         {
             public double FieldOfView { get; set; } = 70.00;
@@ -241,27 +260,32 @@ namespace HXE
             }
         }
 
+        [DynamicallyAccessedMembers(DynamicallyAccessedPublicFieldsAndProperties)]
         public class OpenSauceNetworking
         {
             public NetworkingGameSpy GameSpy { get; set; } = new NetworkingGameSpy();
             public NetworkingMapDownload MapDownload { get; set; } = new NetworkingMapDownload();
             public NetworkingVersionCheck VersionCheck { get; set; } = new NetworkingVersionCheck();
 
+            [DynamicallyAccessedMembers(DynamicallyAccessedPublicFieldsAndProperties)]
             public class NetworkingGameSpy
             {
                 public bool NoUpdateCheck { get; set; } = true;
             }
 
+            [DynamicallyAccessedMembers(DynamicallyAccessedPublicFieldsAndProperties)]
             public class NetworkingMapDownload
             {
                 public bool Enabled { get; set; } = true;
             }
 
+            [DynamicallyAccessedMembers(DynamicallyAccessedPublicFieldsAndProperties)]
             public class NetworkingVersionCheck
             {
                 public VersionCheckDate Date { get; set; } = new VersionCheckDate();
                 public VersionCheckServerList ServerList { get; set; } = new VersionCheckServerList();
 
+                [DynamicallyAccessedMembers(DynamicallyAccessedPublicFieldsAndProperties)]
                 public class VersionCheckDate
                 {
                     public int Day { get; set; } = (int)DateTime.Now.DayOfWeek;
@@ -269,6 +293,7 @@ namespace HXE
                     public int Year { get; set; } = DateTime.Now.Year;
                 }
 
+                [DynamicallyAccessedMembers(DynamicallyAccessedPublicFieldsAndProperties)]
                 public class VersionCheckServerList
                 {
                     public int Version { get; set; } = 1;
@@ -277,11 +302,13 @@ namespace HXE
             }
         }
 
+        [DynamicallyAccessedMembers(DynamicallyAccessedPublicFieldsAndProperties)]
         public class OpenSauceObjects
         {
             public bool VehicleRemapperEnabled { get; set; } = true;
             public ObjectsWeapon Weapon { get; set; } = new ObjectsWeapon();
 
+            [DynamicallyAccessedMembers(DynamicallyAccessedPublicFieldsAndProperties)]
             public class ObjectsWeapon
             {
                 public List<PositionWeapon> Positions { get; set; } = new List<PositionWeapon>();
@@ -348,12 +375,14 @@ namespace HXE
                     }
                 }
 
+                [DynamicallyAccessedMembers(DynamicallyAccessedPublicFieldsAndProperties)]
                 [XmlType("Weapon")]
                 public class PositionWeapon
                 {
                     public string Name { get; set; } = string.Empty;
                     public WeaponPosition Position { get; set; } = new WeaponPosition();
 
+                    [DynamicallyAccessedMembers(DynamicallyAccessedPublicFieldsAndProperties)]
                     public class WeaponPosition
                     {
                         public double I { get; set; }
@@ -364,12 +393,15 @@ namespace HXE
             }
         }
 
+        [DynamicallyAccessedMembers(DynamicallyAccessedPublicFieldsAndProperties)]
         public class OpenSauceHUD
         {
             public bool ShowHUD { get; set; }
             public bool ScaleHUD { get; set; }
             public HUDHUDScale HUDScale { get; set; }
 
+            [DynamicallyAccessedMembers(DynamicallyAccessedPublicFieldsAndProperties)]
+            //TODO: rename type
             public class HUDHUDScale
             {
                 public double X { get; set; }
