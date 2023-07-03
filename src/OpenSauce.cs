@@ -18,12 +18,12 @@
  *    misrepresented as being the original software.
  * 3. This notice may not be removed or altered from any source distribution.
  */
-
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.IO.Compression;
+using System.Threading;
 using System.Xml.Serialization;
 using Avalonia.Controls;
 using static System.IO.Compression.CompressionMode;
@@ -216,13 +216,126 @@ namespace HXE
             public bool IgnoreFOVChangeInCinematics { get; set; } = true;
             public bool IgnoreFOVChangeInMainMenu { get; set; } = true;
 
-            public double CalculateFOV()
+            /// <summary>
+            /// Reads a display's current resolution and determines the optimal FOV for Halo CE, accounting for the game's FOV calculation quirks.<br/>
+            /// </summary>
+            /// <param name="window">Optional. An Avalonia window via which the current screens can be enumerated.</param>
+            /// <remarks>
+            /// If window Avalonia app running is passed while an Avalonia.Application is running, Avalonia will attempt to return the Primary display's resolution or the resolution of the first display it finds.<br/>
+            /// If window is null or Avalonia fails, platform-specific operations will try to get the Primary or first-discovered display's display resolution.<br/>
+            /// WARNING: if the detected resolution does not match in-game resolution, the FOV will be incorrect due to a bug in Halo: CE's FOV equation.
+            /// </remarks>
+            /// <returns>The optimal Halo:CE FOV for the Primary (or first-discovered) display's current resolution. If the display resolution does not match the resolution you play with, this FOV will be incorrect.</returns>
+            public double CalculateFOV(WindowBase? window = null)
             {
-                // TODO: use Direct3D interface
-                var primary = new Window().Screens.Primary;
-                return CalculateFOV(
-                    primary?.Bounds.Width ?? Kernel.GetSystemMetrics(Kernel.SM_CXSCREEN),
-                 primary?.Bounds.Height ?? Kernel.GetSystemMetrics(Kernel.SM_CYSCREEN));
+                var (w, h) = (0.0, 0.0);
+
+                if (window is not null && window.Screens.ScreenCount is not 0)
+                {
+                    // I *could* use tuple assignment for style points, but it doesn't make these assignments any more succinct.
+                    // If-Else results in one "is not null" comparison while conditional assignment expressions would result in two comparisons.
+                    if (window.Screens.Primary is not null)
+                    {
+                        w = window.Screens.Primary.Bounds.Width;
+                        h = window.Screens.Primary.Bounds.Height;
+                    }
+                    else
+                    {
+                        Console.Warn($"Primary display could not be determined. Defaulting to first monitor in index. Identify it by Bounds '{window.Screens.All[0].Bounds}'.");
+                        w = window.Screens.All[0].Bounds.Width;
+                        h = window.Screens.All[0].Bounds.Height;
+                    }
+                }
+                else if (OperatingSystem.IsWindows())
+                {
+                    Console.Warn("Avalonia backend is not initialized or its windowing API failed to enumerate connected displays");
+                    w = Kernel.GetSystemMetrics(Kernel.SM_CXSCREEN);
+                    h = Kernel.GetSystemMetrics(Kernel.SM_CYSCREEN);
+                }
+                else if (OperatingSystem.IsLinux()) // Developed on Windows. Tested on WSL Ubuntu.
+                {
+                    string? data = null;
+                    using System.Diagnostics.Process xrandr_primary = new()
+                    {
+                        StartInfo = new()
+                        {
+                            FileName = "sh",
+                            // should print resolution (e.g. "1920x1080") of primary display if its connected
+                            Arguments = "-c \"xrandr --current | grep 'connected primary' | grep --extended-regexp --only-matching '[1-9][0-9]+x[1-9][0-9]+' | head -1\"" // will match 10x10 or larger. first line of matches: 1920x1080
+                        }
+                    };
+
+                    xrandr_primary.OutputDataReceived += (sender, args) => data = args.Data;
+                    xrandr_primary.Start();
+                    xrandr_primary.BeginOutputReadLine();
+
+                    const uint timeout = 100;
+                    for (uint msWaited = 0; data is null && msWaited < timeout; msWaited++)
+                        Thread.Sleep(1);
+
+                    if (string.IsNullOrEmpty(data))
+                    {
+                        xrandr_primary.Kill(true);
+                        Console.Warn(
+                            $"OS is '{Environment.OSVersion}'.\n" +
+                            $"The shell or xrandr failed to respond within {timeout}ms\n" +
+                            "-OR- xrandr was not found\n" +
+                            "-OR- xrandr did not return data\n" +
+                            "-OR- the Primary monitor is not connected\n" +
+                            "-OR- none of the connected monitors are marked 'Primary'\n" +
+                            "-OR- the Primary monitor's data was printed in a different format than XxY.");
+
+                        /**
+                        https://askubuntu.com/a/1351112
+                        https://superuser.com/a/603618
+                        */
+                        using System.Diagnostics.Process xrandr_first = new()
+                        {
+                            StartInfo = new()
+                            {
+                                FileName = "sh",
+                                Arguments = "-c \"xrandr --current | grep '*' | grep --extended-regexp --only-matching '[1-9][0-9]+x[1-9][0-9]+' | head -1\"",
+                                CreateNoWindow = true,
+                                RedirectStandardOutput = true,
+                            }
+                        };
+                        xrandr_first.OutputDataReceived += (sender, args) => data = args.Data;
+                        xrandr_first.Start();
+                        xrandr_first.BeginOutputReadLine();
+
+                        for (uint msWaited = 0; data is null && msWaited < timeout; msWaited++)
+                            Thread.Sleep(1);
+
+                        xrandr_first.Kill(true);
+
+                        if (string.IsNullOrEmpty(data))
+                        {
+                            throw new TimeoutException($"OS is '{Environment.OSVersion}' and sh/xrandr failed to respond within 100ms or failed to get the resolution of the first connected monitor.");
+                        }
+                    }
+                    else if (data.Trim('0', '1', '2', '3', '4', '5', '6', '7', '8', '9') is "x")
+                    {
+                        string[] xy = data.Split('x', StringSplitOptions.RemoveEmptyEntries);
+                        Console.Info("Attempting to parse data for resolution width and height...");
+                        w = double.Parse(xy[0]);
+                        h = double.Parse(xy[1]);
+                    }
+                    else
+                    {
+                        throw new InvalidOperationException($"grepped string '{data}' did not match expected pattern.");
+                    }
+                }
+                else if (OperatingSystem.IsMacOS())
+                {
+                    throw new NotSupportedException("This API feature does not yet support Mac OS");
+                }
+
+                if (w is 0 || h is 0)
+                    throw new InvalidOperationException("Unable to query the current resolution of any display/screen.");
+
+                Console.Info($"Monitor resolution successfully acquired. ({w}x{h})");
+
+                return CalculateFOV(w, h);
             }
 
             public double CalculateFOV(double width, double height)
