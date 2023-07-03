@@ -69,8 +69,6 @@ namespace HXE
 
             Console.Info("Loading kernel settings");
 
-            Configuration.Load();
-
             try { AssignConfig(); }
             catch (Exception e) when (e.Message.Equals("Kernel Mode not recognized."))
             {
