@@ -1,6 +1,6 @@
-﻿/**
+/**
  * Copyright (c) 2019 Emilian Roman
- * Copyright (c) 2021 Noah Sherwin
+ * Copyright (c) 2022 Noah Sherwin
  *
  * This software is provided 'as-is', without any express or implied
  * warranty. In no event will the authors be held liable for any damages
@@ -20,32 +20,41 @@
  */
 
 using System;
-using System.Windows;
+using Avalonia.Controls;
+using Avalonia.Interactivity;
 
 namespace HXE
 {
     /// <summary>
-    ///   Interaction logic for Settings.xaml
+    ///   Interaction logic for <see cref="Settings"/>
     /// </summary>
     public partial class Settings : Window
     {
-        private Kernel.Configuration _configuration = new Kernel.Configuration(Paths.Configuration);
-        private readonly System.Diagnostics.Process _process = System.Diagnostics.Process.GetCurrentProcess();
+        private SettingsCore _core = SettingsCore.Current;
 
         public Kernel.Configuration Configuration
         {
-            get => _configuration;
+            get => _core.Configuration;
             set
             {
-                if (value == _configuration) return;
-                _configuration = value;
+                if (value == _core.Configuration) return;
+                _core.Configuration = value;
             }
+        }
+
+        public Settings(SettingsCore core)
+        {
+            _core = core;
+            Configuration = _core.Configuration;
+            DataContext = _core.Configuration;
+            Initialize();
         }
 
         public Settings(Kernel.Configuration cfg)
         {
-            Configuration = cfg;
-            DataContext = cfg;
+            _core = new SettingsCore(cfg);
+            Configuration = _core.Configuration;
+            DataContext = _core.Configuration;
             Initialize();
         }
 
@@ -60,11 +69,10 @@ namespace HXE
 
             Console.Info("Loading kernel settings");
 
-            Configuration.Load();
-
             try { AssignConfig(); }
             catch (Exception e) when (e.Message.Equals("Kernel Mode not recognized."))
             {
+                Console.Error(e.ToString());
                 Configuration = new Kernel.Configuration(Configuration.Path);
                 Configuration.Save();
                 AssignConfig();
@@ -73,33 +81,13 @@ namespace HXE
 
         public void AssignConfig()
         {
-            if (_process.ProcessName != "hxe")
-            {
-                Mode.IsEnabled = false;
-                MainPatch.IsEnabled = false;
-                MainReset.IsEnabled = false;
-                MainStart.IsEnabled = false;
-                MainResume.IsEnabled = false;
-            }
+            Mode.IsEnabled = SettingsCore.ModeUnlocked;
+            MainPatch.IsEnabled = SettingsCore.MainPatchUnlocked;
+            MainReset.IsEnabled = SettingsCore.MainResetUnlocked;
+            MainStart.IsEnabled = SettingsCore.MainStartUnlocked;
+            MainResume.IsEnabled = SettingsCore.MainResumeUnlocked;
 
-            switch (Configuration.Mode)
-            {
-                case Kernel.Configuration.ConfigurationMode.HCE:
-                    Mode.SelectedIndex = 0;
-                    break;
-
-                case Kernel.Configuration.ConfigurationMode.SPV32:
-                    Mode.SelectedIndex = 1;
-                    break;
-
-                case Kernel.Configuration.ConfigurationMode.SPV33:
-                    Mode.SelectedIndex = 2;
-                    break;
-
-                default:
-                    throw new ArgumentOutOfRangeException("Switch (Configuration.Mode)", "Kernel Mode not recognized.");
-            }
-
+            Mode.SelectedIndex = (int)Configuration.Mode;
             MainReset.IsChecked = Configuration.Main.Reset;
             MainPatch.IsChecked = Configuration.Main.Patch;
             MainStart.IsChecked = Configuration.Main.Start;
@@ -121,31 +109,14 @@ namespace HXE
             AudioEnhancements.IsChecked = Configuration.Audio.Enhancements;
             InputOverride.IsChecked = Configuration.Input.Override;
 
-            PrintConfiguration();
+            _core.PrintConfiguration();
         }
 
         private void Save(object sender, RoutedEventArgs e)
         {
             Console.Info("Saving kernel settings");
 
-            switch (Mode.SelectedIndex)
-            {
-                case 0:
-                    Configuration.Mode = Kernel.Configuration.ConfigurationMode.HCE;
-                    break;
-
-                case 1:
-                    Configuration.Mode = Kernel.Configuration.ConfigurationMode.SPV32;
-                    break;
-
-                case 2:
-                    Configuration.Mode = Kernel.Configuration.ConfigurationMode.SPV33;
-                    break;
-
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
-
+            Configuration.Mode = (Kernel.Configuration.ConfigurationMode)Mode.SelectedIndex;
             Configuration.Main.Reset = MainReset.IsChecked == true;
             Configuration.Main.Patch = MainPatch.IsChecked == true;
             Configuration.Main.Start = MainStart.IsChecked == true;
@@ -178,48 +149,56 @@ namespace HXE
             Configuration.Save();
             Configuration.Load();
 
-            PrintConfiguration();
+            _core.PrintConfiguration();
 
-            if (_process.ProcessName == "hxe")
+            if (SettingsCore.ProcessName == "hxe")
             {
                 Exit.WithCode(Exit.Code.Success);
             }
             else
             {
-                DialogResult = true;
+                try
+                {
+                    Close(true);
+                }
+                catch (InvalidOperationException ex) when (ex.Message == "DialogResult can be set only after Window is created and shown as dialog.")
+                {
+                    // This exception can't be prevented nor handled in any other way...
+                    /** Exceptions
+                    * InvalidOperationException
+                    * DialogResult is set before a window is opened by calling ShowDialog().
+                    * -or-
+                    * DialogResult is set on a window that is opened by calling Show().
+                    */
+                }
                 Close();
             }
         }
 
-        private void PrintConfiguration()
-        {
-            Console.Debug("Mode                - " + Configuration.Mode);
-            Console.Debug("Main.Reset          - " + Configuration.Main.Reset);
-            Console.Debug("Main.Patch          - " + Configuration.Main.Patch);
-            Console.Debug("Main.Start          - " + Configuration.Main.Start);
-            Console.Debug("Main.Resume         - " + Configuration.Main.Resume);
-            Console.Debug("Tweaks.CinemaBars   - " + Configuration.Tweaks.CinemaBars);
-            Console.Debug("Tweaks.Sensor       - " + Configuration.Tweaks.Sensor);
-            Console.Debug("Tweaks.Magnetism    - " + Configuration.Tweaks.Magnetism);
-            Console.Debug("Tweaks.AutoAim      - " + Configuration.Tweaks.AutoAim);
-            Console.Debug("Tweaks.Acceleration - " + Configuration.Tweaks.Acceleration);
-            Console.Debug("Tweaks.Unload       - " + Configuration.Tweaks.Unload);
-            Console.Debug("Video.Resolution    - " + Configuration.Video.ResolutionEnabled);
-            Console.Debug("Video.Uncap         - " + Configuration.Video.Uncap);
-            Console.Debug("Video.Quality       - " + Configuration.Video.Quality);
-            Console.Debug("Video.Bless         - " + Configuration.Video.Bless);
-            Console.Debug("Video.GammaEnabled  - " + Configuration.Video.GammaOn);
-            Console.Debug("Video.Gamma         - " + Configuration.Video.Gamma);
-            Console.Debug("Audio.Quality       - " + Configuration.Audio.Quality);
-            Console.Debug("Audio.Enhancements  - " + Configuration.Audio.Enhancements);
-            Console.Debug("Input.Override      - " + Configuration.Input.Override);
-        }
-
         private void Cancel(object sender, RoutedEventArgs e)
         {
-            if (_process.ProcessName == "hxe")
+            if (SettingsCore.ProcessName == "hxe")
+            {
                 Exit.WithCode(Exit.Code.Success);
-            else Hide();
+            }
+            else
+            {
+                try
+                {
+                    Close(false);
+                }
+                catch (InvalidOperationException ex) when (ex.Message == "DialogResult can be set only after Window is created and shown as dialog.")
+                {
+                    // This exception can't be prevented nor handled in any other way...
+                    /** Exceptions
+                    * InvalidOperationException
+                    * DialogResult is set before a window is opened by calling ShowDialog().
+                    * -or-
+                    * DialogResult is set on a window that is opened by calling Show().
+                    */
+                }
+                Close();
+            }
         }
     }
 }

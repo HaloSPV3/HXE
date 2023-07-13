@@ -9,12 +9,68 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
-            "program": "${workspaceFolder}/bin/Debug/win-x64/HXE.dll",
-            "args": ["--test"],
-            "cwd": "${workspaceFolder}/src",
-            // For more information about the 'console' field, see https://aka.ms/VSCode-CS-LaunchJson-Console
-            "console": "internalConsole",
-            "stopAtEntry": false
+            "program": "${workspaceFolder}/bin/Debug/Latest/HXE.dll",
+            "cwd": "${workspaceFolder}/bin/Debug/Latest/",
+            "enableStepFiltering": false
+        },
+        {
+            "name": ".NET Core Launch (console, --test)",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/bin/Debug/Latest/HXE.dll",
+            "args": [
+                "--test"
+            ],
+            "cwd": "${workspaceFolder}/bin/Debug/Latest/",
+            "enableStepFiltering": false
+        },
+        {
+            "name": ".NET Core Launch (console, --config)",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/bin/Debug/Latest/HXE.dll",
+            "args": [
+                "--config"
+            ],
+            "cwd": "${workspaceFolder}/bin/Debug/Latest/",
+            "enableStepFiltering": false,
+            "justMyCode": false,
+            "requireExactSource": false
+        },
+        {
+            "name": ".NET Core Launch (console, --positions)",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/bin/Debug/Latest/HXE.dll",
+            "args": [
+                "--positions"
+            ],
+            "cwd": "${workspaceFolder}/bin/Debug/Latest/",
+            "enableStepFiltering": false,
+            "justMyCode": false
+        },
+        {
+            "name": ".NET Core Launch (console, {framework}, {runtime})",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build ({framework}, {runtime})",
+            "program": "${workspaceFolder}/bin/Debug/Latest/HXE.dll",
+            "cwd": "${workspaceFolder}/bin/Debug/Latest/",
+            "enableStepFiltering": false,
+            "justMyCode": false
+        },
+        {
+            "name": ".NET Core Launch (console, net6.0, win7-x64)",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build (net6.0, win7-x64)",
+            "program": "${workspaceFolder}/bin/Debug/net6.0/win7-x64/HXE.dll",
+            "cwd": "${workspaceFolder}/bin/Debug/net6.0/win7-x64/",
+            "enableStepFiltering": false,
+            "justMyCode": false
         },
         {
             "name": ".NET Core Attach",

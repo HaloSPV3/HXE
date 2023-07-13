@@ -1,9 +1,7 @@
 name: release
 
 # TODO
-# - Get AssemblyName, TargetFramework (TFM), RuntimeIdentifier (RID) from Directory.Build.props, *.csproj
-# - Overwrite `$env:RID and `$env:TFM with build props, allowing workflows to be driven by the project(s)
-# - support multiple ASSEMBLYNAME parameters for matrices
+# allow workflows to be driven by the project(s)
 
 on:
   push:
@@ -18,8 +16,6 @@ jobs:
     name: Build
     runs-on: windows-latest
     env:
-      RID: "win-x86"
-      TFM: "net5.0-windows"
       ASSEMBLYNAME: "HXE"
       PROJPATH: "./src/HXE.csproj"
 
@@ -40,7 +36,7 @@ jobs:
     # Authenticates packages to push to GPR
     - uses: actions/setup-dotnet@v3.2.0
       with:
-        dotnet-version: "6.0.x" # SDK Version to use.
+        dotnet-version: "6.0.x"
         include-prerelease: true
 
     - name: Add GitHub Package Repository
@@ -53,15 +49,15 @@ jobs:
     # BUILD
     ################
     - name: dotnet-publish
-      run: dotnet publish $env:CSPROJ_RELPATH -c Release --no-self-contained -p:ContinuousIntegrationBuild=true
+      run: dotnet publish ${{ env.PROJPATH }} -c Release -p:ContinuousIntegrationBuild=true
 
-    # required variables: TargetFramework, RuntimeIdentifier, GitVersion_FullSemVer
+    # required variables: GitVersion_FullSemVer
     - name: Compress-PublishArtifacts
       run: |
-        $publishPath = Resolve-Path ".\bin\Release\$env:TFM\$env:RID\publish";
-        $archiveName = "$env:ASSEMBLYNAME.$env:TFM-$env:RID.$env:GitVersion_FullSemVer.zip";
+        $publishPath = Resolve-Path ".\bin\Release\**\publish";
+        $archiveName = "$env:ASSEMBLYNAME.$env:GitVersion_FullSemVer.zip";
         Set-Location $publishPath;
-        Compress-Archive -Path $publishPath -DestinationPath $archiveName -CompressionLevel Optimal;
+        Compress-Archive -Path $publishPath -DestinationPath ${{ github.workspace }}\bin\Release\publish\$archiveName -CompressionLevel Optimal;
 
     ################
     # RELEASE
@@ -77,7 +73,7 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: publish-artifacts
-        path: bin/Release/${{ env.TFM }}/${{ env.RID }}/publish
+        path: bin/Release/publish
 
     - name: Publish to GitHub Packages
       working-directory: bin/Release

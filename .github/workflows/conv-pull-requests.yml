@@ -9,10 +9,11 @@ permissions:
   pull-requests: write
 
 jobs:
-  hqprs:
+  cpr:
     runs-on: ubuntu-latest
     steps:
       - name: conventional-pr
         uses: Namchee/conventional-pr@v0.13.0
         with:
           access_token: ${{ secrets.GITHUB_TOKEN }}
+          ignored_users: snyk-bot

@@ -47,7 +47,11 @@ namespace HXE
     /// </param>
     public static void WithCode(Code code)
     {
-      Exit((int) code);
+      if (code is Code.Success)
+        Console.Done("My job here is done.");
+      else
+        Console.Error("Uhhh...Uh-oh.");
+      Exit((int)code);
     }
   }
 }

@@ -1,7 +1,6 @@
 {
     "recommendations": [
         "editorconfig.editorconfig",
-        "codestream.codestream",
         "github.vscode-pull-request-github",
         "eamodio.gitlens",
         "vivaxy.vscode-conventional-commits",
@@ -52,6 +51,7 @@
         "tyriar.windows-terminal",
         "redhat.vscode-xml",
         "rogalmic.vscode-xml-complete",
-        "dotjoshjohnson.xml"
+        "dotjoshjohnson.xml",
+        "joshbolduc.commitlint",
     ]
 }

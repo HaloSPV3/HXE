@@ -1,0 +1,46 @@
+<Styles
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    x:CompileBindings="True">
+
+    <Style Selector="Window">
+
+        <Setter
+            Property="TransparencyLevelHint"
+            Value="AcrylicBlur" />
+        <Setter
+            Property="Background"
+            Value="transparent" />
+        <!-- Acrylic TitleBar -->
+        <!-- <Setter
+            Property="ExtendClientAreaToDecorationsHint"
+            Value="True" /> -->
+        <Setter
+            Property="Icon"
+            Value="/Assets/icon.ico" />
+
+        <!-- hides titlebar buttons -->
+        <!-- <Setter
+            Property="Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <Panel>
+
+                        <ExperimentalAcrylicBorder IsHitTestVisible="False">
+                            <ExperimentalAcrylicBorder.Material>
+                                <ExperimentalAcrylicMaterial
+                                    BackgroundSource="Digger"
+                                    TintColor="Black"
+                                    TintOpacity="1"
+                                    MaterialOpacity="0.65" />
+                            </ExperimentalAcrylicBorder.Material>
+                        </ExperimentalAcrylicBorder>
+
+                        <ContentPresenter Content="{TemplateBinding Content}" />
+
+                    </Panel>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter> -->
+    </Style>
+</Styles>

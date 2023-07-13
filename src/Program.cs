@@ -1,6 +1,6 @@
 /**
  * Copyright (c) 2019 Emilian Roman
- * Copyright (c) 2021 Noah Sherwin
+ * Copyright (c) 2023 Noah Sherwin
  *
  * This software is provided 'as-is', without any express or implied
  * warranty. In no event will the authors be held liable for any damages
@@ -22,9 +22,10 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Reflection;
 using System.Threading.Tasks;
-using System.Windows;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Controls.ApplicationLifetimes;
 using HXE.HCE;
 using static System.Console;
 using static System.Environment;
@@ -39,6 +40,43 @@ namespace HXE
     /// </summary>
     internal static class Program
     {
+        internal const string Banner = @"
+ _    ___   ________
+| |  | \ \ / /  ____|
+| |__| |\ V /| |__
+|  __  | > < |  __|
+| |  | |/ . \| |____
+|_|  |_/_/ \_\______| :: Halo XE
+=================================
+A HCE wrapper and kernel for SPV3
+---------------------------------
+:: https://github.com/HaloSPV3/hxe
+---------------------------------
+
+HXE can be invoked with the following arguments:
+
+      --help                 Displays commands list
+      --test                 Start a dry run of HXE to self-test
+      --config               Opens configuration GUI
+      --positions            Opens positions GUI
+      --cli                  Opens CLI instead of GUI where available
+      --install=VALUE        Installs HCE/SPV3 to destination
+      --compile=VALUE        Compiles HCE/SPV3 to destination
+      --update=VALUE         Updates directory using manifest
+      --registry=VALUE       Write to Windows Registry
+      --infer                Infer the running Halo executable
+      --console              Loads HCE with console mode
+      --devmode              Loads HCE with developer mode
+      --screenshot           Loads HCE with screenshot ability
+      --window               Loads HCE in window mode
+      --nogamma              Loads HCE without gamma overriding
+      --adapter=VALUE        Loads HCE on monitor X
+      --path=VALUE           Loads HCE with custom profile path
+      --exec=VALUE           Loads HCE with custom init file
+      --vidmode=VALUE        Loads HCE with video mode
+      --refresh=VALUE        Loads HCE with custom refresh rate
+";
+
         /// <summary>
         ///   HXE entry.
         /// </summary>
@@ -52,6 +90,44 @@ namespace HXE
             InvokeProgram(args); /* burn baby burn */
         }
 
+        // Avalonia configuration, don't remove; also used by visual designer.
+        public static AppBuilder BuildAvaloniaApp()
+            => AppBuilder.Configure<App>()
+                .UsePlatformDetect()
+                .LogToTrace();
+
+        /// <summary>
+        /// Try to start a desktop-style app with the given window as the main window. The window is shown and the app is run.
+        /// </summary>
+        /// <param name="args">command line arguments to pass to the Application instance.</param>
+        /// <param name="window">An instance of a window, ready to be shown.</param>
+        /// <returns><see langword="true"/> if successful. Otherwise, false. If an exception was thrown, it is written to the Console.StandardOut. Additional output is logged to <see cref="System.Diagnostics.Trace"/>.</returns>
+        /// <remarks>Only one desktop-style app instance can be active at a time. Creating a second instance will result in an Exception.</remarks>
+        public static bool TryStartWindowAsApp(string[] args, Window window)
+        {
+            try
+            {
+                var app = AppBuilder
+                    .Configure<Application>()
+                    .UsePlatformDetect()
+                    .LogToTrace()
+                    .WithInterFont()
+                    .SetupWithLifetime(new ClassicDesktopStyleApplicationLifetime() { Args = args, MainWindow = window, })
+                    .Instance;
+                if (app is null)
+                    return false;
+
+                window.Show();
+                app.Run(window);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Error(ex.ToString());
+                return false;
+            }
+        }
+
         /// <summary>
         ///   Console API to the HXE kernel, installer and compiler.
         /// </summary>
@@ -60,6 +136,7 @@ namespace HXE
         ///   --test              Start a dry run of HXE to self-test           <br/>
         ///   --config            Opens configuration GUI                       <br/>
         ///   --positions         Opens first-person model positions GUI        <br/>
+        ///   --cli               Opens CLI instead of GUI where available      <br/>
         ///   --install=VALUE     Installs HCE/SPV3   to destination            <br/>
         ///   --compile=VALUE     Compiles HCE/SPV3   to destination            <br/>
         ///   --update=VALUE      Updates directory with specified manifest     <br/>
@@ -76,6 +153,8 @@ namespace HXE
         ///   --vidmode=VALUE     Loads HCE           with custom res. and Hz   <br/>
         ///   --refresh=VALUE     Loads HCE           with custom refresh rate  <br/>
         /// </param>
+        /// TODO: implement --silent to run CLI without user prompts;
+        /// TODO: open as GUI by default. Rework MainWindow.cs to be...useful. Lazily dump everything into it? --cli will become more useful, too.
         private static void InvokeProgram(string[] args)
         {
             Directory.CreateDirectory(Paths.Directory);
@@ -84,100 +163,124 @@ namespace HXE
             var test = false;            /* Start a dry run of HXE to self-test */
             var config = false;          /* Opens configuration GUI             */
             var positions = false;       /* Opens positions GUI                 */
-            var install = string.Empty;  /* Installs HCE/SPV3 to destination    */
-            var compile = string.Empty;  /* Compiles HCE/SPV3 to destination    */
-            var update = string.Empty;   /* Updates directory using manifest    */
-            var registry = string.Empty; /* Write to Windows Registry           */
+            var cli = false;             /* Opens CLI instead of GUI where available */
+            var install = "";  /* Installs HCE/SPV3 to destination    */
+            var compile = "";  /* Compiles HCE/SPV3 to destination    */
+            var update = "";   /* Updates directory using manifest    */
+            var registry = ""; /* Write to Windows Registry           */
+            var hide = "";     /* Internal. Comma-separated list of windows to hide */
             var infer = false;           /* Infer the running Halo executable   */
             var console = false;         /* Loads HCE with console mode         */
             var devmode = false;         /* Loads HCE with developer mode       */
             var screenshot = false;      /* Loads HCE with screenshot ability   */
             var window = false;          /* Loads HCE in window mode            */
             var nogamma = false;         /* Loads HCE without gamma overriding  */
-            var adapter = string.Empty;  /* Loads HCE on monitor X              */
-            var path = string.Empty;     /* Loads HCE with custom profile path  */
-            var exec = string.Empty;     /* Loads HCE with custom init file     */
-            var vidmode = string.Empty;  /* Loads HCE with custom res. and Hz   */
-            var refresh = string.Empty;  /* Loads HCE with custom refresh rate  */
+            var adapter = "";  /* Loads HCE on monitor X              */
+            var path = "";     /* Loads HCE with custom profile path  */
+            var exec = "";     /* Loads HCE with custom init file     */
+            var vidmode = "";  /* Loads HCE with custom res. and Hz   */
+            var refresh = "";  /* Loads HCE with custom refresh rate  */
 
             var options = new OptionSet()
-              .Add("help", "Displays commands list", s => help = s != null)                                  /* hxe command   */
-              .Add("test", "Start a dry run of HXE to self-test", s => test =s != null)                      /* hxe command   */
-              .Add("config", "Opens configuration GUI", s => config = s != null)                             /* hxe command   */
-              .Add("positions", "Opens positions GUI", s => positions = s != null)                           /* hxe command   */
-              .Add("install=", "Installs HCE/SPV3 to destination", s => install = s)                         /* hxe parameter */
-              .Add("compile=", "Compiles HCE/SPV3 to destination", s => compile = s)                         /* hxe parameter */
-              .Add("update=", "Updates directory using manifest", s => update = s)                           /* hxe parameter */
-              .Add("registry=", "Create Registry keys for Retail, Custom, Trial, or HEK", s => registry = s) /* hxe parameter */
-              .Add("infer", "Infer the running Halo executable", s => infer = s != null)                     /* hxe parameter */
-              .Add("console", "Loads HCE with console mode", s => console = s != null)                       /* hce parameter */
-              .Add("devmode", "Loads HCE with developer mode", s => devmode = s != null)                     /* hce parameter */
-              .Add("screenshot", "Loads HCE with screenshot ability", s => screenshot = s != null)           /* hce parameter */
-              .Add("window", "Loads HCE in window mode", s => window = s != null)                            /* hce parameter */
-              .Add("nogamma", "Loads HCE without gamma overriding", s => nogamma = s != null)                /* hce parameter */
-              .Add("adapter=", "Loads HCE on monitor X", s => adapter = s)                                   /* hce parameter */
-              .Add("path=", "Loads HCE with custom profile path", s => path = s)                             /* hce parameter */
-              .Add("exec=", "Loads HCE with custom init file", s => exec = s)                                /* hce parameter */
-              .Add("vidmode=", "Loads HCE with custom res. and Hz", s => vidmode = s)                        /* hce parameter */
-              .Add("refresh=", "Loads HCE with custom refresh rate", s => refresh = s);                      /* hce parameter */
+/* hxe command   */ .Add("help", "Displays commands list", s => help = s != null)
+/* hxe command   */ .Add("test", "Start a dry run of HXE to self-test", s => test = s != null)
+/* hxe command   */ .Add("config", "Opens configuration GUI", s => config = s != null)
+/* hxe command   */ .Add("positions", "Opens positions GUI", s => positions = s != null)
+/* hxe parameter */ .Add("cli", "Enable CLI of Positions or Config", s => cli = s != null)
+/* hxe parameter */ .Add("install=", "Installs HCE/SPV3 to destination", s => install = s)
+/* hxe parameter */ .Add("compile=", "Compiles HCE/SPV3 to destination", s => compile = s)
+/* hxe parameter */ .Add("update=", "Updates directory using manifest", s => update = s)
+/* hxe parameter */ .Add("registry=", "Create Registry keys for Retail, Custom, Trial, or HEK", s => registry = s)
+/* hxe parameter */ .Add("hide=", "Internal. Comma-separated list of windows to hide.", s => hide = s)
+/* hxe parameter */ .Add("infer", "Infer the running Halo executable", s => infer = s != null)
+/* hce parameter */ .Add("console", "Loads HCE with console mode", s => console = s != null)
+/* hce parameter */ .Add("devmode", "Loads HCE with developer mode", s => devmode = s != null)
+/* hce parameter */ .Add("screenshot", "Loads HCE with screenshot ability", s => screenshot = s != null)
+/* hce parameter */ .Add("window", "Loads HCE in window mode", s => window = s != null)
+/* hce parameter */ .Add("nogamma", "Loads HCE without gamma overriding", s => nogamma = s != null)
+/* hce parameter */ .Add("adapter=", "Loads HCE on monitor X", s => adapter = s)
+/* hce parameter */ .Add("path=", "Loads HCE with custom profile path", s => path = s)
+/* hce parameter */ .Add("exec=", "Loads HCE with custom init file", s => exec = s)
+/* hce parameter */ .Add("vidmode=", "Loads HCE with custom res. and Hz", s => vidmode = s)
+/* hce parameter */ .Add("refresh=", "Loads HCE with custom refresh rate", s => refresh = s);
 
-            var input = options.Parse(args);
+            var input = options.Parse(args); // returns *unprocessed* input
 
             foreach (var i in input)
                 Info("Discovered CLI command: " + i);
+
+            if (new List<string>(args).Contains("--settings"))
+                Warn("Argument '--settings' does not exist. Did you mean '--config'?");
 
             var hce = new Executable();
 
             if (help)
             {
                 options.WriteOptionDescriptions(Out);
-                Exit(0);
+                WithCode(Code.Success);
+            }
+
+            if (!string.IsNullOrWhiteSpace(path))
+            {
+                hce.Profile.Path = path;
+                configuration = new Kernel.Configuration(Paths.Custom.Configuration(path));
             }
 
             if (test)
             {
                 // TODO: Move to Test.cs; reduce Program.cs bloat
-                var test_config = new Kernel.Configuration(Path.Combine(Path.GetTempPath(), "kernel.bin"));
-                Application app;
+                bool success;
                 try
                 {
                     Logs("Testing Settings window...");
-                    var test_settings = new Settings(test_config);
-                    app = new Application();
-                    _ = app.Run(test_settings);
-                    app.Shutdown();
-                    Logs("Settings Test: Succeeded");
+                    Settings test_settings = new(new Kernel.Configuration(Path.Combine(Path.GetTempPath(), "kernel.bin"))) { Topmost = false, ShowActivated = true };
+                    test_settings.Show();
+                    success = TryStartWindowAsApp(args, test_settings) && test_settings.IsActive;
+                    test_settings.Close();
+                    Logs(value: "Settings Test: " + (success ? "Succeeded" : "Failed"));
                 }
                 catch (Exception e)
                 {
                     Error("Settings window threw an exception!" + NewLine + e.ToString());
+                    throw;
                 }
 
                 try
                 {
                     Logs("Testing Positions window...");
-                    var test_positions = new Positions();
-                    app = new Application();
-                    _ = app.Run(test_positions);
-                    app.Shutdown();
-                    Logs("Positions Test: Succeeded");
+                    var test_positions = new Positions() { Topmost = false, ShowActivated = true };
+                    test_positions.Show();
+                    success = TryStartWindowAsApp(args, test_positions) && test_positions.IsActive;
+                    test_positions.Close();
+                    //string target = Path.Combine(CurrentDirectory, "positions.bin");
+                    //Positions.Run(source, target);
+                    Logs("TODO: Positions test requires an OpenSauce.User.xml file.");
+                    Logs("Positions Test: " + (success ? "Succeeded" : "Failed"));
                 }
                 catch (Exception e)
                 {
                     Error("Positions window threw an exception!" + NewLine + e.ToString());
+                    throw;
                 }
+                WithCode(Code.Success);
             }
 
             if (config)
             {
-                _ = new Application().Run(new Settings());
-                Exit(0);
+                if (TryStartWindowAsApp(args, new Settings(configuration ?? new Kernel.Configuration())))
+                    WithCode(Code.Success);
+                else
+                    WithCode(Code.Exception);
             }
 
             if (positions)
             {
-                _ = new Application().Run(new Positions());
-                Exit(0);
+                if (cli)
+                    CLI.Positions.Run();
+                else if (!TryStartWindowAsApp(args, new Positions()))
+                    WithCode(Code.Exception);
+
+                WithCode(Code.Success);
             }
 
             if (infer)
@@ -193,9 +296,9 @@ namespace HXE
                 };
 
                 Info($"Inferred the following Halo process: {descriptions[Process.Infer()]}");
-                Info("Press any key to exit.");
+                Info("Press Enter to exit");
                 _ = ReadLine();
-                Exit(0);
+                WithCode(Code.Success);
             }
 
             if (!string.IsNullOrWhiteSpace(install))
@@ -253,9 +356,9 @@ namespace HXE
                              " -- Looked in working directory, Program Files, and Registry." + NewLine +
                              " -- The working directory is " + CurrentDirectory + NewLine +
                              " -- Error:  " + NewLine +
-                             e.ToString() + NewLine;
-                var log = (File) Paths.Exception;
-                log.AppendAllText(msg);
+                             e.ToString();
+                var log = (File)Paths.Exception;
+                log.AppendAllText(msg + NewLine);
                 Error(msg);
             }
 
@@ -276,9 +379,6 @@ namespace HXE
 
             if (!string.IsNullOrWhiteSpace(adapter))
                 hce.Video.Adapter = byte.Parse(adapter);
-
-            if (!string.IsNullOrWhiteSpace(path))
-                hce.Profile.Path = path;
 
             if (!string.IsNullOrWhiteSpace(exec))
                 hce.Debug.Initiation = exec;
@@ -304,7 +404,7 @@ namespace HXE
              * Implicitly invoke the HXE kernel with the HCE loading procedure.
              */
 
-            Run(() => { Kernel.Invoke(hce); });
+            Run(() => Kernel.Invoke(hce));
 
             /**
              * This method is used for running code asynchronously and catching exceptions at the highest level.
@@ -320,7 +420,7 @@ namespace HXE
                 catch (Exception e)
                 {
                     var msg = " -- EXEC.START HALTED\n Error:  " + e.ToString() + "\n";
-                    var log = (File) Paths.Exception;
+                    var log = (File)Paths.Exception;
                     log.AppendAllText(msg);
                     Error(msg);
                     System.Console.Error.WriteLine("\n\n" + e.StackTrace);
@@ -339,7 +439,6 @@ namespace HXE
             string bannerBuildSource = release ? /// TODO: handle pre-releases
                 string.Format(BannerBuildSourceRelease, GitVersionInformation.MajorMinorPatch) :
                 string.Format(BannerBuildSourceCommit, GitVersionInformation.ShortSha);
-
 
             int longestStringLength = GetLongestStringLength(new string[]{
                 Banner,
@@ -376,7 +475,6 @@ namespace HXE
             /// Get the length of the longest line
             foreach (string line in lines)
             {
-
                 if (line.Length > longestStringLength)
                 {
                     longestStringLength = line.Length;

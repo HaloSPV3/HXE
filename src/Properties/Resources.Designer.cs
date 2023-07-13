@@ -61,32 +61,6 @@ namespace HXE.Properties {
         }
 
         /// <summary>
-        ///   Looks up a localized string similar to &quot;<br/>
-        /// _    ___   ________                      <br/>
-        ///| |  | \ \ / /  ____|                     <br/>
-        ///| |__| |\ V /| |__                        <br/>
-        ///|  __  | &gt; &lt; |  __|                 <br/>
-        ///| |  | |/ . \| |____                      <br/>
-        ///|_|  |_/_/ \_\______| :: Halo XE          <br/>
-        ///=================================         <br/>
-        ///A HCE wrapper and kernel for SPV3         <br/>
-        ///---------------------------------         <br/>
-        ///:: https://github.com/HaloSPV3/hxe        <br/>
-        ///---------------------------------         <br/>
-        ///                                                                           <br/>
-        ///HXE can be invoked with the following arguments:                           <br/>
-        ///                                                                           <br/>
-        ///      --config               Opens configuration GUI                       <br/>
-        ///      --positions            Opens positions GUI                           <br/>
-        ///      --load                 Initiat [rest of string was truncated]&quot;;.<br/>
-        /// </summary>
-        internal static string Banner {
-            get {
-                return ResourceManager.GetString("Banner", resourceCulture);
-            }
-        }
-
-        /// <summary>
         ///   Looks up a localized string similar to This binary has been compiled using build-{0}.
         /// </summary>
         internal static string BannerBuildNumber {
@@ -110,30 +84,6 @@ namespace HXE.Properties {
         internal static string BannerBuildSourceRelease {
             get {
                 return ResourceManager.GetString("BannerBuildSourceRelease", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized string similar to Patches for Halo CE v1.0.10
-        ///;orig SHA256: FEEA46FCE285EC071016CF5534ABE47ECF36F6CFAC8F1973EE6919851EA5A037
-        ///
-        ///Make large address aware
-        ///haloce.exe
-        ///;-----------------------
-        ///;Normally 32-bit applications can only use up to 2GB of RAM. This patch increases that limit to 4GB.
-        ///;It is required for some maps and mods.
-        ///;
-        ///;Set the IMAGE_FILE_LARGE_ADDRESS_AWARE characteristic flag in the PE header
-        ///00000136: 0F 2F
-        ///
-        ///Remove DRM and key checks
-        ///haloce.exe
-        ///;------------------------
-        ///;Allows playing and hosting  [rest of string was truncated]&quot;;.
-        /// </summary>
-        internal static string patches {
-            get {
-                return ResourceManager.GetString("patches", resourceCulture);
             }
         }
 

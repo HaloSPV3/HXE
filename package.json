@@ -1,5 +1,5 @@
 {
-  "name": "HXE",
+  "name": "hxe",
   "description": "Automate commit messages quality, automate changelog and release generation",
   "version": "1.0.0",
   "devDependencies": {
@@ -7,5 +7,111 @@
   },
   "scripts": {
     "prepare": "husky install"
+  },
+  "//": [
+    "commitlint.rules.scope-enum only applies to commit message headers matching the patter 'type(scope): ' or 'type(): '. It will not match 'type: '.",
+    "If a new Scope is desired, add it to the scopes array in `commitlint.rules.scope-enum`"
+  ],
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ],
+    "rules": {
+      "scope-enum": [
+        1,
+        "always",
+        [
+          "ci",
+          "codeql",
+          "contributing",
+          "cpr",
+          "deps-dev",
+          "deps",
+          "dpiutilities",
+          "editorconfig",
+          "gitversion",
+          "gui",
+          "hxe",
+          "npm",
+          "pull-requests",
+          "readme",
+          "release",
+          "renovate",
+          "self-test",
+          "semantic-release",
+          "usage",
+          "vscode"
+        ]
+      ]
+    }
+  },
+  "release": {
+    "branches": [
+      "main",
+      {
+        "name": "develop",
+        "channel": "alpha",
+        "prerelease": true
+      }
+    ],
+    "plugins": [
+      [
+        "@semantic-release/commit-analyzer",
+        {
+          "parserOpts": {
+            "noteKeywords": [
+              "BREAKING CHANGE",
+              "BREAKING CHANGES",
+              "BREAKING"
+            ]
+          },
+          "preset": "conventionalcommits",
+          "presetConfig": [],
+          "releaseRules": [
+            {
+              "type": "revert",
+              "subject": "!(feat|fix|perf)",
+              "release": false
+            },
+            {
+              "type": "revert",
+              "subject": "(build|chore|ci|docs|refactor|revert|style|test)",
+              "release": false
+            }
+          ]
+        }
+      ],
+      [
+        "@semantic-release/release-notes-generator",
+        {
+          "parserOpts": {
+            "noteKeywords": [
+              "BREAKING CHANGE",
+              "BREAKING CHANGES",
+              "BREAKING"
+            ]
+          },
+          "preset": "conventionalcommits",
+          "presetConfig": [],
+          "releaseRules": [
+            {
+              "type": "revert",
+              "subject": "!(feat|fix|perf)",
+              "release": false
+            }
+          ]
+        }
+      ],
+      [
+        "@semantic-release/github",
+        {
+          "assets": [
+            {
+              "path": "bin/release/publish"
+            }
+          ]
+        }
+      ]
+    ]
   }
 }

@@ -19,6 +19,7 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
@@ -61,25 +62,14 @@ namespace HXE.HCE
             {
                 fullName = hce.FullName;
             }
-            catch (System.Exception e)
+            catch (Exception e)
             {
-                var log = (File) Paths.Exception;
+                var log = (File)Paths.Exception;
                 log.AppendAllText("The inferred executable path was probably malformed or incomplete.\n Error: " + e + "\n");
-
-                using (System.Windows.Forms.OpenFileDialog ofd = new System.Windows.Forms.OpenFileDialog())
-                {
-                    ofd.InitialDirectory = GetFolderPath(SpecialFolder.Desktop);
-                    ofd.Filter = "Halo Custom Edition (haloce.exe)|haloce.exe|Halo Retail/Trial (halo.exe)|halo.exe";
-                    ofd.FilterIndex = 1;
-                    ofd.RestoreDirectory = true;
-
-                    if (ofd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-                        fullName = GetFullPath(ofd.FileName);
-                }
             }
 
             if (System.IO.File.Exists(fullName))
-                return (Executable) fullName;
+                return (Executable)fullName;
 
             throw new FileNotFoundException("Could not detect executable on the filesystem.");
         }

@@ -8,59 +8,26 @@
 
 function prebuild
 {
-    $minVer_isShallow = [version]'2.15.0.0';
-    $minVer_unshallow = [version]'2.1.4.0';
-    $gitBinVer = "";
     $isShallow = $true;
 
-    # 0. Announce
-    Write-Host  "0. GitVersion cannot determine the next version in shallow reposistories.`n",
-                "`tWe will use Git to determine if the current repository needs to be un-shallowed.`n",
-                "Checking if Git is available...";
+    # Announce
+    Write-Host "GitVersion requires unshallow repositories.`n",
+               "We will use Git to determine if the current repository needs to be un-shallowed.";
 
-    # 1. Ensure Git is available
-    try
-    {
-        Write-Host "1. Git was found.`n",
-        "It is $(git --version) at...`n",
-        (Get-Command -Name git).path
+    # Check if the repository is shallow
+    Write-Host "Checking if repository is shallow..."
+    $isShallow = git rev-parse --is-shallow-repository
 
-        $gitBinVer = [version]('{2}.{3}.{4}.{6}' -f (git --version).split(' ').split('.'))
-    }
-    catch
-    {
-        Write-Error "Git is not installed or it is not in PATH!";
-        throw
-    }
-
-    # 2. Check if the repository is shallow
-    Write-Host "2. Checking if repository is shallow..."
-    if ($gitBinVer -gt $minVer_isShallow) # GitVersion >= 2.15.0.0
-    {
-        $isShallow = git rev-parse --is-shallow-repository
-    }
-    else
-    {
-        Write-Debug "Git Version less than 2.15.0.0"
-        $isShallow = Test-Path (Join-Path $GitStatus.GitDir shallow)
-    }
-
-    # 3. If the repository is shallow, then unshallow
+    # If the repository is shallow, then unshallow
     if ($isShallow -eq $true)
     {
-        Write-Host "3. Repository is shallow. Fetching full history..."
-        if ($gitBinVer -lt $minVer_unshallow) # GitVersion < 2.1.4.0 (exact version unknown)
-        {
-            git fetch --depth=0;
-        }
-        else {
-            git fetch --unshallow
-        }
+        Write-Warning "Repository is shallow. Fetching full history..."
+        git fetch --unshallow
         Write-Host "Fetch Completed. Proceeding to Build...`n"
     }
     else
     {
-        Write-Host "3. Repository is complete. Proceeding to Build..."
+        Write-Host "Repository is complete. Proceeding to Build..."
     }
 }
 
