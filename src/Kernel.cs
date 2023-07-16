@@ -44,36 +44,6 @@ namespace HXE
     /// </summary>
     public static class Kernel
     {
-        [DllImport("USER32.DLL", EntryPoint = "SetWindowPos")]
-        public static extern IntPtr SetWindowPos
-        (
-          IntPtr hWnd, int hWndInsertAfter, int x, int Y, int cx, int cy, int wFlags
-        );
-
-        [DllImport("USER32.DLL")]
-        private static extern int SetWindowLong(IntPtr hWnd, int nIndex, int dwNewLong);
-
-        [DllImport("USER32.DLL")]
-        private static extern int GetWindowLong(IntPtr hWnd, int nIndex);
-
-        /// <summary><see href="https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-getsystemmetrics"/></summary>
-        [DllImport("USER32.DLL")]
-        internal static extern int GetSystemMetrics(int nIndex);
-
-        /// <summary>The width of the screen of the primary display monitor, in pixels.This is the same value obtained by calling GetDeviceCaps as follows: <c>GetDeviceCaps(hdcPrimaryMonitor, HORZRES)</c>.</summary>
-        internal const int SM_CXSCREEN = 0;
-        /// <summary>The height of the screen of the primary display monitor, in pixels. This is the same value obtained by calling GetDeviceCaps as follows: <c>GetDeviceCaps( hdcPrimaryMonitor, VERTRES)</c>./// </summary>
-        internal const int SM_CYSCREEN = 1;
-
-        [DllImport("KERNEL32.DLL")]
-        public static extern IntPtr OpenProcess(int dwDesiredAccess, bool bInheritHandle, int dwProcessId);
-
-        [DllImport("KERNEL32.DLL")]
-        public static extern bool ReadProcessMemory
-        (
-          int hProcess, int lpBaseAddress, byte[] lpBuffer, int dwSize, ref int lpNumberOfBytesRead
-        );
-
         /// <summary>
         ///   Loads HCE executable in the working directory.
         /// </summary>
