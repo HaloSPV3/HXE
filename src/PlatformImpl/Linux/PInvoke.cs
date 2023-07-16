@@ -1,8 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Runtime.InteropServices;
 using System.Threading;
 
 namespace HXE.PlatformImpl.Linux;
@@ -17,8 +13,7 @@ namespace HXE.PlatformImpl.Linux;
 
 internal static class PInvoke
 {
-    //[DllImport("libxrandr.so.2")]
-    //public static void
+    // Screens can be acquired via xrandr (cli), libxrandr, or Wayland protocol
 
     public static (uint w, uint h) GetScreenResolutionFromXrandr()
     {
