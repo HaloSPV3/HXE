@@ -1,4 +1,4 @@
-﻿# editorconfig.org
+# editorconfig.org
 # You can learn more about editorconfig here: https://docs.microsoft.com/en-us/visualstudio/ide/editorconfig-code-style-settings-reference
 
 # top-most EditorConfig file
@@ -17,8 +17,11 @@ insert_final_newline = true
 [.editorconfig]
 insert_final_newline = true
 
-[*.{xml,xaml}]
-indent_style = tab
+[*.{xml,xaml,axaml}]
+indent_style = space
+max_line_length = off
+xml_alignment_tab_fill_style = use_spaces
+xml_pi_attributes_indent = align_by_first_attribute
 
 [project.json]
 indent_size = 2
