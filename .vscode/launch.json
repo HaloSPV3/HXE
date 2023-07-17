@@ -40,6 +40,18 @@
             "requireExactSource": false
         },
         {
+            "name": ".NET Core Launch (console, --liveViewAll)",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/bin/Debug/Latest/HXE.dll",
+            "args": [
+                "--liveViewAll"
+            ],
+            "cwd": "${workspaceFolder}/bin/Debug/Latest/",
+            "enableStepFiltering": false
+        },
+        {
             "name": ".NET Core Launch (console, --positions)",
             "type": "coreclr",
             "request": "launch",
