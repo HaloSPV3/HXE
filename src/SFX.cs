@@ -30,7 +30,6 @@ using static System.IO.Compression.CompressionMode;
 using static System.IO.FileMode;
 using static System.IO.Path;
 using static System.IO.SeekOrigin;
-using static System.Reflection.Assembly;
 using static System.Text.Encoding;
 using static HXE.Console;
 
@@ -366,7 +365,7 @@ namespace HXE
 			public string        Filter { get; set; } = "*";
 
 			public FileInfo Executable { get; set; } = new FileInfo(System.AppContext.BaseDirectory
-			                                                        ?? throw new InvalidOperationException());
+																	?? throw new InvalidOperationException());
 		}
 	}
 }

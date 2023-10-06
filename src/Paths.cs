@@ -19,7 +19,6 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-using static System.Diagnostics.Process;
 using static System.Environment;
 using static System.Environment.SpecialFolder;
 using static System.IO.File;
@@ -34,11 +33,12 @@ namespace HXE
     {
         public const string Executable = "hxe.exe";
         public const string Manifest = "manifest.bin";
+        public const string ConfigNameAndExt = "kernel-0x05.bin";
 
         public static readonly string ProgFiles = GetFolderPath(ProgramFilesX86) ?? GetFolderPath(ProgramFiles);
-        public static readonly string StartDirectory = Combine(GetDirectoryName(GetCurrentProcess().MainModule.FileName));
+        public static readonly string StartDirectory = Combine(GetDirectoryName(ProcessPath));
         public static readonly string Directory = Combine(GetFolderPath(ApplicationData), "HXE");
-        public static readonly string Configuration = Combine(Directory, "kernel-0x05.bin");
+        public static readonly string Configuration = Combine(Directory, ConfigNameAndExt);
         public static readonly string Exception = Combine(Directory, "exception.log");
         public static readonly string Positions = Combine(CurrentDirectory, "positions.bin");
         public static readonly string DSOAL = Combine(CurrentDirectory, "dsoal-aldrv.dll");
@@ -98,6 +98,11 @@ namespace HXE
 
         public class Custom
         {
+            public static string Configuration(string directory)
+            {
+                return Combine(directory, ConfigNameAndExt);
+            }
+
             public static string Profiles(string directory)
             {
                 return Combine(directory, "savegames");
@@ -180,9 +185,11 @@ namespace HXE
 
             public static readonly string SteamDefault = Combine(ProgFiles, "Steam");
 
-            public static string Directory = SteamDefault; /// Change via SetSteam(steamexepath)
+            /// <summary>Change via SetSteam(steamexepath)</summary>
+            public static string Directory = SteamDefault;
             public static string Libraries = Combine(Directory, "steamapps", "libraryfolders.vdf");
-            public static string Library = Directory;    /// Change directly or by assigning an element from Libraries.LibList[]
+            /// <summary>Change directly or by assigning an element from <see cref="HXE.Steam.Libraries.LibList"/></summary>
+            public static string Library = Directory;
 
             public static void SetSteam(string steamexepath)
             {

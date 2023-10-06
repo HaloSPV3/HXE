@@ -64,7 +64,7 @@ namespace HXE
             using (var reader = new StringReader(ReadAllText()))
             {
                 var serialiser = new XmlSerializer(typeof(OpenSauce));
-                var serialised = (OpenSauce) serialiser.Deserialize(reader);
+                var serialised = (OpenSauce)serialiser.Deserialize(reader);
 
                 CacheFiles = serialised.CacheFiles;
                 Rasterizer = serialised.Rasterizer;
@@ -260,7 +260,7 @@ namespace HXE
 
                 public class VersionCheckDate
                 {
-                    public int Day { get; set; } = (int) DateTime.Now.DayOfWeek;
+                    public int Day { get; set; } = (int)DateTime.Now.DayOfWeek;
                     public int Month { get; set; } = DateTime.Now.Month;
                     public int Year { get; set; } = DateTime.Now.Year;
                 }
@@ -315,7 +315,7 @@ namespace HXE
 
                         using (var reader = new StringReader(Unicode.GetString(inflatedStream.ToArray())))
                         {
-                            Positions = (List<PositionWeapon>) new XmlSerializer(typeof(List<PositionWeapon>)).Deserialize(reader);
+                            Positions = (List<PositionWeapon>)new XmlSerializer(typeof(List<PositionWeapon>)).Deserialize(reader);
                         }
                     }
                 }

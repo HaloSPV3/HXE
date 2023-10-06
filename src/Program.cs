@@ -1,6 +1,6 @@
 /**
  * Copyright (c) 2019 Emilian Roman
- * Copyright (c) 2021 Noah Sherwin
+ * Copyright (c) 2023 Noah Sherwin
  *
  * This software is provided 'as-is', without any express or implied
  * warranty. In no event will the authors be held liable for any damages
@@ -22,7 +22,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Reflection;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using HXE.HCE;
@@ -39,6 +39,43 @@ namespace HXE
     /// </summary>
     internal static class Program
     {
+        internal const string Banner = @"
+ _    ___   ________
+| |  | \ \ / /  ____|
+| |__| |\ V /| |__
+|  __  | > < |  __|
+| |  | |/ . \| |____
+|_|  |_/_/ \_\______| :: Halo XE
+=================================
+A HCE wrapper and kernel for SPV3
+---------------------------------
+:: https://github.com/HaloSPV3/hxe
+---------------------------------
+
+HXE can be invoked with the following arguments:
+
+      --help                 Displays commands list
+      --test                 Start a dry run of HXE to self-test
+      --config               Opens configuration GUI
+      --positions            Opens positions GUI
+      --cli                  Opens CLI instead of GUI where available
+      --install=VALUE        Installs HCE/SPV3 to destination
+      --compile=VALUE        Compiles HCE/SPV3 to destination
+      --update=VALUE         Updates directory using manifest
+      --registry=VALUE       Write to Windows Registry
+      --infer                Infer the running Halo executable
+      --console              Loads HCE with console mode
+      --devmode              Loads HCE with developer mode
+      --screenshot           Loads HCE with screenshot ability
+      --window               Loads HCE in window mode
+      --nogamma              Loads HCE without gamma overriding
+      --adapter=VALUE        Loads HCE on monitor X
+      --path=VALUE           Loads HCE with custom profile path
+      --exec=VALUE           Loads HCE with custom init file
+      --vidmode=VALUE        Loads HCE with video mode
+      --refresh=VALUE        Loads HCE with custom refresh rate
+";
+
         /// <summary>
         ///   HXE entry.
         /// </summary>
@@ -60,6 +97,7 @@ namespace HXE
         ///   --test              Start a dry run of HXE to self-test           <br/>
         ///   --config            Opens configuration GUI                       <br/>
         ///   --positions         Opens first-person model positions GUI        <br/>
+        ///   --cli               Opens CLI instead of GUI where available      <br/>
         ///   --install=VALUE     Installs HCE/SPV3   to destination            <br/>
         ///   --compile=VALUE     Compiles HCE/SPV3   to destination            <br/>
         ///   --update=VALUE      Updates directory with specified manifest     <br/>
@@ -76,6 +114,7 @@ namespace HXE
         ///   --vidmode=VALUE     Loads HCE           with custom res. and Hz   <br/>
         ///   --refresh=VALUE     Loads HCE           with custom refresh rate  <br/>
         /// </param>
+        /// TODO: implement --silent to run CLI without user prompts;
         private static void InvokeProgram(string[] args)
         {
             Directory.CreateDirectory(Paths.Directory);
@@ -84,6 +123,7 @@ namespace HXE
             var test = false;            /* Start a dry run of HXE to self-test */
             var config = false;          /* Opens configuration GUI             */
             var positions = false;       /* Opens positions GUI                 */
+            var cli = false;             /* Opens CLI instead of GUI where available */
             var install = string.Empty;  /* Installs HCE/SPV3 to destination    */
             var compile = string.Empty;  /* Compiles HCE/SPV3 to destination    */
             var update = string.Empty;   /* Updates directory using manifest    */
@@ -102,9 +142,10 @@ namespace HXE
 
             var options = new OptionSet()
               .Add("help", "Displays commands list", s => help = s != null)                                  /* hxe command   */
-              .Add("test", "Start a dry run of HXE to self-test", s => test =s != null)                      /* hxe command   */
+              .Add("test", "Start a dry run of HXE to self-test", s => test = s != null)                     /* hxe command   */
               .Add("config", "Opens configuration GUI", s => config = s != null)                             /* hxe command   */
               .Add("positions", "Opens positions GUI", s => positions = s != null)                           /* hxe command   */
+              .Add("cli", "Enable CLI of Positions or Config", s => cli = s != null)                         /* hxe parameter */
               .Add("install=", "Installs HCE/SPV3 to destination", s => install = s)                         /* hxe parameter */
               .Add("compile=", "Compiles HCE/SPV3 to destination", s => compile = s)                         /* hxe parameter */
               .Add("update=", "Updates directory using manifest", s => update = s)                           /* hxe parameter */
@@ -127,11 +168,18 @@ namespace HXE
                 Info("Discovered CLI command: " + i);
 
             var hce = new Executable();
+            Kernel.Configuration? configuration = null;
 
             if (help)
             {
                 options.WriteOptionDescriptions(Out);
-                Exit(0);
+                WithCode(Code.Success);
+            }
+
+            if (!string.IsNullOrWhiteSpace(path))
+            {
+                hce.Profile.Path = path;
+                configuration = new Kernel.Configuration(Paths.Custom.Configuration(path));
             }
 
             if (test)
@@ -151,6 +199,7 @@ namespace HXE
                 catch (Exception e)
                 {
                     Error("Settings window threw an exception!" + NewLine + e.ToString());
+                    throw;
                 }
 
                 try
@@ -160,24 +209,36 @@ namespace HXE
                     app = new Application();
                     _ = app.Run(test_positions);
                     app.Shutdown();
+                    //string target = Path.Combine(CurrentDirectory, "positions.bin");
+                    //Positions.Run(source, target);
+                    Logs("TODO: Positions test requires an OpenSauce.User.xml file.");
                     Logs("Positions Test: Succeeded");
                 }
                 catch (Exception e)
                 {
                     Error("Positions window threw an exception!" + NewLine + e.ToString());
+                    throw;
                 }
+                WithCode(Code.Success);
             }
 
             if (config)
             {
                 _ = new Application().Run(new Settings());
-                Exit(0);
+                WithCode(Code.Success);
             }
 
             if (positions)
             {
-                _ = new Application().Run(new Positions());
-                Exit(0);
+                if (cli)
+                {
+                    CLI.Positions.Run();
+                }
+                else
+                {
+                    _ = new Application().Run(new Positions());
+                }
+                WithCode(Code.Success);
             }
 
             if (infer)
@@ -193,9 +254,9 @@ namespace HXE
                 };
 
                 Info($"Inferred the following Halo process: {descriptions[Process.Infer()]}");
-                Info("Press any key to exit.");
+                Info("Press Enter to exit");
                 _ = ReadLine();
-                Exit(0);
+                WithCode(Code.Success);
             }
 
             if (!string.IsNullOrWhiteSpace(install))
@@ -253,9 +314,9 @@ namespace HXE
                              " -- Looked in working directory, Program Files, and Registry." + NewLine +
                              " -- The working directory is " + CurrentDirectory + NewLine +
                              " -- Error:  " + NewLine +
-                             e.ToString() + NewLine;
-                var log = (File) Paths.Exception;
-                log.AppendAllText(msg);
+                             e.ToString();
+                var log = (File)Paths.Exception;
+                log.AppendAllText(msg + NewLine);
                 Error(msg);
             }
 
@@ -276,9 +337,6 @@ namespace HXE
 
             if (!string.IsNullOrWhiteSpace(adapter))
                 hce.Video.Adapter = byte.Parse(adapter);
-
-            if (!string.IsNullOrWhiteSpace(path))
-                hce.Profile.Path = path;
 
             if (!string.IsNullOrWhiteSpace(exec))
                 hce.Debug.Initiation = exec;
@@ -304,7 +362,7 @@ namespace HXE
              * Implicitly invoke the HXE kernel with the HCE loading procedure.
              */
 
-            Run(() => { Kernel.Invoke(hce); });
+            Run(() => Kernel.Invoke(hce));
 
             /**
              * This method is used for running code asynchronously and catching exceptions at the highest level.
@@ -320,7 +378,7 @@ namespace HXE
                 catch (Exception e)
                 {
                     var msg = " -- EXEC.START HALTED\n Error:  " + e.ToString() + "\n";
-                    var log = (File) Paths.Exception;
+                    var log = (File)Paths.Exception;
                     log.AppendAllText(msg);
                     Error(msg);
                     System.Console.Error.WriteLine("\n\n" + e.StackTrace);
@@ -339,7 +397,6 @@ namespace HXE
             string bannerBuildSource = release ? /// TODO: handle pre-releases
                 string.Format(BannerBuildSourceRelease, GitVersionInformation.MajorMinorPatch) :
                 string.Format(BannerBuildSourceCommit, GitVersionInformation.ShortSha);
-
 
             int longestStringLength = GetLongestStringLength(new string[]{
                 Banner,
@@ -376,7 +433,6 @@ namespace HXE
             /// Get the length of the longest line
             foreach (string line in lines)
             {
-
                 if (line.Length > longestStringLength)
                 {
                     longestStringLength = line.Length;
