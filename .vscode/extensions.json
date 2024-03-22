@@ -52,5 +52,6 @@
         "rogalmic.vscode-xml-complete",
         "dotjoshjohnson.xml",
         "joshbolduc.commitlint",
+        "ms-dotnettools.csdevkit",
     ]
 }
