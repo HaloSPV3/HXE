@@ -53,5 +53,6 @@
         "dotjoshjohnson.xml",
         "joshbolduc.commitlint",
         "ms-dotnettools.csdevkit",
+        "avaloniateam.vscode-avalonia",
     ]
 }
