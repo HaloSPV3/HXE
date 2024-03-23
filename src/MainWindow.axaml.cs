@@ -56,9 +56,9 @@ public partial class MainWindow : Window
 
     private void QueryExistingWindows()
     {
-        if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktopStyleApplicationLifetime)
+        if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime lifetime)
         {
-            foreach (var w in desktopStyleApplicationLifetime.Windows)
+            foreach (var w in lifetime.Windows)
             {
                 if (_settings is null && w is Settings settings)
                     _settings = settings;
