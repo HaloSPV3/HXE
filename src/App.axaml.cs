@@ -4,7 +4,7 @@ using Avalonia.Markup.Xaml;
 
 namespace HXE;
 
-public partial class App : Application
+public class App : Application
 {
     /// <summary>Null when not initialized or when Avalonia.Application.Current is not HXE.App</summary>
     public static new App? Current => Application.Current as App;
