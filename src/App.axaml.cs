@@ -1,3 +1,4 @@
+using System;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
@@ -17,9 +18,10 @@ public class App : Application
     public override void OnFrameworkInitializationCompleted()
     {
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
-        {
-            desktop.MainWindow = new MainWindow();
-        }
+            desktop.MainWindow ??= new MainWindow();
+        else if (ApplicationLifetime is ISingleViewApplicationLifetime singleView)
+            singleView.MainView = new MainWindow();
+        else throw new NotSupportedException($"HXE's {nameof(App)} does not support running {nameof(ApplicationLifetime)} of type '{ApplicationLifetime?.GetType().FullName ?? "<null>"}'.");
 
         base.OnFrameworkInitializationCompleted();
     }
