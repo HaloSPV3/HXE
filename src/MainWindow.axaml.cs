@@ -21,7 +21,7 @@ public partial class MainWindow : Window
         {
             if (_settings is null)
             {
-                queryExistingWindows();
+                QueryExistingWindows();
                 if (_settings is null)
                     _settings = new();
             }
@@ -35,7 +35,7 @@ public partial class MainWindow : Window
         {
             if (_positions is null)
             {
-                queryExistingWindows();
+                QueryExistingWindows();
                 if (_positions is null)
                     _positions = new();
             }
@@ -54,7 +54,7 @@ public partial class MainWindow : Window
         Positions.Show(this);
     }
 
-    private void queryExistingWindows()
+    private void QueryExistingWindows()
     {
         if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktopStyleApplicationLifetime)
         {
