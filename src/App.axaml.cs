@@ -2,6 +2,9 @@ using System;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
+using Avalonia.Reactive;
+using ReactiveUI;
+
 
 namespace HXE;
 
@@ -22,6 +25,14 @@ public class App : Application
         else if (ApplicationLifetime is ISingleViewApplicationLifetime singleView)
             singleView.MainView = new MainWindow();
         else throw new NotSupportedException($"HXE's {nameof(App)} does not support running {nameof(ApplicationLifetime)} of type '{ApplicationLifetime?.GetType().FullName ?? "<null>"}'.");
+
+        // Here we subscribe to ReactiveUI default exception handler to avoid app
+        // termination in case if we do something wrong in our view models. See:
+        // https://www.reactiveui.net/docs/handbook/default-exception-handler/
+        //
+        // In case if you are using another MV* framework, please refer to its
+        // documentation explaining global exception handling.
+        RxApp.DefaultExceptionHandler = new AnonymousObserver<Exception>(ex => Console.Error(ex.ToString()));
 
         base.OnFrameworkInitializationCompleted();
     }
