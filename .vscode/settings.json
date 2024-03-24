@@ -113,5 +113,7 @@
             "enabled": false
         }
     ],
-    "sarif-viewer.connectToGithubCodeScanning": "off"
+    "yaml.schemas": {
+        "https://raw.githubusercontent.com/GitTools/GitVersion/main/schemas/5.12/GitVersion.configuration.json": "file:///c%3A/Repos/HaloSPV3/HXE/GitVersion.yml"
+    }
 }
