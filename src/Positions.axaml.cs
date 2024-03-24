@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Copyright (c) 2019 Emilian Roman
  * Copyright (c) 2023 Noah Sherwin
  *
@@ -26,7 +26,7 @@ using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Platform.Storage;
-using MessageBox.Avalonia;
+using MsBox.Avalonia;
 using static HXE.Console;
 
 namespace HXE
@@ -144,13 +144,13 @@ namespace HXE
         private void ShowError(string v) // TODO refactor to public or internal class. I'll probably use it everywhere where I need an error message dialog box.
         {
             Error(v);
-            MessageBoxManager.GetMessageBoxStandardWindow(new MessageBox.Avalonia.DTO.MessageBoxStandardParams()
+            MessageBoxManager.GetMessageBoxStandard(new MsBox.Avalonia.Dto.MessageBoxStandardParams()
             {
-                Icon = MessageBox.Avalonia.Enums.Icon.Error,
+                Icon = MsBox.Avalonia.Enums.Icon.Error,
                 ContentTitle = "Error",
                 WindowStartupLocation = WindowStartupLocation.CenterOwner,
                 ContentMessage = v
-            }).ShowDialog(this);
+            }).ShowWindowDialogAsync(this);
         }
     }
 }
