@@ -6,7 +6,7 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>net6.0</TargetFramework>
     <!-- <TargetFrameworks>net6.0;net7.0</TargetFrameworks> --> <!-- If encountering weird build issues, try commenting-out this property -->
-    <RuntimeIdentifiers>win7-x64;win7-x86;linux-x64;linux-musl-x64</RuntimeIdentifiers><!-- We only publish for win7-x86 and linux-x64. Win7-x64 is present for 64-bit-only debuggers -->
+    <RuntimeIdentifiers>win7-x64;win7-x86;win-arm64;linux-x64;linux-arm64</RuntimeIdentifiers><!-- We only publish for win7-x86 and linux-x64. Win7-x64 is present for 64-bit-only debuggers -->
     <StartupObject>HXE.Program</StartupObject>
     <AssemblyName>HXE</AssemblyName>
     <RootNamespace>HXE</RootNamespace>
