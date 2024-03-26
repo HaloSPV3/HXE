@@ -3,6 +3,7 @@ using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Avalonia.Reactive;
+using HotAvalonia;
 using ReactiveUI;
 
 
@@ -15,6 +16,7 @@ public class App : Application
 
     public override void Initialize()
     {
+        this.EnableHotReload();
         AvaloniaXamlLoader.Load(this);
     }
 
