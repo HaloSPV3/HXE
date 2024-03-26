@@ -26,7 +26,6 @@ public class App : Application
             desktop.MainWindow ??= new MainWindow();
         else if (ApplicationLifetime is ISingleViewApplicationLifetime singleView)
             singleView.MainView = new MainWindow();
-        else throw new NotSupportedException($"HXE's {nameof(App)} does not support running {nameof(ApplicationLifetime)} of type '{ApplicationLifetime?.GetType().FullName ?? "<null>"}'.");
 
         // Here we subscribe to ReactiveUI default exception handler to avoid app
         // termination in case if we do something wrong in our view models. See:
