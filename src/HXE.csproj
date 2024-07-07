@@ -20,6 +20,7 @@
     <!-- Publish -->
     <IsTrimmable>true</IsTrimmable>
     <!-- Misc -->
+    <Description>A HCE wrapper and SPV3 loader</Description>
     <ProjectGuid>{ACAA5D9F-B23D-43E1-B2DF-8C03230975A1}</ProjectGuid>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <ProductName>HXE</ProductName>
@@ -70,7 +71,7 @@
     <Company>github/HaloSPV3</Company>
     <ProductName>HXE</ProductName>
     <Product>$(ProductName)</Product>
-    <Description>A HCE wrapper and SPV3 loader</Description>
+    <PackageDescription>$(Description)</PackageDescription>
     <Copyright>Copyright © 2024 Noah Sherwin</Copyright>
     <PackageLicenseExpression>Zlib</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/HaloSPV3/HXE</PackageProjectUrl>
