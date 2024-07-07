@@ -3,7 +3,7 @@
     <OutputPath>..\bin\$(Configuration)</OutputPath>
     <Platform>AnyCPU</Platform>
     <Prefer32Bit>false</Prefer32Bit>
-    <OutputType>Exe</OutputType>
+    <OutputType>WinExe</OutputType>
     <TargetFramework>net6.0</TargetFramework>
     <!-- <TargetFrameworks>net6.0;net7.0</TargetFrameworks> --> <!-- If encountering weird build issues, try commenting-out this property -->
     <RuntimeIdentifiers>win7-x64;win7-x86;win-arm64;linux-x64;linux-arm64</RuntimeIdentifiers><!-- We only publish for win7-x86 and linux-x64. Win7-x64 is present for 64-bit-only debuggers -->
@@ -70,7 +70,7 @@
     <ProductName>HXE</ProductName>
     <Product>$(ProductName)</Product>
     <Description>A HCE wrapper and SPV3 loader</Description>
-    <Copyright>Copyright © 2023 Noah Sherwin</Copyright>
+    <Copyright>Copyright © 2024 Noah Sherwin</Copyright>
     <PackageLicenseExpression>Zlib</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/HaloSPV3/HXE</PackageProjectUrl>
     <PackageIconUrl>https://github.com/HaloSPV3/HXE/blob/main/src/Assets/icon.png</PackageIconUrl>
