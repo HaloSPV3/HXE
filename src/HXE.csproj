@@ -27,7 +27,6 @@
     <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
     <InvariantGlobalization>true</InvariantGlobalization>
     <Nullable>enable</Nullable>
-    <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
     <ApplicationManifest>app.manifest</ApplicationManifest> <!-- Windows only. Used for defining supported OSs. https://learn.microsoft.com/en-us/windows/win32/sbscs/application-manifests#supportedos -->
     <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
     <GenerateFullPaths>true</GenerateFullPaths>
