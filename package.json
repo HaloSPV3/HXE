@@ -7,6 +7,6 @@
     "@halospv3/hce.shared": "github:HaloSPV3/HCE.Shared"
   },
   "scripts": {
-    "prepare": "husky install"
+    "prepare": "husky"
   }
 }
