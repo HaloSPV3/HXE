@@ -35,8 +35,6 @@ jobs:
 
     # Authenticates packages to push to GPR
     - uses: actions/setup-dotnet@v5.1.0
-      with:
-        dotnet-version: "6.0.x"
 
     - name: Add GitHub Package Repository
       run: dotnet nuget add source https://nuget.pkg.github.com/HaloSPV3/index.json -n "github" -u USERNAME -p ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text
