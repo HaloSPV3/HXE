@@ -3,6 +3,7 @@
   "description": "Automate commit messages quality, automate changelog and release generation",
   "version": "1.0.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "prepare": "husky"
   },
