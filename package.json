@@ -2,6 +2,7 @@
   "name": "hxe",
   "description": "Automate commit messages quality, automate changelog and release generation",
   "version": "1.0.0",
+  "private": true,
   "devDependencies": {
     "@halospv3/hce.shared": "github:HaloSPV3/HCE.Shared"
   },
