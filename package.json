@@ -3,10 +3,12 @@
   "description": "Automate commit messages quality, automate changelog and release generation",
   "version": "1.0.0",
   "private": true,
-  "devDependencies": {
-    "@halospv3/hce.shared": "github:HaloSPV3/HCE.Shared"
-  },
   "scripts": {
     "prepare": "husky"
+  },
+  "devDependencies": {
+    "@halospv3/hce.shared-config": "^3.4.0",
+    "@tsconfig/node24": "^24.0.4",
+    "@types/node": "^25.2.1"
   }
 }
