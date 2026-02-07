@@ -1,0 +1,14 @@
+{
+  "extends": "@halospv3/hce.shared-config/tsconfig.base.json",
+  "compilerOptions": {
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
+    "target": "ES2024",
+    "strict": true
+  },
+  "exclude": [
+    "node_modules",
+    "**/node_modules/*"
+  ],
+  "include": [".releaserc.ts"]
+}
