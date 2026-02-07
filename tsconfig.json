@@ -1,14 +1,40 @@
 {
-  "extends": "@halospv3/hce.shared-config/tsconfig.base.json",
+  "compileOnSave": true,
   "compilerOptions": {
     "module": "nodenext",
-    "moduleResolution": "nodenext",
     "target": "ES2024",
-    "strict": true
+    "strict": true,
+    "composite": true,
+    "declarationMap": true,
+    "emitDeclarationOnly": true,
+    "forceConsistentCasingInFileNames": true,
+    "isolatedModules": true,
+    "noEmitOnError": true,
+    "noErrorTruncation": true,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitOverride": true,
+    "noImplicitReturns": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "noUncheckedIndexedAccess": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "sourceMap": true,
+    "verbatimModuleSyntax": true,
+    "allowJs": true,
+    "lib": [
+      "es2024",
+      "ESNext.Array",
+      "ESNext.Collection",
+      "ESNext.Error",
+      "ESNext.Iterator",
+      "ESNext.Promise"
+    ]
   },
   "exclude": [
     "node_modules",
     "**/node_modules/*"
   ],
-  "include": [".releaserc.ts"]
+  "include": [".releaserc.ts", "commitlint.config.js"]
 }
