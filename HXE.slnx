@@ -1,3 +1,5 @@
 <Solution>
-  <Project Path="HXE.csproj" />
+  <Folder Name="/src/">
+    <Project Path="src/HXE.csproj" />
+  </Folder>
 </Solution>
