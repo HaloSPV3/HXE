@@ -14,11 +14,13 @@
     <!-- Build | General -->
     <Deterministic>true</Deterministic>
     <!-- Build | Events -->
-    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent> <!-- Ensures GitVersion, SourceLink tasks only run after successful builds -->
+    <!-- Ensures GitVersion, SourceLink tasks only run after successful builds -->
+    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
     <!-- Build | Strong Naming -->
     <!-- Publish -->
     <IsTrimmable>true</IsTrimmable>
-    <!--<PublishTrimmed>true</PublishTrimmed> --> <!-- Waiting for trim-compatible WPF -->
+    <!-- Waiting for trim-compatible WPF -->
+    <!--<PublishTrimmed>true</PublishTrimmed> -->
     <PublishSingleFile>true</PublishSingleFile>
     <RuntimeIdentifier Condition="'$(RuntimeIdentifier)' == '' AND '$(PublishSingleFile)' == 'true'">win7-x86</RuntimeIdentifier>
     <SelfContained Condition="'$(SelfContained)' == '' AND '$(RuntimeIdentifier)' != ''">true</SelfContained>
@@ -48,9 +50,12 @@
     <EnableCompressionInSingleFile Condition="$(TargetFramework.Contains('net6'))">true</EnableCompressionInSingleFile>
   </PropertyGroup>
   <PropertyGroup Label="Nuget Properties">
-    <!-- <PackageId>PackageId</PackageId> --><!-- TODO -->
-    <!-- <Title>PackageId</Title> --><!-- TODO -->
-    <!-- <Version>1.0.0</Version> --> <!-- Autofilled by GitVersion -->
+    <!-- TODO -->
+    <!-- <PackageId>PackageId</PackageId> -->
+    <!-- TODO -->
+    <!-- <Title>PackageId</Title> -->
+    <!-- Set by GitVersion -->
+    <!-- <Version>1.0.0</Version> -->
     <Authors>HaloSPV3</Authors>
     <Company>github/HaloSPV3</Company>
     <ProductName>HXE</ProductName>
@@ -63,7 +68,8 @@
     <PackageIcon>icon.png</PackageIcon>
     <PackageTags>Halo</PackageTags>
     <PackageReadmeFile>readme.md</PackageReadmeFile>
-    <!-- <PackageReleaseNotes>http://Your.ReleaseNotes.Url</PackageReleaseNotes> --><!-- TODO -->
+    <!-- TODO -->
+    <!-- <PackageReleaseNotes>http://Your.ReleaseNotes.Url</PackageReleaseNotes> -->
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <RepositoryUrl>https://github.com/HaloSPV3/HXE</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
