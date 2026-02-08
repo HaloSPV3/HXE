@@ -533,20 +533,20 @@ namespace HXE
                         if (System.IO.File.Exists(DSOAL))
                         {
                             blam.Audio.HWA = true;
-                            blam.Audio.EAX = true;
+                            blam.Audio.EAX = true; // DevSkim: ignore DS187371
 
-                            Core("BLAM.AUDIO.ENHANCEMENTS: Enabled Hardware Acceleration & EAX.");
+                            Core("BLAM.AUDIO.ENHANCEMENTS: Enabled Hardware Acceleration & EAX."); // DevSkim: ignore DS187371
                         }
                         else
                         {
                             blam.Audio.HWA = false;
-                            blam.Audio.EAX = false;
+                            blam.Audio.EAX = false; // DevSkim: ignore DS187371
 
-                            Core("BLAM.AUDIO.ENHANCEMENTS: DSOAL not found. Refusing to enable HWA & EAX..");
+                            Core("BLAM.AUDIO.ENHANCEMENTS: DSOAL not found. Refusing to enable HWA & EAX.."); // DevSkim: ignore DS187371
                         }
 
                         Debug("BLAM.AUDIO.ENHANCEMENTS: HWA - " + blam.Audio.HWA);
-                        Debug("BLAM.AUDIO.ENHANCEMENTS: EAX - " + blam.Audio.EAX);
+                        Debug("BLAM.AUDIO.ENHANCEMENTS: EAX - " + blam.Audio.EAX); // DevSkim: ignore DS187371
                     }
 
                     Core("BLAM.AUDIO: Audio enhancements have been applied accordingly.");
