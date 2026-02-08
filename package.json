@@ -5,7 +5,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "postinstall": "husky"
+    "postinstall": "husky",
+    "test": "dotnet test"
   },
   "devDependencies": {
     "@halospv3/hce.shared-config": "^3.4.0",
