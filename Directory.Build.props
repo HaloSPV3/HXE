@@ -5,7 +5,6 @@
   <Import Project="$(HCESharedDir)/dotnet/HCE.Shared.targets"/>
 
   <PropertyGroup>
-    <GitVersionPath>$(HCESharedDir)dotnet/GitVersion6.0.yml</GitVersionPath>
     <EnableWindowsTargeting>true</EnableWindowsTargeting>
   </PropertyGroup>
 </Project>
