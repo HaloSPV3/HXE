@@ -131,6 +131,6 @@
     </PackageReference>
   </ItemGroup>
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-    <Exec Command="pwsh $(MSBuildProjectDirectory)\.msb.prebuild.ps1" />
+    <Exec Command="pwsh $(MSBuildProjectDirectory)/.msb.prebuild.ps1" />
   </Target>
 </Project>
