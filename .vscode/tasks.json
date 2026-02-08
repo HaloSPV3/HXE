@@ -7,9 +7,7 @@
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/src/HXE.csproj",
-                "/property:GenerateFullPaths=true",
-                "/consoleloggerparameters:NoSummary"
+                "${workspaceFolder}/HXE.slnx"
             ],
             "problemMatcher": "$msCompile"
         },
@@ -18,10 +16,9 @@
             "command": "dotnet",
             "type": "process",
             "args": [
-                "publish",
-                "${workspaceFolder}/src/HXE.csproj",
-                "/property:GenerateFullPaths=true",
-                "/consoleloggerparameters:NoSummary"
+                "restore",
+                "-t:PublishAll",
+                "${workspaceFolder}/HXE.slnx"
             ],
             "problemMatcher": "$msCompile"
         },
