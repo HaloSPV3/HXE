@@ -47,3 +47,19 @@ The USAGE document goes into detail on how to use HXE. In a nutshell:
 
     # configure the kernel
     .\hxe.exe -config
+
+# Requirements
+
+## Operating System
+
+| Minimum                                  | Recommended
+| ---------------------------------------- | -----------
+| Windows 7 SP1 32-bit (w/ addl. software) | Windows 10 64-bit
+
+## Note: Upgrading To Windows 10
+
+Using the [Windows Installation Media Creation Tool](https://www.microsoft.com/en-us/software-download/windows10?36261b60-2f68-4336-abe2-4b00f210b6aa=True), you can still upgrade to Windows 10 with your Windows 7/8/8.1 license.
+HOWEVER...
+
+- If your hardware distributor does not make Windows 10 drivers for your hardware, you may have a worse Windows 10 experience than expected.
+- Some drivers made for earlier Windows releases may work on Windows 10; some won't. You won't know until you try.

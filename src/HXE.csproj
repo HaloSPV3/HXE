@@ -1,13 +1,11 @@
-<?xml version="1.0" encoding="utf-8"?>
-<Project Sdk="Microsoft.NET.Sdk" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <OutputPath>..\bin\$(Configuration)</OutputPath>
     <Platform>AnyCPU</Platform>
     <Prefer32Bit>false</Prefer32Bit>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net5.0-windows</TargetFramework>
-    <TargetFrameworks>net5.0-windows;net6.0-windows</TargetFrameworks>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <TargetFrameworks>net6.0-windows</TargetFrameworks>
     <StartupObject>HXE.Program</StartupObject>
     <AssemblyName>HXE</AssemblyName>
     <RootNamespace>HXE</RootNamespace>
@@ -16,29 +14,18 @@
     <!-- Build | General -->
     <Deterministic>true</Deterministic>
     <!-- Build | Events -->
+    <!-- Ensures GitVersion, SourceLink tasks only run after successful builds -->
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
     <!-- Build | Strong Naming -->
-    <!-- NuGet Packaging -->
-    <Authors>HaloSPV3</Authors>
-    <Company>github/HaloSPV3</Company>
-    <Copyright>Copyright © 2019 Emilian Roman</Copyright>
-    <Description>A HCE wrapper and SPV3 loader</Description>
-    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <IncludeSymbols>false</IncludeSymbols>
-    <PackageLicenseExpression>Zlib</PackageLicenseExpression>
-    <PackageIcon>icon.png</PackageIcon>
-    <PackageProjectUrl>https://github.com/HaloSPV3/HXE</PackageProjectUrl>
-    <PackageReadmeFile>readme.md</PackageReadmeFile>
-    <PackageTags>Halo</PackageTags>
-    <PublishRepositoryUrl>true</PublishRepositoryUrl>
-    <RepositoryUrl>https://github.com/HaloSPV3/HXE</RepositoryUrl>
-    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <!-- Publish -->
-    <!--<IsTrimmable>true</IsTrimmable> -->
+    <IsTrimmable>true</IsTrimmable>
+    <!-- Waiting for trim-compatible WPF -->
     <!--<PublishTrimmed>true</PublishTrimmed> -->
     <PublishSingleFile>true</PublishSingleFile>
-    <RuntimeIdentifier>win-x86</RuntimeIdentifier>
-    <!--<SelfContained>false</SelfContained> This will need to be in a top-level project -->
+    <RuntimeIdentifier Condition="'$(RuntimeIdentifier)' == '' AND '$(PublishSingleFile)' == 'true'">win7-x86</RuntimeIdentifier>
+    <SelfContained Condition="'$(SelfContained)' == '' AND '$(RuntimeIdentifier)' != ''">true</SelfContained>
+    <Win7SF>$([MSBuild]::VersionGreaterThanOrEquals($(NETCoreSdkVersion), '6.0.300'))</Win7SF>
+    <PublishSingleFile Condition="'$(PublishSingleFile)' == 'true' AND $(RuntimeIdentifier.Contains('win7'))">$(Win7SF)</PublishSingleFile>
     <!-- Misc -->
     <ProjectGuid>{ACAA5D9F-B23D-43E1-B2DF-8C03230975A1}</ProjectGuid>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -47,29 +34,54 @@
     <EnableNETAnalyzers>true</EnableNETAnalyzers>
     <ToolCommandName>hxe</ToolCommandName>
     <UseWPF>true</UseWPF>
-    <UseWindowsForms>true</UseWindowsForms>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(RuntimeIdentifer)' == 'win-x64' ">
-    <Platform>x64</Platform>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(RuntimeIdentifer)' == 'win-x86' ">
-    <Platform>x86</Platform>
-    <Prefer32Bit>true</Prefer32Bit>
+    <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+    <InvariantGlobalization>true</InvariantGlobalization>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DefineConstants>DEBUG;TRACE</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <CopyOutputSymbolsToPublishDirectory>false</CopyOutputSymbolsToPublishDirectory>
     <DefineConstants>TRACE</DefineConstants>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(PublishSingleFile)' == 'true'">
+    <SelfContained>true</SelfContained>
+    <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
+    <EnableCompressionInSingleFile Condition="$(TargetFramework.Contains('net6'))">true</EnableCompressionInSingleFile>
+  </PropertyGroup>
+  <PropertyGroup Label="Nuget Properties">
+    <!-- TODO -->
+    <!-- <PackageId>PackageId</PackageId> -->
+    <!-- TODO -->
+    <!-- <Title>PackageId</Title> -->
+    <!-- Set by GitVersion -->
+    <!-- <Version>1.0.0</Version> -->
+    <Authors>HaloSPV3</Authors>
+    <Company>github/HaloSPV3</Company>
+    <ProductName>HXE</ProductName>
+    <Product>$(ProductName)</Product>
+    <Description>A HCE wrapper and SPV3 loader</Description>
+    <Copyright>Copyright © 2023 Noah Sherwin</Copyright>
+    <PackageLicenseExpression>Zlib</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/HaloSPV3/HXE</PackageProjectUrl>
+    <PackageIconUrl>https://github.com/HaloSPV3/HXE/blob/main/src/Assets/icon.png</PackageIconUrl>
+    <PackageIcon>icon.png</PackageIcon>
+    <PackageTags>Halo</PackageTags>
+    <PackageReadmeFile>readme.md</PackageReadmeFile>
+    <!-- TODO -->
+    <!-- <PackageReleaseNotes>http://Your.ReleaseNotes.Url</PackageReleaseNotes> -->
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <RepositoryUrl>https://github.com/HaloSPV3/HXE</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <IncludeSymbols>true</IncludeSymbols>
+    <IncludeSource>true</IncludeSource>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+  </PropertyGroup>
   <ItemGroup>
-    <None Include="..\*.*">
-      <Link>.root\%(Filename)%(Extension)</Link>
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </None>
     <None Include="..\.github\**\*.*">
-     <Link>.root\.github\%(RecursiveDir)%(Filename)%(Extension)</Link>
+      <Link>.github\%(RecursiveDir)%(Filename)%(Extension)</Link>
     </None>
     <None Include="..\doc\**\*.*">
       <Link>.docs\%(RecursiveDir)%(Filename)%(Extension)</Link>
@@ -95,31 +107,30 @@
       <TargetPath>%(FileName).xml</TargetPath>
     </Content>
     <!-- Assets -->
-    <EmbeddedResource Include="Assets\banner.txt" />
+    <EmbeddedResource Include="..\ext\halo-ce-patches\patches.crk">
+      <Link>Assets\%(Filename)%(Extension)</Link>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </EmbeddedResource>
     <EmbeddedResource Include="Assets\343I_DER.cer" />
     <Content Include="Assets\icon.ico" />
   </ItemGroup>
-  <ItemGroup>
-    <!-- NuGet Package Items -->
+  <ItemGroup Label="NuGet Package Items">
     <None Include="Assets\icon.png" Pack="true" PackagePath="\" />
     <None Include="..\readme.md" Pack="true" PackagePath="\">
       <Link>.docs-misc\readme.md</Link>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <!-- Package References -->
+  <ItemGroup Label="Package References">
     <PackageReference Include="GitVersion.MsBuild" Version="6.5.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.SourceLink.GitHub">
-      <Version>10.0.102</Version>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="10.0.102">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.Windows.Compatibility" Version="10.0.2" />
   </ItemGroup>
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-    <Exec Command="pwsh $(MSBuildProjectDirectory)\.msb.prebuild.ps1" />
+    <Exec Command="pwsh $(MSBuildProjectDirectory)/.msb.prebuild.ps1" />
   </Target>
 </Project>

@@ -1,15 +1,23 @@
-# https://github.com/GitTools/GitVersion/blob/main/docs/input/docs/reference/configuration.md
-mode: ContinuousDeployment
-tag-prefix: '[vV]'
-major-version-bump-message: "^(breaking|build|chore|ci|docs|feat|fix|perf|refactor|revert|style|test)(\\([\\w\\s]*\\))?(!:|:.*\\n\\n((.+\\n)+\\n)?BREAKING CHANGE:\\s.+)"
-minor-version-bump-message: "^(feat)(\\([\\w\\s]*\\))?:"
-patch-version-bump-message: "^(fix|perf)(\\([\\w\\s]*\\))?:"
-branches:
-  develop:
-    increment: none # IMPORTANT
-  main:
-    increment: none # IMPORTANT
-    is-release-branch: true
-ignore:
-  sha: []
-merge-message-formats: {}
+# fallback for file://./node_modules/@halospv3/hce.shared-config/dotnet/GitVersion6.0.yml
+# https://gitversion.net/docs/reference/configuration
+workflow: TrunkBased/v1
+# "!:" in the header -or- "BREAKING CHANGES:" in the footer.
+# e.g. refactor!: remove or change a public API symbol
+major-version-bump-message: "^(([a-zA-Z]+)(\\([\\w\\s-]*\\))?(!:|:.*\\n\\n((.+\\n)+\\n)?)?BREAKING CHANGE:\\s.+)"
+# e.g. "feat: add awesome thing", "feat(App.Core): add thing to App.Core's API"
+minor-version-bump-message: "^(feat)(\\([\\w\\s-]*\\))?:"
+# e.g. "Revert", "Reverts", "revert:", "fix:", or "perf:".
+patch-version-bump-message: "^(Reverts? )|(fix|perf|revert)(\\([\\w\\s-]*\\))?:"
+# # Angular Commit Convention
+# In addition to the rules at https://github.com/conventional-changelog/conventional-changelog/tree/master/packages/conventional-changelog-angular#conventional-changelog-angular...
+# - Scopes are optional (but recommended) and multiple can be specified
+#   e.g. "fix(App.Core, App.CLI): ".
+# - Do not use "/" in scopes' names. "/" and "," are delimiters.
+#
+# # Release/Version Rules
+# https://github.com/semantic-release/commit-analyzer/blob/master/lib/default-release-rules.js
+# { breaking: true, release: "major" }
+# { type: "feat", release: "minor" }
+# { revert: true, release: "patch" }
+# { type: "fix", release: "patch" }
+# { type: "perf", release: "patch" }

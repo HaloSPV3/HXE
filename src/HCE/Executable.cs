@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Copyright (c) 2019 Emilian Roman
  * Copyright (c) 2021 Noah Sherwin
  *
@@ -66,16 +66,16 @@ namespace HXE.HCE
                 var log = (File) Paths.Exception;
                 log.AppendAllText("The inferred executable path was probably malformed or incomplete.\n Error: " + e + "\n");
 
-                using (System.Windows.Forms.OpenFileDialog ofd = new System.Windows.Forms.OpenFileDialog())
+                var ofd = new Microsoft.Win32.OpenFileDialog
                 {
-                    ofd.InitialDirectory = GetFolderPath(SpecialFolder.Desktop);
-                    ofd.Filter = "Halo Custom Edition (haloce.exe)|haloce.exe|Halo Retail/Trial (halo.exe)|halo.exe";
-                    ofd.FilterIndex = 1;
-                    ofd.RestoreDirectory = true;
+                    InitialDirectory = GetFolderPath(SpecialFolder.Desktop),
+                    Filter = "Halo Custom Edition (haloce.exe)|haloce.exe|Halo Retail/Trial (halo.exe)|halo.exe",
+                    FilterIndex = 1,
+                    RestoreDirectory = true
+                };
 
-                    if (ofd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-                        fullName = GetFullPath(ofd.FileName);
-                }
+                if (ofd.ShowDialog() == true)
+                    fullName = GetFullPath(ofd.FileName);
             }
 
             if (System.IO.File.Exists(fullName))
