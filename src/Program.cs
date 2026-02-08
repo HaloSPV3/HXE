@@ -318,6 +318,7 @@ HXE can be invoked with the following arguments:
                 var log = (File)Paths.Exception;
                 log.AppendAllText(msg + NewLine);
                 Error(msg);
+                WithCode(Code.Exception);
             }
 
             if (console)
