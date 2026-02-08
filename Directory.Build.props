@@ -2,7 +2,7 @@
   <PropertyGroup>
     <HCESharedDir>node_modules/@halospv3/hce.shared-config/</HCESharedDir>
   </PropertyGroup>
-  <Import Project="$(HCESharedDir)/dotnet/HCE.Shared.targets"/>
+  <Import Project="$(HCESharedDir)/dotnet/HCE.Shared.targets" />
 
   <PropertyGroup>
     <EnableWindowsTargeting>true</EnableWindowsTargeting>
