@@ -5,7 +5,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "prepare": "husky"
+    "postinstall": "husky"
   },
   "devDependencies": {
     "@halospv3/hce.shared-config": "^3.4.0",
