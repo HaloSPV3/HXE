@@ -1,6 +1,7 @@
 <Project>
   <PropertyGroup>
-    <HCESharedDir>node_modules/@halospv3/hce.shared-config/</HCESharedDir>
+    <RepoRoot>$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), '.git/index'))</RepoRoot>
+    <HCESharedDir>$(RepoRoot)node_modules/@halospv3/hce.shared-config</HCESharedDir>
     <UseArtifactsOutput>true</UseArtifactsOutput>
   </PropertyGroup>
   <Import Project="$(HCESharedDir)/dotnet/HCE.Shared.targets" />
