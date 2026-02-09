@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <OutputPath>..\bin\$(Configuration)</OutputPath>
+    <OutputPath>../bin/$(Configuration)</OutputPath>
     <Platform>AnyCPU</Platform>
     <Prefer32Bit>false</Prefer32Bit>
     <OutputType>Exe</OutputType>
@@ -10,7 +10,7 @@
     <AssemblyName>HXE</AssemblyName>
     <RootNamespace>HXE</RootNamespace>
     <!-- Application | Resources -->
-    <ApplicationIcon>Assets\icon.ico</ApplicationIcon>
+    <ApplicationIcon>Assets/icon.ico</ApplicationIcon>
     <!-- Build | General -->
     <Deterministic>true</Deterministic>
     <!-- Build | Events -->
@@ -76,44 +76,44 @@
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
   </PropertyGroup>
   <ItemGroup>
-    <None Include="..\.github\**\*.*">
-      <Link>.github\%(RecursiveDir)%(Filename)%(Extension)</Link>
+    <None Include="../.github/**/*.*">
+      <Link>.github/%(RecursiveDir)%(Filename)%(Extension)</Link>
     </None>
-    <None Include="..\doc\**\*.*">
-      <Link>.docs\%(RecursiveDir)%(Filename)%(Extension)</Link>
+    <None Include="../doc/**/*.*">
+      <Link>.docs/%(RecursiveDir)%(Filename)%(Extension)</Link>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </None>
-    <None Include="..\*.md">
-      <Link>.docs-misc\%(Filename)%(Extension)</Link>
+    <None Include="../*.md">
+      <Link>.docs-misc/%(Filename)%(Extension)</Link>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </None>
     <None Include="*.txt">
-      <Link>.docs-misc\%(Filename)%(Extension)</Link>
+      <Link>.docs-misc/%(Filename)%(Extension)</Link>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </None>
     <None Include="src.licenseheader">
-      <Link>.docs-misc\%(Filename)%(Extension)</Link>
+      <Link>.docs-misc/%(Filename)%(Extension)</Link>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>
     <!-- Campaign Support -->
-    <Content Include="Campaigns\*.xml">
+    <Content Include="Campaigns/*.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <TargetPath>%(FileName).xml</TargetPath>
     </Content>
     <!-- Assets -->
-    <EmbeddedResource Include="..\ext\halo-ce-patches\patches.crk">
-      <Link>Assets\%(Filename)%(Extension)</Link>
+    <EmbeddedResource Include="../ext/halo-ce-patches/patches.crk">
+      <Link>Assets/%(Filename)%(Extension)</Link>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </EmbeddedResource>
-    <EmbeddedResource Include="Assets\343I_DER.cer" />
-    <Content Include="Assets\icon.ico" />
+    <EmbeddedResource Include="Assets/343I_DER.cer" />
+    <Content Include="Assets/icon.ico" />
   </ItemGroup>
   <ItemGroup Label="NuGet Package Items">
-    <None Include="Assets\icon.png" Pack="true" PackagePath="\" />
-    <None Include="..\readme.md" Pack="true" PackagePath="\">
-      <Link>.docs-misc\readme.md</Link>
+    <None Include="Assets/icon.png" Pack="true" PackagePath="/" />
+    <None Include="../readme.md" Pack="true" PackagePath="/">
+      <Link>.docs-misc/readme.md</Link>
     </None>
   </ItemGroup>
   <ItemGroup Label="Package References">
