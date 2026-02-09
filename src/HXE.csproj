@@ -39,17 +39,21 @@
     <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
     <InvariantGlobalization>true</InvariantGlobalization>
   </PropertyGroup>
+
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <!--  -->
   </PropertyGroup>
+
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <CopyOutputSymbolsToPublishDirectory>false</CopyOutputSymbolsToPublishDirectory>
   </PropertyGroup>
+
   <PropertyGroup Condition="'$(PublishSingleFile)' == 'true'">
     <SelfContained>true</SelfContained>
     <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
     <EnableCompressionInSingleFile Condition="$(TargetFramework.Contains('net6'))">true</EnableCompressionInSingleFile>
   </PropertyGroup>
+
   <PropertyGroup Label="Nuget Properties">
     <!-- TODO -->
     <!-- <PackageId>PackageId</PackageId> -->
@@ -77,6 +81,7 @@
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
   </PropertyGroup>
+
   <ItemGroup>
     <None Include="../.github/**/*.*">
       <Link>.github/%(RecursiveDir)%(Filename)%(Extension)</Link>
@@ -98,6 +103,7 @@
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </None>
   </ItemGroup>
+
   <ItemGroup>
     <!-- Campaign Support -->
     <Content Include="Campaigns/*.xml">
@@ -112,12 +118,14 @@
     <EmbeddedResource Include="Assets/343I_DER.cer" />
     <Content Include="Assets/icon.ico" />
   </ItemGroup>
+
   <ItemGroup Label="NuGet Package Items">
     <None Include="Assets/icon.png" Pack="true" PackagePath="/" />
     <None Include="../readme.md" Pack="true" PackagePath="/">
       <Link>.docs-misc/readme.md</Link>
     </None>
   </ItemGroup>
+
   <ItemGroup Label="Package References">
     <PackageReference Include="GitVersion.MsBuild" Version="6.5.1">
       <PrivateAssets>all</PrivateAssets>
@@ -128,6 +136,7 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
   </ItemGroup>
+
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
     <Exec Command="pwsh $(MSBuildProjectDirectory)/.msb.prebuild.ps1" />
   </Target>
