@@ -38,11 +38,10 @@
     <InvariantGlobalization>true</InvariantGlobalization>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <!--  -->
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <CopyOutputSymbolsToPublishDirectory>false</CopyOutputSymbolsToPublishDirectory>
-    <DefineConstants>TRACE</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition="'$(PublishSingleFile)' == 'true'">
     <SelfContained>true</SelfContained>
@@ -57,9 +56,6 @@
     <!-- Set by GitVersion -->
     <!-- <Version>1.0.0</Version> -->
     <Authors>HaloSPV3</Authors>
-    <Company>github/HaloSPV3</Company>
-    <ProductName>HXE</ProductName>
-    <Product>$(ProductName)</Product>
     <Description>A HCE wrapper and SPV3 loader</Description>
     <Copyright>Copyright © 2023 Noah Sherwin</Copyright>
     <PackageLicenseExpression>Zlib</PackageLicenseExpression>
