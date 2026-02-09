@@ -13,6 +13,7 @@
     <ApplicationIcon>Assets/icon.ico</ApplicationIcon>
     <!-- Build | General -->
     <Deterministic>true</Deterministic>
+    <Nullable>enable</Nullable>
     <!-- Build | Events -->
     <!-- Ensures GitVersion, SourceLink tasks only run after successful builds -->
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
