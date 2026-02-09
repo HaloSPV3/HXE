@@ -16,8 +16,11 @@
     <!-- Ensures GitVersion, SourceLink tasks only run after successful builds -->
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
     <!-- Build | Strong Naming -->
+
+    <TFM_NET6_OR_LATER>$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net6.0'))</TFM_NET6_OR_LATER>
+
     <!-- Publish -->
-    <IsTrimmable>true</IsTrimmable>
+    <IsTrimmable>$(TFM_NET6_OR_LATER)</IsTrimmable>
     <!-- Waiting for trim-compatible WPF -->
     <!--<PublishTrimmed>true</PublishTrimmed> -->
     <PublishSingleFile>true</PublishSingleFile>
