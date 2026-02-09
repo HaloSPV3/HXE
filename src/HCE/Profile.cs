@@ -144,7 +144,7 @@ namespace HXE.HCE
                 WriteBoolean(Offset.VideoEffectsSpecular, Video.Effects.Specular);
                 WriteBoolean(Offset.VideoEffectsShadows, Video.Effects.Shadows);
                 WriteBoolean(Offset.VideoEffectsDecals, Video.Effects.Decals);
-                WriteBoolean(Offset.AudioEAX, Audio.EAX);
+                WriteBoolean(Offset.AudioEAX, Audio.EAX); // DevSkim: ignore DS187371
                 WriteBoolean(Offset.AudioHWA, Audio.HWA);
 
                 /**
@@ -468,7 +468,7 @@ namespace HXE.HCE
                 Video.Effects.Specular = GetBoolean(Offset.VideoEffectsSpecular);
                 Video.Effects.Shadows = GetBoolean(Offset.VideoEffectsShadows);
                 Video.Effects.Decals = GetBoolean(Offset.VideoEffectsDecals);
-                Audio.EAX = GetBoolean(Offset.AudioEAX);
+                Audio.EAX = GetBoolean(Offset.AudioEAX); // DevSkim: ignore DS187371
                 Audio.HWA = GetBoolean(Offset.AudioHWA);
 
                 /** Keyboard Bindings */
@@ -973,7 +973,7 @@ namespace HXE.HCE
             public AudioVolume Volume { get; set; } = new AudioVolume();
             public AudioQuality Quality { get; set; } = AudioQuality.Normal; /* default value */
             public AudioVariety Variety { get; set; } = AudioVariety.High;   /* default value */
-            public bool EAX { get; set; }
+            public bool EAX { get; set; } // DevSkim: ignore DS187371
             public bool HWA { get; set; }
 
             public class AudioVolume
