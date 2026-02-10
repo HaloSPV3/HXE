@@ -57,12 +57,6 @@
   </PropertyGroup>
 
   <PropertyGroup Label="Nuget Properties">
-    <!-- TODO -->
-    <!-- <PackageId>PackageId</PackageId> -->
-    <!-- TODO -->
-    <!-- <Title>PackageId</Title> -->
-    <!-- Set by GitVersion -->
-    <!-- <Version>1.0.0</Version> -->
     <Authors>HaloSPV3</Authors>
     <Description>A HCE wrapper and SPV3 loader</Description>
     <Copyright>Copyright © 2023 Noah Sherwin</Copyright>
