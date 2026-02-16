@@ -163,108 +163,91 @@ using System.ComponentModel;
 using System.Globalization;
 using System.IO;
 using System.Runtime.Serialization;
-using System.Security.Permissions;
 using System.Text;
 using System.Text.RegularExpressions;
-#if PCL
-using System.Reflection;
-#else
-#endif
-#if LINQ
-using System.Linq;
-#endif
-
-#if TEST
-using NDesk.Options;
-#endif
-
-#if PCL
-using MessageLocalizerConverter = System.Func<string, string>;
-#else
 using MessageLocalizerConverter = System.Converter<string, string>;
-#endif
 
-#if NDESK_OPTIONS
-namespace NDesk.Options
-#else
 namespace HXE
-#endif
 {
-	static class StringCoda {
+	internal static class StringCoda
+	{
 
-		public static IEnumerable<string> WrappedLines (string self, params int[] widths)
+		public static IEnumerable<string> WrappedLines(string self, params int[] widths)
 		{
 			IEnumerable<int> w = widths;
-			return WrappedLines (self, w);
+			return WrappedLines(self, w);
 		}
 
-		public static IEnumerable<string> WrappedLines (string self, IEnumerable<int> widths)
+		public static IEnumerable<string> WrappedLines(string self, IEnumerable<int> widths)
 		{
 			if (widths == null)
-				throw new ArgumentNullException ("widths");
-			return CreateWrappedLinesIterator (self, widths);
+				throw new ArgumentNullException(nameof(widths));
+			return CreateWrappedLinesIterator(self, widths);
 		}
 
-		private static IEnumerable<string> CreateWrappedLinesIterator (string self, IEnumerable<int> widths)
+		private static IEnumerable<string> CreateWrappedLinesIterator(string self, IEnumerable<int> widths)
 		{
-			if (string.IsNullOrEmpty (self)) {
+			if (string.IsNullOrEmpty(self))
+			{
 				yield return string.Empty;
 				yield break;
 			}
-			using (IEnumerator<int> ewidths = widths.GetEnumerator ()) {
+			using (IEnumerator<int> eWidths = widths.GetEnumerator())
+			{
 				bool? hw = null;
-				int width = GetNextWidth (ewidths, int.MaxValue, ref hw);
+				int width = GetNextWidth(eWidths, int.MaxValue, ref hw);
 				int start = 0, end;
-				do {
-					end = GetLineEnd (start, width, self);
-					char c = self [end-1];
-					if (char.IsWhiteSpace (c))
+				do
+				{
+					end = GetLineEnd(start, width, self);
+					char c = self[end - 1];
+					if (char.IsWhiteSpace(c))
 						--end;
-					bool needContinuation = end != self.Length && !IsEolChar (c);
+					bool needContinuation = end != self.Length && !IsEolChar(c);
 					string continuation = "";
-					if (needContinuation) {
+					if (needContinuation)
+					{
 						--end;
 						continuation = "-";
 					}
-					string line = self.Substring (start, end - start) + continuation;
+					string line = self.Substring(start, end - start) + continuation;
 					yield return line;
 					start = end;
-					if (char.IsWhiteSpace (c))
+					if (char.IsWhiteSpace(c))
 						++start;
-					width = GetNextWidth (ewidths, width, ref hw);
+					width = GetNextWidth(eWidths, width, ref hw);
 				} while (start < self.Length);
 			}
 		}
 
-		private static int GetNextWidth (IEnumerator<int> ewidths, int curWidth, ref bool? eValid)
+		private static int GetNextWidth(IEnumerator<int> ewidths, int curWidth, ref bool? eValid)
 		{
-			if (!eValid.HasValue || (eValid.HasValue && eValid.Value)) {
-				curWidth = (eValid = ewidths.MoveNext ()).Value ? ewidths.Current : curWidth;
+			if (!eValid.HasValue || (eValid.HasValue && eValid.Value))
+			{
+				curWidth = (eValid = ewidths.MoveNext()).Value ? ewidths.Current : curWidth;
 				// '.' is any character, - is for a continuation
 				const string minWidth = ".-";
 				if (curWidth < minWidth.Length)
-					throw new ArgumentOutOfRangeException ("widths",
-							string.Format ("Element must be >= {0}, was {1}.", minWidth.Length, curWidth));
+					throw new ArgumentOutOfRangeException(nameof(ewidths),
+					string.Format("Element must be >= {0}, was {1}.", minWidth.Length, curWidth));
 				return curWidth;
 			}
 			// no more elements, use the last element.
 			return curWidth;
 		}
 
-		private static bool IsEolChar (char c)
-		{
-			return !char.IsLetterOrDigit (c);
-		}
+		private static bool IsEolChar(char c) => !char.IsLetterOrDigit(c);
 
-		private static int GetLineEnd (int start, int length, string description)
+		private static int GetLineEnd(int start, int length, string description)
 		{
-			int end = System.Math.Min (start + length, description.Length);
+			int end = Math.Min(start + length, description.Length);
 			int sep = -1;
-			for (int i = start; i < end; ++i) {
-				if (description [i] == '\n')
-					return i+1;
-				if (IsEolChar (description [i]))
-					sep = i+1;
+			for (int i = start; i < end; ++i)
+			{
+				if (description[i] == '\n')
+					return i + 1;
+				if (IsEolChar(description[i]))
+					sep = i + 1;
 			}
 			if (sep == -1 || end == description.Length)
 				return end;
@@ -272,442 +255,407 @@ namespace HXE
 		}
 	}
 
-	public class OptionValueCollection : IList, IList<string> {
+	public class OptionValueCollection :  IList<string>
+	{
 
-		List<string> values = new List<string> ();
-		OptionContext c;
+		private readonly List<string> _values = [];
+		private readonly OptionContext _c;
 
-		internal OptionValueCollection (OptionContext c)
+		internal OptionValueCollection(OptionContext c)
 		{
-			this.c = c;
+			_c = c;
 		}
 
-		#region ICollection
-		void ICollection.CopyTo (Array array, int index)  {(values as ICollection).CopyTo (array, index);}
-		bool ICollection.IsSynchronized                   {get {return (values as ICollection).IsSynchronized;}}
-		object ICollection.SyncRoot                       {get {return (values as ICollection).SyncRoot;}}
-		#endregion
-
 		#region ICollection<T>
-		public void Add (string item)                       {values.Add (item);}
-		public void Clear ()                                {values.Clear ();}
-		public bool Contains (string item)                  {return values.Contains (item);}
-		public void CopyTo (string[] array, int arrayIndex) {values.CopyTo (array, arrayIndex);}
-		public bool Remove (string item)                    {return values.Remove (item);}
-		public int Count                                    {get {return values.Count;}}
-		public bool IsReadOnly                              {get {return false;}}
+		public void Add(string item) => _values.Add(item);
+		public void Clear() => _values.Clear();
+		public bool Contains(string item) => _values.Contains(item);
+		public void CopyTo(string[] array, int arrayIndex) => _values.CopyTo(array, arrayIndex);
+		public bool Remove(string item) => _values.Remove(item);
+		public int Count => _values.Count;
+		public bool IsReadOnly => false;
 		#endregion
 
 		#region IEnumerable
-		IEnumerator IEnumerable.GetEnumerator () {return values.GetEnumerator ();}
+		IEnumerator IEnumerable.GetEnumerator() => _values.GetEnumerator();
 		#endregion
 
 		#region IEnumerable<T>
-		public IEnumerator<string> GetEnumerator () {return values.GetEnumerator ();}
-		#endregion
-
-		#region IList
-		int IList.Add (object value)                {return (values as IList).Add (value);}
-		bool IList.Contains (object value)          {return (values as IList).Contains (value);}
-		int IList.IndexOf (object value)            {return (values as IList).IndexOf (value);}
-		void IList.Insert (int index, object value) {(values as IList).Insert (index, value);}
-		void IList.Remove (object value)            {(values as IList).Remove (value);}
-		void IList.RemoveAt (int index)             {(values as IList).RemoveAt (index);}
-		bool IList.IsFixedSize                      {get {return false;}}
-		object IList.this [int index]               {get {return this [index];} set {(values as IList)[index] = value;}}
+		public IEnumerator<string> GetEnumerator() => _values.GetEnumerator();
 		#endregion
 
 		#region IList<T>
-		public int IndexOf (string item)            {return values.IndexOf (item);}
-		public void Insert (int index, string item) {values.Insert (index, item);}
-		public void RemoveAt (int index)            {values.RemoveAt (index);}
+		public int IndexOf(string item) => _values.IndexOf(item);
+		public void Insert(int index, string item) => _values.Insert(index, item);
+		public void RemoveAt(int index) => _values.RemoveAt(index);
 
-		private void AssertValid (int index)
+		private void AssertValid(int index)
 		{
-			if (c.Option == null)
-				throw new InvalidOperationException ("OptionContext.Option is null.");
-			if (index >= c.Option.MaxValueCount)
-				throw new ArgumentOutOfRangeException ("index");
-			if (c.Option.OptionValueType == OptionValueType.Required &&
-					index >= values.Count)
-				throw new OptionException (string.Format (
-							c.OptionSet.MessageLocalizer ("Missing required value for option '{0}'."), c.OptionName),
-						c.OptionName);
+			if (_c.Option == null)
+				throw new InvalidOperationException("OptionContext.Option is null.");
+			if (index >= _c.Option.MaxValueCount)
+				throw new ArgumentOutOfRangeException(nameof(index));
+			if (_c.Option.OptionValueType == OptionValueType.Required &&
+			index >= _values.Count)
+				throw new OptionException(
+					string.Format(
+					_c.OptionSet.MessageLocalizer("Missing required value for option '{0}'."), _c.OptionName
+					),
+					_c.OptionName ?? string.Empty
+				);
 		}
 
-		public string this [int index] {
-			get {
-				AssertValid (index);
-				return index >= values.Count ? null : values [index];
+		public string this[int index]
+		{
+			get
+			{
+				AssertValid(index);
+				return index >= _values.Count ? string.Empty : _values[index];
 			}
-			set {
-				values [index] = value;
+			set
+			{
+				if (value != null)
+					_values[index] = value;
 			}
 		}
 		#endregion
 
-		public List<string> ToList ()
-		{
-			return new List<string> (values);
-		}
+		public List<string> ToList() => [.. _values];
 
-		public string[] ToArray ()
-		{
-			return values.ToArray ();
-		}
+		public string[] ToArray() => [.. _values];
 
-		public override string ToString ()
-		{
-			return string.Join (", ", values.ToArray ());
-		}
+		public override string ToString() => string.Join(", ", [.. _values]);
 	}
 
-	public class OptionContext {
-		private Option                option;
-		private string                name;
-		private int                   index;
-		private OptionSet             set;
-		private OptionValueCollection c;
-
-		public OptionContext (OptionSet set)
+	public class OptionContext
+	{
+		public OptionContext(OptionSet set)
 		{
-			this.set = set;
-			this.c   = new OptionValueCollection (this);
+			OptionSet = set;
+			OptionValues = new OptionValueCollection(this);
 		}
 
-		public Option Option {
-			get {return option;}
-			set {option = value;}
-		}
+		public Option? Option { get; set; }
 
-		public string OptionName {
-			get {return name;}
-			set {name = value;}
-		}
+		public string? OptionName { get; set; }
 
-		public int OptionIndex {
-			get {return index;}
-			set {index = value;}
-		}
+		public int OptionIndex { get; set; }
 
-		public OptionSet OptionSet {
-			get {return set;}
-		}
+		public OptionSet OptionSet { get; }
 
-		public OptionValueCollection OptionValues {
-			get {return c;}
-		}
+		public OptionValueCollection OptionValues { get; }
 	}
 
-	public enum OptionValueType {
+	public enum OptionValueType
+	{
 		None,
 		Optional,
 		Required,
 	}
 
-	public abstract class Option {
-		string prototype, description;
-		string[] names;
-		OptionValueType type;
-		int count;
-		string[] separators;
-		bool hidden;
-
-		protected Option (string prototype, string description)
-			: this (prototype, description, 1, false)
+	public abstract class Option
+	{
+		protected Option(string prototype, string description)
+			: this(prototype, description, 1, false)
 		{
 		}
 
-		protected Option (string prototype, string description, int maxValueCount)
-			: this (prototype, description, maxValueCount, false)
+		protected Option(string prototype, string description, int maxValueCount)
+			: this(prototype, description, maxValueCount, false)
 		{
 		}
 
-		protected Option (string prototype, string description, int maxValueCount, bool hidden)
+		protected Option(string prototype, string description, int maxValueCount, bool hidden)
 		{
 			if (prototype == null)
-				throw new ArgumentNullException ("prototype");
+				throw new ArgumentNullException(nameof(prototype));
 			if (prototype.Length == 0)
-				throw new ArgumentException ("Cannot be the empty string.", "prototype");
+				throw new ArgumentException("Cannot be the empty string.", nameof(prototype));
 			if (maxValueCount < 0)
-				throw new ArgumentOutOfRangeException ("maxValueCount");
+				throw new ArgumentOutOfRangeException(nameof(maxValueCount));
 
-			this.prototype   = prototype;
-			this.description = description;
-			this.count       = maxValueCount;
-			this.names       = (this is OptionSet.Category)
-				// append GetHashCode() so that "duplicate" categories have distinct
-				// names, e.g. adding multiple "" categories should be valid.
-				? new[]{prototype + this.GetHashCode ()}
-				: prototype.Split ('|');
+			Prototype = prototype;
+			Description = description;
+			MaxValueCount = maxValueCount;
+			Names = (this is OptionSet.Category)
+			// append GetHashCode() so that "duplicate" categories have distinct
+			// names, e.g. adding multiple "" categories should be valid.
+			? [prototype + GetHashCode()]
+			: prototype.Split('|');
 
-			if (this is OptionSet.Category || this is CommandOption)
+			if (this is OptionSet.Category or CommandOption)
 				return;
 
-			this.type        = ParsePrototype ();
-			this.hidden      = hidden;
+			OptionValueType = ParsePrototype();
+			Hidden = hidden;
 
-			if (this.count == 0 && type != OptionValueType.None)
-				throw new ArgumentException (
-						"Cannot provide maxValueCount of 0 for OptionValueType.Required or " +
-							"OptionValueType.Optional.",
-						"maxValueCount");
-			if (this.type == OptionValueType.None && maxValueCount > 1)
-				throw new ArgumentException (
-						string.Format ("Cannot provide maxValueCount of {0} for OptionValueType.None.", maxValueCount),
-						"maxValueCount");
-			if (Array.IndexOf (names, "<>") >= 0 &&
-					((names.Length == 1 && this.type != OptionValueType.None) ||
-					 (names.Length > 1 && this.MaxValueCount > 1)))
-				throw new ArgumentException (
-						"The default option handler '<>' cannot require values.",
-						"prototype");
+			if (MaxValueCount == 0 && OptionValueType != OptionValueType.None)
+				throw new ArgumentException(
+					"Cannot provide maxValueCount of 0 for OptionValueType.Required or " +
+					"OptionValueType.Optional.",
+					nameof(maxValueCount));
+			if (OptionValueType == OptionValueType.None && maxValueCount > 1)
+				throw new ArgumentException(
+					string.Format("Cannot provide maxValueCount of {0} for OptionValueType.None.", maxValueCount),
+					nameof(maxValueCount));
+			if (Array.IndexOf(Names, "<>") >= 0 &&
+			((Names.Length == 1 && OptionValueType != OptionValueType.None) ||
+			 (Names.Length > 1 && MaxValueCount > 1)))
+				throw new ArgumentException(
+					"The default option handler '<>' cannot require values.",
+					nameof(prototype));
 		}
 
-		public string           Prototype       {get {return prototype;}}
-		public string           Description     {get {return description;}}
-		public OptionValueType  OptionValueType {get {return type;}}
-		public int              MaxValueCount   {get {return count;}}
-		public bool             Hidden          {get {return hidden;}}
+		public string Prototype { get; }
+		public string Description { get; }
+		public OptionValueType OptionValueType { get; }
+		public int MaxValueCount { get; }
+		public bool Hidden { get; }
 
-		public string[] GetNames ()
-		{
-			return (string[]) names.Clone ();
-		}
+		public string[] GetNames() => (string[])Names.Clone();
 
-		public string[] GetValueSeparators ()
-		{
-			if (separators == null)
-				return new string [0];
-			return (string[]) separators.Clone ();
-		}
+		public string[] GetValueSeparators() => ValueSeparators == null
+			? []
+			: (string[])ValueSeparators.Clone();
 
-		protected static T Parse<T> (string value, OptionContext c)
+		protected static T? Parse<T>(string value, OptionContext c)
 		{
-			Type tt = typeof (T);
+			Type tt = typeof(T);
 #if PCL
 			TypeInfo ti = tt.GetTypeInfo ();
 #else
 			Type ti = tt;
 #endif
 			bool nullable =
-				ti.IsValueType &&
-				ti.IsGenericType &&
-				!ti.IsGenericTypeDefinition &&
-				ti.GetGenericTypeDefinition () == typeof (Nullable<>);
+			ti.IsValueType &&
+			ti.IsGenericType &&
+			!ti.IsGenericTypeDefinition &&
+			ti.GetGenericTypeDefinition() == typeof(Nullable<>);
 #if PCL
 			Type targetType = nullable ? tt.GenericTypeArguments [0] : tt;
 #else
-			Type targetType = nullable ? tt.GetGenericArguments () [0] : tt;
+			Type targetType = nullable ? tt.GetGenericArguments()[0] : tt;
 #endif
-			T t = default (T);
-			try {
-				if (value != null) {
+			T? t = default;
+			if (value != null)
+			{
+				try
+				{
 #if PCL
 					if (targetType.GetTypeInfo ().IsEnum)
 						t = (T) Enum.Parse (targetType, value, true);
 					else
 						t = (T) Convert.ChangeType (value, targetType);
 #else
-					TypeConverter conv = TypeDescriptor.GetConverter (targetType);
-					t = (T) conv.ConvertFromString (value);
+					TypeConverter conv = TypeDescriptor.GetConverter(targetType);
+					t = (T)conv.ConvertFromString(value);
 #endif
 				}
-			}
-			catch (Exception e) {
-				throw new OptionException (
-						string.Format (
-							c.OptionSet.MessageLocalizer ("Could not convert string `{0}' to type {1} for option `{2}'."),
-							value, targetType.Name, c.OptionName),
-						c.OptionName, e);
+				catch (Exception e)
+				{
+					throw new OptionException(
+					string.Format(
+					c.OptionSet.MessageLocalizer("Could not convert string `{0}' to type {1} for option `{2}'."),
+					value,
+					targetType.Name,
+					c.OptionName
+					),
+					c.OptionName ?? string.Empty,
+					e
+					);
+				}
 			}
 			return t;
 		}
 
-		internal string[] Names           {get {return names;}}
-		internal string[] ValueSeparators {get {return separators;}}
+		internal string[] Names { get; }
+		internal string[]? ValueSeparators { get; private set; }
 
-		static readonly char[] NameTerminator = new char[]{'=', ':'};
+		private static readonly char[] _nameTerminator = ['=', ':'];
 
-		private OptionValueType ParsePrototype ()
+		private OptionValueType ParsePrototype()
 		{
 			char type = '\0';
-			List<string> seps = new List<string> ();
-			for (int i = 0; i < names.Length; ++i) {
-				string name = names [i];
+			List<string> seps = [];
+			for (int i = 0; i < Names.Length; ++i)
+			{
+				string name = Names[i];
 				if (name.Length == 0)
-					throw new ArgumentException ("Empty option names are not supported.", "prototype");
+					throw new ArgumentException("Empty option names are not supported.", "prototype");
 
-				int end = name.IndexOfAny (NameTerminator);
+				int end = name.IndexOfAny(_nameTerminator);
 				if (end == -1)
 					continue;
-				names [i] = name.Substring (0, end);
-				if (type == '\0' || type == name [end])
-					type = name [end];
+				Names[i] = name.Substring(0, end);
+				if (type == '\0' || type == name[end])
+					type = name[end];
 				else
-					throw new ArgumentException (
-							string.Format ("Conflicting option types: '{0}' vs. '{1}'.", type, name [end]),
-							"prototype");
-				AddSeparators (name, end, seps);
+					throw new ArgumentException(
+					string.Format("Conflicting option types: '{0}' vs. '{1}'.", type, name[end]),
+					"prototype");
+				AddSeparators(name, end, seps);
 			}
 
 			if (type == '\0')
 				return OptionValueType.None;
 
-			if (count <= 1 && seps.Count != 0)
-				throw new ArgumentException (
-						string.Format ("Cannot provide key/value separators for Options taking {0} value(s).", count),
-						"prototype");
-			if (count > 1) {
+			if (MaxValueCount <= 1 && seps.Count != 0)
+				throw new ArgumentException(
+					string.Format("Cannot provide key/value separators for Options taking {0} value(s).", MaxValueCount),
+					"prototype");
+			if (MaxValueCount > 1)
+			{
 				if (seps.Count == 0)
-					this.separators = new string[]{":", "="};
-				else if (seps.Count == 1 && seps [0].Length == 0)
-					this.separators = null;
+					ValueSeparators = [":", "="];
+				else if (seps.Count == 1 && seps[0].Length == 0)
+					ValueSeparators = null;
 				else
-					this.separators = seps.ToArray ();
+					ValueSeparators = [.. seps];
 			}
 
 			return type == '=' ? OptionValueType.Required : OptionValueType.Optional;
 		}
 
-		private static void AddSeparators (string name, int end, ICollection<string> seps)
+		private static void AddSeparators(string name, int end, ICollection<string> seps)
 		{
 			int start = -1;
-			for (int i = end+1; i < name.Length; ++i) {
-				switch (name [i]) {
+			for (int i = end + 1; i < name.Length; ++i)
+			{
+				switch (name[i])
+				{
 					case '{':
 						if (start != -1)
-							throw new ArgumentException (
-									string.Format ("Ill-formed name/value separator found in \"{0}\".", name),
-									"prototype");
-						start = i+1;
+							throw new ArgumentException(
+							string.Format("Ill-formed name/value separator found in \"{0}\".", name),
+							"prototype");
+						start = i + 1;
 						break;
 					case '}':
 						if (start == -1)
-							throw new ArgumentException (
-									string.Format ("Ill-formed name/value separator found in \"{0}\".", name),
-									"prototype");
-						seps.Add (name.Substring (start, i-start));
+							throw new ArgumentException(
+							string.Format("Ill-formed name/value separator found in \"{0}\".", name),
+							"prototype");
+						seps.Add(name.Substring(start, i - start));
 						start = -1;
 						break;
 					default:
 						if (start == -1)
-							seps.Add (name [i].ToString ());
+							seps.Add(name[i].ToString());
 						break;
 				}
 			}
 			if (start != -1)
-				throw new ArgumentException (
-						string.Format ("Ill-formed name/value separator found in \"{0}\".", name),
-						"prototype");
+				throw new ArgumentException(
+					string.Format("Ill-formed name/value separator found in \"{0}\".", name),
+					"prototype");
 		}
 
-		public void Invoke (OptionContext c)
+		public void Invoke(OptionContext c)
 		{
-			OnParseComplete (c);
-			c.OptionName  = null;
-			c.Option      = null;
-			c.OptionValues.Clear ();
+			OnParseComplete(c);
+			c.OptionName = null;
+			c.Option = null;
+			c.OptionValues.Clear();
 		}
 
-		protected abstract void OnParseComplete (OptionContext c);
+		protected abstract void OnParseComplete(OptionContext c);
 
-		internal void InvokeOnParseComplete (OptionContext c)
-		{
-			OnParseComplete (c);
-		}
+		internal void InvokeOnParseComplete(OptionContext c) => OnParseComplete(c);
 
-		public override string ToString ()
-		{
-			return Prototype;
-		}
+		public override string ToString() => Prototype;
 	}
 
-	public abstract class ArgumentSource {
+	public abstract class ArgumentSource
+	{
 
-		protected ArgumentSource ()
+		protected ArgumentSource()
 		{
 		}
 
-		public abstract string[] GetNames ();
+		public abstract string[] GetNames();
 		public abstract string Description { get; }
-		public abstract bool GetArguments (string value, out IEnumerable<string> replacement);
+		public abstract bool GetArguments(string value, out IEnumerable<string>? replacement);
 
 #if !PCL || NETSTANDARD1_3
-		public static IEnumerable<string> GetArgumentsFromFile (string file)
-		{
-			return GetArguments (System.IO.File.OpenText (file), true);
-		}
+		public static IEnumerable<string> GetArgumentsFromFile(string file) => GetArguments(System.IO.File.OpenText(file), true);
 #endif
 
-		public static IEnumerable<string> GetArguments (TextReader reader)
-		{
-			return GetArguments (reader, false);
-		}
+		public static IEnumerable<string> GetArguments(TextReader reader) => GetArguments(reader, false);
 
 		// Cribbed from mcs/driver.cs:LoadArgs(string)
-		static IEnumerable<string> GetArguments (TextReader reader, bool close)
+		private static IEnumerable<string> GetArguments(TextReader reader, bool close)
 		{
-			try {
-				StringBuilder arg = new StringBuilder ();
+			try
+			{
+				StringBuilder arg = new StringBuilder();
 
 				string line;
-				while ((line = reader.ReadLine ()) != null) {
+				while ((line = reader.ReadLine()) != null)
+				{
 					int t = line.Length;
 
-					for (int i = 0; i < t; i++) {
-						char c = line [i];
+					for (int i = 0; i < t; i++)
+					{
+						char c = line[i];
 
-						if (c == '"' || c == '\'') {
+						if (c == '"' || c == '\'')
+						{
 							char end = c;
 
-							for (i++; i < t; i++){
-								c = line [i];
+							for (i++; i < t; i++)
+							{
+								c = line[i];
 
 								if (c == end)
 									break;
-								arg.Append (c);
+								arg.Append(c);
 							}
-						} else if (c == ' ') {
-							if (arg.Length > 0) {
-								yield return arg.ToString ();
+						}
+						else if (c == ' ')
+						{
+							if (arg.Length > 0)
+							{
+								yield return arg.ToString();
 								arg.Length = 0;
 							}
-						} else
-							arg.Append (c);
+						}
+						else
+							arg.Append(c);
 					}
-					if (arg.Length > 0) {
-						yield return arg.ToString ();
+					if (arg.Length > 0)
+					{
+						yield return arg.ToString();
 						arg.Length = 0;
 					}
 				}
 			}
-			finally {
+			finally
+			{
 				if (close)
-					reader.Dispose ();
+					reader.Dispose();
 			}
 		}
 	}
 
 #if !PCL || NETSTANDARD1_3
-	public class ResponseFileSource : ArgumentSource {
+	public class ResponseFileSource : ArgumentSource
+	{
 
-		public override string[] GetNames ()
+		public override string[] GetNames() => new string[] { "@file" };
+
+		public override string Description
 		{
-			return new string[]{"@file"};
+			get { return "Read response file for more options."; }
 		}
 
-		public override string Description {
-			get {return "Read response file for more options.";}
-		}
-
-		public override bool GetArguments (string value, out IEnumerable<string> replacement)
+		public override bool GetArguments(string value, out IEnumerable<string>? replacement)
 		{
-			if (string.IsNullOrEmpty (value) || !value.StartsWith ("@")) {
+			if (string.IsNullOrEmpty(value) || !value.StartsWith("@"))
+			{
 				replacement = null;
 				return false;
 			}
-			replacement = ArgumentSource.GetArgumentsFromFile (value.Substring (1));
+			replacement = GetArgumentsFromFile(value.Substring(1));
 			return true;
 		}
 	}
@@ -716,727 +664,701 @@ namespace HXE
 #if !PCL
 	[Serializable]
 #endif
-	public class OptionException : Exception {
-		private string option;
+	public class OptionException : Exception
+	{
+		private readonly string _option;
 
-		public OptionException ()
+		public OptionException()
 		{
+			_option = string.Empty;
 		}
 
-		public OptionException (string message, string optionName)
-			: base (message)
+		public OptionException(string message, string optionName)
+			: base(message)
 		{
-			this.option = optionName;
+			_option = optionName;
 		}
 
-		public OptionException (string message, string optionName, Exception innerException)
-			: base (message, innerException)
+		public OptionException(string message, string optionName, Exception innerException)
+			: base(message, innerException)
 		{
-			this.option = optionName;
+			_option = optionName;
 		}
 
 #if !PCL
-		protected OptionException (SerializationInfo info, StreamingContext context)
-			: base (info, context)
+		protected OptionException(SerializationInfo info, StreamingContext context)
+			: base(info, context)
 		{
-			this.option = info.GetString ("OptionName");
+			_option = info.GetString("OptionName");
 		}
 #endif
 
-		public string OptionName {
-			get {return this.option;}
+		public string OptionName
+		{
+			get { return _option; }
 		}
 
 #if !PCL
-/*#pragma warning disable 618 // SecurityPermissionAttribute is obsolete
-		[SecurityPermission (SecurityAction.LinkDemand, SerializationFormatter = true)]
-#pragma warning restore 618*/
-		public override void GetObjectData (SerializationInfo info, StreamingContext context)
+		/*#pragma warning disable 618 // SecurityPermissionAttribute is obsolete
+						[SecurityPermission (SecurityAction.LinkDemand, SerializationFormatter = true)]
+				#pragma warning restore 618*/
+		public override void GetObjectData(SerializationInfo info, StreamingContext context)
 		{
-			base.GetObjectData (info, context);
-			info.AddValue ("OptionName", option);
+			base.GetObjectData(info, context);
+			info.AddValue("OptionName", _option);
 		}
 #endif
 	}
 
-	public delegate void OptionAction<TKey, TValue> (TKey key, TValue value);
+	public delegate void OptionAction<TKey, TValue>(TKey key, TValue value);
 
 	public class OptionSet : KeyedCollection<string, Option>
 	{
-		public OptionSet ()
-			: this (null)
+		public OptionSet()
+			: this(static delegate (string f) { return f; })
 		{
 		}
 
-		public OptionSet (MessageLocalizerConverter localizer)
+		public OptionSet(MessageLocalizerConverter? localizer)
 		{
-			this.roSources = new ReadOnlyCollection<ArgumentSource> (sources);
-			this.localizer = localizer;
-			if (this.localizer == null) {
-				this.localizer = delegate (string f) {
-					return f;
-				};
-			}
+			ArgumentSources = new ReadOnlyCollection<ArgumentSource>(_sources);
+			MessageLocalizer = localizer ?? (static f => f);
 		}
 
-		MessageLocalizerConverter localizer;
+		public MessageLocalizerConverter MessageLocalizer { get; internal set; }
 
-		public MessageLocalizerConverter MessageLocalizer {
-			get {return localizer;}
-			internal set {localizer = value;}
-		}
+		private readonly List<ArgumentSource> _sources = [];
 
-		List<ArgumentSource> sources = new List<ArgumentSource> ();
-		ReadOnlyCollection<ArgumentSource> roSources;
+		public ReadOnlyCollection<ArgumentSource> ArgumentSources { get; }
 
-		public ReadOnlyCollection<ArgumentSource> ArgumentSources {
-			get {return roSources;}
-		}
-
-
-		protected override string GetKeyForItem (Option item)
+		protected override string GetKeyForItem(Option item)
 		{
 			if (item == null)
-				throw new ArgumentNullException ("option");
+				throw new ArgumentNullException("option");
 			if (item.Names != null && item.Names.Length > 0)
-				return item.Names [0];
+				return item.Names[0];
 			// This should never happen, as it's invalid for Option to be
 			// constructed w/o any names.
-			throw new InvalidOperationException ("Option has no names!");
+			throw new InvalidOperationException("Option has no names!");
 		}
 
-		[Obsolete ("Use KeyedCollection.this[string]")]
-		protected Option GetOptionForName (string option)
+		[Obsolete("Use KeyedCollection.this[string]")]
+		protected Option? GetOptionForName(string option)
 		{
 			if (option == null)
-				throw new ArgumentNullException ("option");
-			try {
-				return base [option];
+				throw new ArgumentNullException(nameof(option));
+			try
+			{
+				return base[option];
 			}
-			catch (KeyNotFoundException) {
+			catch (KeyNotFoundException)
+			{
 				return null;
 			}
 		}
 
-		protected override void InsertItem (int index, Option item)
+		protected override void InsertItem(int index, Option item)
 		{
-			base.InsertItem (index, item);
-			AddImpl (item);
+			base.InsertItem(index, item);
+			AddImpl(item);
 		}
 
-		protected override void RemoveItem (int index)
+		protected override void RemoveItem(int index)
 		{
-			Option p = Items [index];
-			base.RemoveItem (index);
+			Option p = Items[index];
+			base.RemoveItem(index);
 			// KeyedCollection.RemoveItem() handles the 0th item
-			for (int i = 1; i < p.Names.Length; ++i) {
-				Dictionary.Remove (p.Names [i]);
+			for (int i = 1; i < p.Names.Length; ++i)
+			{
+				Dictionary.Remove(p.Names[i]);
 			}
 		}
 
-		protected override void SetItem (int index, Option item)
+		protected override void SetItem(int index, Option item)
 		{
-			base.SetItem (index, item);
-			AddImpl (item);
+			base.SetItem(index, item);
+			AddImpl(item);
 		}
 
-		private void AddImpl (Option option)
+		private void AddImpl(Option option)
 		{
 			if (option == null)
-				throw new ArgumentNullException ("option");
-			List<string> added = new List<string> (option.Names.Length);
-			try {
+				throw new ArgumentNullException(nameof(option));
+			List<string> added = new(option.Names.Length);
+			try
+			{
 				// KeyedCollection.InsertItem/SetItem handle the 0th name.
-				for (int i = 1; i < option.Names.Length; ++i) {
-					Dictionary.Add (option.Names [i], option);
-					added.Add (option.Names [i]);
+				for (int i = 1; i < option.Names.Length; ++i)
+				{
+					Dictionary.Add(option.Names[i], option);
+					added.Add(option.Names[i]);
 				}
 			}
-			catch (Exception) {
+			catch (Exception)
+			{
 				foreach (string name in added)
-					Dictionary.Remove (name);
+					Dictionary.Remove(name);
 				throw;
 			}
 		}
 
-		public OptionSet Add (string header)
+		public OptionSet Add(string header)
 		{
 			if (header == null)
-				throw new ArgumentNullException ("header");
-			Add (new Category (header));
+				throw new ArgumentNullException(nameof(header));
+			Add(new Category(header));
 			return this;
 		}
 
-		internal sealed class Category : Option {
-
-			// Prototype starts with '=' because this is an invalid prototype
-			// (see Option.ParsePrototype(), and thus it'll prevent Category
-			// instances from being accidentally used as normal options.
-			public Category (string description)
-				: base ("=:Category:= " + description, description)
-			{
-			}
-
-			protected override void OnParseComplete (OptionContext c)
-			{
-				throw new NotSupportedException ("Category.OnParseComplete should not be invoked.");
-			}
+		internal sealed class Category(string description) : Option("=:Category:= " + description, description)
+		{
+			protected override void OnParseComplete(OptionContext c) => throw new NotSupportedException("Category.OnParseComplete should not be invoked.");
 		}
 
 
-		public new OptionSet Add (Option option)
+		public new OptionSet Add(Option option)
 		{
-			base.Add (option);
+			base.Add(option);
 			return this;
 		}
 
-		sealed class ActionOption : Option {
-			Action<OptionValueCollection> action;
-
-			public ActionOption (string prototype, string description, int count, Action<OptionValueCollection> action)
-				: this (prototype, description, count, action, false)
-			{
-			}
-
-			public ActionOption (string prototype, string description, int count, Action<OptionValueCollection> action, bool hidden)
-				: base (prototype, description, count, hidden)
-			{
-				if (action == null)
-					throw new ArgumentNullException ("action");
-				this.action = action;
-			}
-
-			protected override void OnParseComplete (OptionContext c)
-			{
-				action (c.OptionValues);
-			}
-		}
-
-		public OptionSet Add (string prototype, Action<string> action)
+		private sealed class ActionOption(string prototype, string description, int count, Action<OptionValueCollection> action, bool hidden) : Option(prototype, description, count, hidden)
 		{
-			return Add (prototype, null, action);
+			private readonly Action<OptionValueCollection> action = action ?? throw new ArgumentNullException("action");
+
+			public ActionOption(string prototype, string description, int count, Action<OptionValueCollection> action)
+			: this(prototype, description, count, action, false)
+			{
+			}
+
+			protected override void OnParseComplete(OptionContext c) => action(c.OptionValues);
 		}
 
-		public OptionSet Add (string prototype, string description, Action<string> action)
-		{
-			return Add (prototype, description, action, false);
-		}
+		public OptionSet Add(string prototype, Action<string> action) => Add(prototype, null, action);
 
-		public OptionSet Add (string prototype, string description, Action<string> action, bool hidden)
+		public OptionSet Add(string prototype, string? description, Action<string> action) => Add(prototype, description, action, false);
+
+		public OptionSet Add(string prototype, string? description, Action<string> action, bool hidden)
 		{
 			if (action == null)
-				throw new ArgumentNullException ("action");
-			Option p = new ActionOption (prototype, description, 1,
-					delegate (OptionValueCollection v) { action (v [0]); }, hidden);
-			base.Add (p);
+				throw new ArgumentNullException(nameof(action));
+			Option p = new ActionOption(prototype, description ?? string.Empty, 1,
+			delegate (OptionValueCollection v) { action(v[0]); }, hidden);
+			base.Add(p);
 			return this;
 		}
 
-		public OptionSet Add (string prototype, OptionAction<string, string> action)
-		{
-			return Add (prototype, null, action);
-		}
+		public OptionSet Add(string prototype, OptionAction<string, string> action) =>
+			Add(prototype, null, action);
 
-		public OptionSet Add (string prototype, string description, OptionAction<string, string> action)
-		{
-			return Add (prototype, description, action, false);
-		}
+		public OptionSet Add(string prototype, string? description, OptionAction<string, string> action) =>
+			Add(prototype, description, action, false);
 
-		public OptionSet Add (string prototype, string description, OptionAction<string, string> action, bool hidden)	{
+		public OptionSet Add(string prototype, string? description, OptionAction<string, string> action, bool hidden)
+		{
 			if (action == null)
-				throw new ArgumentNullException ("action");
-			Option p = new ActionOption (prototype, description, 2,
-					delegate (OptionValueCollection v) {action (v [0], v [1]);}, hidden);
-			base.Add (p);
+				throw new ArgumentNullException(nameof(action));
+			Option p = new ActionOption(prototype, description ?? string.Empty, 2,
+			delegate (OptionValueCollection v) { action(v[0], v[1]); }, hidden);
+			base.Add(p);
 			return this;
 		}
 
-		sealed class ActionOption<T> : Option {
-			Action<T> action;
-
-			public ActionOption (string prototype, string description, Action<T> action)
-				: base (prototype, description, 1)
-			{
-				if (action == null)
-					throw new ArgumentNullException ("action");
-				this.action = action;
-			}
-
-			protected override void OnParseComplete (OptionContext c)
-			{
-				action (Parse<T> (c.OptionValues [0], c));
-			}
-		}
-
-		sealed class ActionOption<TKey, TValue> : Option {
-			OptionAction<TKey, TValue> action;
-
-			public ActionOption (string prototype, string description, OptionAction<TKey, TValue> action)
-				: base (prototype, description, 2)
-			{
-				if (action == null)
-					throw new ArgumentNullException ("action");
-				this.action = action;
-			}
-
-			protected override void OnParseComplete (OptionContext c)
-			{
-				action (
-						Parse<TKey> (c.OptionValues [0], c),
-						Parse<TValue> (c.OptionValues [1], c));
-			}
-		}
-
-		public OptionSet Add<T> (string prototype, Action<T> action)
+		private sealed class ActionOption<T>(string prototype, string description, Action<T?> action) : Option(prototype, description, 1)
 		{
-			return Add (prototype, null, action);
+			private readonly Action<T?> _action = action ?? throw new ArgumentNullException(nameof(action));
+
+			protected override void OnParseComplete(OptionContext c) => _action(Parse<T>(c.OptionValues[0], c));
 		}
 
-		public OptionSet Add<T> (string prototype, string description, Action<T> action)
+		private sealed class ActionOption<TKey, TValue>(string prototype, string description, OptionAction<TKey?, TValue?> action) : Option(prototype, description, 2)
 		{
-			return Add (new ActionOption<T> (prototype, description, action));
+			private readonly OptionAction<TKey?, TValue?> _action = action ?? throw new ArgumentNullException("action");
+
+			protected override void OnParseComplete(OptionContext c) => _action(
+			Parse<TKey>(c.OptionValues[0], c),
+			Parse<TValue>(c.OptionValues[1], c)
+			);
 		}
 
-		public OptionSet Add<TKey, TValue> (string prototype, OptionAction<TKey, TValue> action)
-		{
-			return Add (prototype, null, action);
-		}
+		public OptionSet Add<T>(string prototype, Action<T?> action) =>
+			Add(prototype, null, action);
 
-		public OptionSet Add<TKey, TValue> (string prototype, string description, OptionAction<TKey, TValue> action)
-		{
-			return Add (new ActionOption<TKey, TValue> (prototype, description, action));
-		}
+		public OptionSet Add<T>(string prototype, string? description, Action<T?> action) =>
+			Add(new ActionOption<T>(prototype, description ?? string.Empty, action));
 
-		public OptionSet Add (ArgumentSource source)
+		public OptionSet Add<TKey, TValue>(string prototype, OptionAction<TKey?, TValue?> action) =>
+			Add(prototype, null, action);
+
+		public OptionSet Add<TKey, TValue>(string prototype, string? description, OptionAction<TKey?, TValue?> action) =>
+			Add(new ActionOption<TKey, TValue>(prototype, description ?? string.Empty, action));
+
+		public OptionSet Add(ArgumentSource source)
 		{
 			if (source == null)
-				throw new ArgumentNullException ("source");
-			sources.Add (source);
+				throw new ArgumentNullException(nameof(source));
+			_sources.Add(source);
 			return this;
 		}
 
-		protected virtual OptionContext CreateOptionContext ()
-		{
-			return new OptionContext (this);
-		}
+		protected virtual OptionContext CreateOptionContext() => new OptionContext(this);
 
-		public List<string> Parse (IEnumerable<string> arguments)
+		public List<string> Parse(IEnumerable<string> arguments)
 		{
 			if (arguments == null)
-				throw new ArgumentNullException ("arguments");
-			OptionContext c = CreateOptionContext ();
+				throw new ArgumentNullException(nameof(arguments));
+			OptionContext c = CreateOptionContext();
 			c.OptionIndex = -1;
 			bool process = true;
-			List<string> unprocessed = new List<string> ();
-			Option def = Contains ("<>") ? this ["<>"] : null;
-			ArgumentEnumerator ae = new ArgumentEnumerator (arguments);
-			foreach (string argument in ae) {
+			List<string> unprocessed = [];
+			Option? def = Contains("<>") ? this["<>"] : null;
+			ArgumentEnumerator ae = new(arguments);
+			foreach (string argument in ae)
+			{
 				++c.OptionIndex;
-				if (argument == "--") {
+				if (argument == "--")
+				{
 					process = false;
 					continue;
 				}
-				if (!process) {
-					Unprocessed (unprocessed, def, c, argument);
+				if (!process)
+				{
+					Unprocessed(unprocessed, def, c, argument);
 					continue;
 				}
-				if (AddSource (ae, argument))
+				if (AddSource(ae, argument))
 					continue;
-				if (!Parse (argument, c))
-					Unprocessed (unprocessed, def, c, argument);
+				if (!Parse(argument, c))
+					Unprocessed(unprocessed, def, c, argument);
 			}
 			if (c.Option != null)
-				c.Option.Invoke (c);
+				c.Option.Invoke(c);
 			return unprocessed;
 		}
 
-		class ArgumentEnumerator : IEnumerable<string> {
-			List<IEnumerator<string>> sources = new List<IEnumerator<string>> ();
+		private class ArgumentEnumerator : IEnumerable<string>
+		{
+			private readonly List<IEnumerator<string>> sources = [];
 
-			public ArgumentEnumerator (IEnumerable<string> arguments)
+			public ArgumentEnumerator(IEnumerable<string> arguments)
 			{
-				sources.Add (arguments.GetEnumerator ());
+				sources.Add(arguments.GetEnumerator());
 			}
 
-			public void Add (IEnumerable<string> arguments)
-			{
-				sources.Add (arguments.GetEnumerator ());
-			}
+			public void Add(IEnumerable<string> arguments) => sources.Add(arguments.GetEnumerator());
 
-			public IEnumerator<string> GetEnumerator ()
+			public IEnumerator<string> GetEnumerator()
 			{
-				do {
-					IEnumerator<string> c = sources [sources.Count-1];
-					if (c.MoveNext ())
+				do
+				{
+					IEnumerator<string> c = sources[sources.Count - 1];
+					if (c.MoveNext())
 						yield return c.Current;
-					else {
-						c.Dispose ();
-						sources.RemoveAt (sources.Count-1);
+					else
+					{
+						c.Dispose();
+						sources.RemoveAt(sources.Count - 1);
 					}
 				} while (sources.Count > 0);
 			}
 
-			IEnumerator IEnumerable.GetEnumerator ()
-			{
-				return GetEnumerator ();
-			}
+			IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 		}
 
-		bool AddSource (ArgumentEnumerator ae, string argument)
+		private bool AddSource(ArgumentEnumerator ae, string argument)
 		{
-			foreach (ArgumentSource source in sources) {
-				IEnumerable<string> replacement;
-				if (!source.GetArguments (argument, out replacement))
+			foreach (ArgumentSource source in _sources)
+			{
+				if (!source.GetArguments(argument, out IEnumerable<string>? replacement))
 					continue;
-				ae.Add (replacement);
+				if (replacement != null)
+					ae.Add(replacement);
 				return true;
 			}
 			return false;
 		}
 
-		private static bool Unprocessed (ICollection<string> extra, Option def, OptionContext c, string argument)
+		private static bool Unprocessed(System.Collections.Generic.List<string> extra, Option? def, OptionContext c, string argument)
 		{
-			if (def == null) {
-				extra.Add (argument);
+			if (def == null)
+			{
+				extra.Add(argument);
 				return false;
 			}
-			c.OptionValues.Add (argument);
+			c.OptionValues.Add(argument);
 			c.Option = def;
-			c.Option.Invoke (c);
+			c.Option.Invoke(c);
 			return false;
 		}
 
-		private readonly Regex ValueOption = new Regex (
+		private readonly Regex ValueOption = new Regex(
 			@"^(?<flag>--|-|/)(?<name>[^:=]+)((?<sep>[:=])(?<value>.*))?$");
 
-		protected bool GetOptionParts (string argument, out string flag, out string name, out string sep, out string value)
+		protected bool GetOptionParts(string argument, out string? flag, out string? name, out string? sep, out string? value)
 		{
 			if (argument == null)
-				throw new ArgumentNullException ("argument");
+				throw new ArgumentNullException(nameof(argument));
 
 			flag = name = sep = value = null;
-			Match m = ValueOption.Match (argument);
-			if (!m.Success) {
+			Match m = ValueOption.Match(argument);
+			if (!m.Success)
+			{
 				return false;
 			}
-			flag  = m.Groups ["flag"].Value;
-			name  = m.Groups ["name"].Value;
-			if (m.Groups ["sep"].Success && m.Groups ["value"].Success) {
-				sep   = m.Groups ["sep"].Value;
-				value = m.Groups ["value"].Value;
+			flag = m.Groups["flag"].Value;
+			name = m.Groups["name"].Value;
+			if (m.Groups["sep"].Success && m.Groups["value"].Success)
+			{
+				sep = m.Groups["sep"].Value;
+				value = m.Groups["value"].Value;
 			}
 			return true;
 		}
 
-		protected virtual bool Parse (string argument, OptionContext c)
+		protected virtual bool Parse(string argument, OptionContext c)
 		{
-			if (c.Option != null) {
-				ParseValue (argument, c);
+			if (c.Option != null)
+			{
+				ParseValue(argument, c);
 				return true;
 			}
 
-			string f, n, s, v;
-			if (!GetOptionParts (argument, out f, out n, out s, out v))
+			if (!GetOptionParts(argument, out string? f, out string? n, out string? s, out string? v))
 				return false;
 
 			Option p;
-			if (Contains (n)) {
-				p = this [n];
+			if (n != null && Contains(n))
+			{
+				p = this[n];
 				c.OptionName = f + n;
-				c.Option     = p;
-				switch (p.OptionValueType) {
+				c.Option = p;
+				switch (p.OptionValueType)
+				{
 					case OptionValueType.None:
-						c.OptionValues.Add (n);
-						c.Option.Invoke (c);
+						c.OptionValues.Add(n);
+						c.Option.Invoke(c);
 						break;
 					case OptionValueType.Optional:
 					case OptionValueType.Required:
-						ParseValue (v, c);
+						ParseValue(v ?? string.Empty, c);
 						break;
 				}
 				return true;
 			}
 			// no match; is it a bool option?
-			if (ParseBool (argument, n, c))
+			if (ParseBool(argument, n ?? string.Empty, c))
 				return true;
 			// is it a bundled option?
-			if (ParseBundledValue (f, string.Concat (n + s + v), c))
+			if (ParseBundledValue(f ?? string.Empty, string.Concat(n + s + v), c))
 				return true;
 
 			return false;
 		}
 
-		private void ParseValue (string option, OptionContext c)
+		private void ParseValue(string option, OptionContext c)
 		{
 			if (option != null)
-				foreach (string o in c.Option.ValueSeparators != null
-						? option.Split (c.Option.ValueSeparators, c.Option.MaxValueCount - c.OptionValues.Count, StringSplitOptions.None)
-						: new string[]{option}) {
-					c.OptionValues.Add (o);
+				foreach (string o in c?.Option?.ValueSeparators != null
+					? option.Split(c.Option.ValueSeparators, c.Option.MaxValueCount - c.OptionValues.Count, StringSplitOptions.None)
+					: [option])
+				{
+					c?.OptionValues.Add(o);
 				}
-			if (c.OptionValues.Count == c.Option.MaxValueCount ||
-					c.Option.OptionValueType == OptionValueType.Optional)
-				c.Option.Invoke (c);
-			else if (c.OptionValues.Count > c.Option.MaxValueCount) {
-				throw new OptionException (localizer (string.Format (
-								"Error: Found {0} option values when expecting {1}.",
-								c.OptionValues.Count, c.Option.MaxValueCount)),
-						c.OptionName);
+			if (c?.OptionValues.Count == c?.Option?.MaxValueCount ||
+			c?.Option?.OptionValueType == OptionValueType.Optional)
+				c?.Option?.Invoke(c);
+			else if (c?.OptionValues.Count > c?.Option?.MaxValueCount)
+			{
+				throw new OptionException(MessageLocalizer(string.Format(
+					"Error: Found {0} option values when expecting {1}.",
+					c.OptionValues.Count, c.Option.MaxValueCount)),
+					c?.OptionName ?? "");
 			}
 		}
 
-		private bool ParseBool (string option, string n, OptionContext c)
+		private bool ParseBool(string option, string n, OptionContext c)
 		{
 			Option p;
 			string rn;
-			if (n.Length >= 1 && (n [n.Length-1] == '+' || n [n.Length-1] == '-') &&
-					Contains ((rn = n.Substring (0, n.Length-1)))) {
-				p = this [rn];
-				string v = n [n.Length-1] == '+' ? option : null;
-				c.OptionName  = option;
-				c.Option      = p;
-				c.OptionValues.Add (v);
-				p.Invoke (c);
+			if (n.Length >= 1 && (n[n.Length - 1] == '+' || n[n.Length - 1] == '-') &&
+			Contains(rn = n.Substring(0, n.Length - 1)))
+			{
+				p = this[rn];
+				string v = n[n.Length - 1] == '+' ? option : string.Empty;
+				c.OptionName = option;
+				c.Option = p;
+				c.OptionValues.Add(v);
+				p.Invoke(c);
 				return true;
 			}
 			return false;
 		}
 
-		private bool ParseBundledValue (string f, string n, OptionContext c)
+		private bool ParseBundledValue(string f, string n, OptionContext c)
 		{
 			if (f != "-")
 				return false;
-			for (int i = 0; i < n.Length; ++i) {
+			for (int i = 0; i < n.Length; ++i)
+			{
 				Option p;
-				string opt = f + n [i].ToString ();
-				string rn = n [i].ToString ();
-				if (!Contains (rn)) {
+				string opt = f + n[i].ToString();
+				string rn = n[i].ToString();
+				if (!Contains(rn))
+				{
 					if (i == 0)
 						return false;
-					throw new OptionException (string.Format (localizer (
-									"Cannot use unregistered option '{0}' in bundle '{1}'."), rn, f + n), null);
+					throw new OptionException(string.Format(MessageLocalizer(
+						"Cannot use unregistered option '{0}' in bundle '{1}'."), rn, f + n), string.Empty);
 				}
-				p = this [rn];
-				switch (p.OptionValueType) {
+				p = this[rn];
+				switch (p.OptionValueType)
+				{
 					case OptionValueType.None:
-						Invoke (c, opt, n, p);
+						Invoke(c, opt, n, p);
 						break;
 					case OptionValueType.Optional:
-					case OptionValueType.Required: {
-						string v     = n.Substring (i+1);
-						c.Option     = p;
-						c.OptionName = opt;
-						ParseValue (v.Length != 0 ? v : null, c);
-						return true;
-					}
+					case OptionValueType.Required:
+						{
+							string v = n.Substring(i + 1);
+							c.Option = p;
+							c.OptionName = opt;
+							ParseValue(v.Length != 0 ? v : string.Empty, c);
+							return true;
+						}
 					default:
-						throw new InvalidOperationException ("Unknown OptionValueType: " + p.OptionValueType);
+						throw new InvalidOperationException("Unknown OptionValueType: " + p.OptionValueType);
 				}
 			}
 			return true;
 		}
 
-		private static void Invoke (OptionContext c, string name, string value, Option option)
+		private static void Invoke(OptionContext c, string name, string value, Option option)
 		{
-			c.OptionName  = name;
-			c.Option      = option;
-			c.OptionValues.Add (value);
-			option.Invoke (c);
+			c.OptionName = name;
+			c.Option = option;
+			c.OptionValues.Add(value);
+			option.Invoke(c);
 		}
 
 		private const int OptionWidth = 29;
-		private const int Description_FirstWidth  = 80 - OptionWidth;
-		private const int Description_RemWidth    = 80 - OptionWidth - 2;
+		private const int Description_FirstWidth = 80 - OptionWidth;
+		private const int Description_RemWidth = 80 - OptionWidth - 2;
 
-		static  readonly    string      CommandHelpIndentStart       = new string (' ', OptionWidth);
-		static  readonly    string      CommandHelpIndentRemaining   = new string (' ', OptionWidth + 2);
+		private static readonly string CommandHelpIndentStart = new string(' ', OptionWidth);
+		private static readonly string CommandHelpIndentRemaining = new string(' ', OptionWidth + 2);
 
-		public void WriteOptionDescriptions (TextWriter o)
+		public void WriteOptionDescriptions(TextWriter o)
 		{
-			foreach (Option p in this) {
+			foreach (Option p in this)
+			{
 				int written = 0;
 
 				if (p.Hidden)
 					continue;
 
-				Category c = p as Category;
-				if (c != null) {
-					WriteDescription (o, p.Description, "", 80, 80);
+				if (p is Category c)
+				{
+					WriteDescription(o, c.Description, "", 80, 80);
 					continue;
 				}
-				CommandOption co = p as CommandOption;
-				if (co != null) {
-					WriteCommandDescription (o, co.Command, co.CommandName);
+				if (p is CommandOption co)
+				{
+					WriteCommandDescription(o, co.Command, co.CommandName);
 					continue;
 				}
 
-				if (!WriteOptionPrototype (o, p, ref written))
+				if (!WriteOptionPrototype(o, p, ref written))
 					continue;
 
 				if (written < OptionWidth)
-					o.Write (new string (' ', OptionWidth - written));
-				else {
-					o.WriteLine ();
-					o.Write (new string (' ', OptionWidth));
+					o.Write(new string(' ', OptionWidth - written));
+				else
+				{
+					o.WriteLine();
+					o.Write(new string(' ', OptionWidth));
 				}
 
-				WriteDescription (o, p.Description, new string (' ', OptionWidth+2),
-						Description_FirstWidth, Description_RemWidth);
+				WriteDescription(o, p.Description, new string(' ', OptionWidth + 2),
+					Description_FirstWidth, Description_RemWidth);
 			}
 
-			foreach (ArgumentSource s in sources) {
-				string[] names = s.GetNames ();
+			foreach (ArgumentSource s in _sources)
+			{
+				string[] names = s.GetNames();
 				if (names == null || names.Length == 0)
 					continue;
 
 				int written = 0;
 
-				Write (o, ref written, "  ");
-				Write (o, ref written, names [0]);
-				for (int i = 1; i < names.Length; ++i) {
-					Write (o, ref written, ", ");
-					Write (o, ref written, names [i]);
+				Write(o, ref written, "  ");
+				Write(o, ref written, names[0]);
+				for (int i = 1; i < names.Length; ++i)
+				{
+					Write(o, ref written, ", ");
+					Write(o, ref written, names[i]);
 				}
 
 				if (written < OptionWidth)
-					o.Write (new string (' ', OptionWidth - written));
-				else {
-					o.WriteLine ();
-					o.Write (new string (' ', OptionWidth));
+					o.Write(new string(' ', OptionWidth - written));
+				else
+				{
+					o.WriteLine();
+					o.Write(new string(' ', OptionWidth));
 				}
 
-				WriteDescription (o, s.Description, new string (' ', OptionWidth+2),
-						Description_FirstWidth, Description_RemWidth);
+				WriteDescription(o, s.Description, new string(' ', OptionWidth + 2),
+					Description_FirstWidth, Description_RemWidth);
 			}
 		}
 
-		internal void WriteCommandDescription (TextWriter o, Command c, string commandName)
+		internal void WriteCommandDescription(TextWriter o, Command c, string commandName)
 		{
-			var name = new string (' ', 8) + (commandName ?? c.Name);
-			if (name.Length < OptionWidth - 1) {
-				WriteDescription (o, name + new string (' ', OptionWidth - name.Length) + c.Help, CommandHelpIndentRemaining, 80, Description_RemWidth);
-			} else {
-				WriteDescription (o, name, "", 80, 80);
-				WriteDescription (o, CommandHelpIndentStart + c.Help, CommandHelpIndentRemaining, 80, Description_RemWidth);
+			var name = new string(' ', 8) + (commandName ?? c.Name);
+			if (name.Length < OptionWidth - 1)
+			{
+				WriteDescription(o, name + new string(' ', OptionWidth - name.Length) + c.Help, CommandHelpIndentRemaining, 80, Description_RemWidth);
+			}
+			else
+			{
+				WriteDescription(o, name, "", 80, 80);
+				WriteDescription(o, CommandHelpIndentStart + c.Help, CommandHelpIndentRemaining, 80, Description_RemWidth);
 			}
 		}
 
-		void WriteDescription (TextWriter o, string value, string prefix, int firstWidth, int remWidth)
+		private void WriteDescription(TextWriter o, string value, string prefix, int firstWidth, int remWidth)
 		{
 			bool indent = false;
-			foreach (string line in GetLines (localizer (GetDescription (value)), firstWidth, remWidth)) {
+			foreach (string line in GetLines(MessageLocalizer(GetDescription(value)), firstWidth, remWidth))
+			{
 				if (indent)
-					o.Write (prefix);
-				o.WriteLine (line);
+					o.Write(prefix);
+				o.WriteLine(line);
 				indent = true;
 			}
 		}
 
-		bool WriteOptionPrototype (TextWriter o, Option p, ref int written)
+		private bool WriteOptionPrototype(TextWriter o, Option p, ref int written)
 		{
 			string[] names = p.Names;
 
-			int i = GetNextOptionIndex (names, 0);
+			int i = GetNextOptionIndex(names, 0);
 			if (i == names.Length)
 				return false;
 
-			if (names [i].Length == 1) {
-				Write (o, ref written, "  -");
-				Write (o, ref written, names [0]);
+			if (names[i].Length == 1)
+			{
+				Write(o, ref written, "  -");
+				Write(o, ref written, names[0]);
 			}
-			else {
-				Write (o, ref written, "      --");
-				Write (o, ref written, names [0]);
+			else
+			{
+				Write(o, ref written, "      --");
+				Write(o, ref written, names[0]);
 			}
 
-			for ( i = GetNextOptionIndex (names, i+1);
-					i < names.Length; i = GetNextOptionIndex (names, i+1)) {
-				Write (o, ref written, ", ");
-				Write (o, ref written, names [i].Length == 1 ? "-" : "--");
-				Write (o, ref written, names [i]);
+			for (i = GetNextOptionIndex(names, i + 1);
+			i < names.Length; i = GetNextOptionIndex(names, i + 1))
+			{
+				Write(o, ref written, ", ");
+				Write(o, ref written, names[i].Length == 1 ? "-" : "--");
+				Write(o, ref written, names[i]);
 			}
 
 			if (p.OptionValueType == OptionValueType.Optional ||
-					p.OptionValueType == OptionValueType.Required) {
-				if (p.OptionValueType == OptionValueType.Optional) {
-					Write (o, ref written, localizer ("["));
+			p.OptionValueType == OptionValueType.Required)
+			{
+				if (p.OptionValueType == OptionValueType.Optional)
+				{
+					Write(o, ref written, MessageLocalizer("["));
 				}
-				Write (o, ref written, localizer ("=" + GetArgumentName (0, p.MaxValueCount, p.Description)));
+				Write(o, ref written, MessageLocalizer("=" + GetArgumentName(0, p.MaxValueCount, p.Description)));
 				string sep = p.ValueSeparators != null && p.ValueSeparators.Length > 0
-					? p.ValueSeparators [0]
+					? p.ValueSeparators[0]
 					: " ";
-				for (int c = 1; c < p.MaxValueCount; ++c) {
-					Write (o, ref written, localizer (sep + GetArgumentName (c, p.MaxValueCount, p.Description)));
+				for (int c = 1; c < p.MaxValueCount; ++c)
+				{
+					Write(o, ref written, MessageLocalizer(sep + GetArgumentName(c, p.MaxValueCount, p.Description)));
 				}
-				if (p.OptionValueType == OptionValueType.Optional) {
-					Write (o, ref written, localizer ("]"));
+				if (p.OptionValueType == OptionValueType.Optional)
+				{
+					Write(o, ref written, MessageLocalizer("]"));
 				}
 			}
 			return true;
 		}
 
-		static int GetNextOptionIndex (string[] names, int i)
+		private static int GetNextOptionIndex(string[] names, int i)
 		{
-			while (i < names.Length && names [i] == "<>") {
+			while (i < names.Length && names[i] == "<>")
+			{
 				++i;
 			}
 			return i;
 		}
 
-		static void Write (TextWriter o, ref int n, string s)
+		private static void Write(TextWriter o, ref int n, string s)
 		{
 			n += s.Length;
-			o.Write (s);
+			o.Write(s);
 		}
 
-		static string GetArgumentName (int index, int maxIndex, string description)
+		private static string GetArgumentName(int index, int maxIndex, string description)
 		{
-			var matches = Regex.Matches (description ?? "", @"(?<=(?<!\{)\{)[^{}]*(?=\}(?!\}))"); // ignore double braces
+			var matches = Regex.Matches(description ?? "", @"(?<=(?<!\{)\{)[^{}]*(?=\}(?!\}))"); // ignore double braces
 			string argName = "";
-			foreach (Match match in matches) {
-				var parts = match.Value.Split (':');
+			foreach (Match match in matches)
+			{
+				var parts = match.Value.Split(':');
 				// for maxIndex=1 it can be {foo} or {0:foo}
-				if (maxIndex == 1) {
+				if (maxIndex == 1)
+				{
 					argName = parts[parts.Length - 1];
 				}
 				// look for {i:foo} if maxIndex > 1
 				if (maxIndex > 1 && parts.Length == 2 &&
-					parts[0] == index.ToString (CultureInfo.InvariantCulture)) {
+					parts[0] == index.ToString(CultureInfo.InvariantCulture))
+				{
 					argName = parts[1];
 				}
 			}
 
-			if (string.IsNullOrEmpty (argName)) {
+			if (string.IsNullOrEmpty(argName))
+			{
 				argName = maxIndex == 1 ? "VALUE" : "VALUE" + (index + 1);
 			}
 			return argName;
 		}
 
-		private static string GetDescription (string description)
+		private static string GetDescription(string description)
 		{
 			if (description == null)
 				return string.Empty;
-			StringBuilder sb = new StringBuilder (description.Length);
+			StringBuilder sb = new StringBuilder(description.Length);
 			int start = -1;
-			for (int i = 0; i < description.Length; ++i) {
-				switch (description [i]) {
+			for (int i = 0; i < description.Length; ++i)
+			{
+				switch (description[i])
+				{
 					case '{':
-						if (i == start) {
-							sb.Append ('{');
+						if (i == start)
+						{
+							sb.Append('{');
 							start = -1;
 						}
 						else if (start < 0)
 							start = i + 1;
 						break;
 					case '}':
-						if (start < 0) {
-							if ((i+1) == description.Length || description [i+1] != '}')
-								throw new InvalidOperationException ("Invalid option description: " + description);
+						if (start < 0)
+						{
+							if ((i + 1) == description.Length || description[i + 1] != '}')
+								throw new InvalidOperationException("Invalid option description: " + description);
 							++i;
-							sb.Append ("}");
+							sb.Append("}");
 						}
-						else {
-							sb.Append (description.Substring (start, i - start));
+						else
+						{
+							sb.Append(description.Substring(start, i - start));
 							start = -1;
 						}
 						break;
@@ -1447,468 +1369,448 @@ namespace HXE
 						break;
 					default:
 						if (start < 0)
-							sb.Append (description [i]);
+							sb.Append(description[i]);
 						break;
 				}
 			}
-			return sb.ToString ();
+			return sb.ToString();
 		}
 
-		private static IEnumerable<string> GetLines (string description, int firstWidth, int remWidth)
-		{
-			return StringCoda.WrappedLines (description, firstWidth, remWidth);
-		}
+		private static IEnumerable<string> GetLines(string description, int firstWidth, int remWidth) => StringCoda.WrappedLines(description, firstWidth, remWidth);
 	}
 
 	public class Command
 	{
-		public      string                              Name            {get;}
-		public      string                              Help            {get;}
+		public string Name { get; }
+		public string Help { get; }
 
-		public      OptionSet                           Options         {get; set;}
-		public      Action<IEnumerable<string>>         Run             {get; set;}
+		public OptionSet? Options { get; set; }
+		public Action<IEnumerable<string>>? Run { get; set; }
 
-		public      CommandSet                          CommandSet      {get; internal set;}
+		internal CommandSet? CommandSet { get; set; }
 
-		public Command (string name, string help = null)
+		public Command(string name, string? help = null)
 		{
-			if (string.IsNullOrEmpty (name))
-				throw new ArgumentNullException (nameof (name));
+			if (string.IsNullOrEmpty(name))
+				throw new ArgumentNullException(nameof(name));
 
-			Name    = NormalizeCommandName (name);
-			Help    = help;
+			Name = NormalizeCommandName(name);
+			Help = help ?? string.Empty;
 		}
 
-		static string NormalizeCommandName (string name)
+		private static string NormalizeCommandName(string name)
 		{
-			var value = new StringBuilder (name.Length);
-			var space = false;
-			for (int i = 0; i < name.Length; ++i) {
-				if (!char.IsWhiteSpace (name, i)) {
-					space   = false;
-					value.Append (name [i]);
+			var value = new StringBuilder(name.Length);
+			bool space = false;
+			for (int i = 0; i < name.Length; ++i)
+			{
+				if (!char.IsWhiteSpace(name, i))
+				{
+					space = false;
+					value.Append(name[i]);
 				}
-				else if (!space) {
-					space   = true;
-					value.Append (' ');
+				else if (!space)
+				{
+					space = true;
+					value.Append(' ');
 				}
 			}
-			return value.ToString ();
+			return value.ToString();
 		}
 
-		public virtual int Invoke (IEnumerable<string> arguments)
+		public virtual int Invoke(IEnumerable<string> arguments)
 		{
-			var rest    = Options?.Parse (arguments) ?? arguments;
-			Run?.Invoke (rest);
+			IEnumerable<string> rest = Options?.Parse(arguments) ?? arguments;
+			Run?.Invoke(rest);
 			return 0;
 		}
 	}
 
-	class CommandOption : Option
+	internal class CommandOption(Command command, string? commandName = null, bool hidden = false) : Option("=:Command:= " + (commandName ?? command?.Name), (commandName ?? command?.Name) ?? string.Empty, maxValueCount: 0, hidden: hidden)
 	{
-		public      Command             Command         {get;}
-		public      string              CommandName     {get;}
+		public Command Command { get; } = command ?? throw new ArgumentNullException(nameof(command));
+		public string CommandName { get; } = commandName ?? command.Name;
 
-		// Prototype starts with '=' because this is an invalid prototype
-		// (see Option.ParsePrototype(), and thus it'll prevent Category
-		// instances from being accidentally used as normal options.
-		public CommandOption (Command command, string commandName = null, bool hidden = false)
-			: base ("=:Command:= " + (commandName ?? command?.Name), (commandName ?? command?.Name), maxValueCount: 0, hidden: hidden)
-		{
-			if (command == null)
-				throw new ArgumentNullException (nameof (command));
-			Command = command;
-			CommandName = commandName ?? command.Name;
-		}
+		protected override void OnParseComplete(OptionContext c) =>
+			throw new NotSupportedException("CommandOption.OnParseComplete should not be invoked.");
+	}
 
-		protected override void OnParseComplete (OptionContext c)
+	internal class HelpOption(CommandSet commands, Option d) : Option(d.Prototype, d.Description, d.MaxValueCount, d.Hidden)
+	{
+		private readonly Option _option = d;
+		private readonly CommandSet _commands = commands;
+
+		protected override void OnParseComplete(OptionContext c)
 		{
-			throw new NotSupportedException ("CommandOption.OnParseComplete should not be invoked.");
+			_commands._showHelp = true;
+
+			_option?.InvokeOnParseComplete(c);
 		}
 	}
 
-	class HelpOption : Option
+	internal class CommandOptionSet(CommandSet commands, MessageLocalizerConverter localizer) : OptionSet(localizer)
 	{
-		Option      option;
-		CommandSet  commands;
+		private readonly CommandSet _commands = commands;
 
-		public HelpOption (CommandSet commands, Option d)
-			: base (d.Prototype, d.Description, d.MaxValueCount, d.Hidden)
+		protected override void SetItem(int index, Option item)
 		{
-			this.commands   = commands;
-			this.option     = d;
-		}
-
-		protected override void OnParseComplete (OptionContext c)
-		{
-			commands.showHelp  = true;
-
-			option?.InvokeOnParseComplete (c);
-		}
-	}
-
-	class CommandOptionSet : OptionSet
-	{
-		CommandSet  commands;
-
-		public CommandOptionSet (CommandSet commands, MessageLocalizerConverter localizer)
-			: base (localizer)
-		{
-			this.commands = commands;
-		}
-
-		protected override void SetItem (int index, Option item)
-		{
-			if (ShouldWrapOption (item)) {
-				base.SetItem (index, new HelpOption (commands, item));
+			if (ShouldWrapOption(item))
+			{
+				base.SetItem(index, new HelpOption(_commands, item));
 				return;
 			}
-			base.SetItem (index, item);
+			base.SetItem(index, item);
 		}
 
-		bool ShouldWrapOption (Option item)
+		private bool ShouldWrapOption(Option item)
 		{
 			if (item == null)
 				return false;
 			var help = item as HelpOption;
 			if (help != null)
 				return false;
-			foreach (var n in item.Names) {
+			foreach (var n in item.Names)
+			{
 				if (n == "help")
 					return true;
 			}
 			return false;
 		}
 
-		protected override void InsertItem (int index, Option item)
+		protected override void InsertItem(int index, Option item)
 		{
-			if (ShouldWrapOption (item)) {
-				base.InsertItem (index, new HelpOption (commands, item));
+			if (ShouldWrapOption(item))
+			{
+				base.InsertItem(index, new HelpOption(_commands, item));
 				return;
 			}
-			base.InsertItem (index, item);
+			base.InsertItem(index, item);
 		}
 	}
 
 	public class CommandSet : KeyedCollection<string, Command>
 	{
-		readonly    string          suite;
+		internal List<CommandSet>? _nestedCommandSets;
 
-		OptionSet                   options;
-		TextWriter                  outWriter;
-		TextWriter                  errorWriter;
+		internal HelpCommand? _help;
 
-		internal    List<CommandSet>        NestedCommandSets;
+		internal bool _showHelp;
 
-		internal    HelpCommand     help;
-
-		internal    bool            showHelp;
-
-		internal    OptionSet       Options     => options;
+		internal OptionSet Options { get; private set; }
 
 #if !PCL || NETSTANDARD1_3
-		public CommandSet(string suite, MessageLocalizerConverter localizer = null)
+		public CommandSet(string suite, MessageLocalizerConverter? localizer = null)
 			: this(suite, System.Console.Out, System.Console.Error, localizer)
 		{
 		}
 #endif
 
-		public CommandSet (string suite, TextWriter output, TextWriter error, MessageLocalizerConverter localizer = null)
+		public CommandSet(string suite, TextWriter output, TextWriter error, MessageLocalizerConverter? localizer = null)
 		{
-			if (suite == null)
-				throw new ArgumentNullException (nameof (suite));
-			if (output == null)
-				throw new ArgumentNullException (nameof (output));
-			if (error == null)
-				throw new ArgumentNullException (nameof (error));
-
-			this.suite  = suite;
-			options     = new CommandOptionSet (this, localizer);
-			outWriter   = output;
-			errorWriter = error;
+			Suite = suite ?? throw new ArgumentNullException(nameof(suite));
+			Options = new CommandOptionSet(this, localizer ?? (static a => a));
+			Out = output ?? throw new ArgumentNullException(nameof(output));
+			Error = error ?? throw new ArgumentNullException(nameof(error));
 		}
 
-		public  string                          Suite               => suite;
-		public  TextWriter                      Out                 => outWriter;
-		public  TextWriter                      Error               => errorWriter;
-		public  MessageLocalizerConverter       MessageLocalizer    => options.MessageLocalizer;
+		public string Suite { get; }
+		public TextWriter Out { get; private set; }
+		public TextWriter Error { get; private set; }
+		public MessageLocalizerConverter MessageLocalizer => Options.MessageLocalizer;
 
-		protected override string GetKeyForItem (Command item)
-		{
-			return item?.Name;
-		}
+		protected override string GetKeyForItem(Command item) => item?.Name ?? string.Empty;
 
-		public new CommandSet Add (Command value)
+		public new CommandSet Add(Command value)
 		{
 			if (value == null)
-				throw new ArgumentNullException (nameof (value));
-			AddCommand (value);
-			options.Add (new CommandOption (value));
+				throw new ArgumentNullException(nameof(value));
+			AddCommand(value);
+			Options.Add(new CommandOption(value));
 			return this;
 		}
 
-		void AddCommand (Command value)
+		private void AddCommand(Command value)
 		{
-			if (value.CommandSet != null && value.CommandSet != this) {
-				throw new ArgumentException ("Command instances can only be added to a single CommandSet.", nameof (value));
+			if (value.CommandSet != null && value.CommandSet != this)
+			{
+				throw new ArgumentException("Command instances can only be added to a single CommandSet.", nameof(value));
 			}
-			value.CommandSet                = this;
-			if (value.Options != null) {
-				value.Options.MessageLocalizer  = options.MessageLocalizer;
-			}
+			value.CommandSet = this;
+			value.Options?.MessageLocalizer = Options.MessageLocalizer;
 
-			base.Add (value);
+			base.Add(value);
 
-			help    = help ?? value as HelpCommand;
+			_help = _help ?? value as HelpCommand;
 		}
 
-		public CommandSet Add (string header)
+		public CommandSet Add(string header)
 		{
-			options.Add (header);
+			Options.Add(header);
 			return this;
 		}
 
-		public CommandSet Add (Option option)
+		public CommandSet Add(Option option)
 		{
-			options.Add (option);
+			Options.Add(option);
 			return this;
 		}
 
-		public CommandSet Add (string prototype, Action<string> action)
+		public CommandSet Add(string prototype, Action<string> action)
 		{
-			options.Add (prototype, action);
+			Options.Add(prototype, action);
 			return this;
 		}
 
-		public CommandSet Add (string prototype, string description, Action<string> action)
+		public CommandSet Add(string prototype, string description, Action<string> action)
 		{
-			options.Add (prototype, description, action);
+			Options.Add(prototype, description, action);
 			return this;
 		}
 
-		public CommandSet Add (string prototype, string description, Action<string> action, bool hidden)
+		public CommandSet Add(string prototype, string description, Action<string> action, bool hidden)
 		{
-			options.Add (prototype, description, action, hidden);
+			Options.Add(prototype, description, action, hidden);
 			return this;
 		}
 
-		public CommandSet Add (string prototype, OptionAction<string, string> action)
+		public CommandSet Add(string prototype, OptionAction<string, string> action)
 		{
-			options.Add (prototype, action);
+			Options.Add(prototype, action);
 			return this;
 		}
 
-		public CommandSet Add (string prototype, string description, OptionAction<string, string> action)
+		public CommandSet Add(string prototype, string description, OptionAction<string, string> action)
 		{
-			options.Add (prototype, description, action);
+			Options.Add(prototype, description, action);
 			return this;
 		}
 
-		public CommandSet Add (string prototype, string description, OptionAction<string, string> action, bool hidden)
+		public CommandSet Add(string prototype, string description, OptionAction<string, string> action, bool hidden)
 		{
-			options.Add (prototype, description, action, hidden);
+			Options.Add(prototype, description, action, hidden);
 			return this;
 		}
 
-		public CommandSet Add<T> (string prototype, Action<T> action)
+		public CommandSet Add<T>(string prototype, Action<T> action)
 		{
-			options.Add (prototype, null, action);
+			Options.Add(prototype, null, action as Action<T?>);
 			return this;
 		}
 
-		public CommandSet Add<T> (string prototype, string description, Action<T> action)
+		public CommandSet Add<T>(string prototype, string description, Action<T> action)
 		{
-			options.Add (prototype, description, action);
+			Options.Add(prototype, description, action as Action<T?>);
 			return this;
 		}
 
-		public CommandSet Add<TKey, TValue> (string prototype, OptionAction<TKey, TValue> action)
+		public CommandSet Add<TKey, TValue>(string prototype, OptionAction<TKey, TValue> action)
 		{
-			options.Add (prototype, action);
+			Options.Add(prototype, action as OptionAction<TKey?, TValue?>);
 			return this;
 		}
 
-		public CommandSet Add<TKey, TValue> (string prototype, string description, OptionAction<TKey, TValue> action)
+		public CommandSet Add<TKey, TValue>(string prototype, string description, OptionAction<TKey, TValue> action)
 		{
-			options.Add (prototype, description, action);
+			Options.Add(prototype, description, action as OptionAction<TKey?, TValue?>);
 			return this;
 		}
 
-		public CommandSet Add (ArgumentSource source)
+		public CommandSet Add(ArgumentSource source)
 		{
-			options.Add (source);
+			Options.Add(source);
 			return this;
 		}
 
-		public CommandSet Add (CommandSet nestedCommands)
+		public CommandSet Add(CommandSet nestedCommands)
 		{
 			if (nestedCommands == null)
-				throw new ArgumentNullException (nameof (nestedCommands));
+				throw new ArgumentNullException(nameof(nestedCommands));
 
-			if (NestedCommandSets == null) {
-				NestedCommandSets   = new List<CommandSet> ();
+			if (_nestedCommandSets == null)
+			{
+				_nestedCommandSets = [];
 			}
 
-			if (!AlreadyAdded (nestedCommands)) {
-				NestedCommandSets.Add (nestedCommands);
-				foreach (var o in nestedCommands.options) {
-					if (o is CommandOption c) {
-						options.Add (new CommandOption (c.Command, $"{nestedCommands.Suite} {c.CommandName}"));
+			if (!AlreadyAdded(nestedCommands))
+			{
+				_nestedCommandSets.Add(nestedCommands);
+				foreach (var o in nestedCommands.Options)
+				{
+					if (o is CommandOption c)
+					{
+						Options.Add(new CommandOption(c.Command, $"{nestedCommands.Suite} {c.CommandName}"));
 					}
-					else {
-						options.Add (o);
+					else
+					{
+						Options.Add(o);
 					}
 				}
 			}
 
-			nestedCommands.options      = this.options;
-			nestedCommands.outWriter    = this.outWriter;
-			nestedCommands.errorWriter  = this.errorWriter;
+			nestedCommands.Options = Options;
+			nestedCommands.Out = Out;
+			nestedCommands.Error = Error;
 
 			return this;
 		}
 
-		bool AlreadyAdded (CommandSet value)
+		private bool AlreadyAdded(CommandSet value)
 		{
 			if (value == this)
 				return true;
-			if (NestedCommandSets == null)
+			if (_nestedCommandSets == null)
 				return false;
-			foreach (var nc in NestedCommandSets) {
-				if (nc.AlreadyAdded (value))
+			foreach (var nc in _nestedCommandSets)
+			{
+				if (nc.AlreadyAdded(value))
 					return true;
 			}
 			return false;
 		}
 
-		public IEnumerable<string> GetCompletions (string prefix = null)
+		public IEnumerable<string> GetCompletions(string? prefix = null)
 		{
-			string rest;
-			ExtractToken (ref prefix, out rest);
+			ExtractToken(ref prefix, out string rest);
 
-			foreach (var command in this) {
-				if (command.Name.StartsWith (prefix, StringComparison.OrdinalIgnoreCase)) {
+			foreach (var command in this)
+			{
+				if (command.Name.StartsWith(prefix, StringComparison.OrdinalIgnoreCase))
+				{
 					yield return command.Name;
 				}
 			}
 
-			if (NestedCommandSets == null)
+			if (_nestedCommandSets == null)
 				yield break;
 
-			foreach (var subset in NestedCommandSets) {
-				if (subset.Suite.StartsWith (prefix, StringComparison.OrdinalIgnoreCase)) {
-					foreach (var c in subset.GetCompletions (rest)) {
+			foreach (var subset in _nestedCommandSets)
+			{
+				if (subset.Suite.StartsWith(prefix, StringComparison.OrdinalIgnoreCase))
+				{
+					foreach (var c in subset.GetCompletions(rest))
+					{
 						yield return $"{subset.Suite} {c}";
 					}
 				}
 			}
 		}
 
-		static void ExtractToken (ref string input, out string rest)
+		private static void ExtractToken(ref string? input, out string rest)
 		{
-			rest      = "";
-			input     = input ?? "";
+			rest = "";
+			input = input ?? "";
 
-			int top   = input.Length;
-			for (int i = 0; i < top; i++) {
-				if (char.IsWhiteSpace (input [i]))
+			int top = input.Length;
+			for (int i = 0; i < top; i++)
+			{
+				if (char.IsWhiteSpace(input[i]))
 					continue;
 
-				for (int j = i; j < top; j++) {
-					if (char.IsWhiteSpace (input [j])) {
-						rest  = input.Substring (j).Trim ();
-						input = input.Substring (i, j).Trim ();
+				for (int j = i; j < top; j++)
+				{
+					if (char.IsWhiteSpace(input[j]))
+					{
+						rest = input.Substring(j).Trim();
+						input = input.Substring(i, j).Trim();
 						return;
 					}
 				}
-				rest  = "";
+				rest = "";
 				if (i != 0)
-					input = input.Substring (i).Trim ();
+					input = input.Substring(i).Trim();
 				return;
 			}
 		}
 
-		public int Run (IEnumerable<string> arguments)
+		public int Run(IEnumerable<string> arguments)
 		{
 			if (arguments == null)
-				throw new ArgumentNullException (nameof (arguments));
+				throw new ArgumentNullException(nameof(arguments));
 
-			this.showHelp   = false;
-			if (help == null) {
-				help    = new HelpCommand ();
-				AddCommand (help);
+			_showHelp = false;
+			if (_help == null)
+			{
+				_help = new HelpCommand();
+				AddCommand(_help);
 			}
-			Action<string>  setHelp     = v => showHelp = v != null;
-			if (!options.Contains ("help")) {
-				options.Add ("help", "", setHelp, hidden: true);
+			Action<string> setHelp = v => _showHelp = v != null;
+			if (!Options.Contains("help"))
+			{
+				Options.Add("help", "", setHelp, hidden: true);
 			}
-			if (!options.Contains ("?")) {
-				options.Add ("?", "", setHelp, hidden: true);
+			if (!Options.Contains("?"))
+			{
+				Options.Add("?", "", setHelp, hidden: true);
 			}
-			var extra   = options.Parse (arguments);
-			if (extra.Count == 0) {
-				if (showHelp) {
-					return help.Invoke (extra);
+			var extra = Options.Parse(arguments);
+			if (extra.Count == 0)
+			{
+				if (_showHelp)
+				{
+					return _help.Invoke(extra);
 				}
-				Out.WriteLine (options.MessageLocalizer ($"Use `{Suite} help` for usage."));
+				Out.WriteLine(Options.MessageLocalizer($"Use `{Suite} help` for usage."));
 				return 1;
 			}
-			var command = GetCommand (extra);
-			if (command == null) {
-				help.WriteUnknownCommand (extra [0]);
+			var command = GetCommand(extra);
+			if (command == null)
+			{
+				_help.WriteUnknownCommand(extra[0]);
 				return 1;
 			}
-			if (showHelp) {
-				if (command.Options?.Contains ("help") ?? true) {
-					extra.Add ("--help");
-					return command.Invoke (extra);
+			if (_showHelp)
+			{
+				if (command.Options?.Contains("help") ?? true)
+				{
+					extra.Add("--help");
+					return command.Invoke(extra);
 				}
-				command.Options.WriteOptionDescriptions (Out);
+				command.Options.WriteOptionDescriptions(Out);
 				return 0;
 			}
-			return command.Invoke (extra);
+			return command.Invoke(extra);
 		}
 
-		internal Command GetCommand (List<string> extra)
-		{
-			return TryGetLocalCommand (extra) ?? TryGetNestedCommand (extra);
-		}
+		internal Command? GetCommand(List<string> extra) => TryGetLocalCommand(extra) ?? TryGetNestedCommand(extra);
 
-		Command TryGetLocalCommand (List<string> extra)
+		private Command? TryGetLocalCommand(List<string> extra)
 		{
-			var name    = extra [0];
-			if (Contains (name)) {
-				extra.RemoveAt (0);
-				return this [name];
+			var name = extra[0];
+			if (Contains(name))
+			{
+				extra.RemoveAt(0);
+				return this[name];
 			}
-			for (int i = 1; i < extra.Count; ++i) {
-				name = name + " " + extra [i];
-				if (!Contains (name))
+			for (int i = 1; i < extra.Count; ++i)
+			{
+				name = name + " " + extra[i];
+				if (!Contains(name))
 					continue;
-				extra.RemoveRange (0, i+1);
-				return this [name];
+				extra.RemoveRange(0, i + 1);
+				return this[name];
 			}
 			return null;
 		}
 
-		Command TryGetNestedCommand (List<string> extra)
+		private Command? TryGetNestedCommand(List<string> extra)
 		{
-			if (NestedCommandSets == null)
+			if (_nestedCommandSets == null)
 				return null;
 
-			var nestedCommands	= NestedCommandSets.Find (c => c.Suite == extra [0]);
+			var nestedCommands = _nestedCommandSets.Find(c => c.Suite == extra[0]);
 			if (nestedCommands == null)
 				return null;
 
-			var extraCopy = new List<string> (extra);
-			extraCopy.RemoveAt (0);
+			var extraCopy = new List<string>(extra);
+			extraCopy.RemoveAt(0);
 			if (extraCopy.Count == 0)
 				return null;
 
-			var command = nestedCommands.GetCommand (extraCopy);
-			if (command != null) {
-				extra.Clear ();
-				extra.AddRange (extraCopy);
+			var command = nestedCommands.GetCommand(extraCopy);
+			if (command != null)
+			{
+				extra.Clear();
+				extra.AddRange(extraCopy);
 				return command;
 			}
 			return null;
@@ -1917,82 +1819,98 @@ namespace HXE
 
 	public class HelpCommand : Command
 	{
-		public HelpCommand ()
-			: base ("help", help: "Show this message and exit")
+		public HelpCommand()
+			: base("help", help: "Show this message and exit")
 		{
 		}
 
-		public override int Invoke (IEnumerable<string> arguments)
+		public override int Invoke(IEnumerable<string> arguments)
 		{
-			var extra   = new List<string> (arguments ?? new string [0]);
-			var _       = CommandSet.Options.MessageLocalizer;
-			if (extra.Count == 0) {
-				CommandSet.Options.WriteOptionDescriptions (CommandSet.Out);
+			var extra = new List<string>(arguments ?? []);
+			var _ = CommandSet?.Options.MessageLocalizer ?? (static a => a);
+			;
+			if (extra.Count == 0)
+			{
+				CommandSet?.Options.WriteOptionDescriptions(CommandSet.Out);
 				return 0;
 			}
-			var command = CommandSet.GetCommand (extra);
-			if (command == this || extra.Contains ("--help")) {
-				CommandSet.Out.WriteLine (_ ($"Usage: {CommandSet.Suite} COMMAND [OPTIONS]"));
-				CommandSet.Out.WriteLine (_ ($"Use `{CommandSet.Suite} help COMMAND` for help on a specific command."));
-				CommandSet.Out.WriteLine ();
-				CommandSet.Out.WriteLine (_ ($"Available commands:"));
-				CommandSet.Out.WriteLine ();
-				var commands    = GetCommands ();
-				commands.Sort ((x, y) => string.Compare (x.Key, y.Key, StringComparison.OrdinalIgnoreCase));
-				foreach (var c in commands) {
-					if (c.Key == "help") {
+			var command = CommandSet?.GetCommand(extra);
+			if (command == this || extra.Contains("--help"))
+			{
+				CommandSet?.Out.WriteLine(_($"Usage: {CommandSet.Suite} COMMAND [OPTIONS]"));
+				CommandSet?.Out.WriteLine(_($"Use `{CommandSet.Suite} help COMMAND` for help on a specific command."));
+				CommandSet?.Out.WriteLine();
+				CommandSet?.Out.WriteLine(_($"Available commands:"));
+				CommandSet?.Out.WriteLine();
+				var commands = GetCommands();
+				commands.Sort((x, y) => string.Compare(x.Key, y.Key, StringComparison.OrdinalIgnoreCase));
+				foreach (var c in commands)
+				{
+					if (c.Key == "help")
+					{
 						continue;
 					}
-					CommandSet.Options.WriteCommandDescription (CommandSet.Out, c.Value, c.Key);
+					CommandSet?.Options.WriteCommandDescription(CommandSet.Out, c.Value, c.Key);
 				}
-				CommandSet.Options.WriteCommandDescription (CommandSet.Out, CommandSet.help, "help");
+				CommandSet?.Options.WriteCommandDescription(CommandSet.Out, CommandSet?._help ?? new(), "help");
 				return 0;
 			}
-			if (command == null) {
-				WriteUnknownCommand (extra [0]);
+			if (command == null)
+			{
+				WriteUnknownCommand(extra[0]);
 				return 1;
 			}
-			if (command.Options != null) {
-				command.Options.WriteOptionDescriptions (CommandSet.Out);
+			if (command.Options != null && CommandSet != null)
+			{
+				command.Options.WriteOptionDescriptions(CommandSet.Out);
 				return 0;
 			}
-			return command.Invoke (new [] { "--help" });
+			return command.Invoke(["--help"]);
 		}
 
-		List<KeyValuePair<string, Command>> GetCommands ()
+		private List<KeyValuePair<string, Command>> GetCommands()
 		{
-			var commands    = new List<KeyValuePair<string, Command>> ();
+			var commands = new List<KeyValuePair<string, Command>>();
 
-			foreach (var c in CommandSet) {
-				commands.Add (new KeyValuePair<string, Command>(c.Name, c));
+			if (CommandSet == null)
+				throw new Exception($"{nameof(CommandSet)} is null!");
+
+			foreach (var c in CommandSet)
+			{
+				commands.Add(new KeyValuePair<string, Command>(c.Name, c));
 			}
 
-			if (CommandSet.NestedCommandSets == null)
+			if (CommandSet._nestedCommandSets == null)
 				return commands;
 
-			foreach (var nc in CommandSet.NestedCommandSets) {
-				AddNestedCommands (commands, "", nc);
+			foreach (var nc in CommandSet._nestedCommandSets)
+			{
+				AddNestedCommands(commands, "", nc);
+				AddNestedCommands(commands, "", nc);
 			}
 
 			return commands;
 		}
 
-		void AddNestedCommands (List<KeyValuePair<string, Command>> commands, string outer, CommandSet value)
+		private static void AddNestedCommands(List<KeyValuePair<string, Command>> commands, string outer, CommandSet value)
 		{
-			foreach (var v in value) {
-				commands.Add (new KeyValuePair<string, Command>($"{outer}{value.Suite} {v.Name}", v));
+			foreach (var v in value)
+			{
+				commands.Add(new KeyValuePair<string, Command>($"{outer}{value.Suite} {v.Name}", v));
 			}
-			if (value.NestedCommandSets == null)
+			if (value._nestedCommandSets == null)
 				return;
-			foreach (var nc in value.NestedCommandSets) {
-				AddNestedCommands (commands, $"{outer}{value.Suite} ", nc);
+			foreach (var nc in value._nestedCommandSets)
+			{
+				AddNestedCommands(commands, $"{outer}{value.Suite} ", nc);
+				AddNestedCommands(commands, $"{outer}{value.Suite} ", nc);
 			}
 		}
 
-		internal void WriteUnknownCommand (string unknownCommand)
+		internal void WriteUnknownCommand(string unknownCommand)
 		{
-			CommandSet.Error.WriteLine (CommandSet.Options.MessageLocalizer ($"{CommandSet.Suite}: Unknown command: {unknownCommand}"));
-			CommandSet.Error.WriteLine (CommandSet.Options.MessageLocalizer ($"{CommandSet.Suite}: Use `{CommandSet.Suite} help` for usage."));
+			CommandSet?.Error.WriteLine(CommandSet.Options.MessageLocalizer($"{CommandSet.Suite}: Unknown command: {unknownCommand}"));
+			CommandSet?.Error.WriteLine(CommandSet.Options.MessageLocalizer($"{CommandSet.Suite}: Use `{CommandSet.Suite} help` for usage."));
 		}
 	}
 }
