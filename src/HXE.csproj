@@ -97,9 +97,7 @@
       <Link>.docs-misc/%(Filename)%(Extension)</Link>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </None>
-  </ItemGroup>
 
-  <ItemGroup>
     <!-- Campaign Support -->
     <Content Include="Campaigns/*.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
