@@ -1,19 +1,17 @@
 name: ci
 # This workflow demonstrates the minimal requirements for building, publishing, and packing the Solution with DotNet CLI
 
-
 on:
   push:
-    branches: [ main, develop ]
     paths:
-    - '!**/*.md'
-    - '!**/*.txt'
+      - "!**/*.md"
+      - "!**/*.txt"
 
   pull_request:
     types:
-    - opened
-    - reopened
-    - ready_for_review
+      - opened
+      - reopened
+      - ready_for_review
 
 jobs:
   ################
@@ -26,19 +24,19 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        buildConfig: [ "Release", "Debug" ]
+        buildConfig: [Release, Debug]
 
     steps:
-    - uses: actions/checkout@v6
-      with:
-        submodules: 'recursive'
-        fetch-depth: 0
+      - uses: actions/checkout@v6
+        with:
+          submodules: recursive
+          fetch-depth: 0
 
-    - uses: actions/setup-dotnet@v5
+      - uses: actions/setup-dotnet@v5
 
-    - name: Build
-      working-directory: ./src/
-      run: dotnet build HXE.csproj -c ${{ matrix.buildConfig }}
+      - name: Build
+        working-directory: ./src/
+        run: dotnet build HXE.csproj -c ${{ matrix.buildConfig }}
 
   ################
   # BUILD AND PUBLISH
@@ -50,16 +48,16 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        buildConfig: [ "Release", "Debug" ]
+        buildConfig: [Release, Debug]
 
     steps:
-    - uses: actions/checkout@v6
-      with:
-        submodules: 'recursive'
-        fetch-depth: 0
+      - uses: actions/checkout@v6
+        with:
+          submodules: recursive
+          fetch-depth: 0
 
-    - uses: actions/setup-dotnet@v5
+      - uses: actions/setup-dotnet@v5
 
-    - name: Build and Publish
-      working-directory: ./src/
-      run: dotnet publish HXE.csproj -c ${{ matrix.buildConfig }}
+      - name: Build and Publish
+        working-directory: ./src/
+        run: dotnet publish HXE.csproj -c ${{ matrix.buildConfig }}
