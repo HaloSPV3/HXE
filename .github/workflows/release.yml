@@ -1,87 +1,68 @@
 name: release
 
-# TODO
-# allow workflows to be driven by the project(s)
-
 on:
   push:
-    branches: [ main, develop ]
+    branches: [main, develop]
     paths-ignore:
-    - ".github/**/*.*"
-    - "**/*.md"
-    - "**/*.txt"
+      - ".github/**/*.*"
+      - "**/*.md"
+      - "**/*.txt"
 
 env:
-  DOTNET_ROLL_FORWARD: "Major"
+  DOTNET_ROLL_FORWARD: Major
   DOTNET_CLI_TELEMETRY_OPTOUT: 1
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
   DOTNET_NOLOGO: 1
 
 jobs:
+  ci:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: ./.github/workflows/ci.yml
   build:
     name: Build
+    # required for proper WPF builds/publishes
     runs-on: windows-latest
-    env:
-      ASSEMBLYNAME: "HXE"
-      PROJPATH: "./src/HXE.csproj"
+    needs: ci
+    permissions:
+      contents: write # publish a GitHub Release
+      id-token: write # Trusted Publishing (tokenless NuGet pushes)
+      issues: write # comment on released issues
+      packages: write # push packages to "HaloSPV3" GitHub Nuget Package Registry
+      pull-requests: write # comment on released pull requests
 
     steps:
-    ################
-    # SETUP
-    ################
-    - uses: actions/checkout@v6
-      with:
-        fetch-depth: 0 # Required by GitVersion
-        submodules: "recursive"
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0 # Required by GitVersion, Semantic Release
+          submodules: recursive
 
-    - name: Setup Node
-      uses: actions/setup-node@v6.2.0
-    - run: npm install
-    # Dependents: Semantic Release
+      - name: Setup Node
+        uses: actions/setup-node@v6.2.0
+        with:
+          cache: npm
+          node-version: ">=24.0.0"
+          node-version-file: package.json
+          check-latest: true
+      - run: npm i -g npm@latest
+      - run: npm ci
+      - run: npm audit signatures
 
-    # Authenticates packages to push to GPR
-    - uses: actions/setup-dotnet@v5.1.0
+      - name: Setup Dotnet
+        uses: actions/setup-dotnet@v5.1.0
+        with:
+          cache: dotnet
 
-    - name: Add GitHub Package Repository
-      run: dotnet nuget add source https://nuget.pkg.github.com/HaloSPV3/index.json -n "github" -u USERNAME -p ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text
+      - name: NuGet login (OIDC → temp API key)
+        uses: NuGet/login@v1
+        id: nuget-login
+        with:
+          user: nToss
 
-    - name: Set NuGet.org Credentials
-      run: dotnet nuget update source "nuget.org" -u USERNAME -p ${{ secrets.NUGET_TOKEN }} --store-password-in-clear-text
-
-    ################
-    # BUILD
-    ################
-    - name: dotnet-publish
-      run: dotnet publish ${{ env.PROJPATH }} -c Release -p:ContinuousIntegrationBuild=true
-
-    # required variables: GitVersion_FullSemVer
-    - name: Compress-PublishArtifacts
-      run: |
-        $publishPath = Resolve-Path ".\bin\Release\**\publish";
-        $archiveName = "$env:ASSEMBLYNAME.$env:GitVersion_FullSemVer.zip";
-        Set-Location $publishPath;
-        Compress-Archive -Path $publishPath -DestinationPath ${{ github.workspace }}\bin\Release\publish\$archiveName -CompressionLevel Optimal;
-
-    ################
-    # RELEASE
-    ################
-
-    - name: Semantic Release
-      run: npx semantic-release
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        NPM_TOKEN: ${{ secrets.SEMANTIC_RELEASE_BOT_NPM_TOKEN }}
-
-    - name: Upload Artifact
-      uses: actions/upload-artifact@v6
-      with:
-        name: publish-artifacts
-        path: bin/Release/publish
-
-    - name: Publish to GitHub Packages
-      working-directory: bin/Release
-      run: dotnet nuget push *.nupkg -s "github" -k ${{ secrets.GITHUB_TOKEN }}
-
-    - name: Publish to nuget.org
-      working-directory: bin/Release
-      run: dotnet nuget push *.nupkg -s "nuget.org" -k ${{ secrets.NUGET_TOKEN }}
+      - name: Semantic Release
+        id: semantic-release
+        run: npx semantic-release -- --debug
+        env:
+          DEBUG: semantic-release*
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NUGET_TOKEN: ${{ steps.nuget-login.outputs.NUGET_API_KEY }}
