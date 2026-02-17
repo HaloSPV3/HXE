@@ -30,5 +30,12 @@
     "omnisharp.enableRoslynAnalyzers": true,
     "omnisharp.organizeImportsOnFormat": true,
     "typescript.tsdk": "node_modules/typescript/lib",
-    "dotnet.completion.showCompletionItemsFromUnimportedNamespaces": true
+    "dotnet.completion.showCompletionItemsFromUnimportedNamespaces": true,
+    "files.watcherExclude": {
+        "**/.git/objects/**": true,
+        "**/.git/subtree-cache/**": true,
+        "**/.hg/store/**": true,
+        "**/.dart_tool": true,
+        "**/obj/**": true
+    }
 }
