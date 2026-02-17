@@ -3,7 +3,6 @@
     <Platform>AnyCPU</Platform>
     <Prefer32Bit>false</Prefer32Bit>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net6.0-windows</TargetFramework>
     <TargetFrameworks>net462;net480;net6.0-windows</TargetFrameworks>
     <LangVersion>latest</LangVersion>
     <StartupObject>HXE.Program</StartupObject>
