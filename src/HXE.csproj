@@ -66,7 +66,8 @@
     <PackageIcon>icon.png</PackageIcon>
     <PackageTags>Halo</PackageTags>
     <PackageReadmeFile>readme.md</PackageReadmeFile>
-    <PackageReleaseNotes>http://github.com/HaloSPV3/HXE/release/v$(Version)</PackageReleaseNotes>
+    <_changelogPath>$([System.IO.Path]::GetFullPath($(MSBuildProjectDirectory)/../CHANGELOG.md))</_changelogPath>
+    <PackageReleaseNotes Condition="Exists($(_changelogPath))">$([System.IO.File]::ReadAllText($(_changelogPath)))</PackageReleaseNotes>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <RepositoryUrl>https://github.com/HaloSPV3/HXE</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
