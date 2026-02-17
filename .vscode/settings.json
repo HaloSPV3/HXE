@@ -20,5 +20,7 @@
         "**/.hg/store/**": true,
         "**/.dart_tool": true,
         "**/obj/**": true
-    }
+    },
+    "yaml.format.singleQuote": true,
+    "yaml.format.trailingComma": false
 }
