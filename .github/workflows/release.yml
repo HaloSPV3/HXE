@@ -13,6 +13,10 @@ env:
   DOTNET_CLI_TELEMETRY_OPTOUT: 1
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
   DOTNET_NOLOGO: 1
+  # https://stackoverflow.com/questions/75180149/how-to-cache-dotnet-installation-in-github-actions
+  # access to "usr/lib/dotnet" is denied
+  DOTNET_INSTALL_DIR: /usr/share/dotnet
+  DOTNET_ROOT: /usr/share/dotnet
 
 jobs:
   ci:
