@@ -16,9 +16,9 @@ env:
 
 jobs:
   ci:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: ./.github/workflows/ci.yml
+    uses: ./.github/workflows/ci.yml
+    permissions:
+      contents: read
   build:
     name: Build
     # required for proper WPF builds/publishes
