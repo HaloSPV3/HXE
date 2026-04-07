@@ -37,7 +37,8 @@ jobs:
           BRANCH_NAME="$(git branch --show-current)"
           echo "BRANCH_NAME is '$BRANCH_NAME'"
           [[ "$BRANCH_NAME" =~ ^(renovate|dependabot)/.+$ ]] &&
-            echo $'V=true\nIMMUTABLE_CACHE=--immutable-cache' > $GITHUB_OUTPUT
+            echo $'V=true\nIMMUTABLE_CACHE=--immutable-cache' > $GITHUB_OUTPUT ||
+            echo 'This branch is not a dep-upgrade branch.'
 
       - run: corepack enable
       - uses: actions/setup-node@v6
