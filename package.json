@@ -7,6 +7,12 @@
   "engines": {
     "node": "^24.0.0"
   },
+  "devEngines": {
+    "runtime": {
+      "name": "node",
+      "version": "24.14.1"
+    }
+  },
   "scripts": {
     "postinstall": "husky",
     "lint": "eslint --cache",
