@@ -30,10 +30,18 @@ jobs:
         with:
           submodules: recursive
           fetch-depth: 0
+      - id: isDepUpBranch
+        shell: bash
+        run: |
+          BRANCH_NAME=$(git branch --show-current)
+          [[ BRANCH_NAME =~ ^(renovate|dependabot)/?$ ]] &&
+            echo V=true\nIMMUTABLE_CACHE=--immutable-cache > $GITHUB_OUTPUT
 
+      - run: corepack enable
       - uses: actions/setup-node@v6
         with:
           cache: yarn
+      - run: yarn install --immutable ${{ steps.isDepUpBranch.outputs.IMMUTABLE_CACHE}}
 
       - uses: actions/setup-dotnet@v5
 
