@@ -46,7 +46,7 @@ jobs:
         uses: actions/setup-node@v6.2.0
         with:
           cache: yarn
-          node-version-file: package.json
+          node-version-file: .nvmrc
           check-latest: true
       - run: yarn install --immutable --immutable-cache
 
