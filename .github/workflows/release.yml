@@ -44,13 +44,10 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v6.2.0
         with:
-          cache: npm
-          node-version: ">=24.0.0"
+          cache: yarn
           node-version-file: package.json
           check-latest: true
-      - run: npm i -g npm@latest
-      - run: npm ci
-      - run: npm audit signatures
+      - run: yarn install --immutable --immutable-cache
 
       - name: Setup Dotnet
         uses: actions/setup-dotnet@v5.1.0
