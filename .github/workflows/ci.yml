@@ -35,7 +35,7 @@ jobs:
         run: |
           BRANCH_NAME=$(git branch --show-current)
           [[ BRANCH_NAME =~ ^(renovate|dependabot)/?$ ]] &&
-            echo V=true\nIMMUTABLE_CACHE=--immutable-cache > $GITHUB_OUTPUT
+            echo $'V=true\nIMMUTABLE_CACHE=--immutable-cache' > $GITHUB_OUTPUT
 
       - run: corepack enable
       - uses: actions/setup-node@v6
