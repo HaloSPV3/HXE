@@ -14,7 +14,7 @@
     "omnisharp.useModernNet": true,
     "omnisharp.enableRoslynAnalyzers": true,
     "omnisharp.organizeImportsOnFormat": true,
-    "typescript.tsdk": ".yarn/sdks/typescript/lib",
+    "js/ts.tsdk.path": ".yarn/sdks/typescript/lib",
     "dotnet.completion.showCompletionItemsFromUnimportedNamespaces": true,
     "files.watcherExclude": {
         "**/.git/objects/**": true,
@@ -29,7 +29,7 @@
         "**/.yarn": true,
         "**/.pnp.*": true
     },
-    "typescript.enablePromptUseWorkspaceTsdk": true,
+    "js/ts.tsdk.promptToUseWorkspaceVersion": true,
     "eslint.nodePath": ".yarn/sdks",
     "eslint.format.enable": true,
     "[javascript]": {
