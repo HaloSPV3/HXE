@@ -3,10 +3,6 @@ name: release
 on:
   push:
     branches: [main, develop]
-    paths-ignore:
-      - ".github/**/*.*"
-      - "**/*.md"
-      - "**/*.txt"
 
 env:
   DOTNET_ROLL_FORWARD: Major
