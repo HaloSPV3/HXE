@@ -4,9 +4,9 @@ on:
   push:
     # ignore release branches; See file://./release.yml#on.push.branches , file://./../../.releaserc.ts
     branches-ignore: [main, develop]
-    paths:
-      - "!**/*.md"
-      - "!**/*.txt"
+    paths-ignore:
+      - "**/*.md"
+      - "**/*.txt"
   workflow_call:
 
 env:
