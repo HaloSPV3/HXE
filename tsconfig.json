@@ -36,5 +36,5 @@
     "node_modules",
     "**/node_modules/*"
   ],
-  "include": [".releaserc.ts", "commitlint.config.js"]
+  "include": [ "*.ts", ".js", ".mjs" ]
 }

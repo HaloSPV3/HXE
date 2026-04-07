@@ -1,9 +1,24 @@
 <Project>
   <PropertyGroup>
     <RepoRoot>$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), '.git/index'))</RepoRoot>
-    <HCESharedDir>$(RepoRoot)node_modules/@halospv3/hce.shared-config</HCESharedDir>
+    <_HCESharedDirSuffix>node_modules/@halospv3/hce.shared-config/</_HCESharedDirSuffix>
+    <HCESharedDir>$(RepoRoot)$(_HCESharedDirSuffix)</HCESharedDir>
     <UseArtifactsOutput>true</UseArtifactsOutput>
   </PropertyGroup>
+
+  <PropertyGroup Label="Yarn-unplugged HCE.Shared" Condition="!Exists($(HCESharedDir))">
+    <_yarnUnplugged>$(RepoRoot).yarn/unplugged/</_yarnUnplugged>
+    <_yarnUnpluggedChildren>$([System.IO.Directory]::GetDirectories($(RepoRoot).yarn/unplugged/))</_yarnUnpluggedChildren>
+    <_yarnUnpluggedHceSharedMatches>$([System.Text.RegularExpressions.Regex]::Matches(
+        $(_yarnUnpluggedChildren),'@halospv3-hce.shared-config-[^;]+')
+      )</_yarnUnpluggedHceSharedMatches>
+      <_yarnUnplugged_lastMatch>$([MSBuild]::Subtract(
+          $(_yarnUnpluggedHceSharedMatches.Split(';').Length),
+          1
+      ))</_yarnUnplugged_lastMatch>
+    <HCESharedDir>$(_yarnUnplugged)$(_yarnUnpluggedHceSharedMatches.Split(';')[$(_yarnUnplugged_lastMatch)])/$(_HCESharedDirSuffix)</HCESharedDir> 
+  </PropertyGroup>
+
   <Import Project="$(HCESharedDir)/dotnet/HCE.Shared.targets" />
 
   <PropertyGroup>
