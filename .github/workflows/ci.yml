@@ -34,7 +34,9 @@ jobs:
         name: Is the current branch a dep-upgrade branch?
         shell: bash
         run: |
-          [[ "$(git branch --show-current)" =~ ^(renovate|dependabot)/.+$ ]] &&
+          BRANCH_NAME="$(git branch --show-current)"
+          echo "BRANCH_NAME is '$BRANCH_NAME'"
+          [[ "$BRANCH_NAME" =~ ^(renovate|dependabot)/.+$ ]] &&
             echo $'V=true\nIMMUTABLE_CACHE=--immutable-cache' > $GITHUB_OUTPUT
 
       - run: corepack enable
