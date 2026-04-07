@@ -7,7 +7,6 @@ on:
     paths:
       - "!**/*.md"
       - "!**/*.txt"
-  pull_request:
   workflow_call:
 
 env:
@@ -27,6 +26,10 @@ jobs:
         with:
           submodules: recursive
           fetch-depth: 0
+
+      - uses: actions/setup-node@v6
+        with:
+          cache: yarn
 
       - uses: actions/setup-dotnet@v5
 
