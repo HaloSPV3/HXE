@@ -19,7 +19,14 @@
     <HCESharedDir>$(_yarnUnplugged)$(_yarnUnpluggedHceSharedMatches.Split(';')[$(_yarnUnplugged_lastMatch)])/$(_HCESharedDirSuffix)</HCESharedDir> 
   </PropertyGroup>
 
-  <Import Project="$(HCESharedDir)/dotnet/HCE.Shared.targets" />
+  <Import Project="$(HCESharedDir)dotnet/HCE.Shared.CI.props" />
+  <Import Project="$(HCESharedDir)dotnet/ZipPublishDir.targets" />
+  <!-- Must be explicitly targeted via 'dotnet restore project.csproj -t:PublishAll'. May lead to incompatibility errors -->
+  <Import Project="$(HCESharedDir)dotnet/PublishAll.targets" />
+  <!-- Auto-runs after 'dotnet build' if (TargetFramework != '') AND (RuntimeIdentifier == '') AND (RuntimeIdentifiers != '');
+    The SDK iterates through TargetFrameworks for each TFM. We iterate each TFM's RIDs.
+    Intended for ensuring RID-dependent build permutations are successful before attempting PublishAll. -->
+  <Import Project="$(HCESharedDir)dotnet/BuildEachRID.targets" />
 
   <PropertyGroup>
     <EnableWindowsTargeting>true</EnableWindowsTargeting>
