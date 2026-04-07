@@ -34,7 +34,7 @@ jobs:
         shell: bash
         run: |
           BRANCH_NAME=$(git branch --show-current)
-          [[ BRANCH_NAME =~ ^(renovate|dependabot)/? ]] &&
+          [[ $BRANCH_NAME =~ ^(renovate|dependabot)/? ]] &&
             echo $'V=true\nIMMUTABLE_CACHE=--immutable-cache' > $GITHUB_OUTPUT
 
       - run: corepack enable
