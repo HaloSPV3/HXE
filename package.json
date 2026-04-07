@@ -15,7 +15,7 @@
   "devDependencies": {
     "@commitlint/config-conventional": "^20.0.0",
     "@commitlint/types": "^20.0.0",
-    "@halospv3/hce.shared-config": "^3.4.8",
+    "@halospv3/hce.shared-config": "^3.5.1",
     "@tsconfig/node24": "^24.0.4",
     "@types/node": "^24.0.0",
     "commitlint": "^20.4.1",

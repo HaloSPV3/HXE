@@ -467,7 +467,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@dotenvx/dotenvx@npm:^1.57.2":
+"@dotenvx/dotenvx@npm:^1.59.1":
   version: 1.59.1
   resolution: "@dotenvx/dotenvx@npm:1.59.1"
   dependencies:
@@ -583,13 +583,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@halospv3/hce.shared-config@npm:^3.4.8":
-  version: 3.4.8
-  resolution: "@halospv3/hce.shared-config@npm:3.4.8"
+"@halospv3/hce.shared-config@npm:^3.5.1":
+  version: 3.5.1
+  resolution: "@halospv3/hce.shared-config@npm:3.5.1"
   dependencies:
     "@commitlint/cli": "npm:^20.5.0"
     "@commitlint/config-conventional": "npm:^20.5.0"
-    "@dotenvx/dotenvx": "npm:^1.57.2"
+    "@dotenvx/dotenvx": "npm:^1.59.1"
     "@eslint/js": "npm:^10.0.1"
     "@eslint/json": "npm:^1.2.0"
     "@semantic-release/changelog": "npm:^6.0.3"
@@ -603,7 +603,7 @@ __metadata:
     "@types/node": "npm:~24.12.0"
     arktype: "npm:^2.1.20"
     chardet: "npm:^2.1.0"
-    conventional-changelog-conventionalcommits: "npm:^9.2.0"
+    conventional-changelog-conventionalcommits: "npm:^9.3.1"
     debug: "npm:^4.4.1"
     error.iserror: "npm:^1.0.2"
     es-main: "npm:^1.3.0"
@@ -614,12 +614,11 @@ __metadata:
     semantic-release: "npm:^25.0.0"
     semantic-release-export-data: "npm:^1.1.0"
     ts-essentials: "npm:^10.1.1"
-    typescript-eslint: "npm:^8.57.2"
+    typescript-eslint: "npm:^8.58.0"
   peerDependencies:
     "@bintoss/semantic-release-npm-multiple": ^3.0.0 || >= 3.0.0
     "@commitlint/types": ^20.0.0 || >= 20.0.0
     "@semantic-release/gitlab": ^13.0.0 || >= 13.0.0
-    "@tsconfig/node24": ^24.0.3
     eslint: ^10.0.0
     typescript: ^5.0.0 || >=5.0.0
   peerDependenciesMeta:
@@ -627,7 +626,7 @@ __metadata:
       optional: true
     "@semantic-release/gitlab":
       optional: true
-  checksum: 10c0/06d439f0ee24461330e145faf27e566d3f96ddad370257f5d9cd4a807517e81b4f406536088ae1de188b1ba3868182a38708eafe926703f31e2bf9409dc9ff3f
+  checksum: 10c0/0991130b2ffdb56d8d2033a3c09a09cf38a18c8b020c4b0525a1263caee406868344cfb11ecb4c8f438dc8fc4eb3d9607a66547a4ba870c6384e080746f7a56f
   languageName: node
   linkType: hard
 
@@ -2229,7 +2228,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"conventional-changelog-conventionalcommits@npm:^9.2.0":
+"conventional-changelog-conventionalcommits@npm:^9.2.0, conventional-changelog-conventionalcommits@npm:^9.3.1":
   version: 9.3.1
   resolution: "conventional-changelog-conventionalcommits@npm:9.3.1"
   dependencies:
@@ -3422,7 +3421,7 @@ __metadata:
   dependencies:
     "@commitlint/config-conventional": "npm:^20.0.0"
     "@commitlint/types": "npm:^20.0.0"
-    "@halospv3/hce.shared-config": "npm:^3.4.8"
+    "@halospv3/hce.shared-config": "npm:^3.5.1"
     "@tsconfig/node24": "npm:^24.0.4"
     "@types/node": "npm:^24.0.0"
     commitlint: "npm:^20.4.1"
@@ -6066,7 +6065,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript-eslint@npm:^8.57.2":
+"typescript-eslint@npm:^8.58.0":
   version: 8.58.0
   resolution: "typescript-eslint@npm:8.58.0"
   dependencies:
