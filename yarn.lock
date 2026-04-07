@@ -3428,6 +3428,7 @@ __metadata:
     eslint: "npm:^10.1.0"
     eslint-plugin-unicorn: "npm:^64.0.0"
     husky: "npm:^9.1.7"
+    jiti: "npm:^2.6.1"
     semantic-release: "npm:^25.0.3"
     typescript: "npm:^5.9.3"
   languageName: unknown
