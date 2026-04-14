@@ -35,19 +35,22 @@ using static HXE.Console;
 
 namespace HXE
 {
-	/**
-	 * Class containing the data structure and logic for creating SFX binaries.
-	 */
+	/// <summary>
+	/// Class containing the data structure and logic for creating SFX binaries.
+	/// </summary>
 	public class SFX
 	{
-		/**
-		 * Files to be compressed and extracted on the filesystem using the SFX system.
-		 */
+		/// <summary>
+		/// Files to be compressed and extracted on the filesystem using the SFX system.
+		/// </summary>
+		/// <typeparam name="Entry"></typeparam>
+		/// <returns></returns>
 		public List<Entry> Entries { get; set; } = new List<Entry>();
 
-		/**
-		 * Creates an SFX of the given source, using the current HXE executable, to the given target.
-		 */
+		/// <summary>
+		/// Creates an SFX of the given source, using the current HXE executable, to the given target.
+		/// </summary>
+		/// <param name="configuration"></param>
 		public static void Compile(Configuration configuration)
 		{
 			DirectoryInfo source = configuration.Source;
@@ -242,9 +245,10 @@ namespace HXE
 			}
 		}
 
-		/**
-		 * Extracts the SFX contents of the current HXE executable to the given target.
-		 */
+		/// <summary>
+		/// Extracts the SFX contents of the current HXE executable to the given target.
+		/// </summary>
+		/// <param name="configuration"></param>
 		public static void Extract(Configuration configuration)
 		{
 			DirectoryInfo target = configuration.Target;
@@ -328,9 +332,7 @@ namespace HXE
 			}
 		}
 
-		/**
-		 * Retrieves a byte array representing the object state which can hydrate an SFX instance using Deserialise().
-		 */
+		/// <summary>Retrieves a byte array representing the object state which can hydrate an SFX instance using Deserialise().</summary>
 		public byte[] Serialise()
 		{
 			XmlSerializer xml = new(typeof(SFX));
@@ -341,9 +343,10 @@ namespace HXE
 			}
 		}
 
-		/**
-		 * Hydrates the SFX instance properties with inbound data previously created by Serialise().
-		 */
+		/// <summary>
+		/// Hydrates the SFX instance properties with inbound data previously created by Serialise().
+		/// </summary>
+		/// <param name="data">The byte array of serialized data.</param>
 		public void Deserialise(byte[] data)
 		{
 			using (StringReader sr = new(Unicode.GetString(data)))
@@ -354,15 +357,19 @@ namespace HXE
 			}
 		}
 
-		/**
-		 * Entry for a file to be compressed and extracted using the SFX system.
-		 */
+		/// <summary>
+		/// Entry for a file to be compressed and extracted using the SFX system.
+		/// </summary>
 		public class Entry
 		{
-			public required string Name { get; set; }          /* original file name on the filesystem    */
-			public string Path { get; set; } = string.Empty; /* path relative to root source/target dir */
-			public long Offset { get; set; }                 /* offset in the SFX executable            */
-			public long Length { get; set; }                 /* file length on the filesystem           */
+			/// <summary>original file name on the filesystem</summary>
+			public required string Name { get; set; }
+			/// <summary>path relative to root source/target dir</summary>
+			public string Path { get; set; } = string.Empty;
+			/// <summary>offset in the SFX executable</summary>
+			public long Offset { get; set; }
+			/// <summary>file length on the filesystem</summary>
+			public long Length { get; set; }
 		}
 
 		public class Configuration
