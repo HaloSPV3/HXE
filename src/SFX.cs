@@ -97,8 +97,8 @@ namespace HXE
 			if (targetExe.Exists)
 				targetExe.Delete();
 
-			long sourceSize = files.Sum(x => x.Length);
-			long sfxSize = 0L;
+			var sourceSize = files.Sum(x => x.Length);
+			var sfxSize = 0L;
 
 			/**
 			 * We create a copy of this executable for subsequent appending of the DEFLATE & SFX data. We refresh the FileInfo
@@ -132,7 +132,7 @@ namespace HXE
 					 * its offset in the SFX binary.
 					 */
 
-					long length = file.Length;
+					var length = file.Length;
 					long deflateLength;
 
 					{
@@ -214,8 +214,8 @@ namespace HXE
 				 */
 
 				{
-					byte[] sfxData = sfx.Serialise();
-					long sfxOffset = targetExe.Length;
+					var sfxData = sfx.Serialise();
+					var sfxOffset = targetExe.Length;
 
 					Info($"Appending SFX length ({sfxData.Length}) at offset 0x{sfxOffset:x8}.");
 
@@ -234,7 +234,7 @@ namespace HXE
 				WriteLine(NewLine + new string('*', 80));
 				Info($"Finished packaging {targetExe.Name} with {files.Length} files.");
 
-				double percentage = (double)sfxSize / sourceSize * 100;
+				var percentage = (double)sfxSize / sourceSize * 100;
 
 				Info($"Source directory size: {sourceSize} bytes");
 				Info($"SFX DEFLATE data size: {sfxSize} bytes");
@@ -310,8 +310,8 @@ namespace HXE
 				using (DeflateStream dStream = new(iStream, Decompress))
 				{
 					dStream.BaseStream.Seek(entry.Offset, Begin);
-					long bytes = entry.Length;
-					byte[] buffer = new byte[0x8000];
+					var bytes = entry.Length;
+					var buffer = new byte[0x8000];
 					int read;
 					while (bytes > 0 && (read = dStream.Read(buffer, 0, Math.Min(buffer.Length, (int)bytes))) > 0)
 					{
