@@ -352,7 +352,7 @@ namespace HXE
 		 */
 		public class Entry
 		{
-			public string Name   { get; set; }                 /* original file name on the filesystem    */
+			public required string Name { get; set; }          /* original file name on the filesystem    */
 			public string Path   { get; set; } = string.Empty; /* path relative to root source/target dir */
 			public long   Offset { get; set; }                 /* offset in the SFX executable            */
 			public long   Length { get; set; }                 /* file length on the filesystem           */
