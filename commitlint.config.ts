@@ -2,8 +2,9 @@ import baseConfig from '@halospv3/hce.shared-config/commitlintConfig';
 
 const scopes = {
   commitlint: 'Affects this repo\'s commitlint config, esp. its commit scopes.',
-  Common: 'Affects the HXE.Common namespace and its classes.',
+  Common: 'Affects the HXE.Common namespace and its child classes.',
   contributing: 'Affects CONTRIBUTING.md',
+  'conv-pr': 'Affects ".github/workflows/conv-pull-requests.yml".',
   deps: 'Affects dependencies bundled with or depended on by published packages and artifacts. '
     + 'For NuGet package/PackageReferences, this means anything that has "runtime", "native" or '
     + '"contentfiles" included.',
@@ -11,11 +12,10 @@ const scopes = {
     + 'but are not required at runtime nor bundled with or statically linked into the published '
     + 'binaries or packages. For NuGet packages/PackageReferences, this would be anything with'
     + 'PrivateAssets="All" and no "runtime", "native", or "contentfiles" to be included in output.',
-  release: 'Reserved for release commits.',
-  vscode: 'Affects anything in the .vscode directory.',
   README: 'Affects README.md or any other README documents.',
+  release: 'Reserved for release commits.',
   SFX: 'Affects the HXE.SFX class or other symbols in its source file.',
-  'conv-pr': 'Affects ".github/workflows/conv-pull-requests.yml".',
+  vscode: 'Affects anything in the .vscode directory.',
 };
 
 const config: import('@commitlint/types').UserConfig = {
