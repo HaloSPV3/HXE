@@ -13,6 +13,7 @@ const scopes = {
   release: 'Reserved for release commits.',
   vscode: 'Affects anything in the .vscode directory.',
   README: 'Affects README.md or any other README documents.',
+  SFX: 'Affects the HXE.SFX class or other symbols in its source file.',
   'conv-pr': 'Affects ".github/workflows/conv-pull-requests.yml".',
 };
 
