@@ -121,9 +121,9 @@ namespace HXE
 			 */
 			using (var oStream = System.IO.File.Open(targetExe.FullName, Append))
 			{
-				for (var i = 0; i < files.Length; i++)
+				int filesRemainingCount = files.Length - 1;
+				foreach (FileInfo file in files)
 				{
-					var file = files[i];
 					Info($"Packaging file: {file.Name}");
 
 					/**
@@ -198,7 +198,7 @@ namespace HXE
 
 					WriteLine(NewLine + new string('-', 80));
 					Info($"Finished packaging file: {file.Name}");
-					Info($"{files.Length - (i + 1)} files are currently remaining.");
+					Info($"{filesRemainingCount--} files are currently remaining.");
 					WriteLine(NewLine + new string('=', 80));
 				}
 
@@ -290,9 +290,8 @@ namespace HXE
 			 */
 
 			int filesRemainingCount = sfx.Entries.Count - 1;
-			for (var i = 0; i < sfx.Entries.Count; i++)
+			foreach (Entry entry in sfx.Entries)
 			{
-				var entry    = sfx.Entries[i];
 				if (entry.Name == string.Empty)
 				{
 					Warn($"Unable to extract a file at {entry.Path} with size {entry.Length}; Its filename is empty!");
