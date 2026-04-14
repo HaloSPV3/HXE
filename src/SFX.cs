@@ -50,9 +50,9 @@ namespace HXE
 		 */
 		public static void Compile(Configuration configuration)
 		{
-			var source = configuration.Source;
-			var target = configuration.Target;
-			var filter = configuration.Filter;
+			DirectoryInfo source = configuration.Source;
+			DirectoryInfo target = configuration.Target;
+			string filter = configuration.Filter;
 
 			target.Create();
 
@@ -82,11 +82,11 @@ namespace HXE
 			 *                                                                        end of this executable
 			 */
 
-			var sfx   = new SFX();
-			var files = source.GetFiles(filter, SearchOption.AllDirectories);
+			SFX sfx = new();
+			FileInfo[] files = source.GetFiles(filter, SearchOption.AllDirectories);
 
-			var sourceExe = configuration.Executable;
-			var targetExe = new FileInfo(Combine(target.FullName, sourceExe.Name));
+			FileInfo sourceExe = configuration.Executable;
+			FileInfo targetExe = new(Combine(target.FullName, sourceExe.Name));
 
 			Info($"Source: {source.FullName}");
 			Info($"Target: {target.FullName}");
@@ -97,8 +97,8 @@ namespace HXE
 			if (targetExe.Exists)
 				targetExe.Delete();
 
-			var sourceSize = files.Sum(x => x.Length);
-			var sfxSize    = 0L;
+			long sourceSize = files.Sum(x => x.Length);
+			long sfxSize = 0L;
 
 			/**
 			 * We create a copy of this executable for subsequent appending of the DEFLATE & SFX data. We refresh the FileInfo
@@ -119,7 +119,7 @@ namespace HXE
 			 *    b) the file length on the fs
 			 *    c) offset of the DEFLATE data in SFX
 			 */
-			using (var oStream = System.IO.File.Open(targetExe.FullName, Append))
+			using (FileStream oStream = System.IO.File.Open(targetExe.FullName, Append))
 			{
 				int filesRemainingCount = files.Length - 1;
 				foreach (FileInfo file in files)
@@ -132,12 +132,12 @@ namespace HXE
 					 * its offset in the SFX binary.
 					 */
 
-					var  length = file.Length;
+					long length = file.Length;
 					long deflateLength;
 
 					{
-						using (var iStream = file.OpenRead())
-						using (var dStream = new DeflateStream(oStream, Compress, true))
+						using (FileStream iStream = file.OpenRead())
+						using (DeflateStream dStream = new(oStream, Compress, true))
 						{
 							iStream.CopyTo(dStream);
 							dStream.Close();
@@ -146,9 +146,9 @@ namespace HXE
 
 						WriteLine(NewLine + new string('-', 80));
 
-						var oldLength = targetExe.Length;
+						long oldLength = targetExe.Length;
 						targetExe.Refresh();
-						var newLength = targetExe.Length;
+						long newLength = targetExe.Length;
 
 						Info($"SFX increased from {oldLength} to {newLength} bytes.");
 
@@ -157,7 +157,7 @@ namespace HXE
 						sfxSize += deflateLength;
 
 						if (deflateLength < length)
-							Info($"DEFLATE length is thus {(decimal) deflateLength / length * 100:##.##}% of {length} bytes.");
+							Info($"DEFLATE length is thus {(decimal)deflateLength / length * 100:##.##}% of {length} bytes.");
 						else
 							Warn($"DEFLATE length is higher by {deflateLength - length} bytes than the raw file length.");
 					}
@@ -176,19 +176,19 @@ namespace HXE
 					 */
 
 					{
-						var name   = file.Name;
-						var offset = targetExe.Length - deflateLength;
-						var path = file.DirectoryName != null && file.DirectoryName.Equals(source.FullName)
+						string name = file.Name;
+						long offset = targetExe.Length - deflateLength;
+						string path = file.DirectoryName is null || file.DirectoryName.Equals(source.FullName)
 							? string.Empty
-							: file.DirectoryName?.Substring(source.FullName.Length + 1);
+							: file.DirectoryName.Substring(source.FullName.Length + 1);
 
 						Info($"Acknowledging new entry: {targetExe.Name} <= {path}\\{name}");
 						Info($"DEFLATE starts at offset 0x{offset:x8} in the SFX binary.");
 
 						sfx.Entries.Add(new Entry
 						{
-							Name   = name,
-							Path   = path,
+							Name = name,
+							Path = path,
 							Length = length,
 							Offset = offset
 						});
@@ -214,12 +214,12 @@ namespace HXE
 				 */
 
 				{
-					var sfxData   = sfx.Serialise();
-					var sfxOffset = targetExe.Length;
+					byte[] sfxData = sfx.Serialise();
+					long sfxOffset = targetExe.Length;
 
 					Info($"Appending SFX length ({sfxData.Length}) at offset 0x{sfxOffset:x8}.");
 
-					using (var binWriter = new BinaryWriter(oStream))
+					using (BinaryWriter binWriter = new(oStream))
 					{
 						binWriter.Write(sfxData);
 						binWriter.Write(sfxOffset);
@@ -234,7 +234,7 @@ namespace HXE
 				WriteLine(NewLine + new string('*', 80));
 				Info($"Finished packaging {targetExe.Name} with {files.Length} files.");
 
-				var percentage = (double) sfxSize / sourceSize * 100;
+				double percentage = (double)sfxSize / sourceSize * 100;
 
 				Info($"Source directory size: {sourceSize} bytes");
 				Info($"SFX DEFLATE data size: {sfxSize} bytes");
@@ -247,7 +247,7 @@ namespace HXE
 		 */
 		public static void Extract(Configuration configuration)
 		{
-			var target = configuration.Target;
+			DirectoryInfo target = configuration.Target;
 
 			target.Create();
 
@@ -255,8 +255,8 @@ namespace HXE
 			 * We will assume that the current HXE executable contains SFX data to be extracted.
 			 */
 
-			var exe = configuration.Executable;
-			var sfx = new SFX();
+			FileInfo exe = configuration.Executable;
+			SFX sfx = new();
 
 			Info($"Determining SFX structure in {exe.Name}");
 
@@ -270,15 +270,15 @@ namespace HXE
 			 * - Ending offset of the SFX data   = (hxe length - sizeof(long))
 			 */
 
-			using (var binReader = new BinaryReader(exe.OpenRead()))
+			using (BinaryReader binReader = new(exe.OpenRead()))
 			{
 				binReader.BaseStream.Seek(exe.Length - sizeof(long), Begin);
-				binReader.BaseStream.Seek(binReader.ReadInt64(),     Begin);
+				binReader.BaseStream.Seek(binReader.ReadInt64(), Begin);
 				sfx.Deserialise
 				(
 					binReader.ReadBytes
 					(
-						(int) exe.Length - (int) binReader.BaseStream.Position - sizeof(long)
+						(int)exe.Length - (int)binReader.BaseStream.Position - sizeof(long)
 					)
 				);
 			}
@@ -298,22 +298,22 @@ namespace HXE
 					filesRemainingCount--;
 					continue;
 				}
-				var original = new FileInfo(Combine(target.FullName, entry.Path, entry.Name));
+				FileInfo original = new(Combine(target.FullName, entry.Path, entry.Name));
 
 				original.Directory?.Create();
 
 				Info($"Found {entry.Length} bytes at 0x{entry.Offset:x8}: {entry.Name}");
 				Info($"Extracting its DEFLATE data to: {original.FullName}");
 
-				using (var iStream = exe.OpenRead())
-				using (var oStream = original.Create())
-				using (var dStream = new DeflateStream(iStream, Decompress))
+				using (FileStream iStream = exe.OpenRead())
+				using (FileStream oStream = original.Create())
+				using (DeflateStream dStream = new(iStream, Decompress))
 				{
 					dStream.BaseStream.Seek(entry.Offset, Begin);
-					var bytes  = entry.Length;
-					var buffer = new byte[0x8000];
+					long bytes = entry.Length;
+					byte[] buffer = new byte[0x8000];
 					int read;
-					while (bytes > 0 && (read = dStream.Read(buffer, 0, Math.Min(buffer.Length, (int) bytes))) > 0)
+					while (bytes > 0 && (read = dStream.Read(buffer, 0, Math.Min(buffer.Length, (int)bytes))) > 0)
 					{
 						oStream.Write(buffer, 0, read);
 						bytes -= read;
@@ -333,8 +333,8 @@ namespace HXE
 		 */
 		public byte[] Serialise()
 		{
-			var xml = new XmlSerializer(typeof(SFX));
-			using (var sw = new StringWriter())
+			XmlSerializer xml = new(typeof(SFX));
+			using (StringWriter sw = new())
 			{
 				xml.Serialize(sw, this);
 				return Unicode.GetBytes(sw.ToString());
@@ -346,10 +346,11 @@ namespace HXE
 		 */
 		public void Deserialise(byte[] data)
 		{
-			using (var sr = new StringReader(Unicode.GetString(data)))
+			using (StringReader sr = new(Unicode.GetString(data)))
 			{
-				var sfx = (SFX) new XmlSerializer(typeof(SFX)).Deserialize(sr);
-				Entries = sfx.Entries;
+				SFX? sfx = new XmlSerializer(typeof(SFX)).Deserialize(sr) as SFX;
+				if (sfx is not null)
+					Entries = sfx.Entries;
 			}
 		}
 
@@ -359,16 +360,16 @@ namespace HXE
 		public class Entry
 		{
 			public required string Name { get; set; }          /* original file name on the filesystem    */
-			public string Path   { get; set; } = string.Empty; /* path relative to root source/target dir */
-			public long   Offset { get; set; }                 /* offset in the SFX executable            */
-			public long   Length { get; set; }                 /* file length on the filesystem           */
+			public string Path { get; set; } = string.Empty; /* path relative to root source/target dir */
+			public long Offset { get; set; }                 /* offset in the SFX executable            */
+			public long Length { get; set; }                 /* file length on the filesystem           */
 		}
 
 		public class Configuration
 		{
 			public DirectoryInfo Source { get; set; } = new DirectoryInfo(CurrentDirectory);
 			public DirectoryInfo Target { get; set; } = new DirectoryInfo(CurrentDirectory).Parent;
-			public string        Filter { get; set; } = "*";
+			public string Filter { get; set; } = "*";
 
 			public FileInfo Executable { get; set; } = new FileInfo(System.AppContext.BaseDirectory
 																	?? throw new InvalidOperationException());
