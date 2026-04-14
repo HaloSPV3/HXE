@@ -40,7 +40,7 @@ namespace HXE.HCE
     /// <summary>
     ///   Object representing a HCE profile blam.sav binary.
     /// </summary>
-    /// <see cref="https://c20.reclaimers.net/h1/engine/files/#blam-sav"/>
+    /// <see href="https://c20.reclaimers.net/h1/engine/files/#blam-sav"/>
     public class Profile : File
     {
         public ProfileDetails Details { get; set; } = new ProfileDetails();   /* profile name & online player colour */
