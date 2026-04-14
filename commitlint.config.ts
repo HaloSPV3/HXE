@@ -2,6 +2,7 @@ import baseConfig from '@halospv3/hce.shared-config/commitlintConfig';
 
 const scopes = {
   commitlint: 'Affects this repo\'s commitlint config, esp. its commit scopes.',
+  Common: 'Affects the HXE.Common namespace and its classes.',
   contributing: 'Affects CONTRIBUTING.md',
   deps: 'Affects dependencies bundled with or depended on by published packages and artifacts. '
     + 'For NuGet package/PackageReferences, this means anything that has "runtime", "native" or '
