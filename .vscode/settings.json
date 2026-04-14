@@ -6,10 +6,11 @@
         }
     },
     "cSpell.words": [
+        "browsable",
         "contentfiles",
         "haloce",
-        "tokenless",
-        "browsable"
+        "SFX",
+        "tokenless"
     ],
     "omnisharp.useModernNet": true,
     "omnisharp.enableRoslynAnalyzers": true,
