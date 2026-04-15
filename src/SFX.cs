@@ -132,7 +132,7 @@ namespace HXE
 
 					/**
 					 * We append the DEFLATE data to the SFX binary. After the procedure is done, we will refresh the FileInfo
-					 * for the SFX to retrieve its new length. This length will be used to determine length of the DEFALTE and thus
+					 * for the SFX to retrieve its new length. This length will be used to determine length of the DEFLATE and thus
 					 * its offset in the SFX binary.
 					 */
 
@@ -171,7 +171,7 @@ namespace HXE
 					 * the file down the line.
 					 *
 					 * The entries are designed to recreate the structure of the source directory, in a given arbitrary target
-					 * directory. As such, we will avoid absoltue paths for the files and instead infer paths relative to the source
+					 * directory. As such, we will avoid absolute paths for the files and instead infer paths relative to the source
 					 * directory.
 					 *
 					 * Each DEFLATE entry will be appended at the end of the SFX binary. To determine where each file's DEFLATE
