@@ -45,7 +45,7 @@ namespace HXE
 		/// </summary>
 		/// <typeparam name="Entry"></typeparam>
 		/// <returns></returns>
-		public List<Entry> Entries { get; set; } = new List<Entry>();
+		public List<Entry> Entries { get; set; } = [];
 
 		/// <summary>
 		/// Creates an SFX of the given source, using the current HXE executable, to the given target.
