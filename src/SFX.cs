@@ -403,7 +403,7 @@ namespace HXE
 		public class Configuration
 		{
 			public DirectoryInfo Source { get; set; } = new DirectoryInfo(CurrentDirectory);
-			public DirectoryInfo Target { get; set; } = new DirectoryInfo(CurrentDirectory).Parent;
+			public DirectoryInfo Target { get; set; } = new DirectoryInfo(CurrentDirectory).Parent ?? new DirectoryInfo(CurrentDirectory);
 			public string Filter { get; set; } = "*";
 
 			public FileInfo Executable { get; set; } = new FileInfo(System.AppContext.BaseDirectory
