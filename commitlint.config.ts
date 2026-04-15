@@ -1,6 +1,7 @@
 import baseConfig from '@halospv3/hce.shared-config/commitlintConfig';
 
 const scopes = {
+  Campaign: 'Affects HXE.Campaign or its descendants.',
   commitlint: 'Affects this repo\'s commitlint config, esp. its commit scopes.',
   Common: 'Affects the HXE.Common namespace and its child classes.',
   contributing: 'Affects CONTRIBUTING.md',
