@@ -23,6 +23,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
+using System.Xml.Linq;
 using System.Xml.Serialization;
 using static System.Console;
 using static System.Environment;
@@ -351,9 +352,36 @@ namespace HXE
 		{
 			using (StringReader sr = new(Unicode.GetString(data)))
 			{
-				SFX? sfx = new XmlSerializer(typeof(SFX)).Deserialize(sr) as SFX;
-				if (sfx is not null)
-					Entries = sfx.Entries;
+				XElement xEntries = XDocument.Load(sr)
+					.Element(nameof(Entries))
+					?? throw new Exception($"'{nameof(Entries)}' is missing from the self-extraction manifest.");
+				foreach (XElement xEntry in xEntries.Elements(nameof(Entry)))
+				{
+					string? Name = xEntry.Attribute(nameof(Entry.Name))?.Value;
+					long Length = long.TryParse(
+							xEntry.Attribute(nameof(Entry.Length))?.Value,
+							out long result
+						) ? result : -1;
+					long Offset = long.TryParse(
+							xEntry.Attribute(nameof(Entry.Length))?.Value,
+							out result
+						) ? result : -1;
+					string? Path = xEntry.Attribute(nameof(Entry.Path))?.Value;
+					if (Name is not null
+						&& Length is not -1
+						&& Offset is not -1
+						&& Path is not null
+					)
+					{
+						Entries.Add(new Entry
+						{
+							Name = Name,
+							Length = Length,
+							Offset = Offset,
+							Path = Path
+						});
+					}
+				}
 			}
 		}
 
