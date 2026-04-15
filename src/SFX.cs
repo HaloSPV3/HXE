@@ -289,9 +289,16 @@ namespace HXE
 			 * implementing our own method for copying the data using buffers.
 			 */
 
+			int filesRemainingCount = sfx.Entries.Count - 1;
 			for (var i = 0; i < sfx.Entries.Count; i++)
 			{
 				var entry    = sfx.Entries[i];
+				if (entry.Name == string.Empty)
+				{
+					Warn($"Unable to extract a file at {entry.Path} with size {entry.Length}; Its filename is empty!");
+					filesRemainingCount--;
+					continue;
+				}
 				var original = new FileInfo(Combine(target.FullName, entry.Path, entry.Name));
 
 				original.Directory?.Create();
@@ -316,7 +323,7 @@ namespace HXE
 
 				WriteLine(NewLine + new string('-', 80));
 				Info($"Finished extracting file: {entry.Name}");
-				Info($"{sfx.Entries.Count - (i + 1)} files are currently remaining.");
+				Info($"{filesRemainingCount--} files are currently remaining.");
 
 				WriteLine(NewLine + new string('=', 80));
 			}
