@@ -7,7 +7,7 @@ root = true
 # Default settings:
 [*]
 charset = utf-8
-end_of_line = crlf
+# end_of_line = crlf
 trim_trailing_whitespace = true
 insert_final_newline = true
 
