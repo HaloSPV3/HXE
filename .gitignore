@@ -355,3 +355,4 @@ tsconfig.tsbuildinfo
 !.yarn/sdks
 !.yarn/versions
 .eslintcache
+.dotnet

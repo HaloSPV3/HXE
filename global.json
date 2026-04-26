@@ -1,7 +1,12 @@
 {
   "sdk": {
     "version": "10.0.100",
-    "rollForward": "latestFeature"
+    "rollForward": "latestFeature",
+    "paths": [
+      ".dotnet",
+      "$host$"
+    ],
+    "errorMessage": "Required .NET SDK not found. Run the install-dotnet script for your platform to install it locally."
   }
 }
 
