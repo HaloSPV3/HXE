@@ -6,25 +6,33 @@ import type { RuleObjects } from '@semantic-release/commit-analyzer';
 
 const projectsToPublish = ['./src/HXE.csproj'];
 const projectsToPackAndPush = projectsToPublish;
-const config: Options | Error = await getConfig(
+
+async function tryGetConfig(projectsToPublish: Parameters<typeof getConfig>[0], projectsToPackAndPush: Parameters<typeof getConfig>[1]) {
+  try {
+    return await getConfig(projectsToPublish, projectsToPackAndPush);
+  }
+  catch (error: unknown) {
+    const _error = Error.isError(error)
+      ? error
+      : new Error('unknown error', { cause: error });
+    console.error(_error);
+    return _error;
+  }
+}
+
+const config: Options | Error = await tryGetConfig(
   projectsToPublish,
   projectsToPackAndPush,
-).catch((error: unknown) => {
-  const _error = Error.isError(error)
-    ? error
-    : new Error('unknown error', { cause: error });
-  console.error(_error);
-  return _error;
-});
+);
 
 if (!Error.isError(config)) {
   const sRCA = config.plugins?.find<PluginSpecSRCommitAnalyzer>(
-    (p): p is PluginSpecSRCommitAnalyzer => p[0] === '@semantic-release/commit-analyzer'
+    (p): p is PluginSpecSRCommitAnalyzer => p[0] === '@semantic-release/commit-analyzer',
   );
   if (sRCA) {
-    if (typeof sRCA[1].releaseRules === 'string')
+    const releaseRules = sRCA[1].releaseRules ??= [];
+    if (typeof releaseRules === 'string')
       throw new Error('releaseRules was a string; the path to a module whose default export provides RuleObject[]. I don\'t want to deal with it.');
-    let releaseRules = sRCA[1].releaseRules ??= [];
     sRCA[1].releaseRules = [
       ...releaseRules,
       { type: 'revert', subject: '!(feat|fix|perf)', release: false },
@@ -33,7 +41,7 @@ if (!Error.isError(config)) {
   }
 
   const releaseNotesGen = config.plugins?.find<PluginSpecSRReleaseNotesGen>(
-    (p): p is PluginSpecSRReleaseNotesGen => p[0] === '@semantic-release/release-notes-generator'
+    (p): p is PluginSpecSRReleaseNotesGen => p[0] === '@semantic-release/release-notes-generator',
   );
   if (releaseNotesGen) {
     releaseNotesGen[1].preset = 'conventionalcommits';
