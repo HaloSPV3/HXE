@@ -3565,6 +3565,9 @@ __metadata:
     jiti: "npm:^2.7.0"
     semantic-release: "npm:^25.0.5"
     typescript: "npm:^6.0.3"
+  dependenciesMeta:
+    "@halospv3/hce.shared-config@3.5.2":
+      unplugged: true
   languageName: unknown
   linkType: soft
 
