@@ -37,7 +37,8 @@
     <ToolCommandName>hxe</ToolCommandName>
     <UseWPF>true</UseWPF>
     <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
-    <InvariantGlobalization>true</InvariantGlobalization>
+    <!-- Changing this to "true" will cause a crash when loading any GUI -->
+    <InvariantGlobalization>false</InvariantGlobalization>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
     <MeziantouPolyfill_ExcludedPolyfills Condition="$(TargetFramework.StartsWith('net4'))">T:System.Runtime.CompilerServices.OverloadResolutionPriorityAttribute</MeziantouPolyfill_ExcludedPolyfills>
