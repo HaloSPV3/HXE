@@ -50,7 +50,7 @@ namespace HXE
                     uint size = (uint)buffer.Length;
                     if (Windows.Win32.PInvoke.QueryFullProcessImageName(hProcess, 0, buffer, ref size))
                     {
-                        return buffer.ToString();
+                        return buffer.Slice(0, (int)size).ToString();
                     }
                 }
                 finally
