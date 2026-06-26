@@ -44,7 +44,7 @@ jobs:
       - uses: actions/setup-node@v6
         with:
           cache: yarn
-      - run: yarn install --immutable ${{ steps.isDepUpBranch.outputs.IMMUTABLE_CACHE}}
+      - run: yarn install --immutable # ${{ steps.isDepUpBranch.outputs.IMMUTABLE_CACHE}}
 
       - uses: actions/setup-dotnet@v5
 
