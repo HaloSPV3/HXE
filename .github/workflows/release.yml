@@ -37,9 +37,12 @@ jobs:
           fetch-depth: 0 # Required by GitVersion, Semantic Release
           submodules: recursive
 
-      - run: |
+      - name: Enable Corepack
+        run: |
           corepack enable &&
-          yarn -v
+          corepack prepare --active &&
+          yarn -v &&
+          WHERE yarn
       - name: Setup Node
         uses: actions/setup-node@v6
         with:
