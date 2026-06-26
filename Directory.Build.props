@@ -27,6 +27,9 @@
     The SDK iterates through TargetFrameworks for each TFM. We iterate each TFM's RIDs.
     Intended for ensuring RID-dependent build permutations are successful before attempting PublishAll. -->
   <Import Project="$(HCESharedDir)dotnet/BuildEachRID.targets" />
+  <!-- Created by Brant Burnett - https://github.com/dotnet/wpf/issues/2930#issuecomment-2562793707
+    WPF projects tend to leave dangling "_wpftmp" directories in the "artifacts/bin" directory, clean these up after build -->
+  <Import Project="$(HCESharedDir)dotnet/CleanupWpfTmp.targets" />
 
   <PropertyGroup>
     <EnableWindowsTargeting>true</EnableWindowsTargeting>
