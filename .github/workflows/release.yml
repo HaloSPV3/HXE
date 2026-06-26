@@ -51,7 +51,7 @@ jobs:
       - name: Setup Dotnet
         uses: actions/setup-dotnet@v5
         with:
-          cache: dotnet
+          cache: true
 
       - name: NuGet login (OIDC → temp API key)
         uses: NuGet/login@v1
