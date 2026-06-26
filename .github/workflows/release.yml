@@ -37,19 +37,16 @@ jobs:
           fetch-depth: 0 # Required by GitVersion, Semantic Release
           submodules: recursive
 
-      - name: Enable Corepack
-        run: |
-          corepack enable &&
-          corepack prepare --activate &&
-          yarn -v &&
-          WHERE yarn
+      - run: corepack enable
       - name: Setup Node
         uses: actions/setup-node@v6
         with:
-          cache: yarn
+          # cache: yarn
           node-version-file: .nvmrc
-          check-latest: true
-      - run: yarn install --immutable --immutable-cache
+
+      - run: corepack enable
+
+      - run: yarn install --immutable #--immutable-cache
 
       - name: Setup Dotnet
         uses: actions/setup-dotnet@v5
