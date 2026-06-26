@@ -40,7 +40,7 @@ jobs:
       - name: Enable Corepack
         run: |
           corepack enable &&
-          corepack prepare --active &&
+          corepack prepare --activate &&
           yarn -v &&
           WHERE yarn
       - name: Setup Node
