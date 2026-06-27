@@ -24,6 +24,9 @@
     "@commitlint/config-conventional": "^21.1.0",
     "@commitlint/types": "^21.1.0",
     "@halospv3/hce.shared-config": "^3.6.1",
+    "@semantic-release/changelog": "^6.0.3",
+    "@semantic-release/exec": "^7.1.0",
+    "@semantic-release/git": "^10.0.1",
     "@tsconfig/node24": "^24.0.4",
     "@types/node": "^24.0.0",
     "commitlint": "^21.1.0",
@@ -32,6 +35,7 @@
     "husky": "^9.1.7",
     "jiti": "^2.7.0",
     "semantic-release": "^25.0.5",
+    "semantic-release-export-data": "^1.2.0",
     "typescript": "^6.0.3"
   },
   "packageManager": "yarn@4.17.0+sha512.c2957de2f9025ab14d63b24d0d8be1f1655810e22c341042c27f7ecd017b180ec12db73d69ac366d71b304ef9f069349ce462de96f04f8f1da317f4f762c95ae",
