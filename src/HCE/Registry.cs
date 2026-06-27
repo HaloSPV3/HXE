@@ -125,15 +125,15 @@ namespace HXE.HCE
             }
 
             /** Open the subkey and read the PID entry */
-            bool keyIsValid;
+            bool keyIsValid = false;
             bool subkeyIsValid = false;
             try
             {
                 RegistryKey key = WinReg.LocalMachine.OpenSubKey(subkey);
-                keyIsValid = key != null;
 
-                if (keyIsValid)
-                    subkeyIsValid = !string.IsNullOrEmpty(key.GetValue("PID").ToString());
+                if (key != null){
+                    keyIsValid = true;
+                    subkeyIsValid = !string.IsNullOrEmpty(key.GetValue("PID").ToString());}
             }
             catch (Exception e)
             {
