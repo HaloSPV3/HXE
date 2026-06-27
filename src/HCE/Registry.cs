@@ -367,7 +367,7 @@ namespace HXE.HCE
                         break;
                 }
 
-                MSGames.CreateSubKey(gameSK);
+                MSGames?.CreateSubKey(gameSK);
             }
 
             switch (game)
@@ -415,8 +415,8 @@ namespace HXE.HCE
                 case Game.Trial:
                     {
                         key = WinReg.LocalMachine.OpenSubKey(Path.Combine(WoWCheck(), Trial));
-                        data.DigitalProductID = null;
-                        data.PID = null;
+                        data.DigitalProductID = [];
+                        data.PID = string.Empty;
                         data.Version = "1";
                         data.VersionType = "TrialVersion";
                         key.SetValue("CDPath", data.CDPath, RegistryValueKind.String);
@@ -434,8 +434,8 @@ namespace HXE.HCE
                 case Game.HEK:
                     {
                         key = WinReg.LocalMachine.OpenSubKey(Path.Combine(WoWCheck(), HEK));
-                        data.DigitalProductID = null;
-                        data.PID = null;
+                        data.DigitalProductID = [];
+                        data.PID = string.Empty;
                         data.VersionType = "TrialVersion";
                         key.SetValue("CDPath", data.CDPath, RegistryValueKind.String);
                         key.SetValue("DigitalProductID", data.DigitalProductID, RegistryValueKind.Binary);
@@ -538,12 +538,12 @@ namespace HXE.HCE
                         if (key != null) // read to Data
                         {
                             data.CDPath = key.GetValue("CDPath", data.CDPath).ToString();
-                            data.DigitalProductID = null;
+                            data.DigitalProductID = [];
                             data.EXE_Path = key.GetValue("EXE Path", data.EXE_Path).ToString();
                             data.LangID = Enc.Unicode.GetBytes(
                                                     key.GetValue("LangID", data.LangID).ToString())[0];
                             data.Launched = key.GetValue("Launched", data.Launched).ToString();
-                            data.PID = null;
+                            data.PID = string.Empty;
                             data.VersionType = "TrialVersion";
                         }
                         break;
