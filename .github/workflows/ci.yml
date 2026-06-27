@@ -52,6 +52,11 @@ jobs:
       - run: yarn install --immutable # ${{ steps.isDepUpBranch.outputs.IMMUTABLE_CACHE}}
 
       - uses: actions/setup-dotnet@v5
+        with:
+          cache: true
+          cache-dependency-path: |
+            HXE/packages.lock.json
+            HXE/packages-debug.lock.json
 
       # if run simultaneously, the logs would be a mess
       - name: Build (Debug)
