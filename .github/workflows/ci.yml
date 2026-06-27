@@ -18,6 +18,7 @@ env:
   # access to "usr/lib/dotnet" is denied
   DOTNET_INSTALL_DIR: /usr/share/dotnet
   DOTNET_ROOT: /usr/share/dotnet
+  NUGET_PACKAGES: ${{ github.workspace }}/.nuget/packages
 
 jobs:
   ci:
