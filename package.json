@@ -17,7 +17,7 @@
   "scripts": {
     "postinstall": "husky",
     "lint": "eslint --cache",
-    "release": "semantic-release --debug",
+    "release": "semantic-release --debug --dry-run",
     "test": "dotnet test"
   },
   "devDependencies": {
