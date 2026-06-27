@@ -13,6 +13,8 @@ env:
   # access to "usr/lib/dotnet" is denied
   DOTNET_INSTALL_DIR: /usr/share/dotnet
   DOTNET_ROOT: /usr/share/dotnet
+  NUGET_PACKAGES: ${{ github.workspace }}/.nuget/packages
+
 
 jobs:
   ci:
@@ -52,6 +54,7 @@ jobs:
         uses: actions/setup-dotnet@v5
         with:
           cache: true
+          cache-dependency-path: ./HXE/packages*.lock.json
 
       - name: NuGet login (OIDC → temp API key)
         uses: NuGet/login@v1
