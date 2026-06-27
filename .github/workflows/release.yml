@@ -55,8 +55,8 @@ jobs:
         with:
           cache: true
           cache-dependency-path: |
-            HXE/packages.lock.json
-            HXE/packages-debug.lock.json
+            src/packages.lock.json
+            src/packages-debug.lock.json
 
       - name: NuGet login (OIDC → temp API key)
         uses: NuGet/login@v1
