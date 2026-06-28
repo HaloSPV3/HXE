@@ -64,6 +64,13 @@ jobs:
         with:
           user: nToss
 
+      - id: isPwshAvailable
+        run: pwsh -v
+        continue-on-error: true 
+      - if: ${{ steps.isPwshAvailable.outcome != 'success' }}
+        name: Install PowerShell
+        uses: PSModule/install-powershell@159c2929fac34e3c7fc55d75e8997fb27fc7f75a # v1.2.0
+
       - name: Semantic Release
         id: semantic-release
         run: yarn run release
