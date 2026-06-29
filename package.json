@@ -28,6 +28,7 @@
     "@semantic-release/exec": "^7.1.0",
     "@semantic-release/git": "^10.0.1",
     "@tsconfig/node24": "^24.0.4",
+    "@types/debug": "^4.1.13",
     "@types/node": "^24.0.0",
     "commitlint": "^21.1.0",
     "eslint": "^10.5.0",
