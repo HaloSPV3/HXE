@@ -48,6 +48,8 @@ jobs:
           # cache: yarn
           node-version-file: .nvmrc
 
+      - run: corepack enable
+
       - run: yarn install --immutable # ${{ steps.isDepUpBranch.outputs.IMMUTABLE_CACHE}}
 
       - uses: actions/setup-dotnet@v5
