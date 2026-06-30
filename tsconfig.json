@@ -31,7 +31,8 @@
       "ESNext.Error",
       "ESNext.Iterator",
       "ESNext.Promise"
-    ]
+    ],
+    "outDir": ".tsout"
   },
   "exclude": [
     "node_modules",

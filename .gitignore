@@ -356,3 +356,4 @@ tsconfig.tsbuildinfo
 !.yarn/versions
 .eslintcache
 .dotnet
+.tsout
