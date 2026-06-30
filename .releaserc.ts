@@ -35,9 +35,11 @@ else {
     (p): p is PluginSpecSRCommitAnalyzer => p[0] === '@semantic-release/commit-analyzer',
   );
   if (sRCA) {
-    const releaseRules = sRCA[1].releaseRules ??= [];
-    if (typeof releaseRules === 'string')
-      throw new Error('releaseRules was a string; the path to a module whose default export provides RuleObject[]. I don\'t want to deal with it.');
+    const releaseRules = (
+      typeof sRCA[1].releaseRules === 'string'
+        ? (await import(sRCA[1].releaseRules) as (Exclude<typeof sRCA[1]['releaseRules'], string>))
+        : sRCA[1].releaseRules
+    ) ?? [];
     sRCA[1].releaseRules = [
       ...releaseRules,
       { type: 'revert', subject: '!(feat|fix|perf)', release: false },
