@@ -3,6 +3,7 @@ import { getConfig } from '@halospv3/hce.shared-config/semanticReleaseConfigDotn
 import type { Options } from 'semantic-release';
 import type { PluginSpecSRCommitAnalyzer, PluginSpecSRReleaseNotesGen } from '@halospv3/hce.shared-config/semanticReleaseConfig';
 import type { RuleObjects } from '@semantic-release/commit-analyzer';
+import { exit } from 'node:process';
 
 const projectsToPublish = ['./src/HXE.csproj'];
 const projectsToPackAndPush = projectsToPublish;
@@ -25,7 +26,11 @@ const config: Options | Error = await tryGetConfig(
   projectsToPackAndPush,
 );
 
-if (!Error.isError(config)) {
+if (Error.isError(config)) {
+  console.error(config);
+  exit(1);
+}
+else {
   const sRCA = config.plugins?.find<PluginSpecSRCommitAnalyzer>(
     (p): p is PluginSpecSRCommitAnalyzer => p[0] === '@semantic-release/commit-analyzer',
   );
