@@ -23,7 +23,7 @@
   "devDependencies": {
     "@commitlint/config-conventional": "^21.1.0",
     "@commitlint/types": "^21.1.0",
-    "@halospv3/hce.shared-config": "^3.6.5",
+    "@halospv3/hce.shared-config": "^3.6.7",
     "@semantic-release/changelog": "^6.0.3",
     "@semantic-release/exec": "^7.1.0",
     "@semantic-release/git": "^10.0.1",
