@@ -319,10 +319,44 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@dotenvx/dotenvx@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "@dotenvx/dotenvx@npm:2.0.0"
+  dependencies:
+    "@dotenvx/primitives": "npm:^1.7.0"
+    commander: "npm:^11.1.0"
+    conf: "npm:^10.2.0"
+    dotenv: "npm:^17.4.2"
+    enquirer: "npm:^2.4.1"
+    env-paths: "npm:^2.2.1"
+    execa: "npm:^5.1.1"
+    fdir: "npm:^6.2.0"
+    ignore: "npm:^7.0.5"
+    object-treeify: "npm:1.1.33"
+    open: "npm:^8.4.2"
+    picomatch: "npm:^4.0.4"
+    synckit: "npm:0.11.13"
+    systeminformation: "npm:^5.31.11"
+    undici: "npm:^7.11.0"
+    which: "npm:^6.0.1"
+    yocto-spinner: "npm:^1.2.0"
+  bin:
+    dotenvx: src/cli/dotenvx.js
+  checksum: 10c0/8990af7d967ddf150ddfc1ffba3706868710c4bf99ed3023728889842745a24bcc4c746b4cfffb733a9c5bbbc7e0da2dfa799c72018096a847cb08a2fe665a26
+  languageName: node
+  linkType: hard
+
 "@dotenvx/primitives@npm:^0.8.0":
   version: 0.8.0
   resolution: "@dotenvx/primitives@npm:0.8.0"
   checksum: 10c0/e0dfe65b9df534c753db2b1d0a426cbc27395a04eb2f143e0981a9669a6f444b17c984efdbc05c03e93c0fd002402372f2f6195a58dd2aa2a9669f8d6d1d6680
+  languageName: node
+  linkType: hard
+
+"@dotenvx/primitives@npm:^1.7.0":
+  version: 1.7.0
+  resolution: "@dotenvx/primitives@npm:1.7.0"
+  checksum: 10c0/4bd0856bc5e1fe924676bf26e8e43740e3dc0de673716e4269281f90d20eff4139a2efe0b8e186a7bb2f4aba5c9ef306ad14754602ce0dafc410638c6319aa34
   languageName: node
   linkType: hard
 
@@ -838,6 +872,13 @@ __metadata:
   dependencies:
     "@octokit/openapi-types": "npm:^27.0.0"
   checksum: 10c0/b8d41098ba6fc194d13d641f9441347e3a3b96c0efabac0e14f57319340a2d4d1c8676e4cb37ab3062c5c323c617e790b0126916e9bf7b201b0cced0826f8ae2
+  languageName: node
+  linkType: hard
+
+"@pkgr/core@npm:^0.3.6":
+  version: 0.3.6
+  resolution: "@pkgr/core@npm:0.3.6"
+  checksum: 10c0/153f0f4563f505faeba13c733efa0e05e467ce1c6b941055a5fd3b4560da60fbf1dff4b11da0075f034ddda11f2842b90395f60895dde5825875b616edccc11c
   languageName: node
   linkType: hard
 
@@ -2428,6 +2469,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"dotenv@npm:^17.4.2":
+  version: 17.4.2
+  resolution: "dotenv@npm:17.4.2"
+  checksum: 10c0/164f8e77a646c8446867d5b588d26ea6005c8ea7c5eb41cf926f6113d23f2191355f6e0cfd95ea9bab98394a5b0a3f1e51a8399711b666fe55cc7b0bd745f942
+  languageName: node
+  linkType: hard
+
 "dunder-proto@npm:^1.0.1":
   version: 1.0.1
   resolution: "dunder-proto@npm:1.0.1"
@@ -3419,6 +3467,7 @@ __metadata:
   dependencies:
     "@commitlint/config-conventional": "npm:^21.1.0"
     "@commitlint/types": "npm:^21.1.0"
+    "@dotenvx/dotenvx": "npm:^2.0.0"
     "@halospv3/hce.shared-config": "npm:^3.9.2"
     "@semantic-release/changelog": "npm:^6.0.3"
     "@semantic-release/exec": "npm:^7.1.0"
@@ -5890,12 +5939,31 @@ __metadata:
   languageName: node
   linkType: hard
 
+"synckit@npm:0.11.13":
+  version: 0.11.13
+  resolution: "synckit@npm:0.11.13"
+  dependencies:
+    "@pkgr/core": "npm:^0.3.6"
+  checksum: 10c0/5a6c19f4f79045aaa7994106401bff6dbe7cca23a6d0a0723ff14eb8b1bebeb4a71729118f6914905598e304ea2fa13509885e11ba07d92e7cb68a06740cb328
+  languageName: node
+  linkType: hard
+
 "systeminformation@npm:^5.22.11":
   version: 5.31.9
   resolution: "systeminformation@npm:5.31.9"
   bin:
     systeminformation: lib/cli.js
   checksum: 10c0/d8580ca591f70aeb5d732cd9a6ed7c6283dc1a8df3857e6405bbec2a7eeedab4db5179c7b6df4fdedcc1018946ac5643d2f37cb5dc3dfab8627178e63cb82705
+  conditions: (os=darwin | os=linux | os=win32 | os=freebsd | os=openbsd | os=netbsd | os=sunos | os=android)
+  languageName: node
+  linkType: hard
+
+"systeminformation@npm:^5.31.11":
+  version: 5.31.11
+  resolution: "systeminformation@npm:5.31.11"
+  bin:
+    systeminformation: lib/cli.js
+  checksum: 10c0/36f35364cdd60704d2f2f95c0da953f1d26b65feeb6806f8e8472c52525d685389a1423e6e803c94b7556b90ce2a04b86ffb9e64ce7cf3f6496e54e26983a64d
   conditions: (os=darwin | os=linux | os=win32 | os=freebsd | os=openbsd | os=netbsd | os=sunos | os=android)
   languageName: node
   linkType: hard
@@ -6513,7 +6581,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"yocto-spinner@npm:^1.1.0":
+"yocto-spinner@npm:^1.1.0, yocto-spinner@npm:^1.2.0":
   version: 1.2.0
   resolution: "yocto-spinner@npm:1.2.0"
   dependencies:
