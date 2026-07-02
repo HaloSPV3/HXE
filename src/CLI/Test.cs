@@ -17,6 +17,7 @@ internal static class Test
       Logs("Testing Settings window...");
       var test_settings = new HXE.Settings(test_config);
       app = new Application();
+      // todo: do not require user input for Run to end
       _ = app.Run(test_settings);
       app.Shutdown();
       Logs("Settings Test: Succeeded");
