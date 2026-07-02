@@ -1,3 +1,9 @@
+## [2.3.0-develop.2](https://github.com/HaloSPV3/HXE/compare/v2.3.0-develop.1...v2.3.0-develop.2) (2026-07-02)
+
+### Bug Fixes
+
+* **deps-dev:** bump `@halospv3/hce.shared-config` to 3.9.3 ([8423ef2](https://github.com/HaloSPV3/HXE/commit/8423ef2f8389fc424dd0c44f86dbe699322ae43a))
+
 ## [2.3.0-develop.1](https://github.com/HaloSPV3/HXE/compare/v2.2.4...v2.3.0-develop.1) (2026-07-02)
 
 ### Features
