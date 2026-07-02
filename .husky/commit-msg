@@ -1,4 +1,4 @@
-[[ $(node --version) =~ ^v25 ]] && nvm use 2&> /dev/null ||
+[[ $(node --version) =~ ^v24 ]] || nvm use 2&> /dev/null ||
   [[ $(which nvm &> /dev/null ) ]] || 
   . /usr/share/nvm/init-nvm.sh &&
   [[ $(nvm use 2&> /dev/null) ]] || 
