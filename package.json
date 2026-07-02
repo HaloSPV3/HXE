@@ -46,5 +46,8 @@
     "@halospv3/hce.shared-config@3.5.2": {
       "unplugged": true
     }
+  },
+  "resolutions": {
+    "import-from-esm@npm:^2.0.0": "patch:import-from-esm@npm%3A2.0.0#~/.yarn/patches/import-from-esm-npm-2.0.0-8866147795.patch"
   }
 }
