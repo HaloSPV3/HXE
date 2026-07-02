@@ -24,7 +24,7 @@
     "@commitlint/config-conventional": "^21.1.0",
     "@commitlint/types": "^21.1.0",
     "@dotenvx/dotenvx": "^2.0.0",
-    "@halospv3/hce.shared-config": "^3.9.2",
+    "@halospv3/hce.shared-config": "^3.9.3",
     "@semantic-release/changelog": "^6.0.3",
     "@semantic-release/exec": "^7.1.0",
     "@semantic-release/git": "^10.0.1",
