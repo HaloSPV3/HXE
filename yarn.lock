@@ -293,6 +293,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@conventional-changelog/template@npm:^1.2.0":
+  version: 1.2.0
+  resolution: "@conventional-changelog/template@npm:1.2.0"
+  checksum: 10c0/c0e8a5fb4fc04770a9ba259cad782f96e512da4f9ff6bc9a634272700494b397759fde67a757684ef216056749ca42bcade00f149a8958039854d40806390e97
+  languageName: node
+  linkType: hard
+
 "@dotenvx/dotenvx@npm:^1.75.1":
   version: 1.75.1
   resolution: "@dotenvx/dotenvx@npm:1.75.1"
@@ -2164,6 +2171,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"conventional-changelog-conventionalcommits@npm:^10.2.0":
+  version: 10.2.0
+  resolution: "conventional-changelog-conventionalcommits@npm:10.2.0"
+  dependencies:
+    "@conventional-changelog/template": "npm:^1.2.0"
+  checksum: 10c0/8a1bf93c8336846c934b16e601c07d7a7321772c81fefb877e70c9e8ba2400f0f8029f28417b708f2608faad2abf513027353db3234428abf540a0f5b8a7db5d
+  languageName: node
+  linkType: hard
+
 "conventional-changelog-conventionalcommits@npm:^9.2.0, conventional-changelog-conventionalcommits@npm:^9.3.1":
   version: 9.3.1
   resolution: "conventional-changelog-conventionalcommits@npm:9.3.1"
@@ -3427,6 +3443,7 @@ __metadata:
     "@types/debug": "npm:^4.1.13"
     "@types/node": "npm:^24.13.2"
     commitlint: "npm:^21.1.0"
+    conventional-changelog-conventionalcommits: "npm:^10.2.0"
     eslint: "npm:^10.6.0"
     eslint-plugin-unicorn: "npm:^69.0.0"
     husky: "npm:^9.1.7"
