@@ -357,3 +357,5 @@ tsconfig.tsbuildinfo
 .eslintcache
 .dotnet
 .tsout
+
+.env*
