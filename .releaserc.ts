@@ -31,6 +31,13 @@ if (Error.isError(config)) {
   exit(1);
 }
 else {
+  config.branches ??= [];
+  if (typeof config.branches === 'string' || !('find' in config.branches))
+    config.branches = [config.branches];
+  const developmentBranch = config.branches.find(branch =>
+    typeof branch !== 'string' && branch.name === 'develop',
+  ) as Exclude<typeof config.branches[number], string>;
+  developmentBranch.prerelease = 'alpha';
   const sRCA = config.plugins?.find<PluginSpecSRCommitAnalyzer>(
     (p): p is PluginSpecSRCommitAnalyzer => p[0] === '@semantic-release/commit-analyzer',
   );
