@@ -18,6 +18,7 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
+using System;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -56,9 +57,28 @@ namespace HXE
 
     private static byte[] GetBytes(BinaryReader reader, int offset, int length)
     {
-      var bytes = new byte[length];
+#pragma warning disable CA2022 // Avoid inexact read with 'Stream.Read'
+      /**
+      var bytes = new byte[20]
+      var offset_a = 20; // out of bounds
+      var offset_b = 19; // in bounds
+      */
+      if (offset >= reader.BaseStream.Length)
+      {
+        throw new ArgumentOutOfRangeException(
+          nameof(offset),
+          $"Argument {nameof(offset)} is greater than the stream's length!"
+        );
+      }
+
+      // if end of range is out of bounds, clip it
+      ulong endOfStreamDistance = (ulong)(reader.BaseStream.Length - offset);
+      ulong shortestLength = ((uint)length) < endOfStreamDistance ? (uint)length : endOfStreamDistance;
+      
+      byte[] bytes = new byte[shortestLength];
       reader.BaseStream.Seek(offset, SeekOrigin.Begin);
-      reader.BaseStream.Read(bytes, 0, length);
+      reader.BaseStream.Read(bytes, 0, (int)shortestLength);
+#pragma warning restore CA2022 // Avoid inexact read with 'Stream.Read'
       return bytes;
     }
 

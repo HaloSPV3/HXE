@@ -1,88 +1,80 @@
 name: release
 
-# TODO
-# - Get AssemblyName, TargetFramework (TFM), RuntimeIdentifier (RID) from Directory.Build.props, *.csproj
-# - Overwrite `$env:RID and `$env:TFM with build props, allowing workflows to be driven by the project(s)
-# - support multiple ASSEMBLYNAME parameters for matrices
-
 on:
   push:
-    branches: [ main, develop ]
-    paths-ignore:
-    - ".github/**/*.*"
-    - "**/*.md"
-    - "**/*.txt"
+    branches: [main, develop]
+
+env:
+  DOTNET_ROLL_FORWARD: Major
+  DOTNET_CLI_TELEMETRY_OPTOUT: 1
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
+  DOTNET_NOLOGO: 1
+  # https://stackoverflow.com/questions/75180149/how-to-cache-dotnet-installation-in-github-actions
+  # access to "usr/lib/dotnet" is denied
+  DOTNET_INSTALL_DIR: /usr/share/dotnet
+  DOTNET_ROOT: /usr/share/dotnet
+  NUGET_PACKAGES: ${{ github.workspace }}/.nuget/packages
 
 jobs:
-  build:
-    name: Build
+  ci:
+    uses: ./.github/workflows/ci.yml
+    permissions:
+      contents: read
+  release:
+    name: Release
+    # required for proper WPF builds/publishes
     runs-on: windows-latest
-    env:
-      RID: "win-x86"
-      TFM: "net5.0-windows"
-      ASSEMBLYNAME: "HXE"
-      PROJPATH: "./src/HXE.csproj"
+    needs: ci
+    permissions:
+      contents: write # publish a GitHub Release
+      id-token: write # Trusted Publishing (tokenless NuGet pushes)
+      issues: write # comment on released issues
+      packages: write # push packages to "HaloSPV3" GitHub Nuget Package Registry
+      pull-requests: write # comment on released pull requests
+    timeout-minutes: 15
 
     steps:
-    ################
-    # SETUP
-    ################
-    - uses: actions/checkout@v6
-      with:
-        fetch-depth: 0 # Required by GitVersion
-        submodules: "recursive"
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0 # Required by GitVersion, Semantic Release
+          submodules: recursive
 
-    - name: Setup Node
-      uses: actions/setup-node@v6.4.0
-    - run: npm install
-    # Dependents: Semantic Release
+      - run: corepack enable
+      - name: Setup Node
+        uses: actions/setup-node@v6
+        with:
+          # cache: yarn
+          node-version-file: .nvmrc
 
-    # Authenticates packages to push to GPR
-    - uses: actions/setup-dotnet@v5.2.0
-      with:
-        dotnet-version: "6.0.x" # SDK Version to use.
-        include-prerelease: true
+      - run: corepack enable
 
-    - name: Add GitHub Package Repository
-      run: dotnet nuget add source https://nuget.pkg.github.com/HaloSPV3/index.json -n "github" -u USERNAME -p ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text
+      - run: yarn install --immutable #--immutable-cache
 
-    - name: Set NuGet.org Credentials
-      run: dotnet nuget update source "nuget.org" -u USERNAME -p ${{ secrets.NUGET_TOKEN }} --store-password-in-clear-text
+      - name: Setup Dotnet
+        uses: actions/setup-dotnet@v5
+        with:
+          cache: true
+          cache-dependency-path: |
+            src/packages.lock.json
+            src/packages-debug.lock.json
 
-    ################
-    # BUILD
-    ################
-    - name: dotnet-publish
-      run: dotnet publish $env:CSPROJ_RELPATH -c Release --no-self-contained -p:ContinuousIntegrationBuild=true
+      - name: NuGet login (OIDC → temp API key)
+        uses: NuGet/login@v1
+        id: nuget-login
+        with:
+          user: nToss
 
-    # required variables: TargetFramework, RuntimeIdentifier, GitVersion_FullSemVer
-    - name: Compress-PublishArtifacts
-      run: |
-        $publishPath = Resolve-Path ".\bin\Release\$env:TFM\$env:RID\publish";
-        $archiveName = "$env:ASSEMBLYNAME.$env:TFM-$env:RID.$env:GitVersion_FullSemVer.zip";
-        Set-Location $publishPath;
-        Compress-Archive -Path $publishPath -DestinationPath $archiveName -CompressionLevel Optimal;
+      - id: isPwshAvailable
+        run: pwsh -v
+        continue-on-error: true
+      - if: ${{ steps.isPwshAvailable.outcome != 'success' }}
+        name: Install PowerShell
+        uses: PSModule/install-powershell@159c2929fac34e3c7fc55d75e8997fb27fc7f75a # v1.2.0
 
-    ################
-    # RELEASE
-    ################
-
-    - name: Semantic Release
-      run: npx semantic-release
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        NPM_TOKEN: ${{ secrets.SEMANTIC_RELEASE_BOT_NPM_TOKEN }}
-
-    - name: Upload Artifact
-      uses: actions/upload-artifact@v7
-      with:
-        name: publish-artifacts
-        path: bin/Release/${{ env.TFM }}/${{ env.RID }}/publish
-
-    - name: Publish to GitHub Packages
-      working-directory: bin/Release
-      run: dotnet nuget push *.nupkg -s "github" -k ${{ secrets.GITHUB_TOKEN }}
-
-    - name: Publish to nuget.org
-      working-directory: bin/Release
-      run: dotnet nuget push *.nupkg -s "nuget.org" -k ${{ secrets.NUGET_TOKEN }}
+      - name: Semantic Release
+        id: semantic-release
+        run: yarn run release
+        env:
+          DEBUG: semantic-release*
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NUGET_TOKEN: ${{ steps.nuget-login.outputs.NUGET_API_KEY }}

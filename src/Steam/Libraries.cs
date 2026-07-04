@@ -117,7 +117,7 @@ namespace HXE.Steam
         {
             string text = libraryFoldersVdf.ReadAllText();
 
-            List<string> libs = text.Split("\n").ToList(); /// Start by adding each line to a list.
+            List<string> libs = text.Split('\n').ToList(); /// Start by adding each line to a list.
             libs = libs.Where(line => line.Contains("\"path\"")).ToList(); /// Filter the list for entries containing `"path"`.
 
             foreach (string line in libs)

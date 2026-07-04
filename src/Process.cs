@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Copyright (c) 2021 Emilian Roman
  *
  * This software is provided 'as-is', without any express or implied
@@ -25,8 +25,9 @@ using static System.Environment;
 
 namespace HXE
 {
-    public class Process
+    public static class Process
     {
+        private const string ExceptionHeader = " -- Process Inference failed";
         public enum Type
         {
             Unknown,
@@ -38,105 +39,179 @@ namespace HXE
         }
 
         public static IEnumerable<Candidate> Candidates { get; } = new List<Candidate>
-    {
-      new Candidate { Type = Type.Retail,   Name = "halo"                        },
-      new Candidate { Type = Type.HCE,      Name = "haloce"                      },
-      new Candidate { Type = Type.Steam,    Name = "MCC-Win64-Shipping"          },
-      new Candidate { Type = Type.StoreOld, Name = "MCC-Win64-Shipping-WinStore" },
-      new Candidate { Type = Type.Store,    Name = "MCCWinStore-Win64-Shipping"  }
-    };
+        {
+          new Candidate { Type = Type.Retail,   Name = "halo"                        },
+          new Candidate { Type = Type.HCE,      Name = "haloce"                      },
+          new Candidate { Type = Type.Steam,    Name = "MCC-Win64-Shipping"          },
+          new Candidate { Type = Type.StoreOld, Name = "MCC-Win64-Shipping-WinStore" },
+          new Candidate { Type = Type.Store,    Name = "MCCWinStore-Win64-Shipping"  }
+        };
+
+        public static Result LastResult { get; internal set; }
 
         /// <summary>
-        /// Infers the running Halo executable, with support for HCE, HCE and MCC (Steam & Windows Store).
+        ///     An informative alternative to Infer() <br/>
+        ///     Infers the running Halo executable, with support for Halo Retail, Halo Custom Edition, and MCC (Steam & Windows Store)
+        /// </summary>
+        /// <returns><code cref="LastResult"/>, a static instance of <code cref="Result"/> that was updated by Infer() and its called method(s)</returns>
+        public static Result InferResult()
+        {
+            _ = Infer();
+            return LastResult;
+        }
+
+        /// <summary>
+        ///     Infers the running Halo executable, with support for Halo Retail, Halo Custom Edition, and MCC (Steam & Windows Store).
         /// </summary>
         /// <returns>Type of Platform</returns>
         public static Type Infer()
         {
-            var processCandidate = new Candidate();
+            Candidate processCandidate = null;
+            List<System.Diagnostics.Process> processList = GetProcesses().ToList();
             try
             {
-                processCandidate = Candidates
-                  .FirstOrDefault(x => DeeperCheck(GetProcesses()
-                    .FirstOrDefault(Processname => Processname.ProcessName == x.Name), x.Name));
+                processCandidate = Candidates.First(x => DeeperCheck(x, processList));
             }
             catch (System.Exception e)
             {
-                var msg = $" -- Process Inference failed{NewLine}Error:  { e }{NewLine}";
-                var log = (File) Paths.Exception;
-                log.AppendAllText(msg);
-                Console.Info(msg);
-                throw;
+                ErrorOutput(e, "");
+                LastResult.Success = false;
+                LastResult.Type = Type.Unknown;
+                LastResult.Message = "An unhandled exception occurred" + NewLine + e.ToString();
             }
 
-            return processCandidate?.Type ?? Type.Unknown;
+            if (processCandidate?.Type == null)
+            {
+                LastResult.Success = false;
+                LastResult.Type = Type.Unknown;
+                LastResult.Message =
+                    "No running processes matched the following criteria:" + NewLine +
+                    "halo.exe v1.0.10.621" + NewLine +
+                    "haloce.exe v1.0.10.621" + NewLine +
+                    "MCC-Win64-Shipping.exe with CEA DLC" + NewLine +
+                    "MCC-Win64-Shipping-WinStore.exe with CEA DLC" + NewLine +
+                    "MCCWinStore-Win64-Shipping.exe with CEA DLC";
+                return Type.Unknown;
+            }
+            else
+            {
+                /// LastResult has already been set by DeeperCheck()
+                return processCandidate.Type;
+            }
         }
 
-        private static bool DeeperCheck(System.Diagnostics.Process process, string candidateName)
+        private static bool DeeperCheck(Candidate candidate, List<System.Diagnostics.Process> processList)
         {
-            /** Check for NullReferenceException (no processes match current candidate) */
+            System.Diagnostics.Process process;
             try
             {
-                bool check = process.ProcessName == candidateName;
+                process = processList.First(p => p.ProcessName == candidate.Name);
             }
-            catch (System.NullReferenceException)
+            catch (System.InvalidOperationException)
             {
-                return false;
+                return false; /// No processes match current candidate
             }
 
+            /// Each case sets assigns Success, Type, and Message to LastResult.
+            /// If a valid process is found...
+            /// ...LastResult.Success is set to true (else, false)
+            /// ...LastResult.Type is set to the matching Type (else, unknown)
+            /// ...LastResult.Message is set to an informative string (else, still informative)
+            /// ...DeeperCheck returns a bool representing whether the current Candidate is a match
             switch (process.ProcessName)
             {
                 case "halo":
+                    LastResult.Success = InspectHPC();
+                    LastResult.Type = Type.Retail;
+                    return LastResult.Success;
                 case "haloce":
-                    {
-                        try
-                        {
-                            return process.MainModule.FileVersionInfo.FileVersion == "01.00.10.0621";
-                        }
-                        catch (System.Exception e)
-                        {
-                            ErrorOutput(e, "Failed to assess Halo/HaloCE process.");
-                            return false;
-                        }
-                    }
+                    LastResult.Success = InspectHPC();
+                    LastResult.Type = Type.HCE;
+                    return LastResult.Success;
 
                 case string a when a.Contains("MCC") && a.Contains("WinStore"): // redundant, but good practice
                 case "MCC-Win64-Shipping-WinStore":
                 case "MCCWinStore-Win64-Shipping":
+                    LastResult.Success = InspectMCC();
+                    LastResult.Type = Type.Store;
+                    return LastResult.Success;
                 case "MCC-Win64-Shipping":
-                    {
-                        try
-                        {
-                            return process.Modules
-                              .Cast<System.Diagnostics.ProcessModule>()
-                              .Any(module => module.ModuleName == Paths.MCC.H1dll);
-                        }
-                        catch (System.Exception e)
-                        {
-                            var msg2 = string.Empty;
-                            msg2 += Is64BitProcess ? "Current process is 64-bit." : "Current process is not 32-bit.";
-                            msg2 += NewLine;
-                            msg2 += Is64BitOperatingSystem ? "Operating system is 64-bit." : "Operating system is NOT 64-bit.";
-                            ErrorOutput(e, msg2);
-                            return false;
-                        }
-                    }
+                    LastResult.Success = InspectMCC();
+                    LastResult.Type = Type.Steam;
+                    return LastResult.Success;
 
                 default:
                     return false;
             }
-            void ErrorOutput(System.Exception e, string msg2)
+
+            bool InspectHPC()
             {
-                var msg = $" -- Process Inference failed{NewLine}{msg2}{NewLine}Error:  { e }{NewLine}";
-                var log = (File) Paths.Exception;
-                log.AppendAllText(msg);
-                Console.Error(msg); ;
+                try
+                {
+                    bool isValid = process.MainModule.FileVersionInfo.FileVersion == "01.00.10.0621";
+                    LastResult.Message = isValid ?
+                        "Valid Halo/HaloCE process found" :
+                        "Discovered a Halo/HaloCE process, but its version does not match 01.00.10.0621";
+                    return isValid;
+                }
+                catch (System.Exception e)
+                {
+                    const string msg = "Failed to assess Halo/HaloCE process";
+                    LastResult.Message = msg;
+                    ErrorOutput(e, msg);
+                    return false;
+                }
             }
+
+            bool InspectMCC()
+            {
+                try
+                {
+                    bool isValid = process.Modules
+                        .Cast<System.Diagnostics.ProcessModule>()
+                        .Any(module => module.ModuleName == Paths.MCC.H1dll);
+                    LastResult.Message = "Found MCC process with halo1.dll loaded";
+                    return isValid;
+                }
+                catch (System.ComponentModel.Win32Exception e)
+                {
+                    string msg = "MCC process found, but cannot inspect its modules because 32-bit processes cannot inspect 64-bit processes" + NewLine
+                        + (Is64BitProcess ? "Current process is 64-bit." : "Current process NOT 64-bit.") + NewLine
+                        + (Is64BitOperatingSystem ? "Operating system is 64-bit." : "Operating system is NOT 64-bit.");
+                    LastResult.Message = msg;
+                    ErrorOutput(e, msg);
+                    return false;
+                }
+                catch (System.Exception e)
+                {
+                    const string msg = "MCC process found, but failed to inspect loaded modules for halo1.dll for an unknown reason";
+                    LastResult.Message = msg;
+                    ErrorOutput(e, msg);
+                    return false;
+                }
+            }
+        }
+
+        private static void ErrorOutput(System.Exception e, string msg2)
+        {
+            string msg = ExceptionHeader + NewLine
+                + msg2 + NewLine
+                + "Error:  " + e.ToString();
+            ((File)Paths.Exception).AppendAllText(msg + NewLine);
+            Console.Error(msg);
         }
 
         public class Candidate
         {
             public Type Type { get; set; }
             public string Name { get; set; }
+        }
+
+        public class Result
+        {
+            public bool Success { get; set; }
+            public Type Type { get; set; }
+            public string Message { get; set; }
         }
     }
 }

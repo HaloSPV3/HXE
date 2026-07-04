@@ -42,7 +42,7 @@ namespace HXE.HCE
         public const string Trial = "Halo Trial";
         public const string HEK = "Halo HEK";
         public const string BogusPID = "00000-000-0000000-00000";
-        public const string BogusDPID = "a40000000300000030303030302d3030302d303030303030302d303030303000500000004d30302d30303030300000000000000046203249cdb922e66221b02cc3ee01000000000082610f5b913a8a030000000000000000000000000000000000000000000000003030303030000000000000000b0d0000ba6d6b82000800000000000000000000000000000000000000000000000000000000000000000000f9a404e6";
+        public const string BogusDPID = "a40000000300000030303030302d3030302d303030303030302d303030303000500000004d30302d30303030300000000000000046203249cdb922e66221b02cc3ee01000000000082610f5b913a8a030000000000000000000000000000000000000000000000003030303030000000000000000b0d0000ba6d6b82000800000000000000000000000000000000000000000000000000000000000000000000f9a404e6"; // DevSkim: ignore DS173237
         public static string PID = BogusPID;
         //public static byte[] ByteDPID = StringToByteArray(StringDPID);
         /** TODO:
@@ -125,15 +125,15 @@ namespace HXE.HCE
             }
 
             /** Open the subkey and read the PID entry */
-            bool keyIsValid;
+            bool keyIsValid = false;
             bool subkeyIsValid = false;
             try
             {
                 RegistryKey key = WinReg.LocalMachine.OpenSubKey(subkey);
-                keyIsValid = key != null;
 
-                if (keyIsValid)
-                    subkeyIsValid = !string.IsNullOrEmpty(key.GetValue("PID").ToString());
+                if (key != null){
+                    keyIsValid = true;
+                    subkeyIsValid = !string.IsNullOrEmpty(key.GetValue("PID").ToString());}
             }
             catch (Exception e)
             {
@@ -367,7 +367,7 @@ namespace HXE.HCE
                         break;
                 }
 
-                MSGames.CreateSubKey(gameSK);
+                MSGames?.CreateSubKey(gameSK);
             }
 
             switch (game)
@@ -415,8 +415,8 @@ namespace HXE.HCE
                 case Game.Trial:
                     {
                         key = WinReg.LocalMachine.OpenSubKey(Path.Combine(WoWCheck(), Trial));
-                        data.DigitalProductID = null;
-                        data.PID = null;
+                        data.DigitalProductID = [];
+                        data.PID = string.Empty;
                         data.Version = "1";
                         data.VersionType = "TrialVersion";
                         key.SetValue("CDPath", data.CDPath, RegistryValueKind.String);
@@ -434,8 +434,8 @@ namespace HXE.HCE
                 case Game.HEK:
                     {
                         key = WinReg.LocalMachine.OpenSubKey(Path.Combine(WoWCheck(), HEK));
-                        data.DigitalProductID = null;
-                        data.PID = null;
+                        data.DigitalProductID = [];
+                        data.PID = string.Empty;
                         data.VersionType = "TrialVersion";
                         key.SetValue("CDPath", data.CDPath, RegistryValueKind.String);
                         key.SetValue("DigitalProductID", data.DigitalProductID, RegistryValueKind.Binary);
@@ -538,12 +538,12 @@ namespace HXE.HCE
                         if (key != null) // read to Data
                         {
                             data.CDPath = key.GetValue("CDPath", data.CDPath).ToString();
-                            data.DigitalProductID = null;
+                            data.DigitalProductID = [];
                             data.EXE_Path = key.GetValue("EXE Path", data.EXE_Path).ToString();
                             data.LangID = Enc.Unicode.GetBytes(
                                                     key.GetValue("LangID", data.LangID).ToString())[0];
                             data.Launched = key.GetValue("Launched", data.Launched).ToString();
-                            data.PID = null;
+                            data.PID = string.Empty;
                             data.VersionType = "TrialVersion";
                         }
                         break;
@@ -586,7 +586,7 @@ namespace HXE.HCE
             public string PID = Registry.PID;
             public string Version = "";
             public string VersionType = "";
-            public string Zone = "http://www.zone.com/asp/script/default.asp?Game=Halo&password=Password";
+            public string Zone = "http://www.zone.com/asp/script/default.asp?Game=Halo&password=Password"; // DevSkim: ignore DS137138
 
             /// SubKey Examples
             /** Halo

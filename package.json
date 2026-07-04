@@ -1,11 +1,53 @@
 {
-  "name": "HXE",
+  "name": "hxe",
   "description": "Automate commit messages quality, automate changelog and release generation",
   "version": "1.0.0",
-  "devDependencies": {
-    "@halospv3/hce.shared": "github:HaloSPV3/HCE.Shared"
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": "^24.0.0"
+  },
+  "devEngines": {
+    "runtime": {
+      "onFail": "error",
+      "name": "node",
+      "version": "24.18.0"
+    }
   },
   "scripts": {
-    "prepare": "husky install"
+    "postinstall": "husky",
+    "lint": "eslint --cache",
+    "release": "semantic-release --debug",
+    "test": "dotnet test"
+  },
+  "devDependencies": {
+    "@commitlint/config-conventional": "^21.1.0",
+    "@commitlint/types": "^21.1.0",
+    "@dotenvx/dotenvx": "^2.0.0",
+    "@halospv3/hce.shared-config": "^3.9.3",
+    "@semantic-release/changelog": "^6.0.3",
+    "@semantic-release/exec": "^7.1.0",
+    "@semantic-release/git": "^10.0.1",
+    "@tsconfig/node24": "^24.0.4",
+    "@types/debug": "^4.1.13",
+    "@types/node": "^24.13.2",
+    "commitlint": "^21.1.0",
+    "conventional-changelog-conventionalcommits": "^9.3.1",
+    "eslint": "^10.6.0",
+    "eslint-plugin-unicorn": "^69.0.0",
+    "husky": "^9.1.7",
+    "jiti": "^2.7.0",
+    "semantic-release": "^25.0.5",
+    "semantic-release-export-data": "^1.2.0",
+    "typescript": "^6.0.3"
+  },
+  "packageManager": "yarn@4.17.0+sha512.c2957de2f9025ab14d63b24d0d8be1f1655810e22c341042c27f7ecd017b180ec12db73d69ac366d71b304ef9f069349ce462de96f04f8f1da317f4f762c95ae",
+  "dependenciesMeta": {
+    "@halospv3/hce.shared-config@3.5.2": {
+      "unplugged": true
+    }
+  },
+  "resolutions": {
+    "import-from-esm@npm:^2.0.0": "patch:import-from-esm@npm%3A2.0.0#~/.yarn/patches/import-from-esm-npm-2.0.0-8866147795.patch"
   }
 }

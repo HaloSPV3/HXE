@@ -2,7 +2,7 @@
 extensions: .cs .cpp .h
 /**
  * Copyright (c) 2019 Emilian Roman
- * Copyright (c) 2021 Noah Sherwin
+ * Copyright (c) 2023 Noah Sherwin
  *
  * This software is provided 'as-is', without any express or implied
  * warranty. In no event will the authors be held liable for any damages
@@ -23,7 +23,7 @@ extensions: .cs .cpp .h
 extensions: .aspx .ascx
 <%--
 Copyright (c) 2019 Emilian Roman
-Copyright (c) 2021 Noah Sherwin
+Copyright (c) 2023 Noah Sherwin
 
 This software is provided 'as-is', without any express or implied
 warranty. In no event will the authors be held liable for any damages
@@ -46,7 +46,7 @@ extensions: .vb
 extensions:  .xml .config .xsd
 <!--
 Copyright (c) 2019 Emilian Roman
-Copyright (c) 2021 Noah Sherwin
+Copyright (c) 2023 Noah Sherwin
 
 This software is provided 'as-is', without any express or implied
 warranty. In no event will the authors be held liable for any damages
