@@ -15,6 +15,7 @@
     }
   },
   "scripts": {
+    "build": "dotnet build -c:Debug && dotnet build -c:Release",
     "postinstall": "husky",
     "lint": "eslint --cache",
     "release": "semantic-release --debug",
