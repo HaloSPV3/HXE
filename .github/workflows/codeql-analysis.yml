@@ -27,6 +27,34 @@ jobs:
         submodules: 'recursive'
         fetch-depth: 0
 
+    - id: isDepUpBranch
+      name: Is the current branch a dep-upgrade branch?
+      shell: bash
+      run: |
+        BRANCH_NAME="$(git branch --show-current)"
+        echo "BRANCH_NAME is '$BRANCH_NAME'"
+        [[ "$BRANCH_NAME" =~ ^(renovate|dependabot)/.+$ ]] &&
+          echo $'V=true\nIMMUTABLE_CACHE=--immutable-cache' > $GITHUB_OUTPUT ||
+          echo 'This branch is not a dep-upgrade branch.'
+
+    - run: corepack enable
+    - name: Setup Node
+      uses: actions/setup-node@v6
+      with:
+        # cache: yarn
+        node-version-file: .nvmrc
+
+    - run: corepack enable
+
+    - run: yarn install --immutable # ${{ steps.isDepUpBranch.outputs.IMMUTABLE_CACHE}}
+
+    - uses: actions/setup-dotnet@v5
+      with:
+        cache: true
+        cache-dependency-path: |
+          src/packages.lock.json
+          src/packages-debug.lock.json
+
     - name: Setup DotNet
       uses: actions/setup-dotnet@v5
 
