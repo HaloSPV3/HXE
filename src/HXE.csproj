@@ -63,7 +63,7 @@
   <PropertyGroup Condition="'$(PublishSingleFile)' == 'true'">
     <SelfContained>true</SelfContained>
     <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
-    <EnableCompressionInSingleFile Condition="$(TargetFramework.Contains('net6'))">true</EnableCompressionInSingleFile>
+    <EnableCompressionInSingleFile>$(TFM_NET6_OR_LATER)</EnableCompressionInSingleFile>
   </PropertyGroup>
 
   <PropertyGroup Label="Nuget Properties">
