@@ -49,6 +49,6 @@ updates:
       prefix: fix
       prefix-development: build
     groups:
-      'SPV3.Loader':
+      'HXE':
         patterns:
           - '*'
