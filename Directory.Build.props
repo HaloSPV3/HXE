@@ -13,8 +13,8 @@
   </PropertyGroup>
 
   <PropertyGroup Label="Yarn-unplugged HCE.Shared" Condition="!Exists($(HCESharedDir))">
-    <_yarnUnplugged>$(RepoRoot).yarn/unplugged/</_yarnUnplugged>
-    <_yarnUnpluggedChildren>$([System.IO.Directory]::GetDirectories($(RepoRoot).yarn/unplugged/))</_yarnUnpluggedChildren>
+    <_yarnUnplugged>$([System.IO.Path]::Join("$(RepoRoot)", '.yarn/unplugged/'))</_yarnUnplugged>
+    <_yarnUnpluggedChildren>$([System.IO.Directory]::GetDirectories($(_yarnUnplugged)))</_yarnUnpluggedChildren>
     <_yarnUnpluggedHceSharedMatches>$([System.Text.RegularExpressions.Regex]::Matches(
         $(_yarnUnpluggedChildren),'@halospv3-hce.shared-config-[^;]+')
       )</_yarnUnpluggedHceSharedMatches>
