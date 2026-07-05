@@ -1,6 +1,13 @@
-[[ $(node --version) =~ ^v24 ]] || nvm use 2&> /dev/null ||
-  [[ $(which nvm &> /dev/null ) ]] || 
-  . /usr/share/nvm/init-nvm.sh &&
-  [[ $(nvm use 2&> /dev/null) ]] || 
-  nvm install && nvm use
+#!/usr/bin/bash
+
+nv=$(cat "$(dirname "${BASH_SOURCE[0]}")/../.nvmrc" | sed s/^v//g)
+if [[ "$(node --version)" != "$nv" ]]; then
+	if [[ ! $(which nvm &>/dev/null) ]]; then
+		. /usr/share/nvm/init-nvm.sh
+	fi
+
+	nvm use &>/dev/null ||
+		(nvm install && nvm use)
+fi
+
 yarn commitlint --edit $1
