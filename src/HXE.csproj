@@ -67,25 +67,25 @@
   </PropertyGroup>
 
   <PropertyGroup Label="Nuget Properties">
+    <_changelogPath>$([System.IO.Path]::GetFullPath($(MSBuildProjectDirectory)/../CHANGELOG.md))</_changelogPath>
     <Authors>HaloSPV3</Authors>
+    <Copyright>Copyright © 2026 Noah Sherwin</Copyright>
     <Description>A HCE wrapper and SPV3 loader</Description>
-    <Copyright>Copyright © 2023 Noah Sherwin</Copyright>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <IncludeSource>true</IncludeSource>
+    <IncludeSymbols>true</IncludeSymbols>
+    <PackageIcon>icon.png</PackageIcon>
+    <PackageIconUrl>https://github.com/HaloSPV3/HXE/blob/main/src/Assets/icon.png</PackageIconUrl>
     <PackageLicenseExpression>Zlib</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/HaloSPV3/HXE</PackageProjectUrl>
-    <PackageIconUrl>https://github.com/HaloSPV3/HXE/blob/main/src/Assets/icon.png</PackageIconUrl>
-    <PackageIcon>icon.png</PackageIcon>
-    <PackageTags>Halo</PackageTags>
     <PackageReadmeFile>readme.md</PackageReadmeFile>
-    <_changelogPath>$([System.IO.Path]::GetFullPath($(MSBuildProjectDirectory)/../CHANGELOG.md))</_changelogPath>
     <PackageReleaseNotes Condition="Exists($(_changelogPath))">$([System.IO.File]::ReadAllText($(_changelogPath)))</PackageReleaseNotes>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <RepositoryUrl>https://github.com/HaloSPV3/HXE</RepositoryUrl>
-    <RepositoryType>git</RepositoryType>
-    <IncludeSymbols>true</IncludeSymbols>
-    <IncludeSource>true</IncludeSource>
-    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <PackageTags>Halo</PackageTags>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/HaloSPV3/HXE</RepositoryUrl>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
 
   <ItemGroup>
