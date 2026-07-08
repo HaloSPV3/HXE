@@ -12,6 +12,7 @@
     <ApplicationIcon>Assets/icon.ico</ApplicationIcon>
     <!-- Build | General -->
     <Deterministic>true</Deterministic>
+    <FileAlignment>512</FileAlignment>
     <Nullable>enable</Nullable>
     <!-- Build | Events -->
     <!-- Ensures GitVersion, SourceLink tasks only run after successful builds -->
