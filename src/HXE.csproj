@@ -143,17 +143,33 @@
     <PackageReference Include="XmlSourceGenerator" Version="1.0.2-alpha" />
   </ItemGroup>
 
-  <ItemGroup Label="Additional References (NET4)" Condition="$(TargetFramework.StartsWith('net4'))">
-    <PackageReference Include="System.Net.Http" Version="4.3.4" />
-    <PackageReference Include="Microsoft.Windows.CsWin32" Version="0.3.298">
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
-    <PackageReference Include="System.Memory" Version="4.6.3" />
-    <PackageReference Include="System.Text.Json" Version="4.6.0" />
+  <Choose>
+    <When Condition="$(TargetFramework.StartsWith('net4'))">
+      <PropertyGroup Label="Additional Properties (NET4)">
+        <!-- Disabling these two properties prevents the output of (App).exe.config. Yippee! -->
+        <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
+        <GenerateSupportedRuntime>false</GenerateSupportedRuntime>
+        <WeaverConfiguration>
+          <Weavers>
+            <Costura />
+          </Weavers>
+        </WeaverConfiguration>
+      </PropertyGroup>
+      <ItemGroup Label="Additional References (NET4)">
+        <PackageReference Include="Costura.Fody" Version="6.2.0"
+          PrivateAssets="all" />
+        <PackageReference Include="Microsoft.Windows.CsWin32" Version="0.3.298">
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+          <PrivateAssets>all</PrivateAssets>
+        </PackageReference>
+        <PackageReference Include="System.Memory" Version="4.6.3" />
+        <PackageReference Include="System.Text.Json" Version="4.6.0" />
+        <Reference Include="System.Net.Http" Version="4.0.0.0" Culture="neutral" PublicKeyToken="b03f5f7f11d50a3a" />
+        <Reference Include="System.IO.Compression" Version="4.0.0.0" Culture="neutral" PublicKeyToken="b77a5c561934e089" />
+      </ItemGroup>
 
-    <Reference Include="System.IO.Compression" Version="4.0.0.0" Culture="neutral" PublicKeyToken="b77a5c561934e089" />
-  </ItemGroup>
+    </When>
+  </Choose>
 
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
     <Exec Command="pwsh $(MSBuildProjectDirectory)/.msb.prebuild.ps1" />

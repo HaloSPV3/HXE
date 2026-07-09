@@ -2,6 +2,15 @@
   "version": 1,
   "dependencies": {
     ".NETFramework,Version=v4.6.2": {
+      "Costura.Fody": {
+        "type": "Direct",
+        "requested": "[6.2.0, )",
+        "resolved": "6.2.0",
+        "contentHash": "jaX+A6sw6pI7lkLDTvxN7zU8Ja/a50N2xPKF6RYy0J6QF62wVg+hJMXJph2K8XarDaAlxQ82EaKv3fAvUNyRpg==",
+        "dependencies": {
+          "Fody": "6.9.3"
+        }
+      },
       "GitVersion.MsBuild": {
         "type": "Direct",
         "requested": "[6.8.1, )",
@@ -45,15 +54,6 @@
           "System.Runtime.CompilerServices.Unsafe": "6.1.2"
         }
       },
-      "System.Net.Http": {
-        "type": "Direct",
-        "requested": "[4.3.4, )",
-        "resolved": "4.3.4",
-        "contentHash": "aOa2d51SEbmM+H+Csw7yJOuNZoHkrP2XnAurye5HWYgGVVU54YZDvsLUYRv6h18X3sPnjNCANmN7ZhIPiqMcjA==",
-        "dependencies": {
-          "System.Security.Cryptography.X509Certificates": "4.3.0"
-        }
-      },
       "System.Text.Json": {
         "type": "Direct",
         "requested": "[4.6.0, )",
@@ -75,6 +75,11 @@
         "requested": "[1.0.2-alpha, )",
         "resolved": "1.0.2-alpha",
         "contentHash": "66rw74gtxwAsQEWoBq5xyT/g90zqNUCp4ubbHnGSpGQPm51FgUdC71WBvadb1dBJ/2YYX4pDKBnI7OQPIVSJIQ=="
+      },
+      "Fody": {
+        "type": "Transitive",
+        "resolved": "6.9.3",
+        "contentHash": "1CUGgFdyECDKgi5HaUBhdv6k+VG9Iy4OCforGfHyar3xQXAJypZkzymgKtWj/4SPd6nSG0Qi7NH71qHrDSZLaA=="
       },
       "Microsoft.Bcl.AsyncInterfaces": {
         "type": "Transitive",
@@ -122,33 +127,6 @@
         "resolved": "6.1.2",
         "contentHash": "2hBr6zdbIBTDE3EhK7NSVNdX58uTK6iHW/P/Axmm9sl1xoGSLqDvMtpecn226TNwHByFokYwJmt/aQQNlO5CRw=="
       },
-      "System.Security.Cryptography.Algorithms": {
-        "type": "Transitive",
-        "resolved": "4.3.0",
-        "contentHash": "W1kd2Y8mYSCgc3ULTAZ0hOP2dSdG5YauTb1089T0/kRcN2MpSAW1izOFROrJgxSlMn3ArsgHXagigyi+ibhevg==",
-        "dependencies": {
-          "System.Security.Cryptography.Primitives": "4.3.0"
-        }
-      },
-      "System.Security.Cryptography.Encoding": {
-        "type": "Transitive",
-        "resolved": "4.3.0",
-        "contentHash": "1DEWjZZly9ae9C79vFwqaO5kaOlI5q+3/55ohmq/7dpDyDfc8lYe7YVxJUZ5MF/NtbkRjwFRo14yM4OEo9EmDw=="
-      },
-      "System.Security.Cryptography.Primitives": {
-        "type": "Transitive",
-        "resolved": "4.3.0",
-        "contentHash": "7bDIyVFNL/xKeFHjhobUAQqSpJq9YTOpbEs6mR233Et01STBMXNAc/V+BM6dwYGc95gVh/Zf+iVXWzj3mE8DWg=="
-      },
-      "System.Security.Cryptography.X509Certificates": {
-        "type": "Transitive",
-        "resolved": "4.3.0",
-        "contentHash": "t2Tmu6Y2NtJ2um0RtcuhP7ZdNNxXEgUm2JeoA/0NvlMjAhKCnM1NX07TDl3244mVp3QU6LPEhT3HTtH1uF7IYw==",
-        "dependencies": {
-          "System.Security.Cryptography.Algorithms": "4.3.0",
-          "System.Security.Cryptography.Encoding": "4.3.0"
-        }
-      },
       "System.Text.Encodings.Web": {
         "type": "Transitive",
         "resolved": "4.6.0",
@@ -171,40 +149,17 @@
         "contentHash": "okurQJO6NRE/apDIP23ajJ0hpiNmJ+f0BwOlB/cSqTLQlw5upkf+5+96+iG2Jw40G1fCVCyPz/FhIABUjMR+RQ=="
       }
     },
-    ".NETFramework,Version=v4.6.2/win7-x86": {
-      "System.Net.Http": {
-        "type": "Direct",
-        "requested": "[4.3.4, )",
-        "resolved": "4.3.4",
-        "contentHash": "aOa2d51SEbmM+H+Csw7yJOuNZoHkrP2XnAurye5HWYgGVVU54YZDvsLUYRv6h18X3sPnjNCANmN7ZhIPiqMcjA==",
-        "dependencies": {
-          "System.Security.Cryptography.X509Certificates": "4.3.0"
-        }
-      },
-      "System.Security.Cryptography.Algorithms": {
-        "type": "Transitive",
-        "resolved": "4.3.0",
-        "contentHash": "W1kd2Y8mYSCgc3ULTAZ0hOP2dSdG5YauTb1089T0/kRcN2MpSAW1izOFROrJgxSlMn3ArsgHXagigyi+ibhevg==",
-        "dependencies": {
-          "System.Security.Cryptography.Primitives": "4.3.0"
-        }
-      },
-      "System.Security.Cryptography.Encoding": {
-        "type": "Transitive",
-        "resolved": "4.3.0",
-        "contentHash": "1DEWjZZly9ae9C79vFwqaO5kaOlI5q+3/55ohmq/7dpDyDfc8lYe7YVxJUZ5MF/NtbkRjwFRo14yM4OEo9EmDw=="
-      },
-      "System.Security.Cryptography.X509Certificates": {
-        "type": "Transitive",
-        "resolved": "4.3.0",
-        "contentHash": "t2Tmu6Y2NtJ2um0RtcuhP7ZdNNxXEgUm2JeoA/0NvlMjAhKCnM1NX07TDl3244mVp3QU6LPEhT3HTtH1uF7IYw==",
-        "dependencies": {
-          "System.Security.Cryptography.Algorithms": "4.3.0",
-          "System.Security.Cryptography.Encoding": "4.3.0"
-        }
-      }
-    },
+    ".NETFramework,Version=v4.6.2/win7-x86": {},
     ".NETFramework,Version=v4.8": {
+      "Costura.Fody": {
+        "type": "Direct",
+        "requested": "[6.2.0, )",
+        "resolved": "6.2.0",
+        "contentHash": "jaX+A6sw6pI7lkLDTvxN7zU8Ja/a50N2xPKF6RYy0J6QF62wVg+hJMXJph2K8XarDaAlxQ82EaKv3fAvUNyRpg==",
+        "dependencies": {
+          "Fody": "6.9.3"
+        }
+      },
       "GitVersion.MsBuild": {
         "type": "Direct",
         "requested": "[6.8.1, )",
@@ -248,15 +203,6 @@
           "System.Runtime.CompilerServices.Unsafe": "6.1.2"
         }
       },
-      "System.Net.Http": {
-        "type": "Direct",
-        "requested": "[4.3.4, )",
-        "resolved": "4.3.4",
-        "contentHash": "aOa2d51SEbmM+H+Csw7yJOuNZoHkrP2XnAurye5HWYgGVVU54YZDvsLUYRv6h18X3sPnjNCANmN7ZhIPiqMcjA==",
-        "dependencies": {
-          "System.Security.Cryptography.X509Certificates": "4.3.0"
-        }
-      },
       "System.Text.Json": {
         "type": "Direct",
         "requested": "[4.6.0, )",
@@ -278,6 +224,11 @@
         "requested": "[1.0.2-alpha, )",
         "resolved": "1.0.2-alpha",
         "contentHash": "66rw74gtxwAsQEWoBq5xyT/g90zqNUCp4ubbHnGSpGQPm51FgUdC71WBvadb1dBJ/2YYX4pDKBnI7OQPIVSJIQ=="
+      },
+      "Fody": {
+        "type": "Transitive",
+        "resolved": "6.9.3",
+        "contentHash": "1CUGgFdyECDKgi5HaUBhdv6k+VG9Iy4OCforGfHyar3xQXAJypZkzymgKtWj/4SPd6nSG0Qi7NH71qHrDSZLaA=="
       },
       "Microsoft.Bcl.AsyncInterfaces": {
         "type": "Transitive",
@@ -315,55 +266,15 @@
         "resolved": "4.6.1",
         "contentHash": "N8GXpmiLMtljq7gwvyS+1QvKT/W2J8sNAvx+HVg4NGmsG/H+2k/y9QI23auLJRterrzCiDH+IWAw4V/GPwsMlw=="
       },
-      "System.IO": {
-        "type": "Transitive",
-        "resolved": "4.3.0",
-        "contentHash": "3qjaHvxQPDpSOYICjUoTsmoq5u6QJAFRUITgeT/4gqkF1bajbSmb1kwSxEA8AHlofqgcKJcM8udgieRNhaJ5Cg=="
-      },
       "System.Numerics.Vectors": {
         "type": "Transitive",
         "resolved": "4.6.1",
         "contentHash": "sQxefTnhagrhoq2ReR0D/6K0zJcr9Hrd6kikeXsA1I8kOCboTavcUC4r7TSfpKFeE163uMuxZcyfO1mGO3EN8Q=="
       },
-      "System.Runtime": {
-        "type": "Transitive",
-        "resolved": "4.3.0",
-        "contentHash": "JufQi0vPQ0xGnAczR13AUFglDyVYt4Kqnz1AZaiKZ5+GICq0/1MH/mO/eAJHt/mHW1zjKBJd7kV26SrxddAhiw=="
-      },
       "System.Runtime.CompilerServices.Unsafe": {
         "type": "Transitive",
         "resolved": "6.1.2",
         "contentHash": "2hBr6zdbIBTDE3EhK7NSVNdX58uTK6iHW/P/Axmm9sl1xoGSLqDvMtpecn226TNwHByFokYwJmt/aQQNlO5CRw=="
-      },
-      "System.Security.Cryptography.Algorithms": {
-        "type": "Transitive",
-        "resolved": "4.3.0",
-        "contentHash": "W1kd2Y8mYSCgc3ULTAZ0hOP2dSdG5YauTb1089T0/kRcN2MpSAW1izOFROrJgxSlMn3ArsgHXagigyi+ibhevg==",
-        "dependencies": {
-          "System.IO": "4.3.0",
-          "System.Runtime": "4.3.0",
-          "System.Security.Cryptography.Encoding": "4.3.0",
-          "System.Security.Cryptography.Primitives": "4.3.0"
-        }
-      },
-      "System.Security.Cryptography.Encoding": {
-        "type": "Transitive",
-        "resolved": "4.3.0",
-        "contentHash": "1DEWjZZly9ae9C79vFwqaO5kaOlI5q+3/55ohmq/7dpDyDfc8lYe7YVxJUZ5MF/NtbkRjwFRo14yM4OEo9EmDw=="
-      },
-      "System.Security.Cryptography.Primitives": {
-        "type": "Transitive",
-        "resolved": "4.3.0",
-        "contentHash": "7bDIyVFNL/xKeFHjhobUAQqSpJq9YTOpbEs6mR233Et01STBMXNAc/V+BM6dwYGc95gVh/Zf+iVXWzj3mE8DWg=="
-      },
-      "System.Security.Cryptography.X509Certificates": {
-        "type": "Transitive",
-        "resolved": "4.3.0",
-        "contentHash": "t2Tmu6Y2NtJ2um0RtcuhP7ZdNNxXEgUm2JeoA/0NvlMjAhKCnM1NX07TDl3244mVp3QU6LPEhT3HTtH1uF7IYw==",
-        "dependencies": {
-          "System.Security.Cryptography.Algorithms": "4.3.0",
-          "System.Security.Cryptography.Encoding": "4.3.0"
-        }
       },
       "System.Text.Encodings.Web": {
         "type": "Transitive",
@@ -387,42 +298,7 @@
         "contentHash": "okurQJO6NRE/apDIP23ajJ0hpiNmJ+f0BwOlB/cSqTLQlw5upkf+5+96+iG2Jw40G1fCVCyPz/FhIABUjMR+RQ=="
       }
     },
-    ".NETFramework,Version=v4.8/win7-x86": {
-      "System.Net.Http": {
-        "type": "Direct",
-        "requested": "[4.3.4, )",
-        "resolved": "4.3.4",
-        "contentHash": "aOa2d51SEbmM+H+Csw7yJOuNZoHkrP2XnAurye5HWYgGVVU54YZDvsLUYRv6h18X3sPnjNCANmN7ZhIPiqMcjA==",
-        "dependencies": {
-          "System.Security.Cryptography.X509Certificates": "4.3.0"
-        }
-      },
-      "System.Security.Cryptography.Algorithms": {
-        "type": "Transitive",
-        "resolved": "4.3.0",
-        "contentHash": "W1kd2Y8mYSCgc3ULTAZ0hOP2dSdG5YauTb1089T0/kRcN2MpSAW1izOFROrJgxSlMn3ArsgHXagigyi+ibhevg==",
-        "dependencies": {
-          "System.IO": "4.3.0",
-          "System.Runtime": "4.3.0",
-          "System.Security.Cryptography.Encoding": "4.3.0",
-          "System.Security.Cryptography.Primitives": "4.3.0"
-        }
-      },
-      "System.Security.Cryptography.Encoding": {
-        "type": "Transitive",
-        "resolved": "4.3.0",
-        "contentHash": "1DEWjZZly9ae9C79vFwqaO5kaOlI5q+3/55ohmq/7dpDyDfc8lYe7YVxJUZ5MF/NtbkRjwFRo14yM4OEo9EmDw=="
-      },
-      "System.Security.Cryptography.X509Certificates": {
-        "type": "Transitive",
-        "resolved": "4.3.0",
-        "contentHash": "t2Tmu6Y2NtJ2um0RtcuhP7ZdNNxXEgUm2JeoA/0NvlMjAhKCnM1NX07TDl3244mVp3QU6LPEhT3HTtH1uF7IYw==",
-        "dependencies": {
-          "System.Security.Cryptography.Algorithms": "4.3.0",
-          "System.Security.Cryptography.Encoding": "4.3.0"
-        }
-      }
-    },
+    ".NETFramework,Version=v4.8/win7-x86": {},
     "net6.0-windows7.0": {
       "GitVersion.MsBuild": {
         "type": "Direct",
