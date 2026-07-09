@@ -50,6 +50,12 @@ jobs:
 
       - run: yarn install --immutable #--immutable-cache
 
+      - run: |
+          node --version
+          cat .nvmrc
+          source .husky/commit-msg
+        shell: bash
+
       - name: Setup Dotnet
         uses: actions/setup-dotnet@v5
         with:
@@ -70,8 +76,6 @@ jobs:
       - if: ${{ steps.isPwshAvailable.outcome != 'success' }}
         name: Install PowerShell
         uses: PSModule/install-powershell@159c2929fac34e3c7fc55d75e8997fb27fc7f75a # v1.2.0
-
-      - run: node --version
 
       - name: Semantic Release
         id: semantic-release
