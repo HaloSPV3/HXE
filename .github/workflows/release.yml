@@ -50,12 +50,6 @@ jobs:
 
       - run: yarn install --immutable #--immutable-cache
 
-      - run: |
-          node --version
-          cat .nvmrc
-          source .husky/commit-msg
-        shell: bash
-
       - name: Setup Dotnet
         uses: actions/setup-dotnet@v5
         with:
