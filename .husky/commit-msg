@@ -14,7 +14,7 @@ fi
 
 nv=$(cat "$nvmrcPath" | grep -oP 'v[0-9]+.+')
 actualNv=$(node --version)
-if [[ "$actualNv" != "v$nv" ]]; then
+if [[ "$actualNv" != "$nv" ]]; then
 	if [[ ! $(which nvm &>/dev/null) ]]; then
 		if [[ -f '/usr/share/nvm/init-nvm.sh' ]]; then
 			source /usr/share/nvm/init-nvm.sh
