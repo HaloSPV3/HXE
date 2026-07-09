@@ -1,9 +1,9 @@
 #!/usr/bin/bash
 
-nv=$(cat "$(dirname "${BASH_SOURCE[0]}")/../.nvmrc" | sed s/^v//g)
-if [[ "$(node --version)" != "$nv" ]]; then
+nv=$(cat "$(dirname "${BASH_SOURCE[0]}")/../.nvmrc" | grep -oP 'v[0-9]+.+')
+if [[ "$(node --version)" != "v$nv" ]]; then
 	if [[ ! $(which nvm &>/dev/null) ]]; then
-		. /usr/share/nvm/init-nvm.sh
+		. /usr/share/nvm/init-nvm.sh || (echo 'You need NVM (Unix) or NVM-Windows 1.x to work with this project.') 
 	fi
 
 	nvm use &>/dev/null ||
