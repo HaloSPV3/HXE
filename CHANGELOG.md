@@ -1,3 +1,15 @@
+## [2.3.1](https://github.com/HaloSPV3/HXE/compare/v2.3.0...v2.3.1) (2026-07-09)
+
+### Bug Fixes
+
+* **deps:** add `Costura.Fody` to embed dependencies in .NET Framework 4 binaries; change System.Net.Http to Reference; disable (App).exe.config generation ([7d934ed](https://github.com/HaloSPV3/HXE/commit/7d934ed292bb055efcf6f38cc310501830cc8724))
+* **deps:** remove explicit dependency on `Microsoft.SourceLink.GitHub` ([2657928](https://github.com/HaloSPV3/HXE/commit/26579288897043a8237753e1d9a2f319cef3d344))
+* **MCC:** update 343 Industries code-signing certificate (for halo1.dll recognition) ([9eee2e6](https://github.com/HaloSPV3/HXE/commit/9eee2e6dea5d8eda031c0473929721d2fb11f16c))
+
+### Reverts
+
+* ci: compare Node versions after yarn-install ([6c2f251](https://github.com/HaloSPV3/HXE/commit/6c2f251a12970100a406799647de9430f8904102))
+
 ## [2.3.0](https://github.com/HaloSPV3/HXE/compare/v2.2.4...v2.3.0) (2026-07-04)
 
 ### Features
