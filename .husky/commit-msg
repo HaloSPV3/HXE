@@ -1,9 +1,26 @@
 #!/usr/bin/bash
 
-nv=$(cat "$(dirname "${BASH_SOURCE[0]}")/../.nvmrc" | grep -oP 'v[0-9]+.+')
-if [[ "$(node --version)" != "v$nv" ]]; then
+nvmrcPath=""
+
+if [[ -f "$(dirname "${BASH_SOURCE[0]}")/../.nvmrc)" ]]; then
+	nvmrcPath="$(dirname "${BASH_SOURCE[0]}")/../.nvmrc)"
+elif [[ -f ".nvmrc" ]]; then
+	nvmrcPath=".nvmrc"
+fi
+
+if [[ "$nvmrcPath" == "" ]]; then
+	echo "unable to locate .nvmrc"
+fi
+
+nv=$(cat "$nvmrcPath" | grep -oP 'v[0-9]+.+')
+actualNv=$(node --version)
+if [[ "$actualNv" != "v$nv" ]]; then
 	if [[ ! $(which nvm &>/dev/null) ]]; then
-		. /usr/share/nvm/init-nvm.sh || (echo 'You need NVM (Unix) or NVM-Windows 1.x to work with this project.') 
+		if [[ -f '/usr/share/nvm/init-nvm.shw' ]]; then
+			source /usr/share/nvm/init-nvm.sh
+		else
+			(echo 'You need NVM (Unix) or NVM-Windows 1.x to work with this project.')
+		fi
 	fi
 
 	nvm use &>/dev/null ||
