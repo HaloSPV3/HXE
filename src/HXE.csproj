@@ -12,6 +12,7 @@
     <ApplicationIcon>Assets/icon.ico</ApplicationIcon>
     <!-- Build | General -->
     <Deterministic>true</Deterministic>
+    <FileAlignment>512</FileAlignment>
     <Nullable>enable</Nullable>
     <!-- Build | Events -->
     <!-- Ensures GitVersion, SourceLink tasks only run after successful builds -->
@@ -26,7 +27,7 @@
     <!--<PublishTrimmed>true</PublishTrimmed> -->
     <PublishSingleFile>$(TFM_NET6_OR_LATER)</PublishSingleFile>
     <RuntimeIdentifier Condition="'$(RuntimeIdentifier)' == '' AND '$(PublishSingleFile)' == 'true'">win7-x86</RuntimeIdentifier>
-    <SelfContained Condition="'$(SelfContained)' == '' AND '$(RuntimeIdentifier)' != ''">true</SelfContained>
+    <SelfContained Condition="'$(SelfContained)' == '' AND '$(RuntimeIdentifier)' != '' AND '$(TFM_NET6_OR_LATER)' == 'true'">true</SelfContained>
     <PublishSingleFile Condition="'$(PublishSingleFile)' == 'true' AND $(RuntimeIdentifier.Contains('win7'))">$([MSBuild]::VersionGreaterThanOrEquals($(NETCoreSdkVersion), '6.0.300'))</PublishSingleFile>
     <!-- Misc -->
     <ProjectGuid>{ACAA5D9F-B23D-43E1-B2DF-8C03230975A1}</ProjectGuid>
@@ -63,29 +64,29 @@
   <PropertyGroup Condition="'$(PublishSingleFile)' == 'true'">
     <SelfContained>true</SelfContained>
     <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
-    <EnableCompressionInSingleFile Condition="$(TargetFramework.Contains('net6'))">true</EnableCompressionInSingleFile>
+    <EnableCompressionInSingleFile>$(TFM_NET6_OR_LATER)</EnableCompressionInSingleFile>
   </PropertyGroup>
 
   <PropertyGroup Label="Nuget Properties">
+    <_changelogPath>$([System.IO.Path]::GetFullPath($(MSBuildProjectDirectory)/../CHANGELOG.md))</_changelogPath>
     <Authors>HaloSPV3</Authors>
+    <Copyright>Copyright © 2026 Noah Sherwin</Copyright>
     <Description>A HCE wrapper and SPV3 loader</Description>
-    <Copyright>Copyright © 2023 Noah Sherwin</Copyright>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <IncludeSource>true</IncludeSource>
+    <IncludeSymbols>true</IncludeSymbols>
+    <PackageIcon>icon.png</PackageIcon>
+    <PackageIconUrl>https://github.com/HaloSPV3/HXE/blob/main/src/Assets/icon.png</PackageIconUrl>
     <PackageLicenseExpression>Zlib</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/HaloSPV3/HXE</PackageProjectUrl>
-    <PackageIconUrl>https://github.com/HaloSPV3/HXE/blob/main/src/Assets/icon.png</PackageIconUrl>
-    <PackageIcon>icon.png</PackageIcon>
-    <PackageTags>Halo</PackageTags>
     <PackageReadmeFile>readme.md</PackageReadmeFile>
-    <_changelogPath>$([System.IO.Path]::GetFullPath($(MSBuildProjectDirectory)/../CHANGELOG.md))</_changelogPath>
     <PackageReleaseNotes Condition="Exists($(_changelogPath))">$([System.IO.File]::ReadAllText($(_changelogPath)))</PackageReleaseNotes>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <RepositoryUrl>https://github.com/HaloSPV3/HXE</RepositoryUrl>
-    <RepositoryType>git</RepositoryType>
-    <IncludeSymbols>true</IncludeSymbols>
-    <IncludeSource>true</IncludeSource>
-    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <PackageTags>Halo</PackageTags>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/HaloSPV3/HXE</RepositoryUrl>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
 
   <ItemGroup>
@@ -139,24 +140,36 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="10.0.300">
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
     <PackageReference Include="XmlSourceGenerator" Version="1.0.2-alpha" />
   </ItemGroup>
 
-  <ItemGroup Label="Additional References (NET4)" Condition="$(TargetFramework.StartsWith('net4'))">
-    <PackageReference Include="System.Net.Http" Version="4.3.4" />
-    <PackageReference Include="Microsoft.Windows.CsWin32" Version="0.3.298">
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
-    <PackageReference Include="System.Memory" Version="4.6.3" />
-    <PackageReference Include="System.Text.Json" Version="4.6.0" />
+  <Choose>
+    <When Condition="$(TargetFramework.StartsWith('net4'))">
+      <PropertyGroup Label="Additional Properties (NET4)">
+        <!-- Disabling these two properties prevents the output of (App).exe.config. Yippee! -->
+        <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
+        <GenerateSupportedRuntime>false</GenerateSupportedRuntime>
+        <WeaverConfiguration>
+          <Weavers>
+            <Costura />
+          </Weavers>
+        </WeaverConfiguration>
+      </PropertyGroup>
+      <ItemGroup Label="Additional References (NET4)">
+        <PackageReference Include="Costura.Fody" Version="6.2.0"
+          PrivateAssets="all" />
+        <PackageReference Include="Microsoft.Windows.CsWin32" Version="0.3.298">
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+          <PrivateAssets>all</PrivateAssets>
+        </PackageReference>
+        <PackageReference Include="System.Memory" Version="4.6.3" />
+        <PackageReference Include="System.Text.Json" Version="4.6.0" />
+        <Reference Include="System.Net.Http" Version="4.0.0.0" Culture="neutral" PublicKeyToken="b03f5f7f11d50a3a" />
+        <Reference Include="System.IO.Compression" Version="4.0.0.0" Culture="neutral" PublicKeyToken="b77a5c561934e089" />
+      </ItemGroup>
 
-    <Reference Include="System.IO.Compression" Version="4.0.0.0" Culture="neutral" PublicKeyToken="b77a5c561934e089" />
-  </ItemGroup>
+    </When>
+  </Choose>
 
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
     <Exec Command="pwsh $(MSBuildProjectDirectory)/.msb.prebuild.ps1" />

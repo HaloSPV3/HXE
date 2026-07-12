@@ -19,6 +19,7 @@
     "postinstall": "husky",
     "lint": "eslint --cache",
     "release": "semantic-release --debug",
+    "restore": "dotnet restore -p:Configuration=Debug && dotnet restore -p:Configuration=Release",
     "test": "dotnet test"
   },
   "devDependencies": {
