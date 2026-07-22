@@ -41,7 +41,7 @@ jobs:
 
       - run: corepack enable
       - name: Setup Node
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v7
         with:
           # cache: yarn
           node-version-file: .nvmrc
@@ -51,7 +51,7 @@ jobs:
       - run: yarn install --immutable
 
       - name: Setup Dotnet
-        uses: actions/setup-dotnet@v5
+        uses: actions/setup-dotnet@v6
         with:
           cache: true
           cache-dependency-path: |
