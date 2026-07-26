@@ -23,9 +23,8 @@ using System.Collections.Generic;
 
 namespace HXE
 {
-    /// <summary>
-    ///     A class representation of @HaloSPV3/HCE's 'meta' branch's latest.xml
-    /// </summary>
+    /// <summary> A class representation of @HaloSPV3/HCE's 'meta' branch's latest.xml </summary>
+    /// <remarks><see href="https://raw.githubusercontent.com/HaloSPV3/HCE/meta/update.hxe"/></remarks>
     public class Latest
     {
         public List<App> Apps { get; }
