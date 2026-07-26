@@ -16,6 +16,7 @@ const scopes = {
     + 'PrivateAssets="All" and no "runtime", "native", or "contentfiles" to be included in output.',
   HCE: 'Affects the HXE.HCE namespace or its descendants.',
   MCC: 'Affects "src/MCC/**" or src/assets/343I_DER.cer',
+  Net: 'src/Net/**',
   README: 'Affects README.md or any other README documents.',
   release: 'Reserved for release commits.',
   SFX: 'Affects the HXE.SFX class or other symbols in its source file.',
