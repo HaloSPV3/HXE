@@ -24,7 +24,7 @@
       ],
       "semanticCommitType": "build",
       "semanticCommitScope": "deps-dev",
-      "automerge": true
+      "automerge": false
     }
   ]
 }
