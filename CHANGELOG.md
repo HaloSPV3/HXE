@@ -1,3 +1,13 @@
+## [2.3.2-alpha.1](https://github.com/HaloSPV3/HXE/compare/v2.3.1...v2.3.2-alpha.1) (2026-07-27)
+
+### Bug Fixes
+
+* **Net:** resolve HttpClient crash; decrease timeout from insane 24 hours to runtime-default 30 seconds ([a48b4cf](https://github.com/HaloSPV3/HXE/commit/a48b4cf9d01e0607653b4e04ef7b51d768f961fe))
+
+### Reverts
+
+* **deps-dev): "build(deps-dev:** update dependency typescript to v7 ([#537](https://github.com/HaloSPV3/HXE/issues/537))" ([f4d36c2](https://github.com/HaloSPV3/HXE/commit/f4d36c26f2597d3f53f17894514e39ee76621670))
+
 ## [2.3.1](https://github.com/HaloSPV3/HXE/compare/v2.3.0...v2.3.1) (2026-07-09)
 
 ### Bug Fixes
