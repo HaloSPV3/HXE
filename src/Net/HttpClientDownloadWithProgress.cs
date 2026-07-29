@@ -69,8 +69,8 @@ namespace HXE.Net.Http
                 contentIsFile = true;
             }
 
-            using (FileStream fileStream = contentIsFile ?
-                    new FileStream(_destinationFilePath, FileMode.Create, FileAccess.Write, FileShare.None, 8192, true):
+            using (FileStream? fileStream = contentIsFile ?
+                    new FileStream(_destinationFilePath, FileMode.Create, FileAccess.Write, FileShare.None, 8192, true) :
                     null
                     )
             {
@@ -84,7 +84,7 @@ namespace HXE.Net.Http
                         continue;
                     }
 
-                    if (contentIsFile)
+                    if (contentIsFile && fileStream != null)
                         await fileStream.WriteAsync(buffer, 0, bytesRead);
                     /** else, access the stream variable */
 
