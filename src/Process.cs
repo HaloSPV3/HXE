@@ -71,7 +71,7 @@ namespace HXE
         /// <returns>Type of Platform</returns>
         public static Type Infer()
         {
-            Candidate processCandidate = null;
+            Candidate? processCandidate = null;
             List<System.Diagnostics.Process> processList = GetProcesses().ToList();
             try
             {
