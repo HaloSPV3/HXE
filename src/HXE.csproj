@@ -116,7 +116,7 @@
       <TargetPath>%(FileName).xml</TargetPath>
     </Content>
     <!-- Assets -->
-    <EmbeddedResource Include="../ext/halo-ce-patches/patches.crk">
+    <EmbeddedResource Include="../ext/halo-ce-patches/patches.crk" WithCulture="false">
       <Link>Assets/%(Filename)%(Extension)</Link>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </EmbeddedResource>
