@@ -1,8 +1,8 @@
+using System;
+using System.IO;
+using System.Net.Http;
 /// https://stackoverflow.com/a/43169927/14894786
 using System.Threading.Tasks;
-using System.IO;
-using System;
-using System.Net.Http;
 using static HXE.Net.DefaultHttpClient;
 
 namespace HXE.Net.Http
