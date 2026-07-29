@@ -52,7 +52,7 @@ namespace HXE
           new Candidate { Type = Type.Store,    Name = "MCCWinStore-Win64-Shipping"  }
         };
 
-        public static Result LastResult { get; internal set; }
+        public static Result LastResult { get; internal set; } = new();
 
         /// <summary>
         ///     An informative alternative to Infer() <br/>
