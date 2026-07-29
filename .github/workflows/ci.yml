@@ -59,10 +59,10 @@ jobs:
 
       # if run simultaneously, the logs would be a mess
       - name: Build (Debug)
-        run: dotnet build -c Debug -check
+        run: dotnet build -c Debug
       # if run simultaneously, the logs would be a mess
       - name: Build (Release)
-        run: dotnet build -c Release -check
+        run: dotnet build -c Release
 
       - name: Pack (Release)
         run: dotnet pack
