@@ -17,6 +17,7 @@ const scopes = {
   HCE: 'Affects the HXE.HCE namespace or its descendants.',
   MCC: 'Affects "src/MCC/**" or src/assets/343I_DER.cer',
   Net: 'src/Net/**',
+  Process: 'src/Process.cs',
   README: 'Affects README.md or any other README documents.',
   release: 'Reserved for release commits.',
   SFX: 'Affects the HXE.SFX class or other symbols in its source file.',
