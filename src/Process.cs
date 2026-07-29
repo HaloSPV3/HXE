@@ -31,11 +31,16 @@ namespace HXE
         public enum Type
         {
             Unknown,
-            Retail,     /* Halo: Combat Evolved */
-            HCE,        /* Halo: Custom Edition */
-            Steam,      /* MCC (Steam)          */
-            StoreOld,   /* MCC (Windows Store)  */
-            Store       /* MCC (Windows Store)  */
+            /// <summary> Halo: Combat Evolved </summary>
+            Retail,
+            /// <summary> Halo: Custom Edition </summary>
+            HCE,
+            /// <summary> MCC (Steam) </summary>
+            Steam,
+            /// <summary> MCC (Windows Store) </summary>
+            StoreOld,
+            /// <summary> MCC (Windows Store) </summary>
+            Store
         }
 
         public static IEnumerable<Candidate> Candidates { get; } = new List<Candidate>
