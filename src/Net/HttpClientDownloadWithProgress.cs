@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using static HXE.Net.DefaultHttpClient;
 
+// todo: merge namespace into "HXE.Net". See IDE0130
 namespace HXE.Net.Http
 {
     /// <summary>
