@@ -204,14 +204,14 @@ namespace HXE
         public class Candidate
         {
             public Type Type { get; set; }
-            public string Name { get; set; }
+            public string Name { get; set; } = string.Empty;
         }
 
         public class Result
         {
             public bool Success { get; set; }
             public Type Type { get; set; }
-            public string Message { get; set; }
+            public string Message { get; set; } = string.Empty;
         }
     }
 }
