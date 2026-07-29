@@ -1298,15 +1298,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^24.13.2":
-  version: 24.13.2
-  resolution: "@types/node@npm:24.13.2"
-  dependencies:
-    undici-types: "npm:~7.18.0"
-  checksum: 10c0/d7d48a88a4feb0a6aac3cbfaf9ef3b12752b4b09447f88dd0b4c77c03b281e3d4330fe6982a99aedcd63fc16c7540a0c248b91eb2abb0b3edd884d7fe684e9ea
-  languageName: node
-  linkType: hard
-
 "@types/node@npm:^24.13.3":
   version: 24.13.3
   resolution: "@types/node@npm:24.13.3"
@@ -3446,7 +3437,7 @@ __metadata:
     "@semantic-release/git": "npm:^11.0.1"
     "@tsconfig/node24": "npm:^24.0.4"
     "@types/debug": "npm:^4.1.13"
-    "@types/node": "npm:^24.13.2"
+    "@types/node": "npm:^24.13.3"
     commitlint: "npm:^21.2.1"
     conventional-changelog-conventionalcommits: "npm:^9.3.1"
     eslint: "npm:^10.6.0"
