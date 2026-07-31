@@ -5,6 +5,7 @@ const scopes = {
   CLI: 'Affects the HXE.CLI namespace.',
   commitlint: 'Affects this repo\'s commitlint config, esp. its commit scopes.',
   Common: 'Affects the HXE.Common namespace and its child classes.',
+  Compiler: 'src/Compiler.cs',
   contributing: 'Affects CONTRIBUTING.md',
   'conv-pr': 'Affects ".github/workflows/conv-pull-requests.yml".',
   deps: 'Affects dependencies bundled with or depended on by published packages and artifacts. '
