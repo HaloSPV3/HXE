@@ -52,7 +52,7 @@ namespace HXE
     /// <param name="progress">
     ///   Optional IProgress object for calling GUI clients.
     /// </param>
-    public static void Compile(string source, string target, IProgress<Status> progress = null)
+    public static void Compile(string source, string target, IProgress<Status>? progress = null)
     {
       /**
        * Normalisation of the paths will preserve our sanity later on! ^_^
