@@ -86,8 +86,8 @@ namespace HXE
        * Given that the manifest is represented by 0x00, the subsequent packages should be represented by a >=1 ID.
        */
 
-      var manifest    = (Manifest) Combine(target, Paths.Manifest);
-      var files       = new DirectoryInfo(source).GetFiles("*", SearchOption.AllDirectories);
+      var manifest = (Manifest)Combine(target, Paths.Manifest);
+      var files = new DirectoryInfo(source).GetFiles("*", SearchOption.AllDirectories);
       var compression = Optimal;
 
       /**
@@ -124,7 +124,7 @@ namespace HXE
       {
         var packageName = NewGuid() + ".bin";
         var packagePath = Combine(target, packageName);
-        var fileName    = file.Name;
+        var fileName = file.Name;
 
         if (System.IO.File.Exists(packagePath))
         {
@@ -179,8 +179,8 @@ namespace HXE
       {
         progress?.Report(new Status
         {
-          Current     = c - 1,
-          Total       = t,
+          Current = c - 1,
+          Total = t,
           Description = $"Compiling: {package.Name} - {package.Entry.Name}"
         });
 
@@ -236,7 +236,7 @@ namespace HXE
        * For subsequent installation convenience, we will make a copy of the current CLI to the target directory.
        */
 
-      var cli = (File) Combine(Environment.CurrentDirectory, Paths.Executable);
+      var cli = (File)Combine(Environment.CurrentDirectory, Paths.Executable);
 
       if (cli.Exists())
         cli.CopyTo(target);
