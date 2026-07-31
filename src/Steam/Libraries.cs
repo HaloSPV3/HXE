@@ -113,7 +113,7 @@ namespace HXE.Steam
             }
         }
 
-        public static void ParseLibrary(File libraryFoldersVdf = null)
+        public static void ParseLibrary(File libraryFoldersVdf)
         {
             string text = libraryFoldersVdf.ReadAllText();
 
