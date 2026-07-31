@@ -163,10 +163,9 @@ namespace HXE
              * NOTE: The aforementioned procedure is not carried out if this iteration's directory is the source
              * directory itself.
              */
-
-            Path = file.DirectoryName != null && file.DirectoryName.Equals(source)
+            Path = file.DirectoryName == null || file.DirectoryName.Equals(source)
               ? string.Empty
-              : file.DirectoryName?.Substring(source.Length + 1)
+              : file.DirectoryName[(source.Length + 1)..]
           }
         });
 
