@@ -446,16 +446,16 @@ namespace HXE
                         // infer from resolution if Native Resoluton preferred.
                         if (executable.Video.Width == 0 || executable.Video.Height == 0)
                         {
-                            executable.Video.Width = (ushort) System.Windows.SystemParameters.PrimaryScreenWidth;
-                            executable.Video.Height = (ushort) System.Windows.SystemParameters.PrimaryScreenHeight;
+                            executable.Video.Width = (ushort)System.Windows.SystemParameters.PrimaryScreenWidth;
+                            executable.Video.Height = (ushort)System.Windows.SystemParameters.PrimaryScreenHeight;
 
                             Core("BLAM.VIDEO.RESOLUTION: No resolution provided. Applied native resolution to executable.");
                         }
-                        else if (executable.Video.Width > (ushort) System.Windows.SystemParameters.PrimaryScreenWidth ||
-                                 executable.Video.Height > (ushort) System.Windows.SystemParameters.PrimaryScreenHeight)
+                        else if (executable.Video.Width > (ushort)System.Windows.SystemParameters.PrimaryScreenWidth ||
+                                 executable.Video.Height > (ushort)System.Windows.SystemParameters.PrimaryScreenHeight)
                         {
-                            executable.Video.Width = (ushort) System.Windows.SystemParameters.PrimaryScreenWidth;
-                            executable.Video.Height = (ushort) System.Windows.SystemParameters.PrimaryScreenHeight;
+                            executable.Video.Width = (ushort)System.Windows.SystemParameters.PrimaryScreenWidth;
+                            executable.Video.Height = (ushort)System.Windows.SystemParameters.PrimaryScreenHeight;
 
                             Core("BLAM.VIDEO.RESOLUTION: Resolution out of bounds. Applied native resolution to executable.");
                         }
@@ -565,39 +565,39 @@ namespace HXE
                         return;
 
                     blam.Input.GP0_Mapping = new Dictionary<Profile.ProfileInput.Action, Profile.ProfileInput.GP0_Input>
-          {
-            {Profile.ProfileInput.Action.MoveForward  , Profile.ProfileInput.GP0_Input.Axis_1_n},
-            {Profile.ProfileInput.Action.MoveBackward , Profile.ProfileInput.GP0_Input.Axis_1_p},
-            {Profile.ProfileInput.Action.MoveLeft     , Profile.ProfileInput.GP0_Input.Axis_2_n},
-            {Profile.ProfileInput.Action.MoveRight    , Profile.ProfileInput.GP0_Input.Axis_2_p},
-            {Profile.ProfileInput.Action.Crouch       , Profile.ProfileInput.GP0_Input.Button_8},
-            {Profile.ProfileInput.Action.Reload       , Profile.ProfileInput.GP0_Input.DPU     },
-            {Profile.ProfileInput.Action.Jump         , Profile.ProfileInput.GP0_Input.Button_0},
-            {Profile.ProfileInput.Action.SwitchGrenade, Profile.ProfileInput.GP0_Input.Button_1},
-            {Profile.ProfileInput.Action.Action       , Profile.ProfileInput.GP0_Input.Button_2},
-            {Profile.ProfileInput.Action.SwitchWeapon , Profile.ProfileInput.GP0_Input.Button_3},
-            {Profile.ProfileInput.Action.LookUp       , Profile.ProfileInput.GP0_Input.Axis_3_n},
-            {Profile.ProfileInput.Action.LookDown     , Profile.ProfileInput.GP0_Input.Axis_3_p},
-            {Profile.ProfileInput.Action.LookLeft     , Profile.ProfileInput.GP0_Input.Axis_4_n},
-            {Profile.ProfileInput.Action.LookRight    , Profile.ProfileInput.GP0_Input.Axis_4_p},
-            {Profile.ProfileInput.Action.ScopeZoom    , Profile.ProfileInput.GP0_Input.Button_9},
-            {Profile.ProfileInput.Action.ThrowGrenade , Profile.ProfileInput.GP0_Input.Button_4},
-            {Profile.ProfileInput.Action.Flashlight   , Profile.ProfileInput.GP0_Input.Axis_5_p},
-            {Profile.ProfileInput.Action.MeleeAttack  , Profile.ProfileInput.GP0_Input.Button_5},
-            {Profile.ProfileInput.Action.FireWeapon   , Profile.ProfileInput.GP0_Input.Axis_5_n}
-          };
+                    {
+                        {Profile.ProfileInput.Action.MoveForward  , Profile.ProfileInput.GP0_Input.Axis_1_n},
+                        {Profile.ProfileInput.Action.MoveBackward , Profile.ProfileInput.GP0_Input.Axis_1_p},
+                        {Profile.ProfileInput.Action.MoveLeft     , Profile.ProfileInput.GP0_Input.Axis_2_n},
+                        {Profile.ProfileInput.Action.MoveRight    , Profile.ProfileInput.GP0_Input.Axis_2_p},
+                        {Profile.ProfileInput.Action.Crouch       , Profile.ProfileInput.GP0_Input.Button_8},
+                        {Profile.ProfileInput.Action.Reload       , Profile.ProfileInput.GP0_Input.DPU     },
+                        {Profile.ProfileInput.Action.Jump         , Profile.ProfileInput.GP0_Input.Button_0},
+                        {Profile.ProfileInput.Action.SwitchGrenade, Profile.ProfileInput.GP0_Input.Button_1},
+                        {Profile.ProfileInput.Action.Action       , Profile.ProfileInput.GP0_Input.Button_2},
+                        {Profile.ProfileInput.Action.SwitchWeapon , Profile.ProfileInput.GP0_Input.Button_3},
+                        {Profile.ProfileInput.Action.LookUp       , Profile.ProfileInput.GP0_Input.Axis_3_n},
+                        {Profile.ProfileInput.Action.LookDown     , Profile.ProfileInput.GP0_Input.Axis_3_p},
+                        {Profile.ProfileInput.Action.LookLeft     , Profile.ProfileInput.GP0_Input.Axis_4_n},
+                        {Profile.ProfileInput.Action.LookRight    , Profile.ProfileInput.GP0_Input.Axis_4_p},
+                        {Profile.ProfileInput.Action.ScopeZoom    , Profile.ProfileInput.GP0_Input.Button_9},
+                        {Profile.ProfileInput.Action.ThrowGrenade , Profile.ProfileInput.GP0_Input.Button_4},
+                        {Profile.ProfileInput.Action.Flashlight   , Profile.ProfileInput.GP0_Input.Axis_5_p},
+                        {Profile.ProfileInput.Action.MeleeAttack  , Profile.ProfileInput.GP0_Input.Button_5},
+                        {Profile.ProfileInput.Action.FireWeapon   , Profile.ProfileInput.GP0_Input.Axis_5_n}
+                    };
 
                     blam.Input.Gamepads_Menu = new Dictionary<Profile.ProfileInput.GamePadMenu, Profile.ProfileInput.DIButtons_Values>
-          {
-            {Profile.ProfileInput.GamePadMenu.GP0_MenuAccept, Profile.ProfileInput.DIButtons_Values.Button0},
-            {Profile.ProfileInput.GamePadMenu.GP0_MenuBack  , Profile.ProfileInput.DIButtons_Values.Button1},
-            {Profile.ProfileInput.GamePadMenu.GP1_MenuAccept, Profile.ProfileInput.DIButtons_Values.Button0},
-            {Profile.ProfileInput.GamePadMenu.GP1_MenuBack  , Profile.ProfileInput.DIButtons_Values.Button1},
-            {Profile.ProfileInput.GamePadMenu.GP2_MenuAccept, Profile.ProfileInput.DIButtons_Values.Button0},
-            {Profile.ProfileInput.GamePadMenu.GP2_MenuBack  , Profile.ProfileInput.DIButtons_Values.Button1},
-            {Profile.ProfileInput.GamePadMenu.GP3_MenuAccept, Profile.ProfileInput.DIButtons_Values.Button0},
-            {Profile.ProfileInput.GamePadMenu.GP3_MenuBack  , Profile.ProfileInput.DIButtons_Values.Button1},
-          };
+                    {
+                        {Profile.ProfileInput.GamePadMenu.GP0_MenuAccept, Profile.ProfileInput.DIButtons_Values.Button0},
+                        {Profile.ProfileInput.GamePadMenu.GP0_MenuBack  , Profile.ProfileInput.DIButtons_Values.Button1},
+                        {Profile.ProfileInput.GamePadMenu.GP1_MenuAccept, Profile.ProfileInput.DIButtons_Values.Button0},
+                        {Profile.ProfileInput.GamePadMenu.GP1_MenuBack  , Profile.ProfileInput.DIButtons_Values.Button1},
+                        {Profile.ProfileInput.GamePadMenu.GP2_MenuAccept, Profile.ProfileInput.DIButtons_Values.Button0},
+                        {Profile.ProfileInput.GamePadMenu.GP2_MenuBack  , Profile.ProfileInput.DIButtons_Values.Button1},
+                        {Profile.ProfileInput.GamePadMenu.GP3_MenuAccept, Profile.ProfileInput.DIButtons_Values.Button0},
+                        {Profile.ProfileInput.GamePadMenu.GP3_MenuBack  , Profile.ProfileInput.DIButtons_Values.Button1},
+                    };
 
                     Core("BLAM.INPUT: Input overrides have been applied accordingly.");
                 }
