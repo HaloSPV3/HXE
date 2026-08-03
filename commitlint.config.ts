@@ -17,6 +17,7 @@ const scopes = {
     + 'PrivateAssets="All" and no "runtime", "native", or "contentfiles" to be included in output.',
   HCE: 'Affects the HXE.HCE namespace or its descendants.',
   Installer: 'src/Installer.cs',
+  Kernel: 'src/Kernel.cs',
   Latest: 'src/Latest.cs',
   Manifest: 'src/Manifest.cs',
   MCC: 'Affects "src/MCC/**" or src/assets/343I_DER.cer',
