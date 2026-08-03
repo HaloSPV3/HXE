@@ -50,7 +50,7 @@ namespace HXE
             var byteSep = new string[] { ": ", " " };
             var list = new List<PatchGroup>();
             var patchGroup = new PatchGroup();
-            List<string> fileText = null;
+            List<string>? fileText = null;
             using (Stream s = System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream(rn))
             using (var sr = new StreamReader(s, detectEncodingFromByteOrderMarks: true))
             {

@@ -276,7 +276,8 @@ namespace HXE
                         {
                             /** Default to the first mission on Legendary */
                             save.Mission = campaign.Missions[0];
-                            save.Difficulty = campaign.Difficulties.Find(d => d.Name == "Legendary");
+                            save.Difficulty = campaign.Difficulties.Find(d => d.Name == "Legendary")
+                                ?? throw new KeyNotFoundException("No difficulty found with name \"Legendary\".");
                         }
 
                         init.Progress = save;

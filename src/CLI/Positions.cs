@@ -25,11 +25,11 @@ namespace HXE.CLI
 {
     public static class Positions
     {
-        public static void Run(string source = null, string target = null)
+        public static void Run(string? source = null, string? target = null)
         {
             Console.Info("Read the file \"OS_Settings.User.xml\" and write its weapons positions to a .bin file.");
-            FileInfo fiSource = null;
-            FileInfo fiTarget = null;
+            FileInfo? fiSource = null;
+            FileInfo? fiTarget = null;
 
             while (fiSource == null)
             {
@@ -67,15 +67,15 @@ namespace HXE.CLI
 
         }
 
-        private static FileInfo GetSource(string source = null)
+        private static FileInfo GetSource(string? source = null)
         {
-            FileInfo fileInfo = null;
+            FileInfo? fileInfo = null;
 
             Console.Info("Full path of OS_Settings.User.xml:");
 
             if (source == null)
             {
-                string input = System.Console.In.ReadLine();
+                string? input = System.Console.In.ReadLine();
 
                 if (string.IsNullOrWhiteSpace(input))
                 {
@@ -103,7 +103,7 @@ namespace HXE.CLI
             return fileInfo;
         }
 
-        private static FileInfo GetTarget(string target = null)
+        private static FileInfo GetTarget(string? target = null)
         {
             FileInfo fileInfo;
 
@@ -111,7 +111,7 @@ namespace HXE.CLI
 
             if (target == null)
             {
-                string input = System.Console.In.ReadLine();
+                string? input = System.Console.In.ReadLine();
 
                 if (string.IsNullOrWhiteSpace(input))
                 {

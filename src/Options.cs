@@ -1685,7 +1685,7 @@ namespace HXE
 
 			foreach (var subset in _nestedCommandSets)
 			{
-				if (subset.Suite.StartsWith(prefix, StringComparison.OrdinalIgnoreCase))
+				if (prefix != null && subset.Suite.StartsWith(prefix, StringComparison.OrdinalIgnoreCase))
 				{
 					foreach (var c in subset.GetCompletions(rest))
 					{

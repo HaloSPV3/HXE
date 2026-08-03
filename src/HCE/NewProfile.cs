@@ -43,8 +43,8 @@ namespace HXE.HCE
         ///   This doesn't harm good profiles, but it will fix bad profiles.
         /// </remarks>
         public static void Create(string pathParam,
-                                    LastProfile lastprof = null,
-                                    Profile profile = null,
+                                    LastProfile? lastprof = null,
+                                    Profile? profile = null,
                                     bool makeScaffold = true,
                                     bool profileIsGood = true)
         {

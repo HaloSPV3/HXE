@@ -129,11 +129,11 @@ namespace HXE.HCE
             bool subkeyIsValid = false;
             try
             {
-                RegistryKey key = WinReg.LocalMachine.OpenSubKey(subkey);
+                RegistryKey? key = WinReg.LocalMachine.OpenSubKey(subkey);
 
                 if (key != null){
                     keyIsValid = true;
-                    subkeyIsValid = !string.IsNullOrEmpty(key.GetValue("PID").ToString());}
+                    subkeyIsValid = !string.IsNullOrEmpty(key.GetValue("PID")?.ToString() ?? string.Empty);}
             }
             catch (Exception e)
             {
@@ -309,7 +309,7 @@ namespace HXE.HCE
                 var StartInfo = new ProcessStartInfo
                 {
                     WorkingDirectory = Environment.CurrentDirectory,
-                    FileName = GetCurrentProcess().MainModule.FileName,
+                    FileName = GetCurrentProcess().MainModule?.FileName ?? string.Empty,
                     UseShellExecute = true,
                     Verb = "runas"
                     /** runas rundown
@@ -326,9 +326,9 @@ namespace HXE.HCE
                 };
                 using (var process = Start(StartInfo))
                 {
-                    process.WaitForExit(milliseconds: 5000);
-                    if (process.ExitCode != 0)
-                        throw new Exception("Elevated process exited unexpectedly. Exit Code: " + process.ExitCode);
+                    process?.WaitForExit(milliseconds: 5000);
+                    if (process?.ExitCode != 0)
+                        throw new Exception("Elevated process exited unexpectedly. Exit Code: " + process?.ExitCode);
                 }
             }
 
@@ -470,7 +470,7 @@ namespace HXE.HCE
         public static Data GetRegistryKeys(Game game, Data data)
         {
             string path = WoWCheck();
-            RegistryKey key;
+            RegistryKey? key;
 
             try
             {

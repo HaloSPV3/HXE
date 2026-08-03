@@ -192,7 +192,7 @@ namespace HXE
             /// <summary>
             ///   Downloads the asset's package to the filesystem for subsequent installation.
             /// </summary>
-            public void Request(IProgress<Status> progress = null)
+            public void Request(IProgress<Status>? progress = null)
             {
                 /**
                  * Let's just hope that this isn't invoked from a read-only directory.
@@ -228,7 +228,7 @@ namespace HXE
             /// <exception cref="AssetException">
             ///   Package does not exist. It should be downloaded!
             /// </exception>
-            public void Install(IProgress<Status> progress = null)
+            public void Install(IProgress<Status>? progress = null)
             {
                 if (!Exists(File))
                     throw new AssetException("Package not found for asset - " + Name);

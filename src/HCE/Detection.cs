@@ -49,7 +49,7 @@ namespace HXE.HCE
          * In similar fashion to the rest of the public methods, null will be returned if nothing is found at all.
          */
 
-        public static FileInfo Infer()
+        public static FileInfo? Infer()
         {
             return InferFromCurrentDirectory() ??
                    InferFromProgramFilesPath() ??
@@ -63,7 +63,7 @@ namespace HXE.HCE
          * otherwise null.
          */
 
-        public static FileInfo InferFromCurrentDirectory()
+        public static FileInfo? InferFromCurrentDirectory()
         {
             var path = Combine(CurrentDirectory, Executable);
 
@@ -78,7 +78,7 @@ namespace HXE.HCE
          * Files directory, otherwise null.
          */
 
-        public static FileInfo InferFromProgramFilesPath()
+        public static FileInfo? InferFromProgramFilesPath()
         {
             var exePath = Combine("Microsoft Games", "Halo Custom Edition", Executable);
 
@@ -103,7 +103,7 @@ namespace HXE.HCE
          * one as a fallback. Should that fail, too, then null will ultimately be returned.
          */
 
-        public static FileInfo InferFromRegistryKeyEntry()
+        public static FileInfo? InferFromRegistryKeyEntry()
         {
             const string keyX64 = @"SOFTWARE\Wow6432Node\Microsoft\Microsoft Games\Halo CE";
             const string keyX86 = @"SOFTWARE\Microsoft\Microsoft Games\Halo CE";
@@ -112,12 +112,12 @@ namespace HXE.HCE
              * Seeks the HaloCE.exe path at the given registry sub-key, and returns the path if it exists on the fs; else
              * null.
              */
-            FileInfo GetFromSubKey(string subKey)
+            FileInfo? GetFromSubKey(string subKey)
             {
                 const string member = "EXE Path";
                 using (var key = Microsoft.Win32.Registry.LocalMachine.OpenSubKey(subKey))
                 {
-                    var path = key?.GetValue(member).ToString();
+                    var path = key?.GetValue(member)?.ToString();
                     if (path == null) return null;
                     path = Combine(path, Paths.HCE.Executable);
 

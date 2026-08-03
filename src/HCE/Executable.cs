@@ -59,7 +59,7 @@ namespace HXE.HCE
 
             try
             {
-                fullName = hce.FullName;
+                fullName = hce?.FullName ?? throw new NullReferenceException("Detection.Infer returned null");
             }
             catch (System.Exception e)
             {

@@ -19,11 +19,11 @@ namespace HXE.Net.Http
         private readonly string _downloadUrl;
         private string _destinationFilePath;
 
-        public Stream ContentStream;
+        public Stream? ContentStream;
 
         public delegate void ProgressChangedHandler(long? totalFileSize, long totalBytesDownloaded, double? progressPercentage);
 
-        public event ProgressChangedHandler ProgressChanged;
+        public event ProgressChangedHandler? ProgressChanged;
 
         public HttpClientDownloadWithProgress(string downloadUrl, string destinationFilePath = "")
         {

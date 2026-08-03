@@ -35,7 +35,7 @@ namespace HXE.Steam
         /// </summary>
         /// <param name="rootDir">If unspecified, defaults to current value of <c>HXE.Paths.Steam.Directory</c>.</param>
         /// <returns>A list of LibraryFolders.vdf files.</returns>
-        static List<FileInfo> FindLibrariesRecursively(DirectoryInfo rootDir = null)
+        static List<FileInfo> FindLibrariesRecursively(DirectoryInfo? rootDir = null)
         {
             /// If <c>root</c> is null, check if <c>HXE.Paths.Steam.Directory</c> is null, empty, or whitespace.
             ///     If `HXE.Paths.Steam.Directory` is null, empty, or whitespace, then throw ArgumentNullException.
@@ -82,7 +82,7 @@ namespace HXE.Steam
         ///     Default: HXE.Paths.Steam.Directory
         /// </param>
         /// TODO: utilize package 'Gameloop.Vdf'
-        public static void ParseLibraries(DirectoryInfo rootDir = null, FileInfo libraryFoldersVdf = null)
+        public static void ParseLibraries(DirectoryInfo? rootDir = null, FileInfo? libraryFoldersVdf = null)
         {
             List<FileInfo> libraryFoldersVdfList = FindLibrariesRecursively(rootDir);
 

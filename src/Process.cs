@@ -153,7 +153,7 @@ namespace HXE
             {
                 try
                 {
-                    bool isValid = process.MainModule.FileVersionInfo.FileVersion == "01.00.10.0621";
+                    bool isValid = process.MainModule?.FileVersionInfo.FileVersion == "01.00.10.0621";
                     LastResult.Message = isValid ?
                         "Valid Halo/HaloCE process found" :
                         "Discovered a Halo/HaloCE process, but its version does not match 01.00.10.0621";

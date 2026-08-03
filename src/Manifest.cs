@@ -21,6 +21,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
+using System.Runtime.Serialization;
 using System.Xml.Serialization;
 using static System.Text.Encoding;
 
@@ -78,7 +79,8 @@ namespace HXE
       using (var reader = new StringReader(data))
       {
         var serialiser = new XmlSerializer(typeof(Manifest));
-        var serialised = (Manifest) serialiser.Deserialize(reader);
+        var serialised = (Manifest?)serialiser.Deserialize(reader)
+          ?? throw new SerializationException($"Failed to deserialize \"{Path}\" as {nameof(Manifest)} object.");
         Packages = serialised.Packages;
       }
     }
@@ -119,13 +121,13 @@ namespace HXE
     /// </summary>
     public class Package
     {
-      public string       Name  { get; set; }                       /* Package filename on the filesystem        */
+      public string?      Name  { get; set; }                       /* Package filename on the filesystem        */
       public long         Size  { get; set; }                       /* Byte length of the file on the filesystem */
       public PackageEntry Entry { get; set; } = new PackageEntry(); /* File contained in the package             */
 
       public class PackageEntry
       {
-        public string Name { get; set; }                 /* Package filename on the filesystem        */
+        public string? Name { get; set; }                /* Package filename on the filesystem        */
         public string Path { get; set; } = string.Empty; /* Path relative to root source/target dir   */
         public long   Size { get; set; }                 /* Byte length of the file on the filesystem */
       }

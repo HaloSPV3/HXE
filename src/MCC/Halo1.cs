@@ -96,7 +96,7 @@ namespace HXE.MCC
             {
                 var ms = new MemoryStream();
                 var assembly = Assembly.GetExecutingAssembly();
-                assembly.GetManifestResourceStream(@"HXE.Assets.343I_DER.cer")
+                assembly.GetManifestResourceStream(@"HXE.Assets.343I_DER.cer")?
                   .CopyTo(ms);
                 P7B_Fallback = new X509Certificate(ms.ToArray());
             }
@@ -109,7 +109,7 @@ namespace HXE.MCC
             /** Get 343 Industries' Public Key from internet source. */
             // TODO: Add OFFICIAL URI for web-accessible public key
             var uri = "https://github.com/HaloSPV3/HCE/releases/download/updates/343I_DER.exp2022-04-27.cer";
-            X509Certificate remoteCert = null;
+            X509Certificate? remoteCert = null;
             var remoteFailedOrTimedOut = false;
             try
             {
@@ -128,9 +128,9 @@ namespace HXE.MCC
              * fallback to the embedded resource.
              * This allows for offline validation.
              */
-            var publicKey_ref = remoteFailedOrTimedOut ?
-                P7B_Fallback.GetPublicKey() :
-                remoteCert.GetPublicKey();
+            byte[]? publicKey_ref = remoteFailedOrTimedOut ?
+                      P7B_Fallback.GetPublicKey() :
+                      remoteCert?.GetPublicKey();
 
             /** Get certificate from local Halo1.dll. */
             var publicKey_file = new X509Certificate(Halo1Path).GetPublicKey();
