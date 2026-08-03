@@ -642,7 +642,7 @@ namespace HXE
 
                     open.Save();
 
-                    Core("MAIN.OPEN: Conditionally applied SPV3 fixes - enabled HUD scaling, FOV ignoreing, and depth fade.");
+                    Core("MAIN.OPEN: Conditionally applied SPV3 fixes - enabled HUD scaling, FOV ignoring, and depth fade.");
 
                     Debug("MAIN.OPEN: Motion Blur          - " + open.Rasterizer.PostProcessing.MotionBlur.Enabled);
                     Debug("MAIN.OPEN: HUD Scaling          - " + open.HUD.ScaleHUD);
