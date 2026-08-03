@@ -610,27 +610,21 @@ namespace HXE
             void Open()
             {
                 var open = (OpenSauce)Custom.OpenSauce(executable.Profile.Path);
-                var mod = System.IO.File.Exists("./dinput8.dll") ||
-                          System.IO.File.Exists("./mods/opensauce.dll");
+                var dinput8Exists = System.IO.File.Exists("./dinput8.dll");
+                var opensauceExists = System.IO.File.Exists("./mods/opensauce.dll");
+                var modExists = dinput8Exists || opensauceExists;
 
-                if (System.IO.File.Exists("./dinput8.dll"))
-                    Debug("dinput8.dll exists");
-                else
-                    Debug("dinput8 not found");
+                Debug(dinput8Exists ? "dinput8.dll exists" : "dinput8 not found");
+                Debug(opensauceExists ? "mods/opensauce.dll exists" : "mods/opensauce.dll not found");
 
-                if (System.IO.File.Exists("./mods/opensauce.dll"))
-                    Debug("opensauce.dll exists");
-                else
-                    Debug("opensauce.dll not found");
-
-                if (!mod)
+                if (!modExists)
                     Debug("Open Sauce not found");
 
-                if (open.Exists() && mod)
+                if (open.Exists() && modExists)
                 {
                     open.Load();
                 }
-                else if (mod)
+                else if (modExists)
                 {
                     open.Save();
                     open.Load();
