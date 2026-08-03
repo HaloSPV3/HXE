@@ -76,11 +76,26 @@ namespace HXE
             else /* retrieve data from web resource (http request) */
             {
                 Info("Inferred web request manifest - " + uri);
-
-                using (var rm = await Client.GetAsync(uri))
-                using (var sr = new StreamReader(await rm.Content.ReadAsStreamAsync() ?? throw new NullReferenceException("No response.")))
+                try
                 {
-                    data = sr.ReadToEnd();
+                    using (var rm = await Client.GetAsync(uri))
+                    using (var sr = new StreamReader(await rm.Content.ReadAsStreamAsync() ?? throw new NullReferenceException("No response.")))
+                    {
+                        data = sr.ReadToEnd();
+                    }
+
+                }
+                // Wine Mono Framework unexpectedly throws a TaskCanceledException.
+                // This does not occur when run by `umu-run` (UMU Launcher) instead of `wine` in a clean prefix.
+                catch (TaskCanceledException exception)
+                {
+                    Warn($"HTTP request to {uri} failed.\n{exception}" + exception.InnerException == null ? string.Empty : $"\n{exception.InnerException}");
+                    return;
+                }
+                catch (Exception exception)
+                {
+                    Warn($"An unexpected error occurred when fetching {uri}.\n{exception}");
+                    return;
                 }
             }
 
