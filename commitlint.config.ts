@@ -17,14 +17,17 @@ const scopes = {
     + 'PrivateAssets="All" and no "runtime", "native", or "contentfiles" to be included in output.',
   HCE: 'Affects the HXE.HCE namespace or its descendants.',
   Installer: 'src/Installer.cs',
+  Manifest: 'src/Manifest.cs',
   MCC: 'Affects "src/MCC/**" or src/assets/343I_DER.cer',
   Net: 'src/Net/**',
+  Options: 'src/Options.cs',
   Process: 'src/Process.cs',
   README: 'Affects README.md or any other README documents.',
   release: 'Reserved for release commits.',
   SFX: 'Affects the HXE.SFX class or other symbols in its source file.',
   Steam: 'src/Steam/Libraries.cs',
   TODO: 'Affects TODO.md or any todo comments.',
+  Update: 'src/Update.cs',
   vscode: 'Affects anything in the .vscode directory.',
 };
 
