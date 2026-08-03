@@ -372,14 +372,15 @@ namespace HXE
                 }
             }
 
-            /**
-             * We enhance the player's profile by applying the highest video & audio quality settings, along with forcing the
-             * resolution declared in video parameters of the inbound executable.
-             *
-             * The enhancements are applied based on the provided configuration and the successful inference
-             * the last used profile in the specified profiles directory.
-             */
-
+            /// <summary>
+            /// We enhance the player's profile by applying the highest video &amp;
+            /// audio quality settings, along with forcing the resolution
+            /// declared in video parameters of the inbound executable.
+            /// <br/>
+            /// The enhancements are applied based on the provided configuration
+            /// and the successful inference the last used profile in the
+            /// specified profiles directory.
+            /// </summary>
             void Blam()
             {
                 Profile blam;
@@ -424,13 +425,16 @@ namespace HXE
                     Error(msg);
                 }
 
-                /**
-                 * Apply the resolution specified in video parameters of the inbound executable OR apply the primary screen's
-                 * current resolution. This enforces HCE to run at the desired or native resolution, and also obsoletes Ecran.
-                 *
-                 * Additionally, effects and qualities are enabled and set to the maximum level, respectively. Of course, this
-                 * also depends on the provided configuration.
-                 */
+                /// <summary>
+                /// Apply the resolution specified in video parameters of the
+                /// inbound executable OR apply the primary screen's current
+                /// resolution.This enforces HCE to run at the desired or native
+                /// resolution, and also obsoletes Ecran.
+                /// <br/>
+                /// Additionally, effects and qualities are enabled and set to
+                /// the maximum level, respectively. Of course, this also
+                /// depends on the provided configuration.
+                /// </summary>
                 void Video()
                 {
                     if (!configuration.Video.ResolutionEnabled)
@@ -511,11 +515,11 @@ namespace HXE
                     Core("BLAM.VIDEO: Video enhancements have been applied accordingly.");
                 }
 
-                /**
-                 * Apply the highest audio settings and toggle Hardware Acceleration & EAX. The latter will require a compatible
-                 * library such as DSOAL for it to actually work.
-                 */
-
+                /// <summary>
+                ///  Apply the highest audio settings and toggle Hardware
+                ///  Acceleration &amp; EAX. The latter will require a compatible
+                ///  library such as DSOAL for it to actually work.
+                /// </summary>
                 void Audio()
                 {
                     if (configuration.Audio.Quality)
@@ -553,10 +557,7 @@ namespace HXE
                     Core("BLAM.AUDIO: Audio enhancements have been applied accordingly.");
                 }
 
-                /**
-                 * Apply SPV3's preset input to the controller.
-                 */
-
+                /// <summary> Apply SPV3's preset input to the controller. </summary>
                 void Input()
                 {
                     if (!configuration.Input.Override)
@@ -601,11 +602,11 @@ namespace HXE
                 }
             }
 
-            /**
-             * For SPV3.2+, we will tweak the OpenSauce settings to ensure full compatibility with 3.2+'s specifications and
-             * post-processing effects.
-             */
-
+            /// <summary>
+            /// For SPV3.2+, we will tweak the OpenSauce settings to ensure full
+            /// compatibility with 3.2+'s specifications and post - processing
+            /// effects.
+            /// </summary>
             void Open()
             {
                 var open = (OpenSauce)Custom.OpenSauce(executable.Profile.Path);
@@ -664,11 +665,11 @@ namespace HXE
                 }
             }
 
-            /**
-             * Gracefully halt any potentially hanging HCE processes, conditionally patch the HCE executable with LAA flag,
-             * and start the executable.
-             */
-
+            /// <summary>
+            /// Gracefully halt any potentially hanging HCE processes,
+            /// conditionally patch the HCE executable with LAA flag, and start
+            /// the executable.
+            /// </summary>
             void Exec()
             {
                 Reset();
@@ -678,13 +679,14 @@ namespace HXE
 
                 Core("MAIN.EXEC: All HCE execution routines have been successfully resolved.");
 
-                /**
-                 * This method encourages the kernel to wait for a potential HCE process to end before proceeding with any
-                 * subsequent routines. For some odd reason, there are cases where HCE runs in the background after the end-user
-                 * exits it, thus prohibiting any additional processes from being invoked. To mitigate that, we gracefully kill
-                 * any existing ones.
-                 */
-
+                /// <summary>
+                /// This method encourages the kernel to wait for a potential
+                /// HCE process to end before proceeding with any subsequent
+                /// routines. For some odd reason, there are cases where HCE
+                /// runs in the background after the end-user exits it, thus
+                /// prohibiting any additional processes from being invoked. To
+                /// mitigate that, we gracefully kill any existing ones.
+                /// </summary>
                 void Reset()
                 {
                     Info("Killing existing HCE processes");
@@ -717,11 +719,11 @@ namespace HXE
                     Core("EXEC.RESET: Finalised attempts of killing potential HCE processes.");
                 }
 
-                /**
-                 * If the HCE executable is not already patched with the LAA flag, this method will take care of modifying the
-                 * byte's value to enable the respective LAA flag.
-                 */
-
+                /// <summary>
+                /// If the HCE executable is not already patched with the LAA
+                /// flag, this method will take care of modifying the byte's
+                /// value to enable the respective LAA flag.
+                /// </summary>
                 void Patch()
                 {
                     if (configuration.Video.GammaOn == false)
@@ -741,10 +743,9 @@ namespace HXE
                     }
                 }
 
-                /**
-                 * God is on my side if this method actually gets called.
-                 */
-
+                /// <summary>
+                /// God is on my side if this method actually gets called.
+                /// </summary>
                 void Start()
                 {
                     try
@@ -762,10 +763,7 @@ namespace HXE
                     }
                 }
 
-                /**
-                 * Bless for border-less!
-                 */
-
+                /// <summary> Bless for border-less! </summary>
                 void Bless()
                 {
                     if (!configuration.Video.Bless)
@@ -850,13 +848,18 @@ namespace HXE
         {
             public enum ConfigurationMode
             {
-                HCE,   /* tweaks, hce patches & enhancements */
-                SPV32, /* shaders, campaign resume, tweaks   */
-                SPV33  /* SPV32, campaign++, deband          */
+                /// <summary> tweaks, hce patches &amp; enhancements </summary>
+                HCE,
+                /// <summary> shaders, campaign resume, tweaks </summary>
+                SPV32,
+                /// <summary> SPV32, campaign++, deband </summary>
+                SPV33
             }
 
-            private const int Length = 256; /* persistence binary length */
-            private readonly string _path;        /* persistence binary path   */
+            /// <summary> persistence binary length </summary>
+            private const int Length = 256; /*  */
+            /// <summary> persistence binary path </summary>
+            private readonly string _path;
 
             /// <summary>
             /// Initiate a new Configuration instance. If it exists, a Configuration file (Paths.Configuration) is loaded.
@@ -875,13 +878,21 @@ namespace HXE
                 _path = path;
             }
 
-            public ConfigurationMode Mode { get; set; } = ConfigurationMode.HCE;     /* kernel mode        */
-            public ConfigurationMain Main { get; set; } = new ConfigurationMain();   /* main invocations   */
-            public ConfigurationVideo Video { get; set; } = new ConfigurationVideo();  /* profile video      */
-            public ConfigurationAudio Audio { get; set; } = new ConfigurationAudio();  /* profile audio      */
-            public ConfigurationInput Input { get; set; } = new ConfigurationInput();  /* profile input      */
-            public ConfigurationTweaks Tweaks { get; set; } = new ConfigurationTweaks(); /* profile tweaks     */
-            public uint Shaders { get; set; } = 0;                         /* spv3 shaders       */
+            /// <summary> kernel mode </summary>
+            public ConfigurationMode Mode { get; set; } = ConfigurationMode.HCE;
+            /// <summary> main invocations </summary>
+            public ConfigurationMain Main { get; set; } = new ConfigurationMain();
+            /// <summary> profile video </summary>
+            public ConfigurationVideo Video { get; set; } = new ConfigurationVideo();
+            /// <summary> profile audio </summary>
+            public ConfigurationAudio Audio { get; set; } = new ConfigurationAudio();
+            /// <summary> profile input </summary>
+            public ConfigurationInput Input { get; set; } = new ConfigurationInput();
+            /// <summary> profile tweaks </summary>
+            public ConfigurationTweaks Tweaks { get; set; } = new ConfigurationTweaks();
+            /// <summary> spv3 shaders </summary>
+            public uint Shaders { get; set; } = 0;
+            /// <inheritdoc cref="_path"/>"
             public string Path { get => _path; }
 
             /// <summary>
@@ -1076,43 +1087,64 @@ namespace HXE
 
             public class ConfigurationMain
             {
-                public bool Reset { get; set; } = true;  /* kill HCE process   */
-                public bool Patch { get; set; } = true;  /* patch LAA flag     */
-                public bool Start { get; set; } = true;  /* invoke HCE process */
-                public bool Resume { get; set; } = true;  /* resume mission     */
-                public bool Elevated { get; set; } = false; /* invoke as admin   */
+                /// <summary> kill HCE process </summary>
+                public bool Reset { get; set; } = true;
+                /// <summary> patch LAA flag </summary>
+                public bool Patch { get; set; } = true;
+                /// <summary> invoke HCE process </summary>
+                public bool Start { get; set; } = true;
+                /// <summary> resume mission </summary>
+                public bool Resume { get; set; } = true;
+                /// <summary> invoke as admin to work around file permissions and VirtualStore virtualization</summary>
+                public bool Elevated { get; set; } = false;
             }
 
             public class ConfigurationVideo
             {
-                public bool ResolutionEnabled { get; set; } = false; /* auto resolution */
-                public bool Uncap { get; set; } = true;  /* unlock framerate   */
-                public bool Quality { get; set; }          /* set to false by default for optimisation */
-                public bool GammaOn { get; set; } = false; /* enable hce gamma   */
-                public byte Gamma { get; set; }          /* game video gamma   */
-                public bool Bless { get; set; } = false; /* border-less hack   */
+                /// <summary> auto resolution </summary>
+                public bool ResolutionEnabled { get; set; } = false;
+                /// <summary> unlock framerate </summary>
+                public bool Uncap { get; set; } = true;
+                /// <summary> set to false by default for optimization </summary>
+                public bool Quality { get; set; }
+                /// <summary> enable hce gamma </summary>
+                public bool GammaOn { get; set; } = false;
+                /// <summary> game video gamma </summary>
+                public byte Gamma { get; set; }
+                /// <summary> border-less hack </summary>
+                public bool Bless { get; set; } = false;
             }
 
             public class ConfigurationAudio
             {
-                public bool Quality { get; set; } = true; /* auto high quality */
-                public bool Enhancements { get; set; } = true; /* eax/hardware acc. */
+                /// <summary> auto high quality </summary>
+                public bool Quality { get; set; } = true;
+                /// <summary> eax/hardware acc. </summary>
+                public bool Enhancements { get; set; } = true;
             }
 
             public class ConfigurationInput
             {
-                public bool Override { get; set; } = true; /* override mapping */
+                /// <summary> override mapping </summary>
+                public bool Override { get; set; } = true;
             }
 
             public class ConfigurationTweaks
             {
-                public bool CinemaBars { get; set; } = true; /* SPV3 cinematic bars   */
-                public bool Sensor { get; set; } = true; /* SPV3 motion sensor    */
-                public bool Magnetism { get; set; } = true; /* controller magnetism  */
-                public bool AutoAim { get; set; } = true; /* controller auto-aim   */
-                public bool Acceleration { get; set; }         /* mouse acceleration    */
-                public bool Unload { get; set; }         /* unload SPV3 shaders   */
-                public uint Patches { get; set; } = 0;    /* haloce exe patches    */ /** See HXE.Patches.KPatches */
+                /// <summary> SPV3 cinematic bars </summary>
+                public bool CinemaBars { get; set; } = true;
+                /// <summary> SPV3 motion sensor </summary>
+                public bool Sensor { get; set; } = true;
+                /// <summary> controller magnetism </summary>
+                public bool Magnetism { get; set; } = true;
+                /// <summary> controller auto-aim </summary>
+                public bool AutoAim { get; set; } = true;
+                /// <summary> mouse acceleration </summary>
+                public bool Acceleration { get; set; }
+                /// <summary> unload SPV3 shaders </summary>
+                public bool Unload { get; set; }
+                /// <summary> haloce exe patches; See <see cref="HXE.Patcher.EXEP"/> </summary>
+                public uint Patches { get; set; } = 0;
             }
         }
     }
