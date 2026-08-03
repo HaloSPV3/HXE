@@ -96,6 +96,7 @@ namespace HXE
         {
             /* Clear log file */
             {
+                // todo: rotate log files so no more than five exist and previous logs persist
                 if (Exists(Paths.Exception) && new FileInfo(Paths.Exception).Length > 1048576 * 8) // If larger than 8 MiB, ...
                     System.IO.File.WriteAllText(Paths.Exception, ""); // ...clear log.
             }
