@@ -30,8 +30,8 @@ namespace HXE
   /// </summary>
   public partial class Positions : Window
   {
-    private string _source;
-    private string _target;
+    private string _source = string.Empty;
+    private string _target = string.Empty;
 
     public Positions()
     {

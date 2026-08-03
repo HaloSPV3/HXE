@@ -364,7 +364,7 @@ namespace HXE
         {
             public bool ShowHUD { get; set; }
             public bool ScaleHUD { get; set; }
-            public HUDHUDScale HUDScale { get; set; }
+            public HUDHUDScale HUDScale { get; set; } = new() { X = 0, Y = 0 };
 
             public class HUDHUDScale
             {

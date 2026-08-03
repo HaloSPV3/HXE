@@ -27,7 +27,7 @@ namespace HXE
     /// <remarks><see href="https://raw.githubusercontent.com/HaloSPV3/HCE/meta/update.hxe"/></remarks>
     public class Latest
     {
-        public List<App> Apps { get; }
+        public List<App> Apps { get; } = [];
         public struct App
         {
             public readonly string name;
