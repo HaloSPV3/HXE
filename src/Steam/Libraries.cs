@@ -68,7 +68,7 @@ namespace HXE.Steam
 
                 return searchResults.ToList();
             }
-            catch(System.Exception e)
+            catch (System.Exception e)
             {
                 throw new System.Exception($"Failed the search for 'LibraryFolders.vdf' in '{rootDir}'. Reason:\n" + e.ToString(), e);
             }
