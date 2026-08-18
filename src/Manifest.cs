@@ -94,10 +94,7 @@ namespace HXE
     /// <returns>
     ///   String representation of the inbound object.
     /// </returns>
-    public static implicit operator string(Manifest manifest)
-    {
-      return manifest.Path;
-    }
+    public static implicit operator string(Manifest manifest) => manifest.Path;
 
     /// <summary>
     ///   Represents the inbound string as an object.
@@ -108,13 +105,7 @@ namespace HXE
     /// <returns>
     ///   Object representation of the inbound string.
     /// </returns>
-    public static explicit operator Manifest(string name)
-    {
-      return new Manifest
-      {
-        Path = name
-      };
-    }
+    public static explicit operator Manifest(string name) => new() { Path = name };
 
     /// <summary>
     ///   Manifest member representing a package on the filesystem with installable entries.

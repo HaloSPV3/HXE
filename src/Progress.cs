@@ -91,10 +91,7 @@ namespace HXE
     /// <returns>
     ///   String representation of the inbound object.
     /// </returns>
-    public static implicit operator string(Progress progress)
-    {
-      return progress.Path;
-    }
+    public static implicit operator string(Progress progress) => progress.Path;
 
     /// <summary>
     ///   Represents the inbound string as an object.
@@ -105,12 +102,6 @@ namespace HXE
     /// <returns>
     ///   Object representation of the inbound string.
     /// </returns>
-    public static explicit operator Progress(string name)
-    {
-      return new Progress
-      {
-        Path = name
-      };
-    }
+    public static explicit operator Progress(string name) => new (){ Path = name };
   }
 }

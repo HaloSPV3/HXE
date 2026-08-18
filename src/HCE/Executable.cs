@@ -187,10 +187,7 @@ namespace HXE.HCE
         /// <returns>
         ///   String representation of the inbound object.
         /// </returns>
-        public static implicit operator string(Executable executable)
-        {
-            return executable.Path;
-        }
+        public static implicit operator string(Executable executable) => executable.Path;
 
         /// <summary>
         ///   Represents the inbound string as an object.
@@ -201,13 +198,7 @@ namespace HXE.HCE
         /// <returns>
         ///   Object representation of the inbound string.
         /// </returns>
-        public static explicit operator Executable(string executable)
-        {
-            return new Executable
-            {
-                Path = executable
-            };
-        }
+        public static explicit operator Executable(string executable) => new() { Path = executable };
 
         public class DebugOptions
         {

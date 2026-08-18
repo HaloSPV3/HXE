@@ -116,10 +116,7 @@ namespace HXE
         /// <returns>
         ///   String representation of the inbound object.
         /// </returns>
-        public static implicit operator string(File file)
-        {
-            return file.Path;
-        }
+        public static implicit operator string(File file) => file.Path;
 
         /// <summary>
         ///   Represents the inbound string as an object.
@@ -130,12 +127,6 @@ namespace HXE
         /// <returns>
         ///   Object representation of the inbound string.
         /// </returns>
-        public static explicit operator File(string name)
-        {
-            return new File
-            {
-                Path = name
-            };
-        }
+        public static explicit operator File(string name) => new() { Path = name };
     }
 }

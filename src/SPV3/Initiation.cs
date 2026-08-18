@@ -213,10 +213,7 @@ namespace HXE.SPV3
         /// <returns>
         ///   String representation of the inbound object.
         /// </returns>
-        public static implicit operator string(Initiation initiation)
-        {
-            return initiation.Path;
-        }
+        public static implicit operator string(Initiation initiation) => initiation.Path;
 
         /// <summary>
         ///   Represents the inbound string as an object.
@@ -227,12 +224,7 @@ namespace HXE.SPV3
         /// <returns>
         ///   Object representation of the inbound string.
         /// </returns>
-        public static explicit operator Initiation(string name)
-        {
-            return new Initiation
-            {
-                Path = name
-            };
-        }
+        public static explicit operator Initiation(string name) => new() { Path = name };
     }
 }
+

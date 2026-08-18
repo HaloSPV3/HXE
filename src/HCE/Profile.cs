@@ -697,10 +697,7 @@ namespace HXE.HCE
         /// <returns>
         ///   String representation of the inbound object.
         /// </returns>
-        public static implicit operator string(Profile profile)
-        {
-            return profile.Path;
-        }
+        public static implicit operator string(Profile profile) => profile.Path;
 
         /// <summary>
         ///   Represents the inbound string as an object.
@@ -711,13 +708,7 @@ namespace HXE.HCE
         /// <returns>
         ///   Object representation of the inbound string.
         /// </returns>
-        public static explicit operator Profile(string path)
-        {
-            return new Profile
-            {
-                Path = path
-            };
-        }
+        public static explicit operator Profile(string path) => new() { Path = path };
 
         /// <summary>
         ///   Offsets for the data stored in the blam.sav binary.

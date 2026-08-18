@@ -138,10 +138,7 @@ namespace HXE.HCE
         /// <returns>
         ///   String representation of the inbound object.
         /// </returns>
-        public static implicit operator string(LastProfile lastProfile)
-        {
-            return lastProfile.Path;
-        }
+        public static implicit operator string(LastProfile lastProfile) => lastProfile.Path;
 
         /// <summary>
         ///   Represents the inbound string as an object.
@@ -152,12 +149,6 @@ namespace HXE.HCE
         /// <returns>
         ///   Object representation of the inbound string.
         /// </returns>
-        public static explicit operator LastProfile(string name)
-        {
-            return new LastProfile
-            {
-                Path = name
-            };
-        }
+        public static explicit operator LastProfile(string name) => new() { Path = name };
     }
 }

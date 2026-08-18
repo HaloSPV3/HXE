@@ -96,10 +96,7 @@ namespace HXE.SPV3
         /// <returns>
         ///   String representation of the inbound object.
         /// </returns>
-        public static implicit operator string(Chimera chimera)
-        {
-            return chimera.Path;
-        }
+        public static implicit operator string(Chimera chimera) => chimera.Path;
 
         /// <summary>
         ///   Represents the inbound string as an object.
@@ -110,12 +107,6 @@ namespace HXE.SPV3
         /// <returns>
         ///   Object representation of the inbound string.
         /// </returns>
-        public static explicit operator Chimera(string name)
-        {
-            return new Chimera
-            {
-                Path = name
-            };
-        }
+        public static explicit operator Chimera(string name) => new() { Path = name };
     }
 }
