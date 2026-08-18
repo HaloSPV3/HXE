@@ -3456,9 +3456,6 @@ __metadata:
     semantic-release: "npm:^25.0.8"
     semantic-release-export-data: "npm:^1.2.0"
     typescript: "npm:^6.0.3"
-  dependenciesMeta:
-    "@halospv3/hce.shared-config@3.5.2":
-      unplugged: true
   languageName: unknown
   linkType: soft
 
