@@ -19,15 +19,17 @@
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
     <!-- Build | Strong Naming -->
 
-    <TFM_NET6_OR_LATER>$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net6.0'))</TFM_NET6_OR_LATER>
+    <NET6_0_OR_GREATER>$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net6.0'))</NET6_0_OR_GREATER>
+    <NET7_0_OR_GREATER>$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net7.0'))</NET7_0_OR_GREATER>
+    <NET8_0_OR_GREATER>$([System.Text.RegularExpressions.Regex]::IsMatch("$(TargetFramework)", 'net([89]|\d{2}).0', RegexOptions.ECMAScript))</NET8_0_OR_GREATER>
 
     <!-- Publish -->
-    <IsTrimmable>$(TFM_NET6_OR_LATER)</IsTrimmable>
+    <IsTrimmable>$(NET6_0_OR_GREATER)</IsTrimmable>
     <!-- Waiting for trim-compatible WPF -->
     <!--<PublishTrimmed>true</PublishTrimmed> -->
-    <PublishSingleFile>$(TFM_NET6_OR_LATER)</PublishSingleFile>
+    <PublishSingleFile>$(NET6_0_OR_GREATER)</PublishSingleFile>
     <RuntimeIdentifier Condition="'$(RuntimeIdentifier)' == '' AND '$(PublishSingleFile)' == 'true'">win7-x86</RuntimeIdentifier>
-    <SelfContained Condition="'$(SelfContained)' == '' AND '$(RuntimeIdentifier)' != '' AND '$(TFM_NET6_OR_LATER)' == 'true'">true</SelfContained>
+    <SelfContained Condition="'$(SelfContained)' == '' AND '$(RuntimeIdentifier)' != '' AND '$(NET6_0_OR_GREATER)' == 'true'">true</SelfContained>
     <PublishSingleFile Condition="'$(PublishSingleFile)' == 'true' AND $(RuntimeIdentifier.Contains('win7'))">$([MSBuild]::VersionGreaterThanOrEquals($(NETCoreSdkVersion), '6.0.300'))</PublishSingleFile>
     <!-- Misc -->
     <ProjectGuid>{ACAA5D9F-B23D-43E1-B2DF-8C03230975A1}</ProjectGuid>
@@ -64,7 +66,7 @@
   <PropertyGroup Condition="'$(PublishSingleFile)' == 'true'">
     <SelfContained>true</SelfContained>
     <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
-    <EnableCompressionInSingleFile>$(TFM_NET6_OR_LATER)</EnableCompressionInSingleFile>
+    <EnableCompressionInSingleFile>$(NET6_0_OR_GREATER)</EnableCompressionInSingleFile>
   </PropertyGroup>
 
   <PropertyGroup Label="Nuget Properties">
