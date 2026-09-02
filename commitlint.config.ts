@@ -15,6 +15,7 @@ const scopes = {
     + 'but are not required at runtime nor bundled with or statically linked into the published '
     + 'binaries or packages. For NuGet packages/PackageReferences, this would be anything with'
     + 'PrivateAssets="All" and no "runtime", "native", or "contentfiles" to be included in output.',
+  File: 'src/File.cs',
   HCE: 'Affects the HXE.HCE namespace or its descendants.',
   Installer: 'src/Installer.cs',
   Kernel: 'src/Kernel.cs',
