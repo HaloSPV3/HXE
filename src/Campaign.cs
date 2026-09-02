@@ -39,6 +39,7 @@ namespace HXE
       Path = path;
     }
 
+    /// <summary> Load Campaign data from an XML file to this instance. </summary>
     public void Load()
     {
       using FileStream fs = new(Path, FileMode.Open);
