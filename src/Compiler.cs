@@ -177,6 +177,9 @@ namespace HXE
 
       foreach (var package in manifest.Packages)
       {
+        if (package.Name is null) throw new NullReferenceException("This should never happen");
+        if (package.Entry.Name is null) throw new NullReferenceException("This should never happen");
+
         progress?.Report(new Status
         {
           Current = c - 1,
