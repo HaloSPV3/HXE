@@ -3,3 +3,7 @@
 	url = https://github.com/pR0Ps/halo-ce-patches.git
 	branch = master
 	ignore = all
+[submodule "XmlSourceGenerator"]
+	path = ext/XmlSourceGenerator
+	url = https://github.com/BinToss/saivineeth100.XmlSourceGenerator.git
+	branch = develop
