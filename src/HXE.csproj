@@ -52,7 +52,7 @@
     <MeziantouPolyfill_ExcludedPolyfills Condition="$(TargetFramework.StartsWith('net4'))">T:System.Runtime.CompilerServices.OverloadResolutionPriorityAttribute</MeziantouPolyfill_ExcludedPolyfills>
   </PropertyGroup>
 
-  <ItemGroup>
+  <ItemGroup Label="Assembly Attributes">
     <!-- Mark assemblies with NeutralResourcesLanguageAttribute (CA1824) https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1824
       https://stackoverflow.com/questions/77245575/how-to-set-neutralresourceslanguageattribute-in-my-net-core-project -->
     <AssemblyAttribute Include="System.Resources.NeutralResourcesLanguageAttribute">
@@ -96,7 +96,7 @@
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
 
-  <ItemGroup>
+  <ItemGroup Label="None, Content, EmbeddedResource">
     <None Include="../.github/**/*.*">
       <Link>.github/%(RecursiveDir)%(Filename)%(Extension)</Link>
     </None>
