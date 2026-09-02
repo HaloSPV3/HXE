@@ -15,6 +15,7 @@
     <Deterministic>true</Deterministic>
     <FileAlignment>512</FileAlignment>
     <Nullable>enable</Nullable>
+    <EnableDefaultEmbeddedResourceItems>false</EnableDefaultEmbeddedResourceItems>
 
     <!-- Build | Events -->
     <!-- Ensures GitVersion, SourceLink tasks only run after successful builds -->
@@ -127,6 +128,15 @@
     <EmbeddedResource Include="../ext/halo-ce-patches/patches.crk" WithCulture="false">
       <Link>Assets/%(Filename)%(Extension)</Link>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <!-- Default Include normally handled by EnableDefaultEmbeddedResourceItems -->
+    <EmbeddedResource Include="**/*.resx" />
+    <NonLocalizedResx Include="Resources/**/*.resx" Exclude="Resources/**/*.de.resx;Resources/**/*.en.resx" />
+    <EmbeddedResource Update="@(NonLocalizedResx)">
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Properties/Resources.resx" EmitFormatMethods="true" WithCulture="false">
+      <Generator>MSBuild:Compile</Generator><!-- Tell Visual Studio to run a build if the resx file changes -->
     </EmbeddedResource>
     <EmbeddedResource Include="Assets/343I_DER.cer" />
     <Content Include="Assets/icon.ico" />

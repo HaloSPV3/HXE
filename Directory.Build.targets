@@ -1,0 +1,22 @@
+<Project>
+  <PropertyGroup>
+    <!-- Required for intellisense -->
+    <CoreCompileDependsOn>CoreResGen;$(CoreCompileDependsOn)</CoreCompileDependsOn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="@(EmbeddedResource -> WithMetadataValue('Generator', 'MSBuild:Compile'))" Type="Resx">
+      <StronglyTypedFileName>$(IntermediateOutputPath)\$([MSBuild]::ValueOrDefault('%(RelativeDir)', '').Replace('\', '.').Replace('/', '.'))%(Filename).g$(DefaultLanguageSourceExtension)</StronglyTypedFileName>
+      <StronglyTypedLanguage>$(Language)</StronglyTypedLanguage>
+      <StronglyTypedNamespace Condition="'%(RelativeDir)' == ''">$(RootNamespace)</StronglyTypedNamespace>
+      <StronglyTypedNamespace Condition="'%(RelativeDir)' != ''">$(RootNamespace).$([MSBuild]::ValueOrDefault('%(RelativeDir)', '').Replace('\', '.').Replace('/', '.').TrimEnd('.'))</StronglyTypedNamespace>
+      <StronglyTypedClassName>%(Filename)</StronglyTypedClassName>
+      <!-- if you want the elements to be public, the
+      EmbeddedResource/PublicClass property must be included with true. The
+      resource class can then also be used in WPF with x:Static. See
+      https://github.com/kzu/kzu.github.io/discussions/11#discussioncomment-13418634,
+      https://github.com/dotnet/msbuild/issues/4751#issuecomment-2583272319 -->
+      <!-- <PublicClass>true</PublicClass> -->
+    </EmbeddedResource>
+  </ItemGroup>
+</Project>
