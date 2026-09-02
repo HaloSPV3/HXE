@@ -686,11 +686,11 @@ namespace HXE
 		}
 
 #if !PCL
-		protected OptionException(SerializationInfo info, StreamingContext context)
+		/* protected OptionException(SerializationInfo info, StreamingContext context)
 			: base(info, context)
 		{
 			_option = info.GetString("OptionName");
-		}
+		} */
 #endif
 
 		public string OptionName
