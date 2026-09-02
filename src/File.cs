@@ -27,7 +27,7 @@ using static System.IO.Path;
 namespace HXE
 {
     /// <summary>
-    ///   Object defining domain rules for a file on the filesystem, and exposing common file manipulation & management
+    ///   Object defining domain rules for a file on the filesystem, and exposing common file manipulation and management
     ///   methods.
     /// </summary>
     public class File
