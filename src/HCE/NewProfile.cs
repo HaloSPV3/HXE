@@ -57,18 +57,18 @@ namespace HXE.HCE
 
             /** Handle Defaulted Parameters and set Exists booleans. */
             if (lastprof is null)
-                lastprof = (LastProfile) Custom.LastProfile(pathParam);
+                lastprof = (LastProfile)Custom.LastProfile(pathParam);
 
             if (profile is null)
             {
                 var lastUsedExists = System.IO.File.Exists(Custom.Profile(pathParam, lastprof.Profile));
 
                 if (lastUsedExists)
-                    profile = (Profile) Custom.Profile(pathParam, lastprof.Profile);
+                    profile = (Profile)Custom.Profile(pathParam, lastprof.Profile);
                 else if (Profile.List().Count != 0)
                     profile = Profile.List(Custom.Profiles(pathParam))[0];
                 else
-                    profile = (Profile) Custom.Profile(pathParam, "New001");
+                    profile = (Profile)Custom.Profile(pathParam, "New001");
             }
 
             bool lastprofExists = lastprof.Exists();
@@ -128,7 +128,7 @@ namespace HXE.HCE
             Core("Creating Scaffold...");
 
             /** Set Path to the -path executable parameter */
-            var file = (File) pathParam;
+            var file = (File)pathParam;
 
             RootDir();
             SavegamesDir();
@@ -209,164 +209,164 @@ namespace HXE.HCE
                         ms.Position = 0x13c;
                         while (ms.Position < 0x93a)
                         {
-                            bw.Write((ushort) 0x7fff);
+                            bw.Write((ushort)0x7fff);
                         }
 
                         /** Write Gamepad Menu Bindings filler (ffff) */
                         ms.Position = 0x32A;
                         while (ms.Position != 0x33a)
                         {
-                            bw.Write((ushort) 0xffff);
+                            bw.Write((ushort)0xffff);
                         }
 
                         /** Unknown */
                         {
                             ms.Position = 0x0;
-                            bw.Write((byte) 0x9);
+                            bw.Write((byte)0x9);
 
                             ms.Position = 0x11a;
-                            bw.Write((ushort) 0xffff);
-                            bw.Write((ushort) 0x1);
+                            bw.Write((ushort)0xffff);
+                            bw.Write((ushort)0x1);
 
                             ms.Position = 0x12E;
-                            bw.Write((byte) 0x3);
+                            bw.Write((byte)0x3);
 
                             ms.Position = 0x134;
-                            bw.Write((ushort) 0x9);
-                            bw.Write((ushort) 0xC);
-                            bw.Write((ushort) 0x1B);
-                            bw.Write((ushort) 0x1C);
+                            bw.Write((ushort)0x9);
+                            bw.Write((ushort)0xC);
+                            bw.Write((ushort)0x1B);
+                            bw.Write((ushort)0x1C);
 
                             ms.Position = 0x14E;
-                            bw.Write((ushort) 0x12);
+                            bw.Write((ushort)0x12);
 
                             ms.Position = 0x170;
-                            bw.Write((ushort) 0x3);
-                            bw.Write((ushort) 0x5);
-                            bw.Write((ushort) 0x13);
-                            bw.Write((ushort) 0x2);
-                            bw.Write((ushort) 0xD);
-                            bw.Write((ushort) 0xF);
-                            bw.Write((ushort) 0x10);
+                            bw.Write((ushort)0x3);
+                            bw.Write((ushort)0x5);
+                            bw.Write((ushort)0x13);
+                            bw.Write((ushort)0x2);
+                            bw.Write((ushort)0xD);
+                            bw.Write((ushort)0xF);
+                            bw.Write((ushort)0x10);
 
                             ms.Position = 0x18E;
-                            bw.Write((ushort) 0x15);
-                            bw.Write((ushort) 0x14);
-                            bw.Write((ushort) 0x16);
-                            bw.Write((ushort) 0x4);
-                            bw.Write((ushort) 0x1);
-                            bw.Write((ushort) 0x11);
+                            bw.Write((ushort)0x15);
+                            bw.Write((ushort)0x14);
+                            bw.Write((ushort)0x16);
+                            bw.Write((ushort)0x4);
+                            bw.Write((ushort)0x1);
+                            bw.Write((ushort)0x11);
 
                             ms.Position = 0x1A4;
-                            bw.Write((ushort) 0x8);
+                            bw.Write((ushort)0x8);
                             ms.Position += 2;
-                            bw.Write((ushort) 0xB);
-                            bw.Write((ushort) 0xE);
+                            bw.Write((ushort)0xB);
+                            bw.Write((ushort)0xE);
 
                             ms.Position = 0x1BE;
-                            bw.Write((ushort) 0xA);
+                            bw.Write((ushort)0xA);
 
                             ms.Position = 0x1C4;
-                            bw.Write((ushort) 0x0);
+                            bw.Write((ushort)0x0);
 
                             ms.Position = 0x20E;
-                            bw.Write((ushort) 0x7);
-                            bw.Write((ushort) 0xB);
-                            bw.Write((ushort) 0x6);
+                            bw.Write((ushort)0x7);
+                            bw.Write((ushort)0xB);
+                            bw.Write((ushort)0x6);
 
                             ms.Position = 0x21E;
-                            bw.Write((ushort) 0x1A);
-                            bw.Write((ushort) 0x19);
-                            bw.Write((ushort) 0x17);
-                            bw.Write((ushort) 0x18);
+                            bw.Write((ushort)0x1A);
+                            bw.Write((ushort)0x19);
+                            bw.Write((ushort)0x17);
+                            bw.Write((ushort)0x18);
 
                             ms.Position = 0x93A;
-                            bw.Write((ushort) 0x0000);
-                            bw.Write((ushort) 0x0000);
-                            bw.Write((byte) 0x80);
-                            bw.Write((byte) 0x3F);
-                            bw.Write((ushort) 0x0000);
-                            bw.Write((byte) 0x80);
-                            bw.Write((byte) 0x3F);
-                            bw.Write((byte) 0xFC);
-                            bw.Write((byte) 0x04);
-                            bw.Write((byte) 0x41);
-                            bw.Write((byte) 0x3E);
-                            bw.Write((byte) 0xFC);
-                            bw.Write((byte) 0x04);
-                            bw.Write((byte) 0x41);
-                            bw.Write((byte) 0x3E);
-                            bw.Write((ushort) 0x0000);
-                            bw.Write((byte) 0x00);
-                            bw.Write((byte) 0x43);
-                            bw.Write((ushort) 0x0000);
-                            bw.Write((byte) 0x00);
-                            bw.Write((byte) 0x43);
-                            bw.Write((ushort) 0x0303);
-                            bw.Write((ushort) 0x0303);
-                            bw.Write((ushort) 0x0303);
-                            bw.Write((ushort) 0x0303);
-                            bw.Write((ushort) 0x0303);
-                            bw.Write((ushort) 0x0000);
-                            bw.Write((ushort) 0x0000);
-                            bw.Write((byte) 0x40);
-                            bw.Write((byte) 0x3f);
-                            bw.Write((ushort) 0x0000);
-                            bw.Write((byte) 0x40);
-                            bw.Write((byte) 0x3f);
+                            bw.Write((ushort)0x0000);
+                            bw.Write((ushort)0x0000);
+                            bw.Write((byte)0x80);
+                            bw.Write((byte)0x3F);
+                            bw.Write((ushort)0x0000);
+                            bw.Write((byte)0x80);
+                            bw.Write((byte)0x3F);
+                            bw.Write((byte)0xFC);
+                            bw.Write((byte)0x04);
+                            bw.Write((byte)0x41);
+                            bw.Write((byte)0x3E);
+                            bw.Write((byte)0xFC);
+                            bw.Write((byte)0x04);
+                            bw.Write((byte)0x41);
+                            bw.Write((byte)0x3E);
+                            bw.Write((ushort)0x0000);
+                            bw.Write((byte)0x00);
+                            bw.Write((byte)0x43);
+                            bw.Write((ushort)0x0000);
+                            bw.Write((byte)0x00);
+                            bw.Write((byte)0x43);
+                            bw.Write((ushort)0x0303);
+                            bw.Write((ushort)0x0303);
+                            bw.Write((ushort)0x0303);
+                            bw.Write((ushort)0x0303);
+                            bw.Write((ushort)0x0303);
+                            bw.Write((ushort)0x0000);
+                            bw.Write((ushort)0x0000);
+                            bw.Write((byte)0x40);
+                            bw.Write((byte)0x3f);
+                            bw.Write((ushort)0x0000);
+                            bw.Write((byte)0x40);
+                            bw.Write((byte)0x3f);
 
                             ms.Position = 0x962;
-                            bw.Write((byte) 0x40);
-                            bw.Write((byte) 0x3F);
-                            bw.Write((byte) 0x0);
-                            bw.Write((byte) 0x0);
-                            bw.Write((byte) 0x40);
-                            bw.Write((byte) 0x3F);
+                            bw.Write((byte)0x40);
+                            bw.Write((byte)0x3F);
+                            bw.Write((byte)0x0);
+                            bw.Write((byte)0x0);
+                            bw.Write((byte)0x40);
+                            bw.Write((byte)0x3F);
 
                             ms.Position = 0xA68;
-                            bw.Write((byte) 0x20);
-                            bw.Write((byte) 0x3);
-                            bw.Write((byte) 0x58);
-                            bw.Write((byte) 0x2);
-                            bw.Write((byte) 0x3C);
-                            bw.Write((byte) 0x0);
-                            bw.Write((byte) 0x2);
-                            bw.Write((byte) 0x2);
-                            bw.Write((byte) 0x1);
-                            bw.Write((byte) 0x1);
-                            bw.Write((byte) 0x1);
-                            bw.Write((byte) 0x2);
-                            bw.Write((byte) 0x2);
-                            bw.Write((byte) 0x2);
-                            bw.Write((byte) 0x1);
+                            bw.Write((byte)0x20);
+                            bw.Write((byte)0x3);
+                            bw.Write((byte)0x58);
+                            bw.Write((byte)0x2);
+                            bw.Write((byte)0x3C);
+                            bw.Write((byte)0x0);
+                            bw.Write((byte)0x2);
+                            bw.Write((byte)0x2);
+                            bw.Write((byte)0x1);
+                            bw.Write((byte)0x1);
+                            bw.Write((byte)0x1);
+                            bw.Write((byte)0x2);
+                            bw.Write((byte)0x2);
+                            bw.Write((byte)0x2);
+                            bw.Write((byte)0x1);
 
                             ms.Position = 0xb78;
-                            bw.Write((byte) 0xA);
-                            bw.Write((byte) 0xA);
-                            bw.Write((byte) 0x6);
-                            bw.Write((byte) 0x0);
-                            bw.Write((byte) 0x0);
-                            bw.Write((byte) 0x1);
-                            bw.Write((byte) 0x0);
-                            bw.Write((byte) 0x2);
+                            bw.Write((byte)0xA);
+                            bw.Write((byte)0xA);
+                            bw.Write((byte)0x6);
+                            bw.Write((byte)0x0);
+                            bw.Write((byte)0x0);
+                            bw.Write((byte)0x1);
+                            bw.Write((byte)0x0);
+                            bw.Write((byte)0x2);
 
                             ms.Position = 0xC80;
-                            bw.Write((byte) 0x3);
-                            bw.Write((byte) 0x1);
-                            bw.Write((byte) 0x1);
-                            bw.Write((byte) 0x00);
-                            bw.Write((ushort) 0x0000);
-                            bw.Write((byte) 0x1);
-                            bw.Write((byte) 0x1);
+                            bw.Write((byte)0x3);
+                            bw.Write((byte)0x1);
+                            bw.Write((byte)0x1);
+                            bw.Write((byte)0x00);
+                            bw.Write((ushort)0x0000);
+                            bw.Write((byte)0x1);
+                            bw.Write((byte)0x1);
 
                             ms.Position = 0xD8C;
                             bw.Write(System.Text.Encoding.Unicode.GetBytes("Halo"));
 
                             ms.Position = 0xEBF;
-                            bw.Write((byte) 0x3);
+                            bw.Write((byte)0x3);
 
                             ms.Position = 0xFC0;
-                            bw.Write((byte) 0x1);
+                            bw.Write((byte)0x1);
 
                             ms.Position = 0x1002;
                             bw.Write(0xFE);
@@ -378,10 +378,10 @@ namespace HXE.HCE
                             bw.Write(0x08);
 
                             ms.Position = 0x1FFC;
-                            bw.Write((byte) 0x50);
-                            bw.Write((byte) 0x3B);
-                            bw.Write((byte) 0xA1);
-                            bw.Write((byte) 0x3C);
+                            bw.Write((byte)0x50);
+                            bw.Write((byte)0x3B);
+                            bw.Write((byte)0xA1);
+                            bw.Write((byte)0x3C);
                         }
 
                         ms.Position = 0;

@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Copyright (c) 2019 Emilian Roman
  *
  * This software is provided 'as-is', without any express or implied
@@ -42,7 +42,7 @@ namespace HXE
     {
       Info("Saving weapon positions ...");
 
-      var openSauce = (OpenSauce) _source;
+      var openSauce = (OpenSauce)_source;
 
       if (!openSauce.Exists())
       {
@@ -67,16 +67,16 @@ namespace HXE
 
     private void BrowseSource(object sender, RoutedEventArgs e)
     {
-        var dialog = new OpenFileDialog
-        {
-            DefaultExt = ".xml",
-            Filter = "XML files (*.xml)|*.xml"
-        };
+      var dialog = new OpenFileDialog
+      {
+        DefaultExt = ".xml",
+        Filter = "XML files (*.xml)|*.xml"
+      };
 
-        if (dialog.ShowDialog() != true) return;
+      if (dialog.ShowDialog() != true) return;
 
-        _source            = dialog.FileName;
-        SourceTextBox.Text = _source;
+      _source = dialog.FileName;
+      SourceTextBox.Text = _source;
 
     }
 
@@ -85,12 +85,12 @@ namespace HXE
       var dialog = new SaveFileDialog
       {
         DefaultExt = ".bin",
-        Filter     = "BIN files (*.bin)|*.bin"
+        Filter = "BIN files (*.bin)|*.bin"
       };
 
       if (dialog.ShowDialog() != true) return;
 
-      _target            = dialog.FileName;
+      _target = dialog.FileName;
       TargetTextBox.Text = _target;
     }
   }

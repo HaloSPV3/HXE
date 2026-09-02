@@ -47,7 +47,7 @@ namespace HXE.Exceptions
 
     protected AssetException(
       SerializationInfo info,
-      StreamingContext  context) : base(info, context)
+      StreamingContext context) : base(info, context)
     {
     }
   }

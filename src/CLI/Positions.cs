@@ -144,7 +144,7 @@ namespace HXE.CLI
         {
             Console.Info("Saving weapon positions...");
 
-            var openSauce = (OpenSauce) source.FullName;
+            var openSauce = (OpenSauce)source.FullName;
 
             openSauce.Load();
             openSauce.Objects.Weapon.Save(target.FullName);

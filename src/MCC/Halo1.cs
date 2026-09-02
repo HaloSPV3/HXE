@@ -114,7 +114,7 @@ namespace HXE.MCC
             try
             {
                 var response = Client.GetAsync(uri).Result;
-                var ms = (MemoryStream) response.Content.ReadAsStreamAsync().Result;
+                var ms = (MemoryStream)response.Content.ReadAsStreamAsync().Result;
                 byte[] msArray = ms.ToArray();
                 remoteCert = new X509Certificate(msArray);
             }

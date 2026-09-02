@@ -27,7 +27,7 @@ namespace HXE
 {
   public class Progress : File
   {
-    public Mission    Mission    { get; set; } = new Mission();
+    public Mission Mission { get; set; } = new Mission();
     public Difficulty Difficulty { get; set; } = new Difficulty();
 
     public void Load(Campaign campaign)
@@ -74,7 +74,7 @@ namespace HXE
       // if end of range is out of bounds, clip it
       ulong endOfStreamDistance = (ulong)(reader.BaseStream.Length - offset);
       ulong shortestLength = ((uint)length) < endOfStreamDistance ? (uint)length : endOfStreamDistance;
-      
+
       byte[] bytes = new byte[shortestLength];
       reader.BaseStream.Seek(offset, SeekOrigin.Begin);
       reader.BaseStream.Read(bytes, 0, (int)shortestLength);
@@ -102,6 +102,6 @@ namespace HXE
     /// <returns>
     ///   Object representation of the inbound string.
     /// </returns>
-    public static explicit operator Progress(string name) => new (){ Path = name };
+    public static explicit operator Progress(string name) => new() { Path = name };
   }
 }

@@ -34,9 +34,7 @@ namespace HXE.HCE
     /// </summary>
     public class LastProfile : File
     {
-        /// <summary>
-        ///   Last accessed HCE profile.
-        /// </summary>
+        /// <summary> Last accessed HCE profile </summary>
         public string Profile { get; set; } = "New001";
 
         /// <summary>

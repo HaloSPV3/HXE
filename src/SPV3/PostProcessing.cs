@@ -31,8 +31,8 @@ namespace HXE.SPV3
     /// </summary>
     public enum DofOptions
     {
-      Off  = 0x0,
-      Low  = 0x1,
+      Off = 0x0,
+      Low = 0x1,
       High = 0x2
     }
 
@@ -41,9 +41,9 @@ namespace HXE.SPV3
     /// </summary>
     public enum MotionBlurOptions
     {
-      Off      = 0x0,
-      BuiltIn  = 0x1,
-      PombLow  = 0x2,
+      Off = 0x0,
+      BuiltIn = 0x1,
+      PombLow = 0x2,
       PombHigh = 0x3
     }
 
@@ -52,29 +52,29 @@ namespace HXE.SPV3
     /// </summary>
     public enum MxaoOptions
     {
-      Off  = 0x0,
-      Low  = 0x1,
+      Off = 0x0,
+      Low = 0x1,
       High = 0x2
     }
 
-    public bool                       Internal           { get; set; } = true;
-    public bool                       External           { get; set; } = true;
-    public bool                       GBuffer            { get; set; } = true;
-    public bool                       DepthFade          { get; set; } = true;
-    public bool                       Bloom              { get; set; } = false;
-    public bool                       LensDirt           { get; set; } = false;
-    public bool                       DynamicLensFlares  { get; set; } = false;
-    public bool                       VolumetricLighting { get; set; } = false;
-    public bool                       AntiAliasing       { get; set; } = false;
-    public bool                       HudVisor           { get; set; } = true;
-    public bool                       FilmGrain          { get; set; } = false;
-    public MotionBlurOptions          MotionBlur         { get; set; } = MotionBlurOptions.Off;
-    public MxaoOptions                MXAO               { get; set; } = MxaoOptions.Off;
-    public DofOptions                 DOF                { get; set; } = DofOptions.Off;
-    public ExperimentalPostProcessing Experimental       { get; set; } = new ExperimentalPostProcessing();
-    public bool                       SSR                { get; set; } = false;
-    public bool                       Deband             { get; set; } = false;
-    public bool                       AdaptiveHDR        { get; set; } = false;
+    public bool Internal { get; set; } = true;
+    public bool External { get; set; } = true;
+    public bool GBuffer { get; set; } = true;
+    public bool DepthFade { get; set; } = true;
+    public bool Bloom { get; set; } = false;
+    public bool LensDirt { get; set; } = false;
+    public bool DynamicLensFlares { get; set; } = false;
+    public bool VolumetricLighting { get; set; } = false;
+    public bool AntiAliasing { get; set; } = false;
+    public bool HudVisor { get; set; } = true;
+    public bool FilmGrain { get; set; } = false;
+    public MotionBlurOptions MotionBlur { get; set; } = MotionBlurOptions.Off;
+    public MxaoOptions MXAO { get; set; } = MxaoOptions.Off;
+    public DofOptions DOF { get; set; } = DofOptions.Off;
+    public ExperimentalPostProcessing Experimental { get; set; } = new ExperimentalPostProcessing();
+    public bool SSR { get; set; } = false;
+    public bool Deband { get; set; } = false;
+    public bool AdaptiveHDR { get; set; } = false;
 
     /// <summary>
     ///   Experimental overrides for HCE.
@@ -83,22 +83,22 @@ namespace HXE.SPV3
     {
       public enum ColorBlindModeOptions
       {
-        Off          = 0x0,
-        Protanopia   = 0x1,
+        Off = 0x0,
+        Protanopia = 0x1,
         Deuteranopes = 0x2,
-        Tritanopes   = 0x3
+        Tritanopes = 0x3
       }
 
       public enum ThreeDimensionalOptions
       {
-        Off          = 0x0,
-        Anaglyphic   = 0x1,
+        Off = 0x0,
+        Anaglyphic = 0x1,
         Interleaving = 0x2,
-        SideBySide   = 0x3
+        SideBySide = 0x3
       }
 
       public ThreeDimensionalOptions ThreeDimensional { get; set; } = ThreeDimensionalOptions.Off;
-      public ColorBlindModeOptions   ColorBlindMode   { get; set; } = ColorBlindModeOptions.Off;
+      public ColorBlindModeOptions ColorBlindMode { get; set; } = ColorBlindModeOptions.Off;
     }
   }
 }

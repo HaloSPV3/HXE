@@ -41,6 +41,7 @@ namespace HXE.SPV3
     /// </summary>
     public enum Mission
     {
+      #pragma warning disable IDE0055
       Spv3A10        = 0x2 /* base value */, /* must match data\levels\ui\scripts\script.hsc */
       Spv3A30        = Spv3A10        + 0x1, /* must match data\levels\ui\scripts\script.hsc */
       Spv3A50        = Spv3A30        + 0x1, /* must match data\levels\ui\scripts\script.hsc */
@@ -59,6 +60,7 @@ namespace HXE.SPV3
       LumoriaB       = LumoriaA       + 0x1, /* must match data\levels\ui\scripts\script.hsc */
       LumoriaCd      = LumoriaB       + 0x1, /* must match data\levels\ui\scripts\script.hsc */
       Spv3A05        = LumoriaCd      + 0x1  /* must match data\levels\ui\scripts\script.hsc */
+      #pragma warning restore IDE0055
     }
   }
 }

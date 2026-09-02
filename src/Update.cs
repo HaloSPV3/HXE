@@ -220,7 +220,7 @@ namespace HXE
                     {
                         Current = totalBytesDownloaded,
                         Total = (long)totalFileSize,
-                        Description = $"Requesting: {Name} ({ progressPercentage:P})"
+                        Description = $"Requesting: {Name} ({progressPercentage:P})"
                     });
                 };
 

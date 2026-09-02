@@ -79,7 +79,7 @@ namespace HXE.HCE
             }
 
             if (System.IO.File.Exists(fullName))
-                return (Executable) fullName;
+                return (Executable)fullName;
 
             throw new FileNotFoundException("Could not detect executable on the filesystem.");
         }

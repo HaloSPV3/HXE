@@ -255,7 +255,7 @@ namespace HXE
 		}
 	}
 
-	public class OptionValueCollection :  IList<string>
+	public class OptionValueCollection : IList<string>
 	{
 
 		private readonly List<string> _values = [];

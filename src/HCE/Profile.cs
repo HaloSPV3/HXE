@@ -70,19 +70,19 @@ namespace HXE.HCE
             {
                 void WriteBoolean(Offset offset, bool data)
                 {
-                    ms.Position = (int) offset;
+                    ms.Position = (int)offset;
                     bw.Write(data);
                 }
 
                 void WriteUShort(Offset offset, ushort data)
                 {
-                    ms.Position = (int) offset;
+                    ms.Position = (int)offset;
                     bw.Write(data);
                 }
 
                 void WriteByte(Offset offset, byte data)
                 {
-                    ms.Position = (int) offset;
+                    ms.Position = (int)offset;
                     bw.Write(data);
                 }
 
@@ -94,7 +94,7 @@ namespace HXE.HCE
                  * writing the profile name in the binary.
                  */
 
-                ms.Position = (int) Offset.ProfileName;
+                ms.Position = (int)Offset.ProfileName;
                 bw.Write(Encoding.Unicode.GetBytes(Details.Name));
 
                 /**
@@ -102,13 +102,13 @@ namespace HXE.HCE
                  * 16-bit integers, which can be then written to the binary.
                  */
 
-                WriteUShort(Offset.ProfileColour, (ushort) Details.Colour);
-                WriteUShort(Offset.VideoFrameRate, (ushort) Video.FrameRate);
-                WriteUShort(Offset.VideoQualityParticles, (ushort) Video.Particles);
-                WriteUShort(Offset.VideoQualityTextures, (ushort) Video.Quality);
-                WriteUShort(Offset.AudioQuality, (ushort) Audio.Quality);
-                WriteUShort(Offset.AudioVariety, (ushort) Audio.Variety);
-                WriteUShort(Offset.NetworkConnectionType, (ushort) Network.Connection);
+                WriteUShort(Offset.ProfileColour, (ushort)Details.Colour);
+                WriteUShort(Offset.VideoFrameRate, (ushort)Video.FrameRate);
+                WriteUShort(Offset.VideoQualityParticles, (ushort)Video.Particles);
+                WriteUShort(Offset.VideoQualityTextures, (ushort)Video.Quality);
+                WriteUShort(Offset.AudioQuality, (ushort)Audio.Quality);
+                WriteUShort(Offset.AudioVariety, (ushort)Audio.Variety);
+                WriteUShort(Offset.NetworkConnectionType, (ushort)Network.Connection);
 
                 /**
                  * The following values are values which can have any integer (within the limits of the data types, of course).
@@ -157,15 +157,15 @@ namespace HXE.HCE
                     {
                         Debug("Nulling input - " + offset);
 
-                        ms.Position = (int) offset;
-                        bw.Write((ushort) 0x7FFF);
+                        ms.Position = (int)offset;
+                        bw.Write((ushort)0x7FFF);
                     }
 
                     foreach (var offset in Enum.GetValues(typeof(Mouse)))
                     {
                         Debug("Nulling input - " + offset);
 
-                        ms.Position = (int) offset;
+                        ms.Position = (int)offset;
                         bw.Write((ushort) 0x7FFF);
                     }
 
@@ -173,15 +173,15 @@ namespace HXE.HCE
                     {
                         Debug("Nulling input - " + offset);
 
-                        ms.Position = (int) offset;
-                        bw.Write((ushort) 0x7FFF);
+                        ms.Position = (int)offset;
+                        bw.Write((ushort)0x7FFF);
                     }
 
                     foreach (var offset in Enum.GetValues(typeof(GP1_Input)))
                     {
                         Debug("Nulling input - " + offset);
 
-                        ms.Position = (int) offset;
+                        ms.Position = (int)offset;
                         bw.Write((ushort) 0x7FFF);
                     }
 
@@ -189,24 +189,24 @@ namespace HXE.HCE
                     {
                         Debug("Nulling input - " + offset);
 
-                        ms.Position = (int) offset;
-                        bw.Write((ushort) 0x7FFF);
+                        ms.Position = (int)offset;
+                        bw.Write((ushort)0x7FFF);
                     }
 
                     foreach (var offset in Enum.GetValues(typeof(GP3_Input)))
                     {
                         Debug("Nulling input - " + offset);
 
-                        ms.Position = (int) offset;
-                        bw.Write((ushort) 0x7FFF);
+                        ms.Position = (int)offset;
+                        bw.Write((ushort)0x7FFF);
                     }
 
                     foreach (var offset in Enum.GetValues(typeof(GamePadMenu)))
                     {
                         Debug("Nulling input - " + offset);
 
-                        ms.Position = (int) offset;
-                        bw.Write((ushort) 0xFFFF);
+                        ms.Position = (int)offset;
+                        bw.Write((ushort)0xFFFF);
                     }
                 }
 
@@ -214,8 +214,8 @@ namespace HXE.HCE
                 {
                     foreach (var mapping in Input.KeyboardMapping)
                     {
-                        var offset = (int) mapping.Value;  /* button */
-                        var value = (ushort) mapping.Key; /* action */
+                        var offset = (int)mapping.Value;  /* button */
+                        var value = (ushort)mapping.Key; /* action */
 
                         Debug("Assigning action to input - " + mapping.Key + " -> " + mapping.Value);
 
@@ -225,8 +225,8 @@ namespace HXE.HCE
 
                     foreach (var mapping in Input.MouseMapping)
                     {
-                        var offset = (int) mapping.Value;  /* button */
-                        var value = (ushort) mapping.Key; /* action */
+                        var offset = (int)mapping.Value;  /* button */
+                        var value = (ushort)mapping.Key; /* action */
 
                         Debug("Assigning action to input - " + mapping.Key + " -> " + mapping.Value);
 
@@ -237,8 +237,8 @@ namespace HXE.HCE
                     if (Input.GP0_Mapping.Count != 0)
                         foreach (var mapping in Input.GP0_Mapping)
                         {
-                            var offset = (int) mapping.Value;  /* button */
-                            var value = (ushort) mapping.Key; /* action */
+                            var offset = (int)mapping.Value;  /* button */
+                            var value = (ushort)mapping.Key; /* action */
 
                             Debug("Assigning action to input - " + mapping.Key + " -> " + mapping.Value);
 
@@ -249,8 +249,8 @@ namespace HXE.HCE
                     if (Input.GP1_Mapping.Count != 0)
                         foreach (var mapping in Input.GP1_Mapping)
                         {
-                            var offset = (int) mapping.Value;  /* button */
-                            var value = (ushort) mapping.Key; /* action */
+                            var offset = (int)mapping.Value;  /* button */
+                            var value = (ushort)mapping.Key; /* action */
 
                             Debug("Assigning action to input - " + mapping.Key + " -> " + mapping.Value);
 
@@ -261,8 +261,8 @@ namespace HXE.HCE
                     if (Input.GP2_Mapping.Count != 0)
                         foreach (var mapping in Input.GP2_Mapping)
                         {
-                            var offset = (int) mapping.Value;  /* button */
-                            var value = (ushort) mapping.Key; /* action */
+                            var offset = (int)mapping.Value;  /* button */
+                            var value = (ushort)mapping.Key; /* action */
 
                             Debug("Assigning action to input - " + mapping.Key + " -> " + mapping.Value);
 
@@ -273,8 +273,8 @@ namespace HXE.HCE
                     if (Input.GP3_Mapping.Count != 0)
                         foreach (var mapping in Input.GP3_Mapping)
                         {
-                            var offset = (int) mapping.Value;  /* button */
-                            var value = (ushort) mapping.Key; /* action */
+                            var offset = (int)mapping.Value;  /* button */
+                            var value = (ushort)mapping.Key; /* action */
 
                             Debug("Assigning action to input - " + mapping.Key + " -> " + mapping.Value);
 
@@ -286,8 +286,8 @@ namespace HXE.HCE
                         foreach (var pair in Input.Gamepads_Menu)
                         {
                             /* The exception to the rule. The Key is the offset instead of the value. */
-                            var offset = (int) pair.Key; /* button */
-                            var value = (ushort) pair.Value;  /* action */
+                            var offset = (int)pair.Key; /* button */
+                            var value = (ushort)pair.Value;  /* action */
 
                             Debug("Assigning action to input - " + pair.Key + " -> " + pair.Value);
 
@@ -324,7 +324,7 @@ namespace HXE.HCE
                 Debug("New CRC32 hash - 0x" + BitConverter.ToString(hash).Replace("-", string.Empty));
 
                 ms.SetLength(ms.Length + 4);
-                ms.Position = (int) Offset.BinaryCrc32Hash;
+                ms.Position = (int)Offset.BinaryCrc32Hash;
                 bw.Write(hash);
 
                 Debug("Clearing contents of the profile filesystem binary");
@@ -398,7 +398,7 @@ namespace HXE.HCE
                       crcTable[(checksumRegister & 0xFF) ^ Convert.ToByte(currentByte)] ^ (checksumRegister >> 8)));
 
                     for (var i = 0; i < hashData.Length; i++)
-                        hashData[i] = (byte) ~hashData[i];
+                        hashData[i] = (byte)~hashData[i];
 
                     return hashData;
                 }
@@ -419,32 +419,32 @@ namespace HXE.HCE
 
                 ushort GetShort(Offset offset)
                 {
-                    reader.BaseStream.Seek((int) offset, SeekOrigin.Begin);
+                    reader.BaseStream.Seek((int)offset, SeekOrigin.Begin);
                     return reader.ReadUInt16();
                 }
 
                 byte GetByte(Offset offset)
                 {
-                    reader.BaseStream.Seek((int) offset, SeekOrigin.Begin);
+                    reader.BaseStream.Seek((int)offset, SeekOrigin.Begin);
                     return reader.ReadByte();
                 }
 
                 byte[] GetBytes(Offset offset, int count)
                 {
-                    reader.BaseStream.Seek((int) offset, SeekOrigin.Begin);
+                    reader.BaseStream.Seek((int)offset, SeekOrigin.Begin);
                     return reader.ReadBytes(count);
                 }
 
                 Details.Name = Encoding.Unicode.GetString(GetBytes(Offset.ProfileName, 22)).TrimEnd('\0');
 
-                Details.Colour = (ColourOptions) GetByte(Offset.ProfileColour);
-                Video.FrameRate = (VideoFrameRate) GetByte(Offset.VideoFrameRate);
-                Video.Particles = (VideoParticles) GetByte(Offset.VideoQualityParticles);
-                Video.Quality = (VideoQuality) GetByte(Offset.VideoQualityTextures);
-                Audio.Variety = (AudioVariety) GetByte(Offset.AudioVariety);
-                Network.Connection = (NetworkConnection) GetByte(Offset.NetworkConnectionType);
-                Audio.Quality = (AudioQuality) GetByte(Offset.AudioQuality);
-                Audio.Variety = (AudioVariety) GetByte(Offset.AudioVariety);
+                Details.Colour = (ColourOptions)GetByte(Offset.ProfileColour);
+                Video.FrameRate = (VideoFrameRate)GetByte(Offset.VideoFrameRate);
+                Video.Particles = (VideoParticles)GetByte(Offset.VideoQualityParticles);
+                Video.Quality = (VideoQuality)GetByte(Offset.VideoQualityTextures);
+                Audio.Variety = (AudioVariety)GetByte(Offset.AudioVariety);
+                Network.Connection = (NetworkConnection)GetByte(Offset.NetworkConnectionType);
+                Audio.Quality = (AudioQuality)GetByte(Offset.AudioQuality);
+                Audio.Variety = (AudioVariety)GetByte(Offset.AudioVariety);
                 Mouse.Sensitivity.Horizontal = GetByte(Offset.MouseSensitivityHorizontal);
                 Mouse.Sensitivity.Vertical = GetByte(Offset.MouseSensitivityVertical);
                 Gamepad0.Sensitivity.Horizontal = GetByte(Offset.GP0SensitivityHorizontal);
@@ -476,13 +476,13 @@ namespace HXE.HCE
 
                 foreach (var button in Enum.GetValues(typeof(Keyboard)))
                 {
-                    reader.BaseStream.Seek((int) button, SeekOrigin.Begin);
+                    reader.BaseStream.Seek((int)button, SeekOrigin.Begin);
 
-                    var key = (ProfileInput.Action) reader.ReadUInt16();
-                    var value = (Keyboard) button;
+                    var key = (ProfileInput.Action)reader.ReadUInt16();
+                    var value = (Keyboard)button;
 
                     /* Skip unassigned input */
-                    if (key == (ProfileInput.Action) 0x7fff)
+                    if (key == (ProfileInput.Action)0x7fff)
                     { continue; }
 
                     if (!Input.KeyboardMapping.ContainsKey(key))
@@ -494,13 +494,13 @@ namespace HXE.HCE
 
                 foreach (var input in Enum.GetValues(typeof(Mouse)))
                 {
-                    reader.BaseStream.Seek((int) input, SeekOrigin.Begin);
+                    reader.BaseStream.Seek((int)input, SeekOrigin.Begin);
 
-                    var key = (ProfileInput.Action) reader.ReadUInt16();
-                    var value = (Mouse) input;
+                    var key = (ProfileInput.Action)reader.ReadUInt16();
+                    var value = (Mouse)input;
 
                     /* Skip unassigned input */
-                    if (key == (ProfileInput.Action) 0x7fff)
+                    if (key == (ProfileInput.Action)0x7fff)
                     { continue; }
 
                     if (!Input.MouseMapping.ContainsKey(key))
@@ -515,13 +515,13 @@ namespace HXE.HCE
 
                 foreach (var button in Enum.GetValues(typeof(GP0_Input)))
                 {
-                    reader.BaseStream.Seek((int) button, SeekOrigin.Begin);
+                    reader.BaseStream.Seek((int)button, SeekOrigin.Begin);
 
-                    var key = (ProfileInput.Action) reader.ReadUInt16();
-                    var value = (GP0_Input) button;
+                    var key = (ProfileInput.Action)reader.ReadUInt16();
+                    var value = (GP0_Input)button;
 
                     /* Skip unassigned input */
-                    if (key == (ProfileInput.Action) 0x7fff)
+                    if (key == (ProfileInput.Action)0x7fff)
                     { continue; }
 
                     if (!Input.GP0_Mapping.ContainsKey(key))
@@ -530,13 +530,13 @@ namespace HXE.HCE
 
                 foreach (var button in Enum.GetValues(typeof(GP1_Input)))
                 {
-                    reader.BaseStream.Seek((int) button, SeekOrigin.Begin);
+                    reader.BaseStream.Seek((int)button, SeekOrigin.Begin);
 
-                    var key = (ProfileInput.Action) reader.ReadUInt16();
-                    var value = (GP1_Input) button;
+                    var key = (ProfileInput.Action)reader.ReadUInt16();
+                    var value = (GP1_Input)button;
 
                     /* Skip unassigned input */
-                    if (key == (ProfileInput.Action) 0x7fff)
+                    if (key == (ProfileInput.Action)0x7fff)
                     { continue; }
 
                     if (!Input.GP1_Mapping.ContainsKey(key))
@@ -545,13 +545,13 @@ namespace HXE.HCE
 
                 foreach (var button in Enum.GetValues(typeof(GP2_Input)))
                 {
-                    reader.BaseStream.Seek((int) button, SeekOrigin.Begin);
+                    reader.BaseStream.Seek((int)button, SeekOrigin.Begin);
 
-                    var key = (ProfileInput.Action) reader.ReadUInt16();
-                    var value = (GP2_Input) button;
+                    var key = (ProfileInput.Action)reader.ReadUInt16();
+                    var value = (GP2_Input)button;
 
                     /* Skip unassigned input */
-                    if (key == (ProfileInput.Action) 0x7fff)
+                    if (key == (ProfileInput.Action)0x7fff)
                     { continue; }
 
                     if (!Input.GP2_Mapping.ContainsKey(key))
@@ -560,13 +560,13 @@ namespace HXE.HCE
 
                 foreach (var button in Enum.GetValues(typeof(GP3_Input)))
                 {
-                    reader.BaseStream.Seek((int) button, SeekOrigin.Begin);
+                    reader.BaseStream.Seek((int)button, SeekOrigin.Begin);
 
-                    var key = (ProfileInput.Action) reader.ReadUInt16();
-                    var value = (GP3_Input) button;
+                    var key = (ProfileInput.Action)reader.ReadUInt16();
+                    var value = (GP3_Input)button;
 
                     /* Skip unassigned input */
-                    if (key == (ProfileInput.Action) 0x7fff)
+                    if (key == (ProfileInput.Action)0x7fff)
                     { continue; }
 
                     if (!Input.GP3_Mapping.ContainsKey(key))
@@ -579,13 +579,13 @@ namespace HXE.HCE
 
                 foreach (var offset in Enum.GetValues(typeof(GamePadMenu)))
                 {
-                    reader.BaseStream.Seek((int) offset, SeekOrigin.Begin);
+                    reader.BaseStream.Seek((int)offset, SeekOrigin.Begin);
 
-                    var key = (GamePadMenu) offset;
-                    var value = (DIButtons_Values) reader.ReadUInt16();
+                    var key = (GamePadMenu)offset;
+                    var value = (DIButtons_Values)reader.ReadUInt16();
 
                     /* Skip unassigned input */
-                    if (value == (DIButtons_Values) 0xffff)
+                    if (value == (DIButtons_Values)0xffff)
                     { continue; }
 
                     if (!Input.Gamepads_Menu.ContainsKey(key))
@@ -628,7 +628,7 @@ namespace HXE.HCE
         /// </exception>
         public static Profile Detect(string directory)
         {
-            var lastprof = (LastProfile) Custom.LastProfile(directory);
+            var lastprof = (LastProfile)Custom.LastProfile(directory);
 
             if (!lastprof.Exists())
             {
@@ -636,7 +636,7 @@ namespace HXE.HCE
             }
             lastprof.Load();
 
-            var profile = (Profile) Custom.Profile(directory, lastprof.Profile);
+            var profile = (Profile)Custom.Profile(directory, lastprof.Profile);
 
             if (!profile.Exists())
             {
@@ -669,7 +669,7 @@ namespace HXE.HCE
 
             foreach (var current in Directory.GetFiles(directory, "blam.sav", AllDirectories))
             {
-                var profile = (Profile) current;
+                var profile = (Profile)current;
                 profile.Load();
                 profiles.Add(profile);
             }
@@ -825,7 +825,7 @@ namespace HXE.HCE
 
             Gamepad0_Name = 0x1108, // UTF-16 String; Can be LE ("Xbox Controller S via XBCD") or BE ("Xbox 360 Controller For Windows")
 
-                                    // padding
+            // padding
             Gamepad0_Vendor = 0x1314, // 4-digit hex; e.g. 0x5e04; 045E == Microsoft;
 
             Gamepad0_Product = 0x1316, // 4-digit hex; e.g. 0x8902; 0289 == XBCD Xbox Controller;
@@ -836,7 +836,7 @@ namespace HXE.HCE
 
             Gamepad1_Name = 0x1328, // UTF-16 String; BE or LE
 
-                                    // padding
+            // padding
             Gamepad1_Vendor = 0x1534, // 4-digit hex; e.g. 0x6d04; 046D == Razer?  - Doesn't match DevMgr
 
             Gamepad1_Product = 0x1536, // 4-digit hex; e.g. 0x1dc2; C21D == Serval? - Doesn't match DevMgr

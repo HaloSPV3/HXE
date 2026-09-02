@@ -25,6 +25,7 @@ namespace HXE.SPV3
   /// </summary>
   public static class PP
   {
+    #pragma warning disable IDE0055
     public const int INTERNAL              = 1 << 0x00;
     public const int EXTERNAL              = 1 << 0x01;
     public const int GBUFFER               = 1 << 0x02;
@@ -46,5 +47,6 @@ namespace HXE.SPV3
     public const int SSR                   = 1 << 0x12;
     public const int DEBAND                = 1 << 0x13;
     public const int ADAPTIVE_HDR          = 1 << 0x14;
+    #pragma warning restore IDE0055
   }
 }

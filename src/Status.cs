@@ -24,6 +24,6 @@ namespace HXE
   {
     public string Description { get; set; } = string.Empty;
     public long   Current     { get; set; }
-    public long   Total       { get; set; }
+    public long Total { get; set; }
   }
 }

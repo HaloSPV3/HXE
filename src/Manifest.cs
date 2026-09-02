@@ -39,7 +39,7 @@ namespace HXE
     /// </summary>
     public void Save()
     {
-      var    mode = CompressionMode.Compress;
+      var mode = CompressionMode.Compress;
       byte[] data;
 
       using (var writer = new StringWriter())
@@ -64,7 +64,7 @@ namespace HXE
     /// </summary>
     public void Load()
     {
-      var    mode = CompressionMode.Decompress;
+      var mode = CompressionMode.Decompress;
       string data;
 
       using (var inflatedStream = new MemoryStream())
@@ -112,15 +112,15 @@ namespace HXE
     /// </summary>
     public class Package
     {
-      public string?      Name  { get; set; }                       /* Package filename on the filesystem        */
-      public long         Size  { get; set; }                       /* Byte length of the file on the filesystem */
+      public string? Name { get; set; }                /* Package filename on the filesystem        */
+      public long Size { get; set; }                   /* Byte length of the file on the filesystem */
       public PackageEntry Entry { get; set; } = new PackageEntry(); /* File contained in the package             */
 
       public class PackageEntry
       {
         public string? Name { get; set; }                /* Package filename on the filesystem        */
         public string Path { get; set; } = string.Empty; /* Path relative to root source/target dir   */
-        public long   Size { get; set; }                 /* Byte length of the file on the filesystem */
+        public long Size { get; set; }                   /* Byte length of the file on the filesystem */
       }
     }
   }

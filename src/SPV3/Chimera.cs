@@ -50,13 +50,13 @@ namespace HXE.SPV3
                 bw.Write(Interpolation);
 
                 ms.Position = 0x02;
-                bw.Write(AnisotropicFiltering ? (byte) 1 : (byte) 0);
+                bw.Write(AnisotropicFiltering ? (byte)1 : (byte)0);
 
                 ms.Position = 0x1E;
-                bw.Write(UncapCinematic ? (byte) 1 : (byte) 0);
+                bw.Write(UncapCinematic ? (byte)1 : (byte)0);
 
                 ms.Position = 0x1F;
-                bw.Write(BlockLOD ? (byte) 1 : (byte) 0);
+                bw.Write(BlockLOD ? (byte)1 : (byte)0);
 
                 bw.Write(new byte[Length - ms.Position]); /* padding */
 

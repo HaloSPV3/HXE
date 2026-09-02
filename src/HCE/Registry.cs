@@ -131,13 +131,15 @@ namespace HXE.HCE
             {
                 RegistryKey? key = WinReg.LocalMachine.OpenSubKey(subkey);
 
-                if (key != null){
+                if (key != null)
+                {
                     keyIsValid = true;
-                    subkeyIsValid = !string.IsNullOrEmpty(key.GetValue("PID")?.ToString() ?? string.Empty);}
+                    subkeyIsValid = !string.IsNullOrEmpty(key.GetValue("PID")?.ToString() ?? string.Empty);
+                }
             }
             catch (Exception e)
             {
-                var file = (File) Paths.Exception;
+                var file = (File)Paths.Exception;
                 file.AppendAllText($"Error -- {e}");
                 throw;
             }
@@ -149,7 +151,7 @@ namespace HXE.HCE
         {
             /*Unable to use custom DPIDs*/
             /*Retail and Custom Edition DPIDs end differently*/
-            File file = (File) Path.Combine(Environment.CurrentDirectory, $"{game}.reg");
+            File file = (File)Path.Combine(Environment.CurrentDirectory, $"{game}.reg");
             string content = "";
 
             /**

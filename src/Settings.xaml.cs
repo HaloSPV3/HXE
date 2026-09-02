@@ -87,7 +87,7 @@ namespace HXE
             MainStart.IsEnabled = SettingsCore.MainStartUnlocked;
             MainResume.IsEnabled = SettingsCore.MainResumeUnlocked;
 
-            Mode.SelectedIndex = (int) Configuration.Mode;
+            Mode.SelectedIndex = (int)Configuration.Mode;
             MainReset.IsChecked = Configuration.Main.Reset;
             MainPatch.IsChecked = Configuration.Main.Patch;
             MainStart.IsChecked = Configuration.Main.Start;
@@ -116,7 +116,7 @@ namespace HXE
         {
             Console.Info("Saving kernel settings");
 
-            Configuration.Mode = (Kernel.Configuration.ConfigurationMode) Mode.SelectedIndex;
+            Configuration.Mode = (Kernel.Configuration.ConfigurationMode)Mode.SelectedIndex;
             Configuration.Main.Reset = MainReset.IsChecked == true;
             Configuration.Main.Patch = MainPatch.IsChecked == true;
             Configuration.Main.Start = MainStart.IsChecked == true;
@@ -169,7 +169,8 @@ namespace HXE
                     * DialogResult is set before a window is opened by calling ShowDialog().
                     * -or-
                     * DialogResult is set on a window that is opened by calling Show().
-                    */                }
+                    */
+                }
                 Close();
             }
         }

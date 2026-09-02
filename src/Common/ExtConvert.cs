@@ -49,7 +49,7 @@ namespace HXE.Common
         /// <see href="https://www.csharp-examples.net/reverse-bytes/"/>
         public static ushort ReverseBytes(ushort value)
         {
-            return (ushort) ((value & 0xFFU) << 8 | (value & 0xFF00U) >> 8);
+            return (ushort)((value & 0xFFU) << 8 | (value & 0xFF00U) >> 8);
         }
     }
 }

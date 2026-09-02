@@ -66,7 +66,7 @@ namespace HXE
         public ulong Size()
         {
             var file = new FileInfo(Path);
-            return (ulong) file.Length;
+            return (ulong)file.Length;
         }
 
         public void Delete()
