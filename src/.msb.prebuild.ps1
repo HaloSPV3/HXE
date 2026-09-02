@@ -6,29 +6,25 @@
 # If credentials are required to fetch from the remote repository,
 # git processes spawned by this script may be unable to fetch successfully.
 
-function prebuild
-{
-    $isShallow = $true;
+function prebuild {
+  $isShallow = $false;
 
-    # Announce
-    Write-Host "GitVersion requires unshallow repositories.`n",
-               "We will use Git to determine if the current repository needs to be un-shallowed.";
+  [string]$gitDir = [System.IO.Path]::GetFullPath("$PSScriptRoot/.git");
+  [string]$rootDir = Join-Path "$([System.IO.Path]::GetPathRoot($gitDir))" '.git';
+  while ("$gitDir" -ne $rootDir) {
+    [string]$shallow = "$gitDir/shallow";
+    $isShallow = (Test-Path $shallow) -and ([System.IO.File]::Exists($shallow));
+    if ($isShallow) { break; }
+    $gitDir = [System.IO.Path]::GetFullPath("$gitDir/../../.git");
+    Write-Debug $gitDir
+  }
 
-    # Check if the repository is shallow
-    Write-Host "Checking if repository is shallow..."
-    $isShallow = git rev-parse --is-shallow-repository
-
-    # If the repository is shallow, then unshallow
-    if ($isShallow -eq $true)
-    {
-        Write-Warning "Repository is shallow. Fetching full history..."
-        git fetch --unshallow
-        Write-Host "Fetch Completed. Proceeding to Build...`n"
-    }
-    else
-    {
-        Write-Host "Repository is complete. Proceeding to Build..."
-    }
+  # If the repository is shallow, then unshallow
+  if ($isShallow -eq $true) {
+    Write-Warning 'Repository is shallow. Fetching full history...'
+    git fetch --unshallow
+    Write-Verbose 'Repository un-shallowed.'
+  }
 }
 
-$(prebuild)
+$(prebuild $args)
