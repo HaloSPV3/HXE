@@ -160,8 +160,10 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.IO;
+using System.Reflection;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -418,7 +420,13 @@ namespace HXE
 			? []
 			: (string[])ValueSeparators.Clone();
 
-		protected static T? Parse<T>(string value, OptionContext c)
+		/// <remarks><code>
+		/// - Using member 'System.ComponentModel.TypeDescriptor.GetConverter(Type)' which has 'RequiresUnreferencedCodeAttribute' can break functionality when trimming application code.Generic TypeConverters may require the generic types to be annotated.For example, NullableConverter requires the underlying type to be DynamicallyAccessedMembers All.(IL2026) <br/>
+		/// - Value passed to parameter 'type' of method 'System.ComponentModel.TypeDescriptor.GetConverter(Type)' can not be statically determined and may not meet 'DynamicallyAccessedMembersAttribute' requirements.(IL2062) <br/>
+		/// - 'type' argument does not satisfy 'DynamicallyAccessedMemberTypes.All' in call to 'System.ComponentModel.TypeDescriptor.GetConverter(Type)'. The generic parameter 'T' of 'HXE.Option.Parse&lt;T>(String, OptionContext)' does not have matching annotations.The source value must declare at least the same requirements as those declared on the target location it is assigned to.(IL2087)
+		/// </code></remarks>
+		protected static T? Parse<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>
+		(string value, OptionContext c)
 		{
 			Type tt = typeof(T);
 #if PCL
@@ -447,8 +455,18 @@ namespace HXE
 					else
 						t = (T) Convert.ChangeType (value, targetType);
 #else
-					TypeConverter conv = TypeDescriptor.GetConverter(targetType);
-					t = (T?)conv.ConvertFromString(value);
+					Attribute? dynamicallyAccessedMembersAttribute = targetType.GetCustomAttribute(typeof(DynamicallyAccessedMembersAttribute));
+					if (dynamicallyAccessedMembersAttribute is DynamicallyAccessedMembersAttribute dama
+						&& dama.MemberTypes == DynamicallyAccessedMemberTypes.All)
+					{
+#pragma warning disable IL2026 // Members annotated with 'RequiresUnreferencedCodeAttribute' require dynamic access otherwise can break functionality when trimming application code
+#pragma warning disable IL2062 // The parameter of method has a DynamicallyAccessedMembersAttribute, but the value passed to it can not be statically analyzed.
+						TypeConverter conv = TypeDescriptor.GetConverter(targetType);
+#pragma warning restore IL2062 // The parameter of method has a DynamicallyAccessedMembersAttribute, but the value passed to it can not be statically analyzed.
+#pragma warning restore IL2026 // Members annotated with 'RequiresUnreferencedCodeAttribute' require dynamic access otherwise can break functionality when trimming application code
+						t = (T?)conv.ConvertFromString(value);
+					}
+					else throw new Exception($"Type {nameof(T)} must have attribute [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]! If {nameof(T)} is Nullable<U>, then U must have that attribute.");
 #endif
 				}
 				catch (Exception e)
@@ -869,14 +887,15 @@ namespace HXE
 			return this;
 		}
 
-		private sealed class ActionOption<T>(string prototype, string description, Action<T?> action) : Option(prototype, description, 1)
+		private sealed class ActionOption<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>
+		(string prototype, string description, Action<T?> action) : Option(prototype, description, 1)
 		{
 			private readonly Action<T?> _action = action ?? throw new ArgumentNullException(nameof(action));
 
 			protected override void OnParseComplete(OptionContext c) => _action(Parse<T>(c.OptionValues[0], c));
 		}
 
-		private sealed class ActionOption<TKey, TValue>(string prototype, string description, OptionAction<TKey?, TValue?> action) : Option(prototype, description, 2)
+		private sealed class ActionOption<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TKey, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TValue>(string prototype, string description, OptionAction<TKey?, TValue?> action) : Option(prototype, description, 2)
 		{
 			private readonly OptionAction<TKey?, TValue?> _action = action ?? throw new ArgumentNullException("action");
 
@@ -886,16 +905,16 @@ namespace HXE
 			);
 		}
 
-		public OptionSet Add<T>(string prototype, Action<T?> action) =>
+		public OptionSet Add<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>(string prototype, Action<T?> action) =>
 			Add(prototype, null, action);
 
-		public OptionSet Add<T>(string prototype, string? description, Action<T?> action) =>
+		public OptionSet Add<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>(string prototype, string? description, Action<T?> action) =>
 			Add(new ActionOption<T>(prototype, description ?? string.Empty, action));
 
 		public OptionSet Add<TKey, TValue>(string prototype, OptionAction<TKey?, TValue?> action) =>
 			Add(prototype, null, action);
 
-		public OptionSet Add<TKey, TValue>(string prototype, string? description, OptionAction<TKey?, TValue?> action) =>
+		public OptionSet Add<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TKey, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TValue>(string prototype, string? description, OptionAction<TKey?, TValue?> action) =>
 			Add(new ActionOption<TKey, TValue>(prototype, description ?? string.Empty, action));
 
 		public OptionSet Add(ArgumentSource source)
