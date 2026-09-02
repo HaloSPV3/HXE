@@ -48,6 +48,7 @@
     <InvariantGlobalization>false</InvariantGlobalization>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
+    <!-- T:System.Runtime.CompilerServices.OverloadResolutionPriorityAttribute is polyfilled by CsWin32 -->
     <MeziantouPolyfill_ExcludedPolyfills Condition="$(TargetFramework.StartsWith('net4'))">T:System.Runtime.CompilerServices.OverloadResolutionPriorityAttribute</MeziantouPolyfill_ExcludedPolyfills>
   </PropertyGroup>
 
