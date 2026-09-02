@@ -448,7 +448,7 @@ namespace HXE
 						t = (T) Convert.ChangeType (value, targetType);
 #else
 					TypeConverter conv = TypeDescriptor.GetConverter(targetType);
-					t = (T)conv.ConvertFromString(value);
+					t = (T?)conv.ConvertFromString(value);
 #endif
 				}
 				catch (Exception e)
@@ -589,7 +589,7 @@ namespace HXE
 			{
 				StringBuilder arg = new StringBuilder();
 
-				string line;
+				string? line;
 				while ((line = reader.ReadLine()) != null)
 				{
 					int t = line.Length;
@@ -767,6 +767,8 @@ namespace HXE
 		{
 			Option p = Items[index];
 			base.RemoveItem(index);
+			if (Dictionary == null)
+				return;
 			// KeyedCollection.RemoveItem() handles the 0th item
 			for (int i = 1; i < p.Names.Length; ++i)
 			{
@@ -790,14 +792,17 @@ namespace HXE
 				// KeyedCollection.InsertItem/SetItem handle the 0th name.
 				for (int i = 1; i < option.Names.Length; ++i)
 				{
-					Dictionary.Add(option.Names[i], option);
+					Dictionary?.Add(option.Names[i], option);
 					added.Add(option.Names[i]);
 				}
 			}
 			catch (Exception)
 			{
-				foreach (string name in added)
-					Dictionary.Remove(name);
+				if (Dictionary != null)
+				{
+					foreach (string name in added)
+						Dictionary.Remove(name);
+				}
 				throw;
 			}
 		}
@@ -1695,7 +1700,7 @@ namespace HXE
 			}
 		}
 
-		private static void ExtractToken(ref string? input, out string rest)
+		private static void ExtractToken([NotNull] ref string? input, out string rest)
 		{
 			rest = "";
 			input = input ?? "";
