@@ -87,7 +87,7 @@ namespace HXE
 
             Info("Gracefully created target directory");
 
-            var manifest = (Manifest) Combine(source, Paths.Manifest);
+            var manifest = (Manifest)Combine(source, Paths.Manifest);
 
             if (!manifest.Exists())
                 throw new FileNotFoundException("Manifest file does not exist in the source directory.");
