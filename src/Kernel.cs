@@ -440,22 +440,27 @@ namespace HXE
                 {
                     if (!configuration.Video.ResolutionEnabled)
                     {
+#if LINUX
+                        var w = 1920;
+                        var h = 1080;
+#else
                         var w = System.Windows.SystemParameters.PrimaryScreenWidth;
                         var h = System.Windows.SystemParameters.PrimaryScreenHeight;
+#endif
 
                         // infer from resolution if Native Resoluton preferred.
                         if (executable.Video.Width == 0 || executable.Video.Height == 0)
                         {
-                            executable.Video.Width = (ushort)System.Windows.SystemParameters.PrimaryScreenWidth;
-                            executable.Video.Height = (ushort)System.Windows.SystemParameters.PrimaryScreenHeight;
+                            executable.Video.Width = (ushort)w;
+                            executable.Video.Height = (ushort)h;
 
                             Core("BLAM.VIDEO.RESOLUTION: No resolution provided. Applied native resolution to executable.");
                         }
-                        else if (executable.Video.Width > (ushort)System.Windows.SystemParameters.PrimaryScreenWidth ||
-                                 executable.Video.Height > (ushort)System.Windows.SystemParameters.PrimaryScreenHeight)
+                        else if (executable.Video.Width > (ushort)w ||
+                                 executable.Video.Height > (ushort)h)
                         {
-                            executable.Video.Width = (ushort)System.Windows.SystemParameters.PrimaryScreenWidth;
-                            executable.Video.Height = (ushort)System.Windows.SystemParameters.PrimaryScreenHeight;
+                            executable.Video.Width = (ushort)w;
+                            executable.Video.Height = (ushort)h;
 
                             Core("BLAM.VIDEO.RESOLUTION: Resolution out of bounds. Applied native resolution to executable.");
                         }

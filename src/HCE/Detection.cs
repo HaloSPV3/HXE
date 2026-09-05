@@ -20,6 +20,7 @@
  */
 
 using System.IO;
+using System.Runtime.Versioning;
 using static System.Environment;
 using static System.Environment.SpecialFolder;
 using static System.IO.File;
@@ -51,9 +52,11 @@ namespace HXE.HCE
 
         public static FileInfo? Infer()
         {
-            return InferFromCurrentDirectory() ??
-                   InferFromProgramFilesPath() ??
-                   InferFromRegistryKeyEntry();
+            var v = InferFromCurrentDirectory();
+            if ( System.OperatingSystem.IsWindows())
+                v ??= InferFromProgramFilesPath() ??
+                    InferFromRegistryKeyEntry();
+            return v;
         }
 
         /**
@@ -78,6 +81,7 @@ namespace HXE.HCE
          * Files directory, otherwise null.
          */
 
+        [SupportedOSPlatform("windows")]
         public static FileInfo? InferFromProgramFilesPath()
         {
             var exePath = Combine("Microsoft Games", "Halo Custom Edition", Executable);
@@ -103,6 +107,7 @@ namespace HXE.HCE
          * one as a fallback. Should that fail, too, then null will ultimately be returned.
          */
 
+        [SupportedOSPlatform("windows")]
         public static FileInfo? InferFromRegistryKeyEntry()
         {
             const string keyX64 = @"SOFTWARE\Wow6432Node\Microsoft\Microsoft Games\Halo CE";

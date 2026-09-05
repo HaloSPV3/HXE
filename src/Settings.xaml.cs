@@ -20,14 +20,23 @@
  */
 
 using System;
+#if !LINUX
 using System.Windows;
+#endif
 
 namespace HXE
 {
     /// <summary>
     ///   Interaction logic for Settings.xaml
     /// </summary>
+    ///
+#if LINUX
+#pragma warning disable HXE9001 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
+#endif
     public partial class Settings : Window
+#if LINUX
+#pragma warning restore HXE9001 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
+#endif
     {
         private SettingsCore _core = new SettingsCore(new Kernel.Configuration(Paths.Configuration));
 
@@ -200,5 +209,10 @@ namespace HXE
                 Close();
             }
         }
+
+#if LINUX
+        internal static void Save(Settings settings) => settings.Save(new(), new());
+        internal static void Cancel(Settings settings) => settings.Cancel(new(), new());
+#endif
     }
 }

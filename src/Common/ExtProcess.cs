@@ -19,6 +19,9 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
+using System;
+using System.Runtime.InteropServices;
+using System.Runtime.Versioning;
 using System.Security.Principal;
 
 namespace HXE.Common
@@ -27,8 +30,15 @@ namespace HXE.Common
     {
         public static bool RunningAsAdmin()
         {
-            var Principle = new WindowsPrincipal(WindowsIdentity.GetCurrent());
-            return Principle.IsInRole(WindowsBuiltInRole.Administrator);
+            if (OperatingSystem.IsWindows())
+                return new WindowsPrincipal(WindowsIdentity.GetCurrent()).IsInRole(WindowsBuiltInRole.Administrator);
+            if (OperatingSystem.IsLinux() || OperatingSystem.IsMacOS())
+                // alternatively, Environment.UserName == "root"
+                return getuid() == 0;
+            throw new PlatformNotSupportedException();
         }
+
+        [DllImport("libc"), SupportedOSPlatform("linux"), SupportedOSPlatform("macos")]
+        internal static extern uint getuid();
     }
 }

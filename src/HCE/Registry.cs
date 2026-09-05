@@ -22,6 +22,7 @@
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.Runtime.Versioning;
 using Microsoft.Win32;
 using static System.Diagnostics.Process;
 using static HXE.Common.ExtPath;
@@ -85,6 +86,7 @@ namespace HXE.HCE
             return Environment.Is64BitOperatingSystem ? RegPathX64 : RegPathX86;
         }
 
+        [SupportedOSPlatform("windows")]
         public static bool GameExists(Game game)
         {
             switch (game)
@@ -106,6 +108,7 @@ namespace HXE.HCE
             }
         }
 
+        [SupportedOSPlatform("windows")]
         public static bool GameActivated(Game game)
         {
             /** Select a registry subkey based on the Game parameter */
@@ -270,6 +273,7 @@ namespace HXE.HCE
         /// Uses default Data values for registry variables.
         /// </summary>
         /// <remarks>Totally broken. Use WriteToFile() instead.</remarks>
+        [SupportedOSPlatform("windows")]
         public static void CreateKeys(Game game)
         {
             Data data = new Data();
@@ -284,6 +288,7 @@ namespace HXE.HCE
         /// <param name="path">The Registry key path.</param>
         /// <param name="data">An instance of the Registry.Data class.</param>
         /// <remarks>TOTALLY BROKEN. Use WriteToFile() instead.</remarks>
+        [SupportedOSPlatform("windows")]
         public static void CreateKeys(Game game, Data data)
         {
             /** Temporarily Abandoned
@@ -463,12 +468,14 @@ namespace HXE.HCE
         /// Pass Custom to look for the Custom Edition registry entries
         /// or Retail to look for Retail registry entries.
         /// </param>
+        [SupportedOSPlatform("windows")]
         public static Data GetRegistryKeys(Game game)
         {
             Data data = new Data();
             return GetRegistryKeys(game, data);
         }
 
+        [SupportedOSPlatform("windows")]
         public static Data GetRegistryKeys(Game game, Data data)
         {
             string path = WoWCheck();

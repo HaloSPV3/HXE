@@ -27,7 +27,9 @@ using System.Xml.Serialization;
 using static System.IO.Compression.CompressionMode;
 using static System.Math;
 using static System.Text.Encoding;
+#if !LINUX
 using static System.Windows.SystemParameters;
+#endif
 
 namespace HXE
 {
@@ -190,6 +192,18 @@ namespace HXE
 
       public double CalculateFOV()
       {
+#if LINUX
+        (int PrimaryScreenWidth, int PrimaryScreenHeight, float PrimaryScreenRefreshRate) = (0, 0, 0);
+        if (OperatingSystem.IsLinux() || OperatingSystem.IsFreeBSD())
+        {
+          (PrimaryScreenWidth, PrimaryScreenHeight, PrimaryScreenRefreshRate)
+            = HXE.Common.DisplayOutput.GetTriplet();
+        }
+        else
+        {
+          throw new PlatformNotSupportedException("You've attempted to run a Linux-and-BSD-only code block on a non-Linux/BSD system. What.");
+        }
+#endif
         return CalculateFOV(PrimaryScreenWidth, PrimaryScreenHeight);
       }
 
@@ -226,6 +240,12 @@ namespace HXE
 
         return FieldOfView;
       }
+
+#if LINUX
+
+      [System.Text.RegularExpressions.GeneratedRegex("\\n   (\\d+)x(\\d+) +([\\d.]+)(?=\\*+?)")]
+      internal static partial System.Text.RegularExpressions.Regex XRAndR_PrimaryDisplay_XYRR();
+#endif
     }
 
     public class OpenSauceNetworking

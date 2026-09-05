@@ -18,17 +18,32 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
+#if LINUX
+using System.Linq;
+using System.Threading.Tasks;
+using LinuxDesktopUtils.XDGDesktopPortal;
+#endif
+
+#if !LINUX
 using System.Windows;
 using Microsoft.Win32;
-using static HXE.Console;
 using MessageBox = System.Windows.MessageBox;
+#endif
+
+using static HXE.Console;
 
 namespace HXE
 {
   /// <summary>
   ///   Interaction logic for Positions.xaml
   /// </summary>
+#if LINUX
+#pragma warning disable HXE9001 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
+#endif
   public partial class Positions : Window
+#if LINUX
+#pragma warning restore HXE9001 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
+#endif
   {
     private string _source = string.Empty;
     private string _target = string.Empty;
@@ -46,7 +61,10 @@ namespace HXE
 
       if (!openSauce.Exists())
       {
+#if !LINUX
         MessageBox.Show("Source file does not exist.");
+#endif
+        Error("Source file does not exist.");
         return;
       }
 
@@ -67,6 +85,33 @@ namespace HXE
 
     private void BrowseSource(object sender, RoutedEventArgs e)
     {
+#if LINUX
+      Task<string?> task = Task.Run(static async Task<string?>? () =>
+      {
+        await using var portal = await DesktopPortalConnectionManager.ConnectAsync();
+        var fileChooser = await portal.GetFileChooserPortalAsync();
+        var result = await fileChooser.OpenFileAsync(
+            dialogTitle: "Select Source File",
+            options: new()
+            {
+              Filters = [
+                new() {
+                    FilterName = "XML File (*.xml)",
+                    IsDefault = true,
+                    Patterns = [(GlobPattern)"*.xml"]
+                }
+              ],
+            }
+        );
+
+        return ((FileChooserPortal.OpenFileResults?)result.Results)?.SelectedFiles
+          .FirstOrDefault()?.AbsolutePath;
+      });
+      task.Wait();
+      if (task.Result is null)
+        return;
+      _target = task.Result;
+#else
       var dialog = new OpenFileDialog
       {
         DefaultExt = ".xml",
@@ -77,11 +122,41 @@ namespace HXE
 
       _source = dialog.FileName;
       SourceTextBox.Text = _source;
+#endif
 
+      Info($"Positions file: {_source}");
     }
 
     private void BrowseTarget(object sender, RoutedEventArgs e)
     {
+#if LINUX
+      Task<string?> task = Task.Run(static async Task<string?>? () =>
+      {
+        await using var portal = await DesktopPortalConnectionManager.ConnectAsync();
+        var fileChooser = await portal.GetFileChooserPortalAsync();
+        var result = await fileChooser.SaveFileAsync(
+            dialogTitle: "Set File Path",
+            options: new()
+            {
+              SuggestedFileName = "Positions.bin",
+              Filters = [
+                new() {
+                    FilterName = "Binary blob (*.bin)",
+                    IsDefault = true,
+                    Patterns = [(GlobPattern)"*.bin"]
+                }
+              ],
+            }
+        );
+
+        return ((FileChooserPortal.SaveFileResults?)result.Results)
+          ?.SelectedFileLocation.AbsolutePath;
+      });
+      task.Wait();
+      if (task.Result is null)
+        return;
+      _target = task.Result;
+#else
       var dialog = new SaveFileDialog
       {
         DefaultExt = ".bin",
@@ -92,6 +167,16 @@ namespace HXE
 
       _target = dialog.FileName;
       TargetTextBox.Text = _target;
+#endif
     }
+
+#if LINUX
+    /* For internal use in Test.cs or unit tests */
+    internal static void Save(Positions positions) => positions.Save(new(), new());
+    internal static void Cancel(Positions positions) => positions.Cancel(new(), new());
+
+    internal static void BrowseSource(Positions positions) => positions.BrowseSource(new(), new());
+    internal static void BrowseTarget(Positions positions) => positions.BrowseTarget(new(), new());
+#endif
   }
 }

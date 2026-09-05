@@ -3,11 +3,16 @@
     <Platform>AnyCPU</Platform>
     <Prefer32Bit>false</Prefer32Bit>
     <OutputType>Exe</OutputType>
-    <TargetFrameworks>net462;net480;net6.0-windows</TargetFrameworks>
+    <TargetFrameworks>net462;net480;net6.0-windows;net10.0</TargetFrameworks>
     <LangVersion>latest</LangVersion>
     <StartupObject>HXE.Program</StartupObject>
     <AssemblyName>HXE</AssemblyName>
     <RootNamespace>HXE</RootNamespace>
+    <_TargetingLinux>$([System.Text.RegularExpressions.Regex]::IsMatch(
+      "$(TargetFramework)_$(RuntimeIdentifier)",
+      'net10.0_|_linux'
+      ))</_TargetingLinux>
+    <DefineConstants Condition="$(_TargetingLinux)">$(DefineConstants);LINUX</DefineConstants>
 
     <!-- Application | Resources -->
     <ApplicationIcon>Assets/icon.ico</ApplicationIcon>
@@ -43,7 +48,7 @@
     <PublisherName>Halo SPV3 Team</PublisherName>
     <EnableNETAnalyzers>true</EnableNETAnalyzers>
     <ToolCommandName>hxe</ToolCommandName>
-    <UseWPF>true</UseWPF>
+    <UseWPF Condition="!$(_TargetingLinux)">true</UseWPF>
     <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
     <!-- Changing this to "true" will cause a crash when loading any GUI -->
     <InvariantGlobalization>false</InvariantGlobalization>
@@ -73,6 +78,8 @@
     <SelfContained>true</SelfContained>
     <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
     <EnableCompressionInSingleFile>$(NET6_0_OR_GREATER)</EnableCompressionInSingleFile>
+    <RuntimeIdentifier Condition="$(NET7_0_OR_GREATER)">win-x64</RuntimeIdentifier>
+    <RuntimeIdentifier Condition="$(NET7_0_OR_GREATER) AND !$(TargetFramework.Contains('windows'))">linux-x64</RuntimeIdentifier>
   </PropertyGroup>
 
   <PropertyGroup Label="Nuget Properties">
@@ -159,6 +166,11 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="XmlSourceGenerator" Version="1.0.2-alpha" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'net10.0'">
+    <PackageReference Include="LinuxDesktopUtils.XDGDesktopPortal" Version="1.0.2" />
+    <PackageReference Include="Tmds.DBus.Protocol" Version="0.95.0" />
   </ItemGroup>
 
   <Choose>

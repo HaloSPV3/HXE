@@ -22,6 +22,11 @@
 using System.Diagnostics;
 using System.IO;
 using System.Text;
+#if LINUX
+using System.Threading.Tasks;
+using LinuxDesktopUtils.XDGDesktopPortal;
+#endif
+
 using static System.Environment;
 using static System.IO.Path;
 using static HXE.Console;
@@ -66,6 +71,39 @@ namespace HXE.HCE
                 var log = (File) Paths.Exception;
                 log.AppendAllText("The inferred executable path was probably malformed or incomplete.\n Error: " + e + "\n");
 
+#if LINUX
+                Task<string?> task = System.Threading.Tasks.Task.Run(static async Task<string?>? () =>
+                {
+                    await using var portal = await DesktopPortalConnectionManager.ConnectAsync();
+                    var fileChooser = await portal.GetFileChooserPortalAsync();
+                    var result = await fileChooser.OpenFileAsync(
+                        dialogTitle: "Select Halo Executable",
+                        windowIdentifier: default,
+                        options: new()
+                        {
+                            Filters = [
+                                new() {
+                                    FilterName = "Halo Custom Edition",
+                                    IsDefault = true,
+                                    Patterns = [(GlobPattern)"haloce.exe"]
+                                },
+                                new() {
+                                    FilterName = "Halo Retail/Trial (halo.exe)",
+                                    Patterns = [(GlobPattern)"halo.exe"]
+                                }
+                            ],
+                            SuggestedFolder = (DirectoryPath)GetFolderPath(SpecialFolder.Desktop),
+                        }
+                    );
+
+                    return ((FileChooserPortal.OpenFileResults?)result.Results)?.SelectedFiles
+                          [0]?.AbsolutePath;
+                });
+                task.Wait();
+
+                if (task.Result is not null)
+                    fullName = GetFullPath(task.Result);
+#else
                 var ofd = new Microsoft.Win32.OpenFileDialog
                 {
                     InitialDirectory = GetFolderPath(SpecialFolder.Desktop),
@@ -76,6 +114,7 @@ namespace HXE.HCE
 
                 if (ofd.ShowDialog() == true)
                     fullName = GetFullPath(ofd.FileName);
+#endif
             }
 
             if (System.IO.File.Exists(fullName))
