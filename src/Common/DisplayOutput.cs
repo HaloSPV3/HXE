@@ -28,7 +28,11 @@ internal partial class DisplayOutput
     return (PrimaryScreenWidth, PrimaryScreenHeight, PrimaryScreenRefreshRate);
   }
 
+#if NET7_0_OR_GREATER
   [System.Text.RegularExpressions.GeneratedRegex("\\n   (\\d+)x(\\d+) +([\\d.]+)(?=\\*+?)")]
   internal static partial System.Text.RegularExpressions.Regex XRAndR_PrimaryDisplay_XYRR();
+#else
+  internal static System.Text.RegularExpressions.Regex XRAndR_PrimaryDisplay_XYRR() => new("\\n   (\\d+)x(\\d+) +([\\d.]+)(?=\\*+?)");
+#endif
 }
 
