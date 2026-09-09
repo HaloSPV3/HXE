@@ -13,7 +13,8 @@ internal partial class DisplayOutput
     float PrimaryScreenRefreshRate
     ) GetTriplet()
   {
-    var xrandr = System.Diagnostics.Process.Start("xrandr", ["--query"]);
+    var xrandr = System.Diagnostics.Process.Start("xrandr", "--query")
+      ?? throw new NullReferenceException("Failed to run xrandr!");
     xrandr.WaitForExit();
     if (xrandr.ExitCode != 0)
       throw new Exception($"xrandr returned exit code {xrandr.ExitCode}!\nstderr:\n${xrandr.StandardError.ReadToEnd()}");
