@@ -6,7 +6,13 @@ namespace HXE.Common;
 internal partial class DisplayOutput
 {
   [SupportedOSPlatform("Linux")]
+#if !NET5_0_OR_GREATER
+#pragma warning disable CA1418 // Use valid platform string
+#endif
   [SupportedOSPlatform("FreeBSD")]
+#if !NET5_0_OR_GREATER
+#pragma warning restore CA1418 // Use valid platform string
+#endif
   public static (
     int PrimaryScreenWidth,
     int PrimaryScreenHeight,
