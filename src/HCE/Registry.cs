@@ -351,13 +351,10 @@ namespace HXE.HCE
             if (key == null)
             {
                 var path0 = Environment.Is64BitOperatingSystem ? @"SOFTWARE\WOW6432Node" : @"SOFTWARE";
-                var MSGames = WinReg.LocalMachine.OpenSubKey($"{path0}\\Microsoft\\Microsoft Games", true);
+                var MSGames = WinReg.LocalMachine.OpenSubKey(WoWCheck(), true)
+                    ?? (WinReg.LocalMachine.OpenSubKey(WoWCheck().Replace(@"\Microsoft Games", string.Empty), true)?.CreateSubKey("Microsoft Games"));
 
-                if (MSGames == null)
-                {
-                    WinReg.LocalMachine.OpenSubKey(Path.Combine(path0, "Microsoft"), true).CreateSubKey("Microsoft Games");
-                }
-
+                // TODO: rename to gameSubKey
                 string gameSK = string.Empty;
                 switch (game)
                 {
@@ -392,18 +389,21 @@ namespace HXE.HCE
 
                         data.Version = "1.10";
                         data.VersionType = "RetailVersion";
-                        key.SetValue("CDPath", data.CDPath, RegistryValueKind.String);
-                        key.SetValue("DigitalProductID", data.DigitalProductID, RegistryValueKind.Binary);
-                        key.SetValue("DistID", data.DistID, RegistryValueKind.DWord);
-                        key.SetValue("EXE Path", data.EXE_Path, RegistryValueKind.String);
-                        key.SetValue("InstalledGroup", data.InstalledGroup, RegistryValueKind.String);
-                        key.SetValue("LangID", data.LangID, RegistryValueKind.DWord);
-                        key.SetValue("Launched", data.Launched, RegistryValueKind.String);
-                        key.SetValue("PendingVersion", data.PendingVersion, RegistryValueKind.String);
-                        key.SetValue("PID", data.PID, RegistryValueKind.String);
-                        key.SetValue("Version", data.Version, RegistryValueKind.String);
-                        key.SetValue("VersionType", data.VersionType, RegistryValueKind.String);
-                        key.SetValue("Zone", data.Zone, RegistryValueKind.String);
+                        if (key != null)
+                        {
+                            key.SetValue("CDPath", data.CDPath, RegistryValueKind.String);
+                            key.SetValue("DigitalProductID", data.DigitalProductID, RegistryValueKind.Binary);
+                            key.SetValue("DistID", data.DistID, RegistryValueKind.DWord);
+                            key.SetValue("EXE Path", data.EXE_Path, RegistryValueKind.String);
+                            key.SetValue("InstalledGroup", data.InstalledGroup, RegistryValueKind.String);
+                            key.SetValue("LangID", data.LangID, RegistryValueKind.DWord);
+                            key.SetValue("Launched", data.Launched, RegistryValueKind.String);
+                            key.SetValue("PendingVersion", data.PendingVersion, RegistryValueKind.String);
+                            key.SetValue("PID", data.PID, RegistryValueKind.String);
+                            key.SetValue("Version", data.Version, RegistryValueKind.String);
+                            key.SetValue("VersionType", data.VersionType, RegistryValueKind.String);
+                            key.SetValue("Zone", data.Zone, RegistryValueKind.String);
+                        }
                     }
                     break;
 
@@ -412,17 +412,20 @@ namespace HXE.HCE
                         key = WinReg.LocalMachine.OpenSubKey(Path.Combine(WoWCheck(), Custom));
                         data.Version = "1.10";
                         data.VersionType = "TrialVersion";
-                        key.SetValue("CDPath", data.CDPath, RegistryValueKind.String);
-                        key.SetValue("DigitalProductID", data.DigitalProductID, RegistryValueKind.Binary);
-                        key.SetValue("DistID", data.DistID, RegistryValueKind.DWord);
-                        key.SetValue("EXE Path", data.EXE_Path, RegistryValueKind.String); /// EXE_Path = SPV3.Installer.Target
-                        key.SetValue("InstalledGroup", data.InstalledGroup, RegistryValueKind.String);
-                        key.SetValue("LangID", data.LangID, RegistryValueKind.DWord);
-                        key.SetValue("Launched", data.Launched, RegistryValueKind.String);
-                        key.SetValue("PendingVersion", data.PendingVersion, RegistryValueKind.String);
-                        key.SetValue("PID", data.PID, RegistryValueKind.String);
-                        key.SetValue("Version", data.Version, RegistryValueKind.String);
-                        key.SetValue("VersionType", data.VersionType, RegistryValueKind.String);
+                        if (key != null)
+                        {
+                            key.SetValue("CDPath", data.CDPath, RegistryValueKind.String);
+                            key.SetValue("DigitalProductID", data.DigitalProductID, RegistryValueKind.Binary);
+                            key.SetValue("DistID", data.DistID, RegistryValueKind.DWord);
+                            key.SetValue("EXE Path", data.EXE_Path, RegistryValueKind.String); /// EXE_Path = SPV3.Installer.Target
+                            key.SetValue("InstalledGroup", data.InstalledGroup, RegistryValueKind.String);
+                            key.SetValue("LangID", data.LangID, RegistryValueKind.DWord);
+                            key.SetValue("Launched", data.Launched, RegistryValueKind.String);
+                            key.SetValue("PendingVersion", data.PendingVersion, RegistryValueKind.String);
+                            key.SetValue("PID", data.PID, RegistryValueKind.String);
+                            key.SetValue("Version", data.Version, RegistryValueKind.String);
+                            key.SetValue("VersionType", data.VersionType, RegistryValueKind.String);
+                        }
                     }
                     break;
 
@@ -433,21 +436,25 @@ namespace HXE.HCE
                         data.PID = string.Empty;
                         data.Version = "1";
                         data.VersionType = "TrialVersion";
-                        key.SetValue("CDPath", data.CDPath, RegistryValueKind.String);
-                        key.SetValue("DigitalProductID", data.DigitalProductID, RegistryValueKind.Binary);
-                        key.SetValue("EXE Path", data.EXE_Path, RegistryValueKind.String);
-                        key.SetValue("InstalledGroup", data.InstalledGroup, RegistryValueKind.String);
-                        key.SetValue("LangID", data.LangID, RegistryValueKind.DWord);
-                        key.SetValue("Launched", data.Launched, RegistryValueKind.String);
-                        key.SetValue("PID", data.PID, RegistryValueKind.String);
-                        key.SetValue("Version", data.Version, RegistryValueKind.String);
-                        key.SetValue("VersionType", data.VersionType, RegistryValueKind.String);
+                        if (key != null)
+                        {
+                            key.SetValue("CDPath", data.CDPath, RegistryValueKind.String);
+                            key.SetValue("DigitalProductID", data.DigitalProductID, RegistryValueKind.Binary);
+                            key.SetValue("EXE Path", data.EXE_Path, RegistryValueKind.String);
+                            key.SetValue("InstalledGroup", data.InstalledGroup, RegistryValueKind.String);
+                            key.SetValue("LangID", data.LangID, RegistryValueKind.DWord);
+                            key.SetValue("Launched", data.Launched, RegistryValueKind.String);
+                            key.SetValue("PID", data.PID, RegistryValueKind.String);
+                            key.SetValue("Version", data.Version, RegistryValueKind.String);
+                            key.SetValue("VersionType", data.VersionType, RegistryValueKind.String);
+                        }
                     }
                     break;
 
                 case Game.HEK:
                     {
-                        key = WinReg.LocalMachine.OpenSubKey(Path.Combine(WoWCheck(), HEK));
+                        key = WinReg.LocalMachine.OpenSubKey(Path.Combine(WoWCheck(), HEK))
+                        ?? WinReg.LocalMachine.CreateSubKey(Path.Combine());
                         data.DigitalProductID = [];
                         data.PID = string.Empty;
                         data.VersionType = "TrialVersion";
@@ -486,7 +493,7 @@ namespace HXE.HCE
         public static Data GetRegistryKeys(Game game, Data data)
         {
             string path = WoWCheck();
-            RegistryKey? key;
+            RegistryKey? key = null;
 
             try
             {
@@ -497,16 +504,13 @@ namespace HXE.HCE
                         key = WinReg.LocalMachine.OpenSubKey(path);
                         if (key != null)// read to Data
                         {
-                            data.CDPath = key.GetValue("CDPath", data.CDPath).ToString();
-                            data.DigitalProductID = Enc.Unicode.GetBytes(
-                                                    key.GetValue("DigitalProductID", data.DigitalProductID).ToString());
-                            data.EXE_Path = key.GetValue("EXE Path", data.EXE_Path).ToString();
-                            data.LangID = Enc.Unicode.GetBytes(
-                                                    key.GetValue("LangID", data.LangID).ToString())[0];
-                            data.Launched = key.GetValue("Launched", data.Launched).ToString();
-                            data.PendingVersion = key.GetValue("PendingVersion", data.PendingVersion).ToString();
-                            data.PID = key.GetValue("PID", data.PID).ToString();
-                            data.Version = key.GetValue("Version", data.Version).ToString();
+                            var digitalProductId = key.GetValue("DigitalProductID", data.DigitalProductID)?.ToString();
+                            data.DigitalProductID = digitalProductId == null
+                                ? data.DigitalProductID
+                                : Enc.UTF8.GetBytes(digitalProductId);
+                            data.PendingVersion = key.GetValue("PendingVersion", data.PendingVersion)?.ToString() ?? string.Empty;
+                            data.PID = key.GetValue("PID", data.PID)?.ToString() ?? string.Empty;
+                            data.Version = key.GetValue("Version", data.Version)?.ToString() ?? string.Empty;
                             data.VersionType = "RetailVersion";
                         }
                         break;
@@ -516,16 +520,13 @@ namespace HXE.HCE
                         key = WinReg.LocalMachine.OpenSubKey(path);
                         if (key != null) // read to Data
                         {
-                            data.CDPath = key.GetValue("CDPath", data.CDPath).ToString();
-                            data.DigitalProductID = Enc.Unicode.GetBytes(
-                                                    key.GetValue("DigitalProductID", data.DigitalProductID).ToString());
-                            data.EXE_Path = key.GetValue("EXE Path", data.EXE_Path).ToString();
-                            data.LangID = Enc.Unicode.GetBytes(
-                                                    key.GetValue("LangID", data.LangID).ToString())[0];
-                            data.Launched = key.GetValue("Launched", data.Launched).ToString();
-                            data.PendingVersion = key.GetValue("PendingVersion", data.PendingVersion).ToString();
-                            data.PID = key.GetValue("PID", data.PID).ToString();
-                            data.Version = key.GetValue("Version", data.Version).ToString();
+                            var digitalProductId = key.GetValue("DigitalProductID", data.DigitalProductID)?.ToString();
+                            data.DigitalProductID = digitalProductId == null
+                                ? data.DigitalProductID
+                                : Enc.UTF8.GetBytes(digitalProductId);
+                            data.PendingVersion = key.GetValue("PendingVersion", data.PendingVersion)?.ToString() ?? string.Empty;
+                            data.PID = key.GetValue("PID", data.PID)?.ToString() ?? string.Empty;
+                            data.Version = key.GetValue("Version", data.Version)?.ToString() ?? string.Empty;
                             data.VersionType = "TrialVersion";
                         }
                         break;
@@ -535,15 +536,12 @@ namespace HXE.HCE
                         key = WinReg.LocalMachine.OpenSubKey(path);
                         if (key != null) // read to Data
                         {
-                            data.CDPath = key.GetValue("CDPath", data.CDPath).ToString();
-                            data.DigitalProductID = Enc.Unicode.GetBytes(
-                                                    key.GetValue("DigitalProductID", data.DigitalProductID).ToString());
-                            data.EXE_Path = key.GetValue("EXE Path", data.EXE_Path).ToString();
-                            data.LangID = Enc.Unicode.GetBytes(
-                                                    key.GetValue("LangID", data.LangID).ToString())[0];
-                            data.Launched = key.GetValue("Launched", data.Launched).ToString();
-                            data.PID = key.GetValue("PID", data.PID).ToString();
-                            data.Version = key.GetValue("Version", data.Version).ToString();
+                            var digitalProductId = key.GetValue("DigitalProductID", data.DigitalProductID)?.ToString();
+                            data.DigitalProductID = digitalProductId == null
+                                ? data.DigitalProductID
+                                : Enc.UTF8.GetBytes(digitalProductId);
+                            data.PID = key.GetValue("PID", data.PID)?.ToString() ?? string.Empty;
+                            data.Version = key.GetValue("Version", data.Version)?.ToString() ?? string.Empty;
                             data.VersionType = "TrialVersion";
                         }
                         break;
@@ -553,12 +551,7 @@ namespace HXE.HCE
                         key = WinReg.LocalMachine.OpenSubKey(path);
                         if (key != null) // read to Data
                         {
-                            data.CDPath = key.GetValue("CDPath", data.CDPath).ToString();
                             data.DigitalProductID = [];
-                            data.EXE_Path = key.GetValue("EXE Path", data.EXE_Path).ToString();
-                            data.LangID = Enc.Unicode.GetBytes(
-                                                    key.GetValue("LangID", data.LangID).ToString())[0];
-                            data.Launched = key.GetValue("Launched", data.Launched).ToString();
                             data.PID = string.Empty;
                             data.VersionType = "TrialVersion";
                         }
@@ -567,6 +560,18 @@ namespace HXE.HCE
                     default:
                         break;
                 }
+                if (key != null)
+                {
+                    data.CDPath = key.GetValue("CDPath", data.CDPath)?.ToString() ?? string.Empty;
+                    data.EXE_Path = key.GetValue("EXE Path", data.EXE_Path)?.ToString() ?? string.Empty;
+                    byte[] langIdBytes = Enc.UTF8.GetBytes(
+                        key.GetValue("LangID", data.LangID)?.ToString()
+                        ?? string.Empty
+                    );
+                    data.LangID = langIdBytes.Length == 0 ? (byte)0 : langIdBytes[0];
+                    data.Launched = key.GetValue("Launched", data.Launched)?.ToString() ?? data.Launched;
+                }
+
                 return data;
             }
             catch (Exception e)
