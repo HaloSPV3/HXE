@@ -52,10 +52,10 @@ namespace HXE
 
         public void CreateDirectory()
         {
-            var baseDirectory = GetDirectoryName(Path);
+            var baseDirectory = GetDirectoryName(Path) ?? /* root dir */ Path;
 
             if (!Directory.Exists(GetFullPath(baseDirectory)))
-                Directory.CreateDirectory(baseDirectory ?? throw new ArgumentNullException());
+                Directory.CreateDirectory(baseDirectory);
         }
 
         public bool Exists()
