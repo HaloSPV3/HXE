@@ -168,7 +168,7 @@ namespace HXE
         /// <param name="progress">
         ///   Optional IProgress object for calling GUI clients.
         /// </param>
-        public void Commit(IProgress<Status> progress = null)
+        public void Commit(IProgress<Status>? progress = null)
         {
             Info("Started asset update routine - " + Assets.Count + " assets");
 
