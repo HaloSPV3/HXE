@@ -26,6 +26,7 @@ const scopes = {
   OpenSauce: 'src/OpenSauce.cs',
   Options: 'src/Options.cs',
   Patcher: 'src/Patcher.cs',
+  Paths: 'src/Paths.cs',
   Positions: 'src/Positions.*',
   Process: 'src/Process.cs',
   README: 'Affects README.md or any other README documents.',
