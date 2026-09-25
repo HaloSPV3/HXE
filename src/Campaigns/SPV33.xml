@@ -176,6 +176,88 @@
       <Initiation>203</Initiation>
     </Mission>
 
+    <!-- SPV3 Bridge spartan -->
+    <Mission>
+      <Name>SPV3 Bridge Spartan</Name>
+      <Value>spv3_bridge_spartan</Value>
+      <Initiation>301</Initiation>
+    </Mission>
+
+    <!-- SPV3 Bridge flood -->
+    <Mission>
+      <Name>SPV3 Bridge Flood</Name>
+      <Value>spv3_bridge_flood</Value>
+      <Initiation>302</Initiation>
+    </Mission>
+    <!-- SPV3 Bridge elite -->
+    <Mission>
+      <Name>SPV3 Bridge Elite</Name>
+      <Value>spv3_bridge_elite</Value>
+      <Initiation>303</Initiation>
+    </Mission>
+
+    <!-- SPV3 Hangar spartan -->
+    <Mission>
+      <Name>SPV3 Hangar Spartan</Name>
+      <Value>spv3_covieship_spartan</Value>
+      <Initiation>401</Initiation>
+    </Mission>
+
+    <!-- SPV3 Hangar flood -->
+    <Mission>
+      <Name>SPV3 Hangar Flood</Name>
+      <Value>spv3_covieship_flood</Value>
+      <Initiation>402</Initiation>
+    </Mission>
+
+    <!-- SPV3 Hangar elite -->
+    <Mission>
+      <Name>SPV3 Hangar Elite</Name>
+      <Value>spv3_covieship_elite</Value>
+      <Initiation>403</Initiation>
+    </Mission>
+
+    <!-- SPV3 Lobby spartan -->
+    <Mission>
+      <Name>SPV3 Lobby Spartan</Name>
+      <Value>spv3_lobby_spartan</Value>
+      <Initiation>501</Initiation>
+    </Mission>
+
+    <!-- SPV3 Lobby flood -->
+    <Mission>
+      <Name>SPV3 Lobby Flood</Name>
+      <Value>spv3_lobby_flood</Value>
+      <Initiation>502</Initiation>
+    </Mission>
+
+    <!-- SPV3 Lobby elite -->
+    <Mission>
+      <Name>SPV3 Lobby Elite</Name>
+      <Value>spv3_lobby_elite</Value>
+      <Initiation>503</Initiation>
+    </Mission>
+
+    <!-- SPV3 Swamp Tower spartan -->
+    <Mission>
+      <Name>SPV3 Swamp Tower Spartan</Name>
+      <Value>spv3_swamptower_spartan</Value>
+      <Initiation>601</Initiation>
+    </Mission>
+
+    <!-- SPV3 Swamp Tower flood -->
+    <Mission>
+      <Name>SPV3 Swamp Tower Flood</Name>
+      <Value>spv3_swamptower_flood</Value>
+      <Initiation>602</Initiation>
+    </Mission>
+
+    <!-- SPV3 Swamp Tower elite -->
+    <Mission>
+      <Name>SPV3 Swamp Tower Elite</Name>
+      <Value>spv3_swamptower_elite</Value>
+      <Initiation>603</Initiation>
+    </Mission>
   </Missions>
   <Difficulties>
     <!-- Default -->
