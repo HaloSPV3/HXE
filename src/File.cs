@@ -63,6 +63,11 @@ namespace HXE
             return System.IO.File.Exists(Path);
         }
 
+        /// <inheritdoc cref="System.IO.File.Exists(string)"/>
+        /// <remarks>This wrapper was created because old target frameworks don't use NotNullWhen on <paramref name="path"/>.</remarks>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool Exists([NotNullWhen(true)] string? path) => System.IO.File.Exists(path);
+
         public ulong Size()
         {
             var file = new FileInfo(Path);
