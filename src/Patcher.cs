@@ -24,6 +24,7 @@ namespace HXE
             public List<DataSet> DataSets = new List<DataSet>();
         }
 
+        // todo: change to record or record-struct
         public class DataSet // 00000136: 0F 2F
         {
             public long Offset { get; set; }
