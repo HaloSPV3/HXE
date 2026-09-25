@@ -106,7 +106,7 @@ namespace HXE.HCE
         ///   Create file and folder structure for Profile.Generate().
         /// </summary>
         /// <param name="pathParam"> -path parameter to pass to Halo and write to profiles.</param>
-        /// <param name="lastprof" > Object reperesentation of LastProf.txt.</param>
+        /// <param name="lastprof" > Object representation of LastProf.txt.</param>
         /// <param name="profile"  > Object representation of blam.sav.</param>
         private static void Scaffold(string pathParam, LastProfile lastprof, Profile profile)
         {
