@@ -115,7 +115,7 @@ namespace HXE
              */
 
             public static readonly string Initiation
-              = Exists("dinput8.dll") || Exists("mods/opensauce.dll")
+              = File.Exists("dinput8.dll") || File.Exists("mods/opensauce.dll")
                 ? Combine(CurrentDirectory, "initc.txt")
                 : Combine(CurrentDirectory, "init.txt");
 
