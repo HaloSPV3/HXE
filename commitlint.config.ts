@@ -34,6 +34,7 @@ const scopes = {
   Settings: 'src/Settings*',
   SFX: 'Affects the HXE.SFX class or other symbols in its source file.',
   SPV3: 'src/SPV3/*',
+  Status: 'src/Status.cs',
   Steam: 'src/Steam/Libraries.cs',
   TODO: 'Affects TODO.md or any todo comments.',
   Update: 'src/Update.cs',
