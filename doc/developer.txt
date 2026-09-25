@@ -21,9 +21,9 @@
 DEVELOPER DOCUMENTATION
 =======================
 
-HXE permits you to import it into your own .NET 4.5.\* project and rely
-on its functionality. This documentation outlines the various ways its
-library can be used.
+HXE permits you to import it into your own .NET 4.6.\*, .NET 4.8, .NET 6, or
+.NET 10 project and rely on its functionality. This documentation outlines the
+various ways its library can be used.
 
 PROFILE EDITING
 ---------------
