@@ -22,8 +22,10 @@ namespace HXE
 {
   public class Status
   {
+#pragma warning disable IDE0055
     public string Description { get; set; } = string.Empty;
     public long   Current     { get; set; }
-    public long Total { get; set; }
+    public long   Total       { get; set; }
+#pragma warning restore IDE0055
   }
 }
