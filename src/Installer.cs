@@ -114,7 +114,7 @@ namespace HXE
 
                 var archive = Combine(source, package.Name);
 
-                if (!Exists(archive))
+                if (!File.Exists(archive))
                     throw new FileNotFoundException("Package does not exist in the source directory - " + package.Name);
 
                 Info("Package exists - " + package.Name);
@@ -139,7 +139,7 @@ namespace HXE
                 var directory = Combine(target, package.Entry.Path);
                 var file = Combine(directory, package.Entry.Name);
 
-                if (Exists(file))
+                if (File.Exists(file))
                 {
                     Delete(file);
                     Info("Deleted existing file - " + file);
@@ -166,7 +166,7 @@ namespace HXE
                     Thread.Sleep(1000);
                 }
 
-                if (Exists(file))
+                if (File.Exists(file))
                     Info("Entry size - " + new FileInfo(file).Length);
                 else
                     Error("Could not get entry size - " + package.Entry.Name);

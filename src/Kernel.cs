@@ -97,13 +97,13 @@ namespace HXE
             /* Clear log file */
             {
                 // todo: rotate log files so no more than five exist and previous logs persist
-                if (Exists(Paths.Exception) && new FileInfo(Paths.Exception).Length > 1048576 * 8) // If larger than 8 MiB, ...
+                if (File.Exists(Paths.Exception) && new FileInfo(Paths.Exception).Length > 1048576 * 8) // If larger than 8 MiB, ...
                     System.IO.File.WriteAllText(Paths.Exception, ""); // ...clear log.
             }
 
             /* Switch to legacy kernel modes */
             {
-                if (!Exists(Legacy))
+                if (!File.Exists(Legacy))
                     configuration.Mode = Configuration.ConfigurationMode.SPV33;
             }
 
@@ -236,7 +236,7 @@ namespace HXE
                              * If it exists, search for existing profiles.
                              * Else, create a new player profile.
                              */
-                            if (Exists(savegames))
+                            if (File.Exists(savegames))
                             {
                                 List<Profile> profiles = Profile.List(savegames);
                                 List<Profile> validProfiles = new List<Profile> { };

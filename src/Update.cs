@@ -64,7 +64,7 @@ namespace HXE
              * err... we're in a bit of a pickle.
              */
 
-            if (Exists(uri)) /* retrieve data from the file system */
+            if (File.Exists(uri)) /* retrieve data from the file system */
             {
                 Info("Inferred filesystem manifest - " + uri);
 
@@ -130,7 +130,7 @@ namespace HXE
             {
                 var path = Combine(CurrentDirectory, asset.Path, asset.Name);
 
-                if (!Exists(path))
+                if (!File.Exists(path))
                     return true;
 
                 var length = new FileInfo(path).Length;
@@ -184,7 +184,7 @@ namespace HXE
 
                 var target = Combine(CurrentDirectory, asset.Path, asset.Name);
 
-                if (Exists(target) && new FileInfo(target).Length == asset.Size)
+                if (File.Exists(target) && new FileInfo(target).Length == asset.Size)
                     continue;
 
                 asset.Request(progress); /* grab our package */
@@ -245,7 +245,7 @@ namespace HXE
             /// </exception>
             public void Install(IProgress<Status>? progress = null)
             {
-                if (!Exists(File))
+                if (!HXE.File.Exists(File))
                     throw new AssetException("Package not found for asset - " + Name);
 
                 Info("Asset package found on the filesystem");
@@ -264,7 +264,7 @@ namespace HXE
 
                 try
                 {
-                    if (Exists(target))
+                    if (HXE.File.Exists(target))
                         Move(target, backup);
 
                     var task = new Task(() => { ExtractToDirectory(File, directory); });
@@ -275,7 +275,7 @@ namespace HXE
 
                     while (!task.IsCompleted)
                     {
-                        if (Exists(target))
+                        if (HXE.File.Exists(target))
                         {
                             var c = new FileInfo(target).Length;
                             var t = Size;
@@ -292,16 +292,16 @@ namespace HXE
                         Thread.Sleep(1000);
                     }
 
-                    if (Exists(backup))
+                    if (HXE.File.Exists(backup))
                         Delete(backup);
 
                     Done("Asset install has been successfully completed");
                 }
                 catch (Exception)
                 {
-                    if (!Exists(backup)) throw;
+                    if (!HXE.File.Exists(backup)) throw;
 
-                    if (Exists(target))
+                    if (HXE.File.Exists(target))
                         Delete(target);
 
                     Move(backup, target);
@@ -315,7 +315,7 @@ namespace HXE
             /// </summary>
             public void CleanUp()
             {
-                if (Exists(File))
+                if (HXE.File.Exists(File))
                     Delete(File);
 
                 Done("Asset cleanup has been successfully completed");

@@ -23,7 +23,6 @@ using System.IO;
 using System.Runtime.Versioning;
 using static System.Environment;
 using static System.Environment.SpecialFolder;
-using static System.IO.File;
 using static System.IO.Path;
 
 namespace HXE.HCE
@@ -70,7 +69,7 @@ namespace HXE.HCE
         {
             var path = Combine(CurrentDirectory, Executable);
 
-            return Exists(path) ? new FileInfo(path) : null;
+            return File.Exists(path) ? new FileInfo(path) : null;
         }
 
         /**
@@ -89,10 +88,10 @@ namespace HXE.HCE
             var pathX64 = Combine(GetFolderPath(ProgramFilesX86), exePath);
             var pathX32 = Combine(GetFolderPath(ProgramFiles), exePath);
 
-            if (Exists(pathX64))
+            if (File.Exists(pathX64))
                 return new FileInfo(pathX64);
 
-            if (Exists(pathX32))
+            if (File.Exists(pathX32))
                 return new FileInfo(pathX32);
 
             return null;
@@ -126,7 +125,7 @@ namespace HXE.HCE
                     if (path == null) return null;
                     path = Combine(path, Paths.HCE.Executable);
 
-                    if (path != null && Exists(path))
+                    if (path != null && File.Exists(path))
                         return new FileInfo(path);
 
                     return null;
