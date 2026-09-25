@@ -13,7 +13,16 @@ namespace HXE.Net
             // and use that variable for the other assignments.
             var defaultTimeout = TimeSpan.FromSeconds(30);
             DEFAULT_TIMEOUT = defaultTimeout;
-            Client = new HttpClient()
+            var handler = new HttpClientHandler()
+            {
+                AutomaticDecompression = 
+#if NET5_0_OR_GREATER
+                    System.Net.DecompressionMethods.All,
+#elif NET462_OR_GREATER
+                    System.Net.DecompressionMethods.GZip | System.Net.DecompressionMethods.Deflate,
+#endif
+            };
+            Client = new HttpClient(handler)
             { Timeout = defaultTimeout };
         }
         public static HttpClient Client { get; }
