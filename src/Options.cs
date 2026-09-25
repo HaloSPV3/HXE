@@ -165,6 +165,7 @@ using System.Globalization;
 using System.IO;
 using System.Reflection;
 using System.Runtime.Serialization;
+using System.Security.Permissions;
 using System.Text;
 using System.Text.RegularExpressions;
 using MessageLocalizerConverter = System.Converter<string, string>;
@@ -910,13 +911,20 @@ namespace HXE
 			);
 		}
 
-		public OptionSet Add<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>(string prototype, Action<T?> action) =>
+		public OptionSet Add<[DynamicallyAccessedMembers(
+			DynamicallyAccessedMemberTypes.All)] T
+		>(string prototype, Action<T?> action) =>
 			Add(prototype, null, action);
 
-		public OptionSet Add<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>(string prototype, string? description, Action<T?> action) =>
+		public OptionSet Add<[DynamicallyAccessedMembers(
+			DynamicallyAccessedMemberTypes.All)] T
+		>(string prototype, string? description, Action<T?> action) =>
 			Add(new ActionOption<T>(prototype, description ?? string.Empty, action));
 
-		public OptionSet Add<TKey, TValue>(string prototype, OptionAction<TKey?, TValue?> action) =>
+		public OptionSet Add<
+			[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TKey,
+			[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TValue
+		>(string prototype, OptionAction<TKey?, TValue?> action) =>
 			Add(prototype, null, action);
 
 		public OptionSet Add<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TKey, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TValue>(string prototype, string? description, OptionAction<TKey?, TValue?> action) =>
@@ -1620,25 +1628,35 @@ namespace HXE
 			return this;
 		}
 
-		public CommandSet Add<T>(string prototype, Action<T> action)
+		public CommandSet Add<[DynamicallyAccessedMembers(
+			DynamicallyAccessedMemberTypes.All)] T
+		>(string prototype, Action<T> action)
 		{
 			Options.Add(prototype, null, action as Action<T?>);
 			return this;
 		}
 
-		public CommandSet Add<T>(string prototype, string description, Action<T> action)
+		public CommandSet Add<[DynamicallyAccessedMembers(
+			DynamicallyAccessedMemberTypes.All)] T
+		>(string prototype, string description, Action<T> action)
 		{
 			Options.Add(prototype, description, action as Action<T?>);
 			return this;
 		}
 
-		public CommandSet Add<TKey, TValue>(string prototype, OptionAction<TKey, TValue> action)
+		public CommandSet Add<
+			[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TKey,
+			[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TValue
+		>(string prototype, OptionAction<TKey, TValue> action)
 		{
 			Options.Add(prototype, action as OptionAction<TKey?, TValue?>);
 			return this;
 		}
 
-		public CommandSet Add<TKey, TValue>(string prototype, string description, OptionAction<TKey, TValue> action)
+		public CommandSet Add<
+			[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TKey,
+			[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TValue
+		>(string prototype, string description, OptionAction<TKey, TValue> action)
 		{
 			Options.Add(prototype, description, action as OptionAction<TKey?, TValue?>);
 			return this;
