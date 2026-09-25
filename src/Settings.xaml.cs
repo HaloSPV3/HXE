@@ -66,6 +66,7 @@ namespace HXE
 
         public Settings() => Initialize();
 
+        // todo: inline and remove
         public void Initialize()
         {
             InitializeComponent();
@@ -83,6 +84,7 @@ namespace HXE
             }
         }
 
+        // todo: private?
         public void AssignConfig()
         {
             Mode.IsEnabled = SettingsCore.ModeUnlocked;
