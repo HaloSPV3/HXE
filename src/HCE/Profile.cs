@@ -166,7 +166,7 @@ namespace HXE.HCE
                         Debug("Nulling input - " + offset);
 
                         ms.Position = (int)offset;
-                        bw.Write((ushort) 0x7FFF);
+                        bw.Write((ushort)0x7FFF);
                     }
 
                     foreach (var offset in Enum.GetValues<GP0_Input>())
@@ -182,7 +182,7 @@ namespace HXE.HCE
                         Debug("Nulling input - " + offset);
 
                         ms.Position = (int)offset;
-                        bw.Write((ushort) 0x7FFF);
+                        bw.Write((ushort)0x7FFF);
                     }
 
                     foreach (var offset in Enum.GetValues<GP2_Input>())
@@ -592,7 +592,7 @@ namespace HXE.HCE
                         Input.Gamepads_Menu.Add(key, value);
                 }
 
-                if ((int) Details.Colour == 0xFF)
+                if ((int)Details.Colour == 0xFF)
                     Details.Colour = ColourOptions.White;
 
                 Info("Profile deserialisation routine is complete");
