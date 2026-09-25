@@ -707,7 +707,7 @@ namespace HXE
             public const uint BLOCK_UPDATE_CHECKS = 1 << 0x10; // Prevents checking for game updates.
             public const uint BLOCK_CAMERA_SHAKE = 1 << 0x11; // Completely disable camera shake effect. Expose option to players prone to motion sickness.
             public const uint PREVENT_DESCOPING_ON_DMG = 1 << 0x12; // Prevents zoomed-in weapons from descoping when the player takes damage.
-                                                                    //public const uint ADD_TAG                    = 1 << 0x13; // pR0Ps' signature
+            internal const uint ADD_TAG = 1 << 0x13; // pR0Ps' signature
         }
     }
 }
