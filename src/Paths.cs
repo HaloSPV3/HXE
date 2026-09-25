@@ -234,10 +234,14 @@ namespace HXE
             public static string Libraries = Combine(Directory, "steamapps", "libraryfolders.vdf");
             /// <summary>Change directly or by assigning an element from <see cref="HXE.Steam.Libraries.LibList"/></summary>
             public static string Library = Directory;
-
+            /// <summary>
+            /// Given the full path of a steam.exe, set <see cref="Directory"/>, <see cref="Libraries"/>, and <see cref="Library"/>.
+            /// </summary>
+            /// <param name="steamexepath">The full path to steam.exe</param>
             public static void SetSteam(string steamexepath)
             {
-                Directory = GetDirectoryName(steamexepath);
+                steamexepath = GetFullPath(steamexepath);
+                Directory = GetDirectoryName(steamexepath)!;
                 Libraries = Combine(Directory, "steamapps", "libraryfolders.vdf");
                 Library = Directory;
             }
