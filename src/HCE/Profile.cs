@@ -28,9 +28,9 @@ using static System.IO.SearchOption;
 using static HXE.Console;
 using static HXE.HCE.Profile.ProfileAudio;
 using static HXE.HCE.Profile.ProfileDetails;
+using static HXE.HCE.Profile.ProfileInput;
 using static HXE.HCE.Profile.ProfileNetwork;
 using static HXE.HCE.Profile.ProfileVideo;
-using static HXE.HCE.Profile.ProfileInput;
 using static HXE.Paths;
 using Directory = System.IO.Directory;
 
