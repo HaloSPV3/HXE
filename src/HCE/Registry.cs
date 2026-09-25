@@ -278,6 +278,7 @@ namespace HXE.HCE
         /// Uses default Data values for registry variables.
         /// </summary>
         /// <remarks>Totally broken. Use WriteToFile() instead.</remarks>
+        [Obsolete($"Requires elevated (Admin) permissions. Use {nameof(WriteToFile)} instead.")]
         [SupportedOSPlatform("windows")]
         public static void CreateKeys(Game game)
         {
@@ -293,10 +294,11 @@ namespace HXE.HCE
         /// <param name="path">The Registry key path.</param>
         /// <param name="data">An instance of the Registry.Data class.</param>
         /// <remarks>TOTALLY BROKEN. Use WriteToFile() instead.</remarks>
+        [Obsolete($"Requires elevated (Admin) permissions. Use {nameof(WriteToFile)} instead.")]
         [SupportedOSPlatform("windows")]
         public static void CreateKeys(Game game, Data data)
         {
-            /** Temporarily Abandoned
+            /** PERMANENTLY Abandoned
              * This method of writing to the Windows Registry
              * was intended to either...
              * A. Temporarily elevate the current process to write
