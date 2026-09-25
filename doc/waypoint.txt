@@ -23,5 +23,4 @@ Examples:
     C:\Users\user\Documents\My Games\Halo CE\savegames\<profile name>\<profile name>
     <path parameter>\savegames\<profile name>\<profile name>
     .\profiles\savegames\<profile name>\<profile name>
- 
- 
+
