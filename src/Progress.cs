@@ -32,8 +32,12 @@ namespace HXE
 
     public void Load(Campaign campaign)
     {
-      if (!Exists())
+      if (!Exists() || campaign.Missions == null || campaign.Difficulties == null)
+      {
+        System.Diagnostics.Debug.Assert(campaign.Missions != null);
+        System.Diagnostics.Debug.Assert(campaign.Difficulties != null);
         return;
+      }
 
       using (var reader = new BinaryReader(System.IO.File.Open(Path, FileMode.Open)))
       {
