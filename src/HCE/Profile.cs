@@ -153,7 +153,7 @@ namespace HXE.HCE
 
                 /** Erase Old Input Bindings */
                 {
-                    foreach (var offset in Enum.GetValues(typeof(Keyboard)))
+                    foreach (var offset in Enum.GetValues<Keyboard>())
                     {
                         Debug("Nulling input - " + offset);
 
@@ -161,7 +161,7 @@ namespace HXE.HCE
                         bw.Write((ushort)0x7FFF);
                     }
 
-                    foreach (var offset in Enum.GetValues(typeof(Mouse)))
+                    foreach (var offset in Enum.GetValues<Mouse>())
                     {
                         Debug("Nulling input - " + offset);
 
@@ -169,7 +169,7 @@ namespace HXE.HCE
                         bw.Write((ushort) 0x7FFF);
                     }
 
-                    foreach (var offset in Enum.GetValues(typeof(GP0_Input)))
+                    foreach (var offset in Enum.GetValues<GP0_Input>())
                     {
                         Debug("Nulling input - " + offset);
 
@@ -177,7 +177,7 @@ namespace HXE.HCE
                         bw.Write((ushort)0x7FFF);
                     }
 
-                    foreach (var offset in Enum.GetValues(typeof(GP1_Input)))
+                    foreach (var offset in Enum.GetValues<GP1_Input>())
                     {
                         Debug("Nulling input - " + offset);
 
@@ -185,7 +185,7 @@ namespace HXE.HCE
                         bw.Write((ushort) 0x7FFF);
                     }
 
-                    foreach (var offset in Enum.GetValues(typeof(GP2_Input)))
+                    foreach (var offset in Enum.GetValues<GP2_Input>())
                     {
                         Debug("Nulling input - " + offset);
 
@@ -193,7 +193,7 @@ namespace HXE.HCE
                         bw.Write((ushort)0x7FFF);
                     }
 
-                    foreach (var offset in Enum.GetValues(typeof(GP3_Input)))
+                    foreach (var offset in Enum.GetValues<GP3_Input>())
                     {
                         Debug("Nulling input - " + offset);
 
@@ -201,7 +201,7 @@ namespace HXE.HCE
                         bw.Write((ushort)0x7FFF);
                     }
 
-                    foreach (var offset in Enum.GetValues(typeof(GamePadMenu)))
+                    foreach (var offset in Enum.GetValues<GamePadMenu>())
                     {
                         Debug("Nulling input - " + offset);
 
@@ -474,7 +474,7 @@ namespace HXE.HCE
                 /** Keyboard Bindings */
                 Input.KeyboardMapping = new Dictionary<ProfileInput.Action, Keyboard>();
 
-                foreach (var button in Enum.GetValues(typeof(Keyboard)))
+                foreach (var button in Enum.GetValues<Keyboard>())
                 {
                     reader.BaseStream.Seek((int)button, SeekOrigin.Begin);
 
@@ -492,7 +492,7 @@ namespace HXE.HCE
                 /** Mouse Bindings */
                 Input.MouseMapping = new Dictionary<ProfileInput.Action, Mouse>();
 
-                foreach (var input in Enum.GetValues(typeof(Mouse)))
+                foreach (var input in Enum.GetValues<Mouse>())
                 {
                     reader.BaseStream.Seek((int)input, SeekOrigin.Begin);
 
@@ -513,7 +513,7 @@ namespace HXE.HCE
                 Input.GP2_Mapping = new Dictionary<ProfileInput.Action, GP2_Input>();
                 Input.GP3_Mapping = new Dictionary<ProfileInput.Action, GP3_Input>();
 
-                foreach (var button in Enum.GetValues(typeof(GP0_Input)))
+                foreach (var button in Enum.GetValues<GP0_Input>())
                 {
                     reader.BaseStream.Seek((int)button, SeekOrigin.Begin);
 
@@ -528,7 +528,7 @@ namespace HXE.HCE
                         Input.GP0_Mapping.Add(key, value);
                 }
 
-                foreach (var button in Enum.GetValues(typeof(GP1_Input)))
+                foreach (var button in Enum.GetValues<GP1_Input>())
                 {
                     reader.BaseStream.Seek((int)button, SeekOrigin.Begin);
 
@@ -543,7 +543,7 @@ namespace HXE.HCE
                         Input.GP1_Mapping.Add(key, value);
                 }
 
-                foreach (var button in Enum.GetValues(typeof(GP2_Input)))
+                foreach (var button in Enum.GetValues<GP2_Input>())
                 {
                     reader.BaseStream.Seek((int)button, SeekOrigin.Begin);
 
@@ -558,7 +558,7 @@ namespace HXE.HCE
                         Input.GP2_Mapping.Add(key, value);
                 }
 
-                foreach (var button in Enum.GetValues(typeof(GP3_Input)))
+                foreach (var button in Enum.GetValues<GP3_Input>())
                 {
                     reader.BaseStream.Seek((int)button, SeekOrigin.Begin);
 
@@ -577,7 +577,7 @@ namespace HXE.HCE
 
                 Input.Gamepads_Menu = new Dictionary<GamePadMenu, DIButtons_Values>();
 
-                foreach (var offset in Enum.GetValues(typeof(GamePadMenu)))
+                foreach (var offset in Enum.GetValues<GamePadMenu>())
                 {
                     reader.BaseStream.Seek((int)offset, SeekOrigin.Begin);
 
