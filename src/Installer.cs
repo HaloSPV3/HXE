@@ -105,6 +105,8 @@ namespace HXE
 
             foreach (var package in manifest.Packages)
             {
+                if (package.Name == null) throw new NullReferenceException("A package's Name is unset!");
+
                 /**
                  * Given that the package filename on the filesystem is expected to match the package's name in the manifest, we
                  * infer the package's path by combining the source with the aforementioned name.
@@ -123,6 +125,9 @@ namespace HXE
 
             foreach (var package in manifest.Packages)
             {
+                if (package.Name == null) throw new NullReferenceException("A package's Name (e.g. 1a2b3c4d.bin) is unset!");
+                if (package.Entry.Name == null) throw new NullReferenceException("A package's Entry Name (the unpacked file name) is unset!");
+
                 progress?.Report(new Status
                 {
                     Current = c - 1,
