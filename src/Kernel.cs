@@ -268,7 +268,7 @@ namespace HXE
                             save = (Progress)Custom.Progress(executable.Profile.Path, name);
                         }
 
-                        var campaign = new Campaign(Paths.Campaign(configuration.Mode));
+                        var campaign = new Campaign { Path = Paths.Campaign(configuration.Mode) };
 
                         campaign.Load();
                         save.Load(campaign);
