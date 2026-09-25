@@ -53,7 +53,7 @@ namespace HXE.HCE
             {
                 var msg = " -- LASTPROFILE.LOAD FAILED" + NewLine
                         + " Error:  " + e.ToString() + NewLine;
-                var log = (File) Exception;
+                var log = (File)Exception;
                 log.AppendAllText(msg);
                 Error(e.Message + " -- LASTPROFILE.LOAD FAILED");
 
