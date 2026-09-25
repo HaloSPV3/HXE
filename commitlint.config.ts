@@ -25,6 +25,7 @@ const scopes = {
   Net: 'src/Net/**',
   OpenSauce: 'src/OpenSauce.cs',
   Options: 'src/Options.cs',
+  Patcher: 'src/Patcher.cs',
   Positions: 'src/Positions.*',
   Process: 'src/Process.cs',
   README: 'Affects README.md or any other README documents.',
