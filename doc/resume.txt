@@ -62,6 +62,17 @@ The following maps are dealt with by the loader for campaign resuming:
 -   Lumoria B
 -   Lumoria C & D
 
+Additionally, Firefight missions are also tracked for mission-resume. Spartan,
+Flood, and Elite permutations of these Firefight missions are treated as
+separate missions.
+
+-   SPV3 Rockslide
+-   SPV3 Engine
+-   SPV3 Bridge
+-   SPV3 Hangar (covieship)
+-   SPV3 Lobby
+-   SPV3 Swamp Tower
+
 To see how missions are stored in the savegame.bin and initc.txt, please
 refer to the savegame.txt and initc.txt documentation, respectively.
 
