@@ -33,7 +33,7 @@
 		<Label Content="HXE"
 			   HorizontalAlignment="Center"
 			   VerticalAlignment="Center"
-			   FontFamily="Segoe UI Light"
+			   FontFamily="Segoe UI Light, Selawik Light, Inter Light, Roboto Light"
 			   FontSize="32"
 			   Foreground="#8a80ad"/>
 
