@@ -715,7 +715,7 @@ namespace HXE.HCE
         /// </summary>
         private enum Offset
         {
-            /** values as writen by haloce.exe.
+            /** values as written by haloce.exe.
              * Shorts shown here as LE; write as BE.
              * Value types are Uint16/Short where unspecified.
              * Where _unbound, 0x7fff (32,767) is written until the Position reaches the next notable offset.
@@ -856,10 +856,10 @@ namespace HXE.HCE
             Gamepad2_DupeID = 0x1764,
             // padding
 
-            Gampead3_Name = 0x1768,
+            Gamepad3_Name = 0x1768,
 
             // padding
-            Gampead3_Vendor = 0x1974,
+            Gamepad3_Vendor = 0x1974,
 
             Gamepad3_Product = 0x1976,
             Gamepad3_padding = 0x1978,
