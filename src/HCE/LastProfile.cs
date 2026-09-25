@@ -59,8 +59,9 @@ namespace HXE.HCE
 
                 Core("Recreating LastProf.txt...");
                 {
-                    var pathParam = System.IO.Path.GetDirectoryName(Path);
-                    var firstProfile = (Profile) Custom.Profile(pathParam, "New001");
+                    var pathParam = System.IO.Path.GetDirectoryName(Path)
+                        ?? System.IO.Path.GetPathRoot(System.IO.Path.GetFullPath(Path))!;
+                    var firstProfile = (Profile)Custom.Profile(pathParam, "New001");
 
                     try
                     {
@@ -94,7 +95,8 @@ namespace HXE.HCE
             using (var ms = new MemoryStream(255))
             using (var bw = new BinaryWriter(ms))
             {
-                var path = System.IO.Path.GetDirectoryName(Path);
+                var path = System.IO.Path.GetDirectoryName(Path)
+                    ?? System.IO.Path.GetPathRoot(Path)!;
                 byte[] profdir = Encoding.UTF8.GetBytes(Custom.ProfileDirectory(path, Profile));
                 byte[] delim = Encoding.UTF8.GetBytes("\\");
                 byte[] pad = { 0 };
