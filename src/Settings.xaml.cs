@@ -50,26 +50,21 @@ namespace HXE
             }
         }
 
-        public Settings(SettingsCore core)
+        public Settings(SettingsCore core) : this()
         {
             _core = core;
             Configuration = _core.Configuration;
             DataContext = _core.Configuration;
-            Initialize();
         }
 
-        public Settings(Kernel.Configuration cfg)
+        public Settings(Kernel.Configuration cfg) : this()
         {
             _core = new SettingsCore(cfg);
             Configuration = _core.Configuration;
             DataContext = _core.Configuration;
-            Initialize();
         }
 
-        public Settings()
-        {
-            Initialize();
-        }
+        public Settings() => Initialize();
 
         public void Initialize()
         {
