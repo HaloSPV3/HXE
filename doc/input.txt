@@ -46,4 +46,4 @@ SPV3's preset:
   Melee Attack     RB
   Fire Weapon      RT
 
-This will only work when SPV3.2 mode is enabled in the kernel settings.
+This will only work when SPV3.2 or SPV3.3 mode is enabled in the kernel settings.
