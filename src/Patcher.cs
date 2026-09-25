@@ -516,7 +516,7 @@ namespace HXE
         /// <summary>
         /// Toggle patches in Halo executable
         /// </summary>
-        /// <param name="cfg">HXE.Kernel.Configuration.Tweaks.Patches</param>
+        /// <param name="cfg"><see cref="Kernel.Configuration.ConfigurationTweaks.Patches"/></param>
         /// <param name="exePath">Path to Halo executable</param>
         public void Write(uint cfg, string exePath)
         {
