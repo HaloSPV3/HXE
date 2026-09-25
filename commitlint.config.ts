@@ -31,6 +31,7 @@ const scopes = {
   README: 'Affects README.md or any other README documents.',
   Registry: 'src/Registry.cs',
   release: 'Reserved for release commits.',
+  Settings: 'src/Settings*',
   SFX: 'Affects the HXE.SFX class or other symbols in its source file.',
   SPV3: 'src/SPV3/*',
   Steam: 'src/Steam/Libraries.cs',
