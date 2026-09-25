@@ -39,7 +39,7 @@ namespace HXE.SPV3
         public int Gamma { get; set; } = 0;
         public bool Unload { get; set; } = false;
         public Resume Resume { get; set; } = new Resume();
-        public Progress Progress { get; set; } = new Progress();
+        public Progress Progress { get; set; } = new Progress() { Path = GetTemporary() };
         public bool Unlock { get; set; }
         public bool Attract { get; set; } = true;
         public uint Shaders { get; set; } = 0;

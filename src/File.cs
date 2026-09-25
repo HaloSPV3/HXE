@@ -112,6 +112,10 @@ namespace HXE
             return System.IO.File.ReadAllBytes(Path);
         }
 
+        /// <summary>Get a <see cref="File"/> with a temporary file path. The file is not created.</summary>
+        /// <returns>A <see cref="File"/> whose path doesn't exist.</returns>
+        internal static File GetTemporary() => new() { Path = Combine(GetTempPath(), GetTempFileName()) };
+
         /// <summary>
         ///   Represents the inbound object as a string.
         /// </summary>
