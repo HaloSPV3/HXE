@@ -166,7 +166,7 @@ HXE can be invoked with the following arguments:
             foreach (var i in input)
                 Info("Discovered CLI command: " + i);
 
-            var hce = new Executable();
+            string? profilePath = null;
             Kernel.Configuration? configuration = null;
 
             if (help)
@@ -177,7 +177,7 @@ HXE can be invoked with the following arguments:
 
             if (!string.IsNullOrWhiteSpace(path))
             {
-                hce.Profile.Path = path;
+                profilePath = path;
                 configuration = new Kernel.Configuration(Paths.Custom.Configuration(path));
             }
 
@@ -268,6 +268,7 @@ HXE can be invoked with the following arguments:
             /**
              * Lazy search for HaloCE installations.
              */
+            Executable? hce = null;
 
             try
             {
@@ -285,6 +286,10 @@ HXE can be invoked with the following arguments:
                 Error(msg);
                 WithCode(Code.Exception);
             }
+            if (hce == null) throw new NullReferenceException("hce is somehow still null");
+
+            if (profilePath != null)
+                hce.Profile.Path = profilePath;
 
             if (console)
                 hce.Debug.Console = true;
