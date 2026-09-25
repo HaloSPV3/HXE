@@ -32,6 +32,9 @@ namespace HXE.MCC
 {
     public static class Halo1
     {
+        /// <summary> The ID of the embedded resource as assured by unit tests </summary>
+        internal const string IdOf_343I_DER_Cer = @"HXE.Assets.343I_DER.cer";
+
         /// <summary>
         ///     Set a new path for Halo1.dll
         /// </summary>
@@ -95,10 +98,14 @@ namespace HXE.MCC
             try
             {
                 var ms = new MemoryStream();
-                var assembly = Assembly.GetExecutingAssembly();
-                assembly.GetManifestResourceStream(@"HXE.Assets.343I_DER.cer")?
+                Assembly.GetExecutingAssembly()
+                  .GetManifestResourceStream(IdOf_343I_DER_Cer)?
                   .CopyTo(ms);
+#if NET7_0_OR_GREATER
+                P7B_Fallback = X509CertificateLoader.LoadCertificate(ms.ToArray());
+#else
                 P7B_Fallback = new X509Certificate(ms.ToArray());
+#endif
             }
             catch (Exception e)
             {
