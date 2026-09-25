@@ -130,3 +130,359 @@ look like:
             </HUDScale>
         </HUD>
     </OpenSauce>
+
+An example of a `Positions.bin` created by `HXE.Positions.Save(...)` would be SPV3's DOOM.bin.
+The following XML is the decompressed contents of that file.
+```xml
+<?xml version="1.0" encoding="utf-16"?>
+<ArrayOfWeapon xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<Weapon>
+<Name>Picked up a SOCOM M6C Pistol</Name>
+<Position>
+<I>0</I>
+<J>-0.05641025</J>
+<K>0</K>
+</Position>
+</Weapon>
+<Weapon>
+<Name>Picked up an MA4E Assault Rifle</Name>
+<Position>
+<I>0</I>
+<J>-0.05641025</J>
+<K>-0.005128205</K>
+</Position>
+</Weapon>
+<Weapon>
+<Name>Picked up a T-800 Minigun</Name>
+<Position>
+<I>0</I>
+<J>-0.06666666</J>
+<K>0</K>
+</Position>
+</Weapon>
+<Weapon>
+<Name>UNRECOGNIZED ORGANIC PIERCING INCINERATION BEAM</Name>
+<Position>
+<I>0</I>
+<J>-0.06666666</J>
+<K>-0.005128205</K>
+</Position>
+</Weapon>
+<Weapon>
+<Name>Picked up a M41 SSR Rocket Launcher</Name>
+<Position>
+<I>0.0461539</I>
+<J>-0.06666666</J>
+<K>-0.08717948</K>
+</Position>
+</Weapon>
+<Weapon>
+<Name>UNRECOGNIZED INCINERATION BEAM</Name>
+<Position>
+<I>0</I>
+<J>-0.06666666</J>
+<K>-0.005128205</K>
+</Position>
+</Weapon>
+<Weapon>
+<Name>Picked up a M247H Turret</Name>
+<Position>
+<I>0</I>
+<J>-0.05641025</J>
+<K>0</K>
+</Position>
+</Weapon>
+<Weapon>
+<Name>Picked up a M6G Pistol</Name>
+<Position>
+<I>0</I>
+<J>-0.01538461</J>
+<K>0</K>
+</Position>
+</Weapon>
+<Weapon>
+<Name>Picked up a SRS99C-S2 AMS Sniper Rifle</Name>
+<Position>
+<I>0</I>
+<J>-0.04615384</J>
+<K>-0.03589743</K>
+</Position>
+</Weapon>
+<Weapon>
+<Name>Picked up a M310 Grenade Launcher</Name>
+<Position>
+<I>0</I>
+<J>-0.04615384</J>
+<K>0</K>
+</Position>
+</Weapon>
+<Weapon>
+<Name>Picked up a M91 Shotgun</Name>
+<Position>
+<I>0</I>
+<J>-0.03589743</J>
+<K>0</K>
+</Position>
+</Weapon>
+<Weapon>
+<Name>Picked up an unstable round Carbine</Name>
+<Position>
+<I>0</I>
+<J>-0.03589743</J>
+<K>-0.01538461</K>
+</Position>
+</Weapon>
+<Weapon>
+<Name>Picked up a Plasma Pistol</Name>
+<Position>
+<I>0</I>
+<J>-0.05641025</J>
+<K>0</K>
+</Position>
+</Weapon>
+<Weapon>
+<Name>Picked up a Needler</Name>
+<Position>
+<I>0</I>
+<J>-0.06666666</J>
+<K>-0.005128205</K>
+</Position>
+</Weapon>
+<Weapon>
+<Name>Picked up an AMPED M393 Designated Marksman Rifle</Name>
+<Position>
+<I>0</I>
+<J>-0.04615384</J>
+<K>-0.005128205</K>
+</Position>
+</Weapon>
+<Weapon>
+<Name>UNRECOGNIZED EXTENDED RANGE INCINERATION BEAM</Name>
+<Position>
+<I>0</I>
+<J>-0.06666666</J>
+<K>-0.005128205</K>
+</Position>
+</Weapon>
+<Weapon>
+<Name>UNRECOGNIZED INCINDARY GEL LAUNCHER</Name>
+<Position>
+<I>0</I>
+<J>-0.1487179</J>
+<K>-0.09743589</K>
+</Position>
+</Weapon>
+<Weapon>
+<Name>Picked up a M7057 Defoliant Flamethrower</Name>
+<Position>
+<I>0</I>
+<J>-0.06666666</J>
+<K>0</K>
+</Position>
+</Weapon>
+<Weapon>
+<Name />
+<Position>
+<I>0</I>
+<J>0</J>
+<K>0</K>
+</Position>
+</Weapon>
+<Weapon>
+<Name>Picked up a SOCOM BR50-HB Battle Rifle</Name>
+<Position>
+<I>0</I>
+<J>-0.04615384</J>
+<K>0</K>
+</Position>
+</Weapon>
+<Weapon>
+<Name>Picked up an AMPED M7/Caseless SMG</Name>
+<Position>
+<I>0</I>
+<J>-0.03589743</J>
+<K>0</K>
+</Position>
+</Weapon>
+<Weapon>
+<Name>Picked up an MA5E Assault Rifle</Name>
+<Position>
+<I>0</I>
+<J>-0.05641025</J>
+<K>0</K>
+</Position>
+</Weapon>
+<Weapon>
+<Name>Picked up a M393 Designated Marksman Rifle</Name>
+<Position>
+<I>0</I>
+<J>-0.04615384</J>
+<K>-0.01538461</K>
+</Position>
+</Weapon>
+<Weapon>
+<Name>Picked up a M7/Caseless SMG</Name>
+<Position>
+<I>0</I>
+<J>-0.03589743</J>
+<K>0</K>
+</Position>
+</Weapon>
+<Weapon>
+<Name>Picked up a Particle Carbine</Name>
+<Position>
+<I>0</I>
+<J>-0.04615384</J>
+<K>-0.01538461</K>
+</Position>
+</Weapon>
+<Weapon>
+<Name>Picked up a Focus Rifle</Name>
+<Position>
+<I>0</I>
+<J>-0.07692307</J>
+<K>-0.02564102</K>
+</Position>
+</Weapon>
+<Weapon>
+<Name>Picked up a BR54-HB Battle Rifle</Name>
+<Position>
+<I>0</I>
+<J>-0.04615384</J>
+<K>-0.01538461</K>
+</Position>
+</Weapon>
+<Weapon>
+<Name>Picked up a Brute Plasma Pistol</Name>
+<Position>
+<I>0</I>
+<J>-0.05641025</J>
+<K>0</K>
+</Position>
+</Weapon>
+<Weapon>
+<Name>Picked up a SRS99C-S2 AM Sniper Rifle</Name>
+<Position>
+<I>0</I>
+<J>-0.04615384</J>
+<K>-0.02564102</K>
+</Position>
+</Weapon>
+<Weapon>
+<Name>Picked up a BR54-HB Battle Rifle + M45 Grenade Launcher</Name>
+<Position>
+<I>0</I>
+<J>-0.02564102</J>
+<K>-0.01538461</K>
+</Position>
+</Weapon>
+<Weapon>
+<Name>Picked up a M7S/Caseless SMG</Name>
+<Position>
+<I>0</I>
+<J>-0.03589743</J>
+<K>0</K>
+</Position>
+</Weapon>
+<Weapon>
+<Name>Picked up a MA5E Assault Rifle + M45 Grenade Launcher</Name>
+<Position>
+<I>0</I>
+<J>-0.04615384</J>
+<K>-0.01538461</K>
+</Position>
+</Weapon>
+<Weapon>
+<Name>Picked up a Hunter's Shade Cannon</Name>
+<Position>
+<I>0</I>
+<J>-0.1179487</J>
+<K>-0.04615384</K>
+</Position>
+</Weapon>
+<Weapon>
+<Name>Picked up an advanced Plasma Rifle</Name>
+<Position>
+<I>0</I>
+<J>-0.04615384</J>
+<K>-0.01538461</K>
+</Position>
+</Weapon>
+<Weapon>
+<Name>Picked up a Shredder</Name>
+<Position>
+<I>0</I>
+<J>-0.09743589</J>
+<K>-0.05641025</K>
+</Position>
+</Weapon>
+<Weapon>
+<Name>Picked up a Spiker</Name>
+<Position>
+<I>0</I>
+<J>-0.05641025</J>
+<K>-0.01538461</K>
+</Position>
+</Weapon>
+<Weapon>
+<Name>Picked up a Void's Tear</Name>
+<Position>
+<I>0</I>
+<J>-0.05641025</J>
+<K>0</K>
+</Position>
+</Weapon>
+<Weapon>
+<Name>Picked up a Brute Shot</Name>
+<Position>
+<I>0</I>
+<J>-0.06666666</J>
+<K>0</K>
+</Position>
+</Weapon>
+<Weapon>
+<Name>Picked up a Piercer</Name>
+<Position>
+<I>0</I>
+<J>-0.05641025</J>
+<K>-0.005128205</K>
+</Position>
+</Weapon>
+<Weapon>
+<Name>Picked up a MA4E Assault Rifle + M45 Grenade Launcher</Name>
+<Position>
+<I>0</I>
+<J>-0.04615384</J>
+<K>-0.01538461</K>
+</Position>
+</Weapon>
+<Weapon>
+<Name>UNRECOGNIZED INCENDIARY GEL LAUNCHER</Name>
+<Position>
+<I>0</I>
+<J>-0.1487179</J>
+<K>-0.1282051</K>
+</Position>
+</Weapon>
+<Weapon>
+<Name>Picked up a Plasma Rifle</Name>
+<Position>
+<I>0</I>
+<J>-0.04615384</J>
+<K>-0.005128205</K>
+</Position>
+</Weapon>
+<Weapon>
+<Name>Picked up a Brute Plasma Rifle</Name>
+<Position>
+<I>0</I>
+<J>-0.04615384</J>
+<K>-0.005128205</K>
+</Position>
+</Weapon>
+<Weapon>
+<Name>Picked up a SOCOM BR50-HB Battle Rifle+ M45 Grenade Launcher</Name>
+<Position>  <I>0</I> <J>-0.02564102</J> <K>-0.01538461</K>  </Position>
+</Weapon>
+</ArrayOfWeapon>
+```
