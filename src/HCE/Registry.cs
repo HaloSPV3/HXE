@@ -81,6 +81,11 @@ namespace HXE.HCE
             HEK
         }
 
+        /// <summary>
+        /// <see cref="RegPathX64">@"SOFTWARE\Microsoft\Microsoft Games"</see><br/>
+        /// or<br/>
+        /// <see cref="RegPathX86">@"SOFTWARE\WOW6432Node\Microsoft\Microsoft Games"</see>
+        /// </summary>
         public static string WoWCheck()
         {
             return Environment.Is64BitOperatingSystem ? RegPathX64 : RegPathX86;
