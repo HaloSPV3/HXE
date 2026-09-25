@@ -219,7 +219,7 @@ namespace HXE
                     progress?.Report(new Status
                     {
                         Current = totalBytesDownloaded,
-                        Total = (long)totalFileSize,
+                        Total = totalFileSize ?? -1,
                         Description = $"Requesting: {Name} ({progressPercentage:P})"
                     });
                 };
