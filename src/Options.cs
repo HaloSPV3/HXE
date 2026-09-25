@@ -720,7 +720,12 @@ namespace HXE
 		/*#pragma warning disable 618 // SecurityPermissionAttribute is obsolete
 						[SecurityPermission (SecurityAction.LinkDemand, SerializationFormatter = true)]
 				#pragma warning restore 618*/
+#pragma warning disable CA1041 // Provide ObsoleteAttribute message
+#pragma warning disable CS0809 // Obsolete member overrides non-obsolete member
+		[Obsolete]
 		public override void GetObjectData(SerializationInfo info, StreamingContext context)
+#pragma warning restore CS0809 // Obsolete member overrides non-obsolete member
+#pragma warning restore CA1041 // Provide ObsoleteAttribute message
 		{
 			base.GetObjectData(info, context);
 			info.AddValue("OptionName", _option);
