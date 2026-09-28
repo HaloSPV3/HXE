@@ -31,6 +31,7 @@ namespace HXE
     ///   Object defining domain rules for a file on the filesystem, and
     ///   exposing common file manipulation and management methods.
     /// </summary>
+    /// <remarks>Use <see cref="GetTemporary()"/> if you need an instance, but do not know the <see cref="Path"/>.</remarks>
     public class File
     {
         /// <summary>The path to the file.</summary>
@@ -40,7 +41,7 @@ namespace HXE
         /// directory.
         /// </remarks>
         [XmlIgnore]
-        public string Path
+        public required string Path
         {
             get;
             set
