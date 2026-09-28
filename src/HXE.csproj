@@ -83,7 +83,6 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(PublishSingleFile)' == 'true'">
-    <SelfContained>true</SelfContained>
     <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
     <EnableCompressionInSingleFile>$(NET6_0_OR_GREATER)</EnableCompressionInSingleFile>
     <RuntimeIdentifier Condition="$(NET7_0_OR_GREATER)">win-x64</RuntimeIdentifier>
