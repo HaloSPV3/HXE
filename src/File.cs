@@ -50,7 +50,7 @@ namespace HXE
             }
         }
 
-        public string Name { get; set; }
+        public string Name { get => field ??= GetFileName(Path); set; }
 
         /// <summary> Creates all parent directories of <see cref="Path"/>. </summary>
         /// <exception cref="ArgumentException">Thrown by <see cref="GetDirectoryName(string?)"/></exception>
