@@ -187,9 +187,9 @@
   <Choose>
     <When Condition="$(TargetFramework.StartsWith('net4'))">
       <PropertyGroup Label="Additional Properties (NET4)">
-        <!-- Disabling these two properties prevents the output of (App).exe.config. Yippee! -->
-        <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
-        <GenerateSupportedRuntime>false</GenerateSupportedRuntime>
+        <!-- Disabling these two properties prevents the output of (App).exe.config. Yippee! But a bunch of warning are spat out, instead. Boooo! -->
+        <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+        <GenerateSupportedRuntime>true</GenerateSupportedRuntime>
         <WeaverConfiguration>
           <Weavers>
             <Costura />
