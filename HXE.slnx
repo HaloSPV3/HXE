@@ -1,4 +1,10 @@
 <Solution>
+  <Folder Name="/ext/" />
+  <Folder Name="/ext/XmlSourceGenerator/" />
+  <Folder Name="/ext/XmlSourceGenerator/src/">
+    <Project Path="ext/XmlSourceGenerator/src/XmlSourceGenerator.Abstractions/XmlSourceGenerator.Abstractions.csproj" />
+    <Project Path="ext/XmlSourceGenerator/src/XmlSourceGenerator/XmlSourceGenerator.csproj" />
+  </Folder>
   <Folder Name="/src/">
     <Project Path="src/HXE.csproj" />
   </Folder>
