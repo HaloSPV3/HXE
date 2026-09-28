@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-using System;
-using System.IO;
+using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
 using System.Xml.Serialization;
 using static System.IO.Path;
 
@@ -32,19 +32,20 @@ namespace HXE
     /// </summary>
     public class File
     {
-        private string _path;
-
+        /// <summary>The path to the file.</summary>
+        /// <remarks>
+        /// Throws if the path is invalid e.g. null, empty, contains
+        /// null character. Relative paths are resolved to the current working
+        /// directory.
+        /// </remarks>
         [XmlIgnore]
         public string Path
         {
-            get => _path;
+            get;
             set
             {
-                if (value.Length > 255)
-                    throw new ArgumentOutOfRangeException(nameof(value), "File path exceeds 255 chars.");
-
-                _path = value;
-                Name = GetFileName(_path);
+                field = GetFullPath(value);
+                Name = GetFileName(field);
             }
         }
 
