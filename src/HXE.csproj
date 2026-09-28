@@ -65,6 +65,7 @@
     <AssemblyAttribute Include="System.Resources.NeutralResourcesLanguageAttribute">
       <_Parameter1>en</_Parameter1>
     </AssemblyAttribute>
+    <InternalsVisibleTo Include="$(AssemblyName).Tests" />
   </ItemGroup>
 
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
