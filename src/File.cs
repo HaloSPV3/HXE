@@ -50,6 +50,23 @@ namespace HXE
 
         public string Name { get; set; }
 
+        /// <summary> Creates all parent directories of <see cref="Path"/>. </summary>
+        /// <exception cref="ArgumentException">Thrown by <see cref="GetDirectoryName(string?)"/></exception>
+        /// <exception cref="PathTooLongException">Thrown by <see cref="GetDirectoryName(string?)"/></exception>
+        ///
+        /// <exception cref="ArgumentException">Thrown by <see cref="GetFullPath(string)"/></exception>
+        /// <exception cref="System.Security.SecurityException">Thrown by <see cref="GetFullPath(string)"/></exception>
+        /// <exception cref="ArgumentNullException">Thrown by <see cref="GetFullPath(string)"/></exception>
+        /// <exception cref="NotSupportedException">Thrown by <see cref="GetFullPath(string)"/></exception>
+        /// <exception cref="PathTooLongException">Thrown by <see cref="GetFullPath(string)"/></exception>
+        ///
+        /// <exception cref="IOException">Thrown by <see cref="Directory.CreateDirectory(string)"/></exception>
+        /// <exception cref="UnauthorizedAccessException">Thrown by <see cref="Directory.CreateDirectory(string)"/></exception>
+        /// <exception cref="ArgumentException">Thrown by <see cref="Directory.CreateDirectory(string)"/></exception>
+        /// <exception cref="ArgumentNullException">Thrown by <see cref="Directory.CreateDirectory(string)"/></exception>
+        /// <exception cref="PathTooLongException">Thrown by <see cref="Directory.CreateDirectory(string)"/></exception>
+        /// <exception cref="DirectoryNotFoundException">Thrown by <see cref="Directory.CreateDirectory(string)"/></exception>
+        /// <exception cref="NotSupportedException">Thrown by <see cref="Directory.CreateDirectory(string)"/></exception>
         public void CreateDirectory()
         {
             var baseDirectory = GetDirectoryName(Path) ?? /* root dir */ Path;
