@@ -34,6 +34,10 @@
 
     <!-- Publish -->
     <IsTrimmable>$(NET6_0_OR_GREATER)</IsTrimmable>
+    <EnableTrimAnalyzer>$(IsTrimmable)</EnableTrimAnalyzer>
+    <IsAotCompatible>$(NET8_0_OR_GREATER)</IsAotCompatible>
+    <EnableAotAnalyzer>$(IsAotCompatible)</EnableAotAnalyzer>
+    <VerifyReferenceAotCompatibility>$(IsAotCompatible)</VerifyReferenceAotCompatibility>
     <!-- Waiting for trim-compatible WPF -->
     <!--<PublishTrimmed>true</PublishTrimmed> -->
     <PublishSingleFile Condition="'$(Configuration)' == 'Release'">$(NET6_0_OR_GREATER)</PublishSingleFile>
