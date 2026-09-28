@@ -70,12 +70,6 @@
           "System.ValueTuple": "4.6.2"
         }
       },
-      "XmlSourceGenerator": {
-        "type": "Direct",
-        "requested": "[1.0.2-alpha, )",
-        "resolved": "1.0.2-alpha",
-        "contentHash": "66rw74gtxwAsQEWoBq5xyT/g90zqNUCp4ubbHnGSpGQPm51FgUdC71WBvadb1dBJ/2YYX4pDKBnI7OQPIVSJIQ=="
-      },
       "Fody": {
         "type": "Transitive",
         "resolved": "6.9.3",
@@ -159,9 +153,15 @@
         "type": "Transitive",
         "resolved": "4.6.2",
         "contentHash": "yQgmjfFximrNm9LIV3mL6T5MzjeC+epeE5rl4hXxAlYmxby7RM1dPSkIKXk9HNkl6G54h2JHOmLD46+Pey+IRg=="
+      },
+      "xmlsourcegenerator.abstractions": {
+        "type": "Project",
+        "dependencies": {
+          "System.Text.Json": "[10.0.11, )",
+          "System.ValueTuple": "[4.6.2, )"
+        }
       }
     },
-    ".NETFramework,Version=v4.6.2/win7-x86": {},
     ".NETFramework,Version=v4.8": {
       "Costura.Fody": {
         "type": "Direct",
@@ -314,9 +314,14 @@
         "type": "Transitive",
         "resolved": "4.6.2",
         "contentHash": "yQgmjfFximrNm9LIV3mL6T5MzjeC+epeE5rl4hXxAlYmxby7RM1dPSkIKXk9HNkl6G54h2JHOmLD46+Pey+IRg=="
+      },
+      "xmlsourcegenerator.abstractions": {
+        "type": "Project",
+        "dependencies": {
+          "System.Text.Json": "[10.0.11, )"
+        }
       }
     },
-    ".NETFramework,Version=v4.8/win7-x86": {},
     "net10.0": {
       "GitVersion.MsBuild": {
         "type": "Direct",
@@ -363,11 +368,8 @@
         "resolved": "1.3.0",
         "contentHash": "c4bL37HGimYon/qfRTZOJE41M3cgdMJn/p4O5Jq+WHTJGNXUb1x2DlVI+iZk5phCBwq3ERfrgbaPu9WdG2OS+w=="
       },
-      "XmlSourceGenerator": {
-        "type": "Direct",
-        "requested": "[1.0.2-alpha, )",
-        "resolved": "1.0.2-alpha",
-        "contentHash": "66rw74gtxwAsQEWoBq5xyT/g90zqNUCp4ubbHnGSpGQPm51FgUdC71WBvadb1dBJ/2YYX4pDKBnI7OQPIVSJIQ=="
+      "xmlsourcegenerator.abstractions": {
+        "type": "Project"
       }
     },
     "net6.0-windows7.0": {
@@ -395,13 +397,9 @@
         "resolved": "7.0.100-1.23211.1",
         "contentHash": "tvG8XZYLjT0o3WicCyKBZysVWo1jC9HdCFmNRmddx3WbAz0UCsd0qKZqpiEo99VLA8Re+FzWK51OcRldQPbt2Q=="
       },
-      "XmlSourceGenerator": {
-        "type": "Direct",
-        "requested": "[1.0.2-alpha, )",
-        "resolved": "1.0.2-alpha",
-        "contentHash": "66rw74gtxwAsQEWoBq5xyT/g90zqNUCp4ubbHnGSpGQPm51FgUdC71WBvadb1dBJ/2YYX4pDKBnI7OQPIVSJIQ=="
+      "xmlsourcegenerator.abstractions": {
+        "type": "Project"
       }
-    },
-    "net6.0-windows7.0/win7-x86": {}
+    }
   }
 }
