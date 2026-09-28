@@ -1,14 +1,8 @@
 <Solution>
-  <Folder Name="/ext/" />
-  <Folder Name="/ext/XmlSourceGenerator/" />
-  <Folder Name="/ext/XmlSourceGenerator/src/">
+  <Folder Name="/XmlSourceGenerator/">
     <Project Path="ext/XmlSourceGenerator/src/XmlSourceGenerator.Abstractions/XmlSourceGenerator.Abstractions.csproj" />
     <Project Path="ext/XmlSourceGenerator/src/XmlSourceGenerator/XmlSourceGenerator.csproj" />
   </Folder>
-  <Folder Name="/src/">
-    <Project Path="src/HXE.csproj" />
-  </Folder>
-  <Folder Name="/tests/">
-    <Project Path="tests/HXE.Tests/HXE.Tests.csproj" />
-  </Folder>
-</Solution>
+  <Project Path="src/HXE.csproj" />
+  <Project Path="tests/HXE.Tests/HXE.Tests.csproj" />
+ </Solution>
