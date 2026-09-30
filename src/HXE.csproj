@@ -65,6 +65,7 @@
     <MeziantouPolyfill_ExcludedPolyfills Condition="$(TargetFramework.StartsWith('net4'))">T:System.Runtime.CompilerServices.OverloadResolutionPriorityAttribute</MeziantouPolyfill_ExcludedPolyfills>
     <!-- If true, use XmlSourceGenerator by ProjectReference via git submodule instead of by PackageReference -->
     <UseBleedingEdgeXSGen>true</UseBleedingEdgeXSGen>
+    <CheckEolTargetFramework>false</CheckEolTargetFramework>
   </PropertyGroup>
 
   <ItemGroup Label="Assembly Attributes">
