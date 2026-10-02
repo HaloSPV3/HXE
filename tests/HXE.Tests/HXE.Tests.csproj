@@ -12,6 +12,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="$(HxeCsproj)" Private="true" />
+    <ProjectReference Include="$(HxeCsproj)" Private="true">
+      <Properties>SelfContained=false</Properties>
+    </ProjectReference>
   </ItemGroup>
 </Project>
