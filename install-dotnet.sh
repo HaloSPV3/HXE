@@ -83,9 +83,9 @@ fi
 
 # Install workloads if configured
 if [ -n "${WORKLOADS:-}" ]; then
-    echo "Installing workloads: $WORKLOADS"
-    # shellcheck disable=SC2086
-    "$INSTALL_DIR/dotnet" workload install $WORKLOADS
+  echo "Installing workloads: $WORKLOADS"
+  # shellcheck disable=SC2086
+  "$INSTALL_DIR/dotnet" workload install $WORKLOADS
 fi
 
 echo ""
