@@ -47,7 +47,13 @@ namespace HXE.Exceptions
 
     protected AssetException(
       SerializationInfo info,
+#if NET10_0_OR_GREATER
+#pragma warning disable SYSLIB0051 // Type or member is obsolete
+#endif
       StreamingContext context) : base(info, context)
+#if NET10_0_OR_GREATER
+#pragma warning restore SYSLIB0051 // Type or member is obsolete
+#endif
     {
     }
   }
