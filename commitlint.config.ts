@@ -16,6 +16,7 @@ const scopes = {
     + 'binaries or packages. For NuGet packages/PackageReferences, this would be anything with'
     + 'PrivateAssets="All" and no "runtime", "native", or "contentfiles" to be included in output.',
   Difficulty: 'src/Difficulty.cs',
+  Exceptions: 'src/Exceptions/**',
   File: 'src/File.cs',
   HCE: 'Affects the HXE.HCE namespace or its descendants.',
   Installer: 'src/Installer.cs',
