@@ -80,8 +80,8 @@ namespace HXE
         /// TODO: refactor or remove
         public void CheckMode()
         {
-            bool valid = Enum.GetValues(typeof(ConfigurationMode)).Cast<ConfigurationMode>().ToList().Exists(m => m == Configuration.Mode);
-            if (!valid) throw new Exception("Kernel Mode not recognized");
+            if (!Enum.GetValues<ConfigurationMode>().Contains(Configuration.Mode))
+                throw new Exception("Kernel Mode not recognized");
         }
 
         /// <summary>
