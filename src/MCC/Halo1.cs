@@ -123,7 +123,11 @@ namespace HXE.MCC
                 var response = Client.GetAsync(uri).Result;
                 var ms = (MemoryStream)response.Content.ReadAsStreamAsync().Result;
                 byte[] msArray = ms.ToArray();
+#if NET7_0_OR_GREATER
+                remoteCert = X509CertificateLoader.LoadCertificate(msArray);
+#else
                 remoteCert = new X509Certificate(msArray);
+#endif
             }
             catch (Exception)
             {
@@ -140,7 +144,12 @@ namespace HXE.MCC
                       remoteCert?.GetPublicKey();
 
             /** Get certificate from local Halo1.dll. */
-            var publicKey_file = new X509Certificate(Halo1Path).GetPublicKey();
+            var publicKey_file =
+#if NET7_0_OR_GREATER
+            X509CertificateLoader.LoadCertificateFromFile(Halo1Path).GetPublicKey();
+#else
+            new X509Certificate(Halo1Path).GetPublicKey();
+#endif
 
             /** Return whether or not Halo1.dll is valid.
              * If the Halo1.dll certificate's public key is equal to
