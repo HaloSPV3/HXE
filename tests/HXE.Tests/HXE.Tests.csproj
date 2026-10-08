@@ -7,12 +7,10 @@
     <Nullable>enable</Nullable>
     <OutputType>Exe</OutputType>
     <Deterministic>true</Deterministic>
-
-    <HxeCsproj>$([System.IO.Path]::GetFullPath("$(MSBuildProjectDirectory)/../../src/HXE.csproj"))</HxeCsproj>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="$(HxeCsproj)" Private="true">
+    <ProjectReference Include="../../src/HXE.csproj" Private="true">
       <Properties>SelfContained=false</Properties>
     </ProjectReference>
   </ItemGroup>
