@@ -11,7 +11,7 @@
 
   <ItemGroup>
     <ProjectReference Include="../../src/HXE.csproj" Private="true">
-      <Properties>SelfContained=false</Properties>
+      <Properties>SelfContained=false;GeneratePackageOnBuild=false</Properties>
     </ProjectReference>
   </ItemGroup>
 </Project>
