@@ -176,8 +176,8 @@
     </PackageReference>
     <PackageReference Condition="'$(UseBleedingEdgeXSGen)' == 'false'" Include="XmlSourceGenerator" Version="1.0.2-alpha" />
     <!-- ReferenceOutputAssembly must be true so Attributes can be accessed -->
-    <ProjectReference Condition="'$(UseBleedingEdgeXSGen)' == 'true'" Include="../ext/XmlSourceGenerator/src/XmlSourceGenerator/XmlSourceGenerator.csproj" OutputItemType="Analyzer" PrivateAssets="all" ReferenceOutputAssembly="false" SetTargetFramework="TargetFramework=netstandard2.0" />
-    <ProjectReference Condition="'$(UseBleedingEdgeXSGen)' == 'true'" Include="../ext/XmlSourceGenerator/src/XmlSourceGenerator.Abstractions/XmlSourceGenerator.Abstractions.csproj" SetTargetFramework="TargetFramework=netstandard2.0" />
+    <ProjectReference Condition="'$(UseBleedingEdgeXSGen)' == 'true'" Include="../ext/XmlSourceGenerator/src/XmlSourceGenerator/XmlSourceGenerator.csproj" OutputItemType="Analyzer" PrivateAssets="all" ReferenceOutputAssembly="false"  />
+    <ProjectReference Condition="'$(UseBleedingEdgeXSGen)' == 'true'" Include="../ext/XmlSourceGenerator/src/XmlSourceGenerator.Abstractions/XmlSourceGenerator.Abstractions.csproj" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'net10.0'">
