@@ -1,7 +1,9 @@
 <Solution>
   <Folder Name="/XmlSourceGenerator/">
     <Project Path="ext/XmlSourceGenerator/src/XmlSourceGenerator.Abstractions/XmlSourceGenerator.Abstractions.csproj" />
-    <Project Path="ext/XmlSourceGenerator/src/XmlSourceGenerator/XmlSourceGenerator.csproj" />
+    <Project Path="ext/XmlSourceGenerator/src/XmlSourceGenerator/XmlSourceGenerator.csproj">
+      <BuildDependency Project="ext/XmlSourceGenerator/src/XmlSourceGenerator.Abstractions/XmlSourceGenerator.Abstractions.csproj" />
+    </Project>
   </Folder>
   <Project Path="src/HXE.csproj" />
   <Project Path="tests/HXE.Tests/HXE.Tests.csproj">
