@@ -10,6 +10,7 @@
     <NuGetLockFilePath Condition="'$(Configuration)' == Debug AND Exists('$(MSBuildProjectDirectory)/packages.$(_MSBuildProjectNameUnderscored).lock.json')">
         $(MSBuildProjectDirectory)/packages-debug.$(_MSBuildProjectNameUnderscored).lock.json
     </NuGetLockFilePath>
+    <EnableWindowsTargeting>true</EnableWindowsTargeting>
   </PropertyGroup>
 
   <PropertyGroup Label="Yarn-unplugged HCE.Shared" Condition="!Exists($(HCESharedDir))">
@@ -36,8 +37,4 @@
   <!-- Created by Brant Burnett - https://github.com/dotnet/wpf/issues/2930#issuecomment-2562793707
     WPF projects tend to leave dangling "_wpftmp" directories in the "artifacts/bin" directory, clean these up after build -->
   <Import Project="$(HCESharedDir)dotnet/CleanupWpfTmp.targets" />
-
-  <PropertyGroup>
-    <EnableWindowsTargeting>true</EnableWindowsTargeting>
-  </PropertyGroup>
 </Project>
