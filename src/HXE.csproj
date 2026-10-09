@@ -28,6 +28,8 @@
 
     <!-- Build | Strong Naming -->
 
+    <NET462_OR_GREATER>$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net462'))</NET462_OR_GREATER>
+    <NET5_0_OR_GREATER>$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net5.0'))</NET5_0_OR_GREATER>
     <NET6_0_OR_GREATER>$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net6.0'))</NET6_0_OR_GREATER>
     <NET7_0_OR_GREATER>$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net7.0'))</NET7_0_OR_GREATER>
     <NET8_0_OR_GREATER>$([System.Text.RegularExpressions.Regex]::IsMatch("$(TargetFramework)", 'net([89]|\d{2}).0', RegexOptions.ECMAScript))</NET8_0_OR_GREATER>
