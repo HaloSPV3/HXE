@@ -4,5 +4,7 @@
     <Project Path="ext/XmlSourceGenerator/src/XmlSourceGenerator/XmlSourceGenerator.csproj" />
   </Folder>
   <Project Path="src/HXE.csproj" />
-  <Project Path="tests/HXE.Tests/HXE.Tests.csproj" />
+  <Project Path="tests/HXE.Tests/HXE.Tests.csproj">
+    <BuildDependency Project="src/HXE.csproj" />
+  </Project>
  </Solution>
