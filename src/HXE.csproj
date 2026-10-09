@@ -96,7 +96,7 @@
     <Authors>HaloSPV3</Authors>
     <Copyright>Copyright © 2026 Noah Sherwin</Copyright>
     <Description>A HCE wrapper and SPV3 loader</Description>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <IncludeSource>true</IncludeSource>
     <IncludeSymbols>true</IncludeSymbols>
     <PackageIcon>icon.png</PackageIcon>
