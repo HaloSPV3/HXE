@@ -64,7 +64,7 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
     <!-- T:System.Runtime.CompilerServices.OverloadResolutionPriorityAttribute is polyfilled by CsWin32 -->
-    <MeziantouPolyfill_ExcludedPolyfills Condition="$(TargetFramework.StartsWith('net4'))">T:System.Runtime.CompilerServices.OverloadResolutionPriorityAttribute</MeziantouPolyfill_ExcludedPolyfills>
+    <MeziantouPolyfill_ExcludedPolyfills>T:System.Runtime.CompilerServices.OverloadResolutionPriorityAttribute</MeziantouPolyfill_ExcludedPolyfills>
     <!-- If true, use XmlSourceGenerator by ProjectReference via git submodule instead of by PackageReference -->
     <UseBleedingEdgeXSGen>true</UseBleedingEdgeXSGen>
     <CheckEolTargetFramework>false</CheckEolTargetFramework>
@@ -171,6 +171,10 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.Windows.CsWin32" Version="0.3.298">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
     <PackageReference Condition="'$(UseBleedingEdgeXSGen)' == 'false'" Include="XmlSourceGenerator" Version="1.0.2-alpha" />
     <!-- ReferenceOutputAssembly must be true so Attributes can be accessed -->
     <ProjectReference Condition="'$(UseBleedingEdgeXSGen)' == 'true'" Include="../ext/XmlSourceGenerator/src/XmlSourceGenerator/XmlSourceGenerator.csproj" OutputItemType="Analyzer" PrivateAssets="all" ReferenceOutputAssembly="false" SetTargetFramework="TargetFramework=netstandard2.0" />
@@ -197,10 +201,6 @@
       <ItemGroup Label="Additional References (NET4)">
         <PackageReference Include="Costura.Fody" Version="6.2.0"
           PrivateAssets="all" />
-        <PackageReference Include="Microsoft.Windows.CsWin32" Version="0.3.298">
-          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-          <PrivateAssets>all</PrivateAssets>
-        </PackageReference>
         <PackageReference Include="System.Memory" Version="4.6.3" />
         <PackageReference Include="System.Text.Json" Version="10.0.11" />
         <Reference Condition="'$(TargetFramework)' == 'net462'" Include="System.Net.Http" Version="4.0.0.0" Culture="neutral" PublicKeyToken="b03f5f7f11d50a3a" />

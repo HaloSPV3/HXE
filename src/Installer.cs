@@ -20,11 +20,19 @@
  */
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using HXE.Properties;
+#if WINDOWS || NET462 || NET48
+using Microsoft.Win32.SafeHandles;
+using Windows.Win32;
+using Windows.Win32.Foundation;
+using Windows.Win32.Storage.FileSystem;
+#endif
 using static System.IO.File;
 using static System.IO.Path;
 using static HXE.Console;
@@ -71,18 +79,8 @@ namespace HXE
                 Directory.CreateDirectory(target);
             if (enableLZNT1) /// TODO: refactor to new Method for use from other Classes.
             {
-                string[] directories = Directory.GetDirectories(target);
-                string[] files = Directory.GetFiles(target);
-                foreach (string directoryPath in directories)
-                {
-                    new DirectoryInfo(directoryPath).Attributes |= FileAttributes.Compressed;
-                }
-                foreach (string filePath in files)
-                {
-                    new FileInfo(filePath).Attributes |= FileAttributes.Compressed;
-                }
-
-                /// TODO: Introduce and display progress of changes using Events
+                IEnumerable<string> failedPaths = TransparentlyCompressPaths(target, recurse: true, progress);
+                Debug($"The following {failedPaths.Count()} paths failed to compress:\n{string.Join("\n", failedPaths)}");
             }
 
             Info("Gracefully created target directory");
@@ -180,6 +178,102 @@ namespace HXE
 
             Info("Copied manifest to the target directory - " + target);
             Done("Installation routine has been successfully completed");
+        }
+
+        /// <summary>Apply the filesystem's transparent compression to the given paths<br/>
+        /// - block compression is inapplicable<br/>
+        /// - copy-on-write links may be broken</summary>
+        /// <returns>returns paths that failed to compress</returns>
+        /// <todo>
+        /// https://btrfs.readthedocs.io/en/latest/Compression.html<br/>
+        /// </todo>
+        private static IEnumerable<string> TransparentlyCompressPaths(string rootPath, bool recurse, IProgress<Status>? progress = null)
+        {
+            string[] paths = File.Exists(rootPath)
+                ? [rootPath]
+                : Directory.GetFileSystemEntries(
+                    rootPath,
+                    "*",
+                    recurse ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly
+                );
+            Status status = new()
+            {
+                Description = $"Transparently compressing {paths.Length} directories and files...",
+                Total = paths.Length
+            };
+            progress?.Report(status);
+            DriveInfo? targetDrive = null;
+            int longestNameLength = 0;
+            foreach (DriveInfo drive in DriveInfo.GetDrives())
+            {
+                if (drive.DriveType != DriveType.Fixed)
+                    continue;
+                /* drive.Name == GetPathRoot(target)! makes sense on Windows, but not on
+                  Unix-like platforms where rootpath is always /, but all
+                  drive names start with it. */
+                if (rootPath.StartsWith(drive.Name) && drive.Name.Length > longestNameLength)
+                {
+                    targetDrive = drive;
+                    longestNameLength = drive.Name.Length;
+                }
+            }
+
+            if (targetDrive == null)
+                return paths; // no matching drive???
+
+            // if the filesystem is read-only or does not support transparent compression, return early
+            {
+                // writeable transparent-compression filesystems (no SquashFS)
+                string[] transparentCompressionFilesystems = [
+                    "bcachefs", // gzip, lz4, zstd | Linux
+                        "btrfs", // lzo, zlib, zstd | Linux, ReactOS, Windows
+                        "f2fs", // lzo, lz4, zstd
+                        "ntfs", // lznt1 (lz77) | Windows, MacOS, Linux, FreeBSD, NetBSD, OpenBS, ChromeOS, Solaris, ReactOS (read-only)
+                        "reiserfs", // lzo, zlib
+                        "zfs" // gzip, lz4, lzjb, zstd
+                ];
+                if (!transparentCompressionFilesystems.Contains(targetDrive.DriveFormat.ToLowerInvariant()))
+                    return paths; // filesystem (probably) does not support transparent compression
+            }
+
+            // https://learn.microsoft.com/windows/win32/api/ioapiset/nf-ioapiset-deviceiocontrol
+            // https://learn.microsoft.com/openspecs/windows_protocols/ms-fsa/8e2a2e1e-5a90-4251-8b4d-18f1a4c0be43
+            List<string> failedPaths = [];
+            foreach (string path in paths)
+            {
+                try
+                {
+                    bool success = false;
+                    bool isDirectory = (GetAttributes(path) & FileAttributes.Directory) == FileAttributes.Directory;
+#if WINDOWS || NET462 || NET48
+                    using SafeFileHandle safeFileHandle = PInvoke.CreateFile(
+                        lpFileName: path,
+                        dwDesiredAccess: (uint)(GENERIC_ACCESS_RIGHTS.GENERIC_READ | GENERIC_ACCESS_RIGHTS.GENERIC_WRITE),
+                        dwShareMode: FILE_SHARE_MODE.FILE_SHARE_READ,
+                        lpSecurityAttributes: null,
+                        dwCreationDisposition: FILE_CREATION_DISPOSITION.OPEN_EXISTING,
+                        dwFlagsAndAttributes: isDirectory
+                            ? FILE_FLAGS_AND_ATTRIBUTES.FILE_FLAG_BACKUP_SEMANTICS
+                            : FILE_FLAGS_AND_ATTRIBUTES.FILE_ATTRIBUTE_NORMAL
+                    );
+
+                    unsafe
+                    {
+                        success = PInvoke.DeviceIoControl(
+                            hDevice: safeFileHandle,
+                            dwIoControlCode: PInvoke.FSCTL_SET_COMPRESSION,
+                            lpInBuffer: [1] // 0 == None; 1 == Default/LZNT1
+                        );
+                    }
+#endif
+                    if (!success) failedPaths.Add(path);
+                }
+                catch
+                {
+                    failedPaths.Add(path);
+                }
+            }
+            return failedPaths;
         }
     }
 }
