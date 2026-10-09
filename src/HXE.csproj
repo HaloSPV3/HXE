@@ -142,10 +142,6 @@
     </Content>
 
     <!-- Assets -->
-    <EmbeddedResource Include="../ext/halo-ce-patches/patches.crk" WithCulture="false">
-      <Link>Assets/%(Filename)%(Extension)</Link>
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </EmbeddedResource>
     <!-- Default Include normally handled by EnableDefaultEmbeddedResourceItems -->
     <EmbeddedResource Include="**/*.resx" />
     <NonLocalizedResx Include="Resources/**/*.resx" Exclude="Resources/**/*.de.resx;Resources/**/*.en.resx" />
