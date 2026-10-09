@@ -214,4 +214,6 @@
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
     <Exec Command="pwsh $(MSBuildProjectDirectory)/.msb.prebuild.ps1" />
   </Target>
+
+  <Target Name="GetTargetPath" />
 </Project>
