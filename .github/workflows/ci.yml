@@ -68,4 +68,4 @@ jobs:
         run: dotnet pack
 
       - name: Publish (Release)
-        run: dotnet restore -t:PublishAll
+        run: dotnet restore src -t:PublishAll
