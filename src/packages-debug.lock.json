@@ -162,6 +162,7 @@
         }
       }
     },
+    ".NETFramework,Version=v4.6.2/linux-x64": {},
     ".NETFramework,Version=v4.8": {
       "Costura.Fody": {
         "type": "Direct",
@@ -322,6 +323,7 @@
         }
       }
     },
+    ".NETFramework,Version=v4.8/linux-x64": {},
     "net10.0": {
       "GitVersion.MsBuild": {
         "type": "Direct",
@@ -372,6 +374,7 @@
         "type": "Project"
       }
     },
+    "net10.0/linux-x64": {},
     "net6.0-windows7.0": {
       "GitVersion.MsBuild": {
         "type": "Direct",
@@ -400,6 +403,7 @@
       "xmlsourcegenerator.abstractions": {
         "type": "Project"
       }
-    }
+    },
+    "net6.0-windows7.0/linux-x64": {}
   }
 }
