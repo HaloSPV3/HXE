@@ -69,10 +69,14 @@ namespace HXE
         }
 #endif
 
+        /// <summary> hxe.exe </summary>
         public const string Executable = "hxe.exe";
+        /// <summary> manifest.bin </summary>
         public const string Manifest = "manifest.bin";
+        /// <summary> kernel-0x05.bin </summary>
         public const string ConfigNameAndExt = "kernel-0x05.bin";
 
+        /// <summary> ${ENV:ProgramFiles(x86)} or ${ENV:ProgramFiles}</summary>
         public static readonly string ProgFiles = GetFolderPath(ProgramFilesX86) ?? GetFolderPath(ProgramFiles);
         public static readonly string StartDirectory = GetDirectoryName(
 #if NET462 || NET48
@@ -81,13 +85,21 @@ namespace HXE
             ProcessPath
 #endif
         ) ?? CurrentDirectory;
+        /// <summary> ${ENV:AppData}/HXE </summary>
         public static readonly string Directory = Combine(GetFolderPath(ApplicationData), "HXE");
+        /// <summary> ${<see cref="Directory"/>}/${<see cref="ConfigNameAndExt"/>}</summary>
         public static readonly string Configuration = Combine(Directory, ConfigNameAndExt);
+        /// <summary> ${<see cref="Directory"/>}/exception.log </summary>
         public static readonly string Exception = Combine(Directory, "exception.log");
+        /// <summary> ${PWD}/positions.bin </summary>
         public static readonly string Positions = Combine(CurrentDirectory, "positions.bin");
+        /// <summary> ${PWD}/dsoal-aldrv.dll </summary>
         public static readonly string DSOAL = Combine(CurrentDirectory, "dsoal-aldrv.dll");
+        /// <summary> ${PWD}/dsound.dll </summary>
         public static readonly string DSOUND = Combine(CurrentDirectory, "dsound.dll");
+        /// <summary> ${PWD}/alsoft.ini </summary>
         public static readonly string ALSoft = Combine(CurrentDirectory, "alsoft.ini");
+        /// <summary> ${PWD}/legacy.txt </summary>
         public static readonly string Legacy = Combine(CurrentDirectory, "legacy.txt");
 
         public static string Campaign(Kernel.Configuration.ConfigurationMode mode)
