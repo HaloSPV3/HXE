@@ -94,11 +94,34 @@ namespace HXE
         /// </param>
         public static void Invoke(Executable executable, Configuration configuration)
         {
-            /* Clear log file */
+            /* Rotate log files */
             {
-                // todo: rotate log files so no more than five exist and previous logs persist
-                if (File.Exists(Paths.Exception) && new FileInfo(Paths.Exception).Length > 1048576 * 8) // If larger than 8 MiB, ...
-                    System.IO.File.WriteAllText(Paths.Exception, ""); // ...clear log.
+                const int maxIncrement = 4;
+
+                // reverse-order for-loop so we can rename files without overwriting the others
+                // initialize `i` at max increment e.g. exception.4.log
+                for (int i = maxIncrement; i >= 0; i--)
+                {
+                    string? path = i == 0
+                        ? Paths.Exception
+                        : Paths.Exception.Replace(".log", $".{i}.log");
+                    if (File.Exists(path))
+                    {
+                        // if current file's number is the maximum value, delete it
+                        if (i == maxIncrement)
+                            System.IO.File.Delete(path);
+                        else // increment the log's number
+                        {
+                            // this is a bit hard for me understand (and I wrote it!), so here are some notes:
+                            // if i == 0, the log file will be "exceptions.log"; set the number to 1
+                            // otherwise, increment the log number
+                            var destination = i == 0
+                                ? Paths.Exception.Replace(".log", $".1.log")
+                                : Paths.Exception.Replace($".{i}.log", $".{i + 1}.log");
+                            System.IO.File.Move(path, destination);
+                        }
+                    }
+                }
             }
 
             /* Switch to legacy kernel modes */
