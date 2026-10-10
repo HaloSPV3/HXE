@@ -369,9 +369,9 @@
       },
       "Tmds.DBus.Protocol": {
         "type": "Direct",
-        "requested": "[0.95.0, )",
-        "resolved": "0.95.0",
-        "contentHash": "qsC7o0FVMB/j+3Zt0ppoORlpWticKsHMN5NFG6egiUz3yYspqiV/3TxSK9iuitg1w6IYbMcwelPkLgeE8T074w=="
+        "requested": "[0.95.1, )",
+        "resolved": "0.95.1",
+        "contentHash": "IbGhqZAqqgB/DkT70+lAk4MNv95tZtsTMFQ+S3uGy0aTfOkGVeFjeNJsX8dBI/3+CPnO5XW6lRQKGeFEgHElKw=="
       },
       "Microsoft.Windows.SDK.Win32Docs": {
         "type": "Transitive",
