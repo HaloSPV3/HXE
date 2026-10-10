@@ -91,6 +91,8 @@ namespace HXE
       bool         writeLine = true
     )
     {
+      if (Program.SuppressConsoleOutput) return;
+
       if (writeLine)
         WriteLine();
 

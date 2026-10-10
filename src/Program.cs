@@ -54,6 +54,7 @@ A HCE wrapper and kernel for SPV3
 HXE can be invoked with the following arguments:
 
       --help                 Displays commands list
+      --silent               Suppress all console output
       --test                 Start a dry run of HXE to self-test
       --config               Opens configuration GUI
       --positions            Opens positions GUI
@@ -75,6 +76,8 @@ HXE can be invoked with the following arguments:
       --refresh=VALUE        Loads HCE with custom refresh rate
 ";
 
+        public static bool SuppressConsoleOutput { get; private set; } = false;
+
         /// <summary>
         ///   HXE entry.
         /// </summary>
@@ -93,6 +96,7 @@ HXE can be invoked with the following arguments:
         /// </summary>
         /// <param name="args">
         ///   --help              Displays commands list                        <br/>
+        ///   --silent            Suppress all console output                   <br/>
         ///   --test              Start a dry run of HXE to self-test           <br/>
         ///   --config            Opens configuration GUI                       <br/>
         ///   --positions         Opens first-person model positions GUI        <br/>
@@ -113,12 +117,12 @@ HXE can be invoked with the following arguments:
         ///   --vidmode=VALUE     Loads HCE           with custom res. and Hz   <br/>
         ///   --refresh=VALUE     Loads HCE           with custom refresh rate  <br/>
         /// </param>
-        /// TODO: implement --silent to run CLI without user prompts;
         private static void InvokeProgram(string[] args)
         {
             Directory.CreateDirectory(Paths.Directory);
 
             var help = false;            /* Displays commands list              */
+            var silent = false;          /* Suppress all console output         */
             var test = false;            /* Start a dry run of HXE to self-test */
             var config = false;          /* Opens configuration GUI             */
             var positions = false;       /* Opens positions GUI                 */
@@ -141,6 +145,7 @@ HXE can be invoked with the following arguments:
 
             var options = new OptionSet()
               .Add("help", "Displays commands list", s => help = s != null)                                  /* hxe command   */
+              .Add("silent", "Suppress all console output", s => silent = s != null)                         /* hxe command   */
               .Add("test", "Start a dry run of HXE to self-test", s => test = s != null)                     /* hxe command   */
               .Add("config", "Opens configuration GUI", s => config = s != null)                             /* hxe command   */
               .Add("positions", "Opens positions GUI", s => positions = s != null)                           /* hxe command   */
@@ -162,6 +167,9 @@ HXE can be invoked with the following arguments:
               .Add("refresh=", "Loads HCE with custom refresh rate", s => refresh = s);                      /* hce parameter */
 
             var input = options.Parse(args);
+
+            if (silent)
+                SuppressConsoleOutput = true;
 
             foreach (var i in input)
                 Info("Discovered CLI command: " + i);
