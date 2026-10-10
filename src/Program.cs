@@ -62,7 +62,6 @@ HXE can be invoked with the following arguments:
       --install=VALUE        Installs HCE/SPV3 to destination
       --compile=VALUE        Compiles HCE/SPV3 to destination
       --update=VALUE         Updates directory using manifest
-      --registry=VALUE       Write to Windows Registry
       --infer                Infer the running Halo executable
       --console              Loads HCE with console mode
       --devmode              Loads HCE with developer mode
@@ -104,7 +103,6 @@ HXE can be invoked with the following arguments:
         ///   --install=VALUE     Installs HCE/SPV3   to destination            <br/>
         ///   --compile=VALUE     Compiles HCE/SPV3   to destination            <br/>
         ///   --update=VALUE      Updates directory with specified manifest     <br/>
-        ///   --registry=VALUE    Write to Windows Registry                     <br/>
         ///   --infer             Infer the running Halo executable             <br/>
         ///   --console           Loads HCE           with console mode         <br/>
         ///   --devmode           Loads HCE           with developer mode       <br/>
@@ -130,7 +128,6 @@ HXE can be invoked with the following arguments:
             var install = string.Empty;  /* Installs HCE/SPV3 to destination    */
             var compile = string.Empty;  /* Compiles HCE/SPV3 to destination    */
             var update = string.Empty;   /* Updates directory using manifest    */
-            var registry = string.Empty; /* Write to Windows Registry           */
             var infer = false;           /* Infer the running Halo executable   */
             var console = false;         /* Loads HCE with console mode         */
             var devmode = false;         /* Loads HCE with developer mode       */
@@ -153,7 +150,6 @@ HXE can be invoked with the following arguments:
               .Add("install=", "Installs HCE/SPV3 to destination", s => install = s)                         /* hxe parameter */
               .Add("compile=", "Compiles HCE/SPV3 to destination", s => compile = s)                         /* hxe parameter */
               .Add("update=", "Updates directory using manifest", s => update = s)                           /* hxe parameter */
-              .Add("registry=", "Create Registry keys for Retail, Custom, Trial, or HEK", s => registry = s) /* hxe parameter */
               .Add("infer", "Infer the running Halo executable", s => infer = s != null)                     /* hxe parameter */
               .Add("console", "Loads HCE with console mode", s => console = s != null)                       /* hce parameter */
               .Add("devmode", "Loads HCE with developer mode", s => devmode = s != null)                     /* hce parameter */
@@ -263,14 +259,6 @@ HXE can be invoked with the following arguments:
                     updateModule.Import(update);
                     updateModule.Commit();
                 });
-            }
-
-            if (!string.IsNullOrWhiteSpace(registry))
-            {
-                // TODO: Set up registry functionality
-                Error("Argument 'registry' not implemented (yet!)");
-                Info("Press any key to continue...");
-                _ = ReadKey(intercept: true);
             }
 
             /**
