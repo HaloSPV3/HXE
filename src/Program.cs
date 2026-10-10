@@ -359,24 +359,19 @@ HXE can be invoked with the following arguments:
         /// </summary>
         private static void DisplayBanner()
         {
-            bool release = GitVersionInformation.CommitsSinceVersionSource == "0";
-            var infoVersion = GitVersionInformation.InformationalVersion;
-            string bannerBuildSource = release ? /// TODO: handle pre-releases
-                string.Format(BannerBuildSourceRelease, GitVersionInformation.MajorMinorPatch) :
-                string.Format(BannerBuildSourceCommit, GitVersionInformation.ShortSha);
-
+            string bannerBuildSource = string.Format(BannerBuildSourceRelease, GitVersionInformation.FullSemVer);
             int longestStringLength = GetLongestStringLength(new string[]{
                 Banner,
-                string.Format(BannerBuildNumber, infoVersion),
+                string.Format(BannerBuildNumber, GitVersionInformation.ShortSha),
                 string.Format(BannerBuildSourceCommit, GitVersionInformation.ShortSha),
-                string.Format(BannerBuildSourceRelease, GitVersionInformation.MajorMinorPatch)
+                string.Format(BannerBuildSourceRelease, GitVersionInformation.FullSemVer)
             });
             var bannerLineDecorations = new string('-', longestStringLength + 1);
 
             /// Print()
             ForegroundColor = ConsoleColor.Green;      /* the colour of the one */
             WriteLine(Banner);                         /* ascii art and usage */
-            WriteLine(BannerBuildNumber, infoVersion); /* reference build */
+            WriteLine(BannerBuildNumber, GitVersionInformation.ShortSha); /* reference build */
             WriteLine(bannerLineDecorations);          /* separator */
             WriteLine(bannerBuildSource);              /* reference link */
             WriteLine(bannerLineDecorations);          /* separator */
