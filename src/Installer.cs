@@ -228,7 +228,7 @@ namespace HXE
                 string[] transparentCompressionFilesystems = [
                     "bcachefs", // gzip, lz4, zstd | Linux
                     "btrfs", // lzo, zlib, zstd | Linux, ReactOS, Windows
-                    "f2fs", // lzo, lz4, zstd
+                    "f2fs", // lzo, lzo-rle, lz4, zstd | Android, Linux
                     "ntfs", // lznt1 (lz77) | Windows, MacOS, Linux, FreeBSD, NetBSD, OpenBS, ChromeOS, Solaris, ReactOS (read-only)
                     "reiserfs", // lzo, zlib
                     "zfs" // gzip, lz4, lzjb, zstd
