@@ -24,15 +24,14 @@ namespace HXE
             public List<DataSet> DataSets = new List<DataSet>();
         }
 
-        // todo: change to record or record-struct
-        public class DataSet // 00000136: 0F 2F
+        public readonly struct DataSet(long Offset, byte Original, byte Patch)// 00000136: 0F 2F
         {
-            public long Offset { get; set; }
-            public byte Original { get; set; }
-            public byte Patch { get; set; }
+            public long Offset { get; } = Offset;
+            public byte Original { get; } = Original;
+            public byte Patch { get; } = Patch;
 
             public static implicit operator DataSet((long Offset, byte Original, byte Patch) v)
-                => new() { Offset = v.Offset, Original = v.Original, Patch = v.Patch };
+                => new(v.Offset, v.Original, v.Patch);
         }
 
         /// <summary>
