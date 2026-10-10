@@ -15,9 +15,9 @@
 
   <PropertyGroup Label="Yarn-unplugged HCE.Shared" Condition="!Exists($(HCESharedDir))">
     <_yarnUnplugged>$([System.IO.Path]::Join("$(RepoRoot)", '.yarn/unplugged/'))</_yarnUnplugged>
-    <_yarnUnpluggedChildren>$([System.IO.Directory]::GetDirectories($(_yarnUnplugged)))</_yarnUnpluggedChildren>
+    <_yarnUnpluggedChildren Condition="Exists($(_yarnUnplugged))">$([System.IO.Directory]::GetDirectories($(_yarnUnplugged)))</_yarnUnpluggedChildren>
     <_yarnUnpluggedHceSharedMatches>$([System.Text.RegularExpressions.Regex]::Matches(
-        $(_yarnUnpluggedChildren),'@halospv3-hce.shared-config-[^;]+')
+        "$(_yarnUnpluggedChildren)",'@halospv3-hce.shared-config-[^;]+')
       )</_yarnUnpluggedHceSharedMatches>
       <_yarnUnplugged_lastMatch>$([MSBuild]::Subtract(
           $(_yarnUnpluggedHceSharedMatches.Split(';').Length),
@@ -37,4 +37,13 @@
   <!-- Created by Brant Burnett - https://github.com/dotnet/wpf/issues/2930#issuecomment-2562793707
     WPF projects tend to leave dangling "_wpftmp" directories in the "artifacts/bin" directory, clean these up after build -->
   <Import Project="$(HCESharedDir)dotnet/CleanupWpfTmp.targets" />
+
+  <Target Name="YarnInstall" BeforeTargets="Restore" Condition="!Exists($(HCESharedDir))">
+    <Exec Command="corepack enable" ConsoleToMsBuild="true">
+      <Output PropertyName="corepack_output" TaskParameter="ConsoleOutput" />
+    </Exec>
+    <Exec Command="yarn install --immutable" ConsoleToMsBuild="true">
+      <Output PropertyName="corepack_output" TaskParameter="ConsoleOutput" />
+    </Exec>
+  </Target>
 </Project>
