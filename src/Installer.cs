@@ -56,6 +56,7 @@ namespace HXE
         /// <param name="progress">
         ///   Optional IProgress object for calling GUI clients.
         /// </param>
+        /// todo: rename `enableLZNT1` to `enableTransparentCompression`
         public static void Install(string source, string target, IProgress<Status>? progress = null, bool enableLZNT1 = false)
         {
             /**
