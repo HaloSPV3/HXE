@@ -283,7 +283,7 @@ namespace HXE
 
             // https://learn.microsoft.com/windows/win32/api/ioapiset/nf-ioapiset-deviceiocontrol
             // https://learn.microsoft.com/openspecs/windows_protocols/ms-fsa/8e2a2e1e-5a90-4251-8b4d-18f1a4c0be43
-            List<string> failedPaths = [];
+            List<string> failedPaths = [with(paths.Length)];
             foreach (string path in paths)
             {
                 try
