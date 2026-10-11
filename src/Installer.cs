@@ -283,7 +283,9 @@ namespace HXE
 
             // https://learn.microsoft.com/windows/win32/api/ioapiset/nf-ioapiset-deviceiocontrol
             // https://learn.microsoft.com/openspecs/windows_protocols/ms-fsa/8e2a2e1e-5a90-4251-8b4d-18f1a4c0be43
-            List<string> failedPaths = [with(paths.Length)];
+#pragma warning disable IDE0028 // Simplify collection initialization | error CS8652: The feature 'collection expression arguments' is currently in Preview and *unsupported*.
+            List<string> failedPaths = new(paths.Length);
+#pragma warning restore IDE0028 // Simplify collection initialization | error CS8652: The feature 'collection expression arguments' is currently in Preview and *unsupported*.
             foreach (string path in paths)
             {
                 try
