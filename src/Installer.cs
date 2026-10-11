@@ -188,7 +188,7 @@ namespace HXE
         /// <todo>
         /// https://btrfs.readthedocs.io/en/latest/Compression.html<br/>
         /// </todo>
-        private static IEnumerable<string> TransparentlyCompressPaths(string rootPath, bool recurse, IProgress<Status>? progress = null)
+        internal static IEnumerable<string> TransparentlyCompressPaths(string rootPath, bool recurse, IProgress<Status>? progress = null)
         {
             string[] paths = File.Exists(rootPath)
                 ? [rootPath]
