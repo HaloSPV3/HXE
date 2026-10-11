@@ -1,3 +1,17 @@
+## [3.0.1](https://github.com/HaloSPV3/HXE/compare/v3.0.0...v3.0.1) (2026-10-11)
+
+### Bug Fixes
+
+* **deps:** bump Microsoft.Windows.CsWin32 to 0.3.360 ([3ad665e](https://github.com/HaloSPV3/HXE/commit/3ad665e6018ca46eb726742b7a2d4ed8fa447ce2))
+* **deps:** bump System.Text.Json to 10.0.12 ([ed44763](https://github.com/HaloSPV3/HXE/commit/ed44763c6fb6cc5902d72967b0de149cd0c0b3bf))
+* **deps:** do not let bleeding-edge `XmlSourceGenerator.Abstractions` reference flow to downstream consumers when packing ([7a65961](https://github.com/HaloSPV3/HXE/commit/7a659613b28343c1eb0ea870e3a33d51fbcae893))
+* **deps:** upgrade Tmds.DBus.Protocol to 0.95.1 ([35655f5](https://github.com/HaloSPV3/HXE/commit/35655f59cf3aa70563eeef2fce779251c2ba97c5))
+* **Installer:** catch and log exceptions thrown in `TransparentlyCompressPaths` from `private` to `internal` ([eca6399](https://github.com/HaloSPV3/HXE/commit/eca63990fbcf13160e9457e4887b23c375ecb28e))
+
+### Performance Improvements
+
+* **Installer:** initialize `failedPaths` in `TransparentlyCompressPaths` to fit all paths in `paths` without resizing ([088af6e](https://github.com/HaloSPV3/HXE/commit/088af6eadb40ca3f4cfd055b807995c1d542a7cf))
+
 ## [3.0.0](https://github.com/HaloSPV3/HXE/compare/v2.3.1...v3.0.0) (2026-10-10)
 
 ### ⚠ BREAKING CHANGES
