@@ -295,7 +295,6 @@ namespace HXE
                         lpFileName: path,
                         dwDesiredAccess: (uint)(GENERIC_ACCESS_RIGHTS.GENERIC_READ | GENERIC_ACCESS_RIGHTS.GENERIC_WRITE),
                         dwShareMode: FILE_SHARE_MODE.FILE_SHARE_READ,
-                        lpSecurityAttributes: null,
                         dwCreationDisposition: FILE_CREATION_DISPOSITION.OPEN_EXISTING,
                         dwFlagsAndAttributes: isDirectory
                             ? FILE_FLAGS_AND_ATTRIBUTES.FILE_FLAG_BACKUP_SEMANTICS
