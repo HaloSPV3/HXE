@@ -56,6 +56,7 @@ namespace HXE
         /// <param name="progress">
         ///   Optional IProgress object for calling GUI clients.
         /// </param>
+        /// todo: rename `enableLZNT1` to `enableTransparentCompression`
         public static void Install(string source, string target, IProgress<Status>? progress = null, bool enableLZNT1 = false)
         {
             /**
@@ -187,15 +188,27 @@ namespace HXE
         /// <todo>
         /// https://btrfs.readthedocs.io/en/latest/Compression.html<br/>
         /// </todo>
-        private static IEnumerable<string> TransparentlyCompressPaths(string rootPath, bool recurse, IProgress<Status>? progress = null)
+        internal static IEnumerable<string> TransparentlyCompressPaths(string rootPath, bool recurse, IProgress<Status>? progress = null)
         {
-            string[] paths = File.Exists(rootPath)
-                ? [rootPath]
-                : Directory.GetFileSystemEntries(
-                    rootPath,
-                    "*",
-                    recurse ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly
-                );
+            string[] paths = [];
+            try
+            {
+                paths = File.Exists(rootPath)
+                    ? [rootPath]
+                    : Directory.GetFileSystemEntries(
+                        rootPath,
+                        "*",
+                        recurse ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly
+                    );
+            }
+            catch (Exception exception)
+            {
+                var exceptionString = exception.ToString();
+                Error(exceptionString);
+                progress?.Report(new() { Description = $"Failed to list files and directories under \"{rootPath}\".\nCause: {exceptionString}" });
+                return [rootPath];
+            }
+
             Status status = new()
             {
                 Description = $"Transparently compressing {paths.Length} directories and files...",
@@ -204,72 +217,126 @@ namespace HXE
             progress?.Report(status);
             DriveInfo? targetDrive = null;
             int longestNameLength = 0;
-            foreach (DriveInfo drive in DriveInfo.GetDrives())
+
+            try
             {
-                if (drive.DriveType != DriveType.Fixed)
-                    continue;
-                /* drive.Name == GetPathRoot(target)! makes sense on Windows, but not on
-                  Unix-like platforms where rootpath is always /, but all
-                  drive names start with it. */
-                if (rootPath.StartsWith(drive.Name) && drive.Name.Length > longestNameLength)
+                foreach (DriveInfo drive in DriveInfo.GetDrives())
                 {
-                    targetDrive = drive;
-                    longestNameLength = drive.Name.Length;
+                    if (drive.DriveType != DriveType.Fixed)
+                        continue;
+                    /* drive.Name == GetPathRoot(target)! makes sense on Windows, but not on
+                      Unix-like platforms where rootpath is always /, but all
+                      drive names start with it. */
+                    if (rootPath.StartsWith(drive.Name) && drive.Name.Length > longestNameLength)
+                    {
+                        targetDrive = drive;
+                        longestNameLength = drive.Name.Length;
+                    }
                 }
+            }
+            catch (Exception exception)
+            {
+                var exceptionString = exception.ToString();
+                Error(exceptionString);
+                if (progress != null)
+                {
+                    status.Description = $"Unable to list logical storage drives/volumes.\n{exceptionString}";
+                    progress?.Report(status);
+                }
+                return paths;
             }
 
             if (targetDrive == null)
-                return paths; // no matching drive???
-
+            {
+                var exceptionString = new DriveNotFoundException($"No storage drive/volume could be found for the path \"{rootPath}\".").ToString();
+                Error(exceptionString);
+                if (progress != null)
+                {
+                    status.Description = exceptionString;
+                    progress?.Report(status);
+                }
+                return [rootPath]; // no matching drive???
+            }
             // if the filesystem is read-only or does not support transparent compression, return early
             {
                 // writeable transparent-compression filesystems (no SquashFS)
                 string[] transparentCompressionFilesystems = [
                     "bcachefs", // gzip, lz4, zstd | Linux
-                        "btrfs", // lzo, zlib, zstd | Linux, ReactOS, Windows
-                        "f2fs", // lzo, lz4, zstd
-                        "ntfs", // lznt1 (lz77) | Windows, MacOS, Linux, FreeBSD, NetBSD, OpenBS, ChromeOS, Solaris, ReactOS (read-only)
-                        "reiserfs", // lzo, zlib
-                        "zfs" // gzip, lz4, lzjb, zstd
+                    "btrfs", // lzo, zlib, zstd | Linux, ReactOS, Windows
+                    "f2fs", // lzo, lzo-rle, lz4, zstd | Android, Linux
+                    "ntfs", // lznt1 (lz77) | Windows, MacOS, Linux, FreeBSD, NetBSD, OpenBS, ChromeOS, Solaris, ReactOS (read-only)
+                    "reiserfs", // lzo, zlib
+                    "zfs" // gzip, lz4, lzjb, zstd
                 ];
                 if (!transparentCompressionFilesystems.Contains(targetDrive.DriveFormat.ToLowerInvariant()))
-                    return paths; // filesystem (probably) does not support transparent compression
+                {
+                    var exceptionMessage = new NotSupportedException($"The target drive {targetDrive.Name} does not support any of the following compression formats: {string.Join(", ", transparentCompressionFilesystems)}").ToString();
+                    Error(exceptionMessage);
+                    if (progress != null)
+                    {
+                        status.Description = exceptionMessage;
+                        progress.Report(status);
+                    }
+                    return [rootPath]; // filesystem (probably) does not support transparent compression
+                }
             }
 
             // https://learn.microsoft.com/windows/win32/api/ioapiset/nf-ioapiset-deviceiocontrol
             // https://learn.microsoft.com/openspecs/windows_protocols/ms-fsa/8e2a2e1e-5a90-4251-8b4d-18f1a4c0be43
-            List<string> failedPaths = [];
+#pragma warning disable IDE0028 // Simplify collection initialization | error CS8652: The feature 'collection expression arguments' is currently in Preview and *unsupported*.
+            List<string> failedPaths = new(paths.Length);
+#pragma warning restore IDE0028 // Simplify collection initialization | error CS8652: The feature 'collection expression arguments' is currently in Preview and *unsupported*.
             foreach (string path in paths)
             {
                 try
                 {
-                    bool success = false;
+                    Exception? exception = null;
                     bool isDirectory = (GetAttributes(path) & FileAttributes.Directory) == FileAttributes.Directory;
 #if WINDOWS || NET462 || NET48
                     using SafeFileHandle safeFileHandle = PInvoke.CreateFile(
                         lpFileName: path,
                         dwDesiredAccess: (uint)(GENERIC_ACCESS_RIGHTS.GENERIC_READ | GENERIC_ACCESS_RIGHTS.GENERIC_WRITE),
                         dwShareMode: FILE_SHARE_MODE.FILE_SHARE_READ,
-                        lpSecurityAttributes: null,
                         dwCreationDisposition: FILE_CREATION_DISPOSITION.OPEN_EXISTING,
                         dwFlagsAndAttributes: isDirectory
                             ? FILE_FLAGS_AND_ATTRIBUTES.FILE_FLAG_BACKUP_SEMANTICS
                             : FILE_FLAGS_AND_ATTRIBUTES.FILE_ATTRIBUTE_NORMAL
                     );
 
+                    bool success;
                     unsafe
                     {
                         success = PInvoke.DeviceIoControl(
-                            hDevice: safeFileHandle,
-                            dwIoControlCode: PInvoke.FSCTL_SET_COMPRESSION,
-                            lpInBuffer: [1] // 0 == None; 1 == Default/LZNT1
+                            safeFileHandle,
+                            PInvoke.FSCTL_SET_COMPRESSION,
+                            (ReadOnlySpan<byte>)BitConverter.GetBytes((ushort)COMPRESSION_FORMAT.COMPRESSION_FORMAT_DEFAULT)
                         );
                     }
+
+                    if (success)
+                        exception = new System.ComponentModel.Win32Exception();
 #endif
-                    if (!success) failedPaths.Add(path);
+                    if (exception != null)
+                    {
+                        var errorMessage = $"Failed to compress \"{path}\"\nCause: {exception}";
+                        Error(errorMessage);
+                        if (progress != null)
+                        {
+                            status.Description = errorMessage;
+                            progress.Report(status);
+                        }
+                        failedPaths.Add(path);
+                    }
                 }
-                catch
+                catch (Exception exception)
                 {
+                    var errorMessage = $"Failed to compress \"{path}\"\nCause: {exception}";
+                    Error(errorMessage);
+                    if (progress != null)
+                    {
+                        status.Description = errorMessage;
+                        progress.Report(status);
+                    }
                     failedPaths.Add(path);
                 }
             }

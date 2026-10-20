@@ -11,6 +11,7 @@ namespace HXE
 
         public void InitializeComponent() { }
         public void Close() { }
+        public bool? ShowDialog() => null;
     }
 
     public class RoutedEventArgs : EventArgs { }

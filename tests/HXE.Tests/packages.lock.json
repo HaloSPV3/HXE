@@ -128,14 +128,14 @@
       },
       "Tmds.DBus.Protocol": {
         "type": "Transitive",
-        "resolved": "0.95.0",
-        "contentHash": "qsC7o0FVMB/j+3Zt0ppoORlpWticKsHMN5NFG6egiUz3yYspqiV/3TxSK9iuitg1w6IYbMcwelPkLgeE8T074w=="
+        "resolved": "0.95.1",
+        "contentHash": "IbGhqZAqqgB/DkT70+lAk4MNv95tZtsTMFQ+S3uGy0aTfOkGVeFjeNJsX8dBI/3+CPnO5XW6lRQKGeFEgHElKw=="
       },
       "hxe": {
         "type": "Project",
         "dependencies": {
           "LinuxDesktopUtils.XDGDesktopPortal": "[1.0.2, )",
-          "Tmds.DBus.Protocol": "[0.95.0, )",
+          "Tmds.DBus.Protocol": "[0.95.1, )",
           "XmlSourceGenerator.Abstractions": "[1.0.0, )"
         }
       },
