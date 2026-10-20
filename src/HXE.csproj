@@ -8,10 +8,8 @@
     <StartupObject>HXE.Program</StartupObject>
     <AssemblyName>HXE</AssemblyName>
     <RootNamespace>HXE</RootNamespace>
-    <_TargetingLinux>$([System.Text.RegularExpressions.Regex]::IsMatch(
-      "$(TargetFramework)_$(RuntimeIdentifier)",
-      'net10.0_|_linux'
-      ))</_TargetingLinux>
+    <_TargetingLinux>false</_TargetingLinux>
+    <_TargetingLinux Condition="'$(TargetFramework)' == 'net10.0' AND '$(RuntimeIdentifier.StartsWith(win))' != 'true'">true</_TargetingLinux>
     <DefineConstants Condition="$(_TargetingLinux)">$(DefineConstants);LINUX</DefineConstants>
 
     <!-- Application | Resources -->
@@ -43,9 +41,12 @@
     <!-- Waiting for trim-compatible WPF -->
     <!--<PublishTrimmed>true</PublishTrimmed> -->
     <PublishSingleFile Condition="'$(Configuration)' == 'Release'">$(NET6_0_OR_GREATER)</PublishSingleFile>
-    <RuntimeIdentifier Condition="'$(RuntimeIdentifier)' == '' AND '$(PublishSingleFile)' == 'true'">win7-x86</RuntimeIdentifier>
-    <RuntimeIdentifier Condition="$(NET7_0_OR_GREATER)">win-x64</RuntimeIdentifier>
-    <RuntimeIdentifier Condition="$(NET7_0_OR_GREATER) AND !$(TargetFramework.Contains('windows'))">linux-x64</RuntimeIdentifier>
+    <RuntimeIdentifiers>win7-x86</RuntimeIdentifiers>
+    <RuntimeIdentifier Condition="'$(RuntimeIdentifier)' == ''">win7-x86</RuntimeIdentifier>
+    <!-- The SDK is confused; Despite linux-64 requiring net10.0, the SDK tries to build net6.0-windows/linux-x64; We must force the RID to win-x86 -->
+    <!-- todo: use Avalonia net10.0_win-x64 -->
+    <RuntimeIdentifiers Condition="'$(TargetFramework)' == 'net10.0'">linux-x64</RuntimeIdentifiers>
+    <RuntimeIdentifier Condition="'$(TargetFramework)' == 'net10.0'">linux-x64</RuntimeIdentifier>
     <SelfContained Condition="'$(SelfContained)' == '' AND '$(RuntimeIdentifier)' != '' AND '$(NET6_0_OR_GREATER)' == 'true'">true</SelfContained>
     <PublishSingleFile Condition="'$(PublishSingleFile)' == 'true' AND $(RuntimeIdentifier.Contains('win7'))">$([MSBuild]::VersionGreaterThanOrEquals($(NETCoreSdkVersion), '6.0.300'))</PublishSingleFile>
 

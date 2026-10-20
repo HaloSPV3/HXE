@@ -1,3 +1,9 @@
+## [3.0.2-alpha.1](https://github.com/HaloSPV3/HXE/compare/v3.0.1...v3.0.2-alpha.1) (2026-10-20)
+
+### Bug Fixes
+
+* **deps:** fix dependency graph issues linked to 385e4e9 ([fb625a4](https://github.com/HaloSPV3/HXE/commit/fb625a410b4773745f75f45c10f647a6c734ff90))
+
 ## [3.0.1](https://github.com/HaloSPV3/HXE/compare/v3.0.0...v3.0.1) (2026-10-11)
 
 ### Bug Fixes
@@ -82,6 +88,26 @@
 ### Reverts
 
 * **deps-dev): "build(deps-dev:** update dependency typescript to v7 ([#537](https://github.com/HaloSPV3/HXE/issues/537))" ([f4d36c2](https://github.com/HaloSPV3/HXE/commit/f4d36c26f2597d3f53f17894514e39ee76621670))
+
+## [3.0.0-alpha.2](https://github.com/HaloSPV3/HXE/compare/v3.0.0-alpha.1...v3.0.0-alpha.2) (2026-10-10)
+
+### ⚠ BREAKING CHANGES
+
+* **Patcher:** `DataSet`'s properties are now `readonly`. As a result, `DataSet` instances must be constructed via the primary constructor. Assignments to properties in a constructor call will error.
+
+### Features
+
+* add CLI argument `--silent` to suppress all console output ([8c1d542](https://github.com/HaloSPV3/HXE/commit/8c1d542ccdce35f466b184699af02a3231647a2c))
+
+### Bug Fixes
+
+* change version variables used in CLI banner's version- and commit-related messages to make them make sense ([c440204](https://github.com/HaloSPV3/HXE/commit/c4402042fc59023dd46c492f36030fc23c246fb4))
+* remove unused CLI argument `--registry`; it did nothing; use `reg.exe`, instead ([d86c050](https://github.com/HaloSPV3/HXE/commit/d86c05027ff3386dd64eb9ffd341247166fce052))
+* rotate log files so old logs are not immediately overwritten ([7fd6147](https://github.com/HaloSPV3/HXE/commit/7fd61473ac1860adeb67ab1ebd84d0134804c1fa)), closes [#574](https://github.com/HaloSPV3/HXE/issues/574)
+
+### Performance Improvements
+
+* **Patcher:** change `DataSet` from a class to a readonly-struct ([1c07329](https://github.com/HaloSPV3/HXE/commit/1c073290692643e2a3f543b681e1d9f85db53fd1))
 
 ## [3.0.0-alpha.1](https://github.com/HaloSPV3/HXE/compare/v2.3.2-alpha.1...v3.0.0-alpha.1) (2026-10-09)
 
