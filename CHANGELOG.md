@@ -1,3 +1,9 @@
+## [3.0.2-alpha.1](https://github.com/HaloSPV3/HXE/compare/v3.0.1...v3.0.2-alpha.1) (2026-10-20)
+
+### Bug Fixes
+
+* **deps:** fix dependency graph issues linked to 385e4e9 ([fb625a4](https://github.com/HaloSPV3/HXE/commit/fb625a410b4773745f75f45c10f647a6c734ff90))
+
 ## [3.0.1](https://github.com/HaloSPV3/HXE/compare/v3.0.0...v3.0.1) (2026-10-11)
 
 ### Bug Fixes
