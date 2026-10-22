@@ -65,10 +65,14 @@ namespace HXE.HCE
 
                     try
                     {
+                        var profilesList = HCE.Profile.List(
+                            Custom.Profiles(pathParam)
+                        );
+
                         // TODO : validate profile. Is it corrupted?
-                        if (HCE.Profile.List().Count != 0)
+                        if (profilesList.Count > 0)
                         {
-                            firstProfile = HCE.Profile.List(Custom.Profiles(pathParam))[0];
+                            firstProfile = profilesList[0];
                             Name = firstProfile.Name;
                         }
                         else
