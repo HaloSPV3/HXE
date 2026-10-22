@@ -1149,7 +1149,8 @@ namespace HXE
             public class ConfigurationInput
             {
                 /// <summary> override mapping </summary>
-                public bool Override { get; set; } = true;
+                /// <remarks> Use only if you need to reset gamepad bindings before EVERY launch </remarks>
+                public bool Override { get; set; } = false;
             }
 
             public class ConfigurationTweaks
