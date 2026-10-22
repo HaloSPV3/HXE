@@ -122,6 +122,16 @@ namespace HXE
             System.IO.File.WriteAllBytes(Path, bytes);
         }
 
+        /// <exception cref="System.ArgumentException"></exception>
+        /// <exception cref="System.ArgumentNullException"></exception>
+        /// <exception cref="PathTooLongException"></exception>
+        /// <exception cref="DirectoryNotFoundException"></exception>
+        /// <exception cref="IOException"></exception>
+        /// <exception cref="System.UnauthorizedAccessException"></exception>
+        /// <exception cref="System.UnauthorizedAccessException"></exception>
+        /// <exception cref="FileNotFoundException"></exception>
+        /// <exception cref="System.NotSupportedException"></exception>
+        /// <exception cref="System.Security.SecurityException"></exception>
         public string ReadAllText()
         {
             return System.IO.File.ReadAllText(Path);
