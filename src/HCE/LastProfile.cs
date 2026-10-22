@@ -49,7 +49,7 @@ namespace HXE.HCE
                 var offset = split.Length - 2;
                 Profile = split[offset];
             }
-            catch (System.IndexOutOfRangeException e)
+            catch (System.Exception e) when (e is FileNotFoundException or System.IndexOutOfRangeException)
             {
                 var msg = " -- LASTPROFILE.LOAD FAILED" + NewLine
                         + " Error:  " + e.ToString() + NewLine;
