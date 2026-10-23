@@ -19,9 +19,11 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Runtime.CompilerServices;
+using System.Threading;
 using System.Xml.Serialization;
 using static System.IO.Path;
 
@@ -31,9 +33,14 @@ namespace HXE
     ///   Object defining domain rules for a file on the filesystem, and
     ///   exposing common file manipulation and management methods.
     /// </summary>
-    /// <remarks>Use <see cref="GetTemporary()"/> if you need an instance, but do not know the <see cref="Path"/>.</remarks>
+    /// <remarks>
+    ///     Use <see cref="GetTemporary()"/> if you need an instance, but do not know the <see cref="Path"/>.<br/>
+    ///     A key-value dictionary of <see cref="ReaderWriterLock"/> instances is used to prevent simultaneous exclusive operations simultaneously.
+    /// </remarks>
     public class File
     {
+        private static readonly Dictionary<string, ReaderWriterLock> _threadingLocks = [];
+
         /// <summary>The path to the file.</summary>
         /// <remarks>
         /// Throws if the path is invalid e.g. null, empty, contains
@@ -88,58 +95,155 @@ namespace HXE
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool Exists([NotNullWhen(true)] string? path) => System.IO.File.Exists(path);
 
+        /// <summary>
+        /// Wrapper for <see cref="FileInfo.Length"/>. Measures the size of the current file in bytes.<br/>
+        /// Bulk calls of this method can be slow.
+        /// </summary>
         public ulong Size()
         {
-            var file = new FileInfo(Path);
-            return (ulong)file.Length;
+            var rLock = _threadingLocks.GetOrCreateValue(Path);
+            rLock.AcquireReaderLock(5_000);
+            try
+            {
+                var file = new FileInfo(Path);
+                return (ulong)file.Length;
+            }
+            finally
+            {
+                rLock.ReleaseReaderLock();
+            }
         }
 
         public void Delete()
         {
-            System.IO.File.Delete(Path);
+            var wLock = _threadingLocks.GetOrCreateValue(Path);
+            wLock.AcquireWriterLock(5_000);
+            try
+            {
+                System.IO.File.Delete(Path);
+            }
+            finally
+            {
+                // Ensure that the lock is released.
+                wLock.ReleaseWriterLock();
+            }
         }
 
         public void CopyTo(string target)
         {
-            System.IO.File.Copy(Path, Combine(target, Name), true);
+            var destFileName = Combine(target, Name);
+            var rLockFrom = _threadingLocks.GetOrCreateValue(Path);
+            var wLockTo = _threadingLocks.GetOrCreateValue(destFileName);
+            rLockFrom.AcquireReaderLock(5_000);
+            wLockTo.AcquireWriterLock(5_000);
+            try
+            {
+                System.IO.File.Copy(Path, destFileName, true);
+            }
+            finally
+            {
+                rLockFrom.ReleaseReaderLock();
+                wLockTo.ReleaseWriterLock();
+            }
         }
 
         public void AppendAllText(string contents)
         {
             CreateDirectory();
-            System.IO.File.AppendAllText(Path, contents);
+            var wLock = _threadingLocks.GetOrCreateValue(Path);
+            wLock.AcquireWriterLock(5_000);
+            try
+            {
+                System.IO.File.AppendAllText(Path, contents + '\n');
+            }
+            finally
+            {
+                // Ensure that the lock is released.
+                wLock.ReleaseWriterLock();
+            }
         }
 
         public void WriteAllText(string contents)
         {
             CreateDirectory();
-            System.IO.File.WriteAllText(Path, contents);
+            var wLock = _threadingLocks.GetOrCreateValue(Path);
+            wLock.AcquireWriterLock(5_000);
+            try
+            {
+                System.IO.File.WriteAllText(Path, contents + '\n');
+            }
+            finally
+            {
+                // Ensure that the lock is released.
+                wLock.ReleaseWriterLock();
+            }
         }
 
         public void WriteAllBytes(byte[] bytes)
         {
             CreateDirectory();
-            System.IO.File.WriteAllBytes(Path, bytes);
+            var wLock = _threadingLocks.GetOrCreateValue(Path);
+            wLock.AcquireWriterLock(5_000);
+            try
+            {
+                System.IO.File.WriteAllBytes(Path, bytes);
+            }
+            finally
+            {
+                // Ensure that the lock is released.
+                wLock.ReleaseWriterLock();
+            }
         }
 
-        /// <exception cref="System.ArgumentException"></exception>
-        /// <exception cref="System.ArgumentNullException"></exception>
-        /// <exception cref="PathTooLongException"></exception>
-        /// <exception cref="DirectoryNotFoundException"></exception>
-        /// <exception cref="IOException"></exception>
-        /// <exception cref="System.UnauthorizedAccessException"></exception>
-        /// <exception cref="System.UnauthorizedAccessException"></exception>
-        /// <exception cref="FileNotFoundException"></exception>
-        /// <exception cref="System.NotSupportedException"></exception>
-        /// <exception cref="System.Security.SecurityException"></exception>
+        /// <exception cref="System.ApplicationException">timeout expires before the lock request is granted.</exception>
+        /// <inheritdoc cref="System.IO.File.ReadAllText(string)" path="/exception"/>
         public string ReadAllText()
         {
-            return System.IO.File.ReadAllText(Path);
+            var rLock = _threadingLocks.GetOrCreateValue(Path);
+            rLock.AcquireReaderLock(5_000);
+            try
+            {
+                return System.IO.File.ReadAllText(Path);
+            }
+            finally
+            {
+                rLock.ReleaseReaderLock();
+            }
         }
 
         public byte[] ReadAllBytes()
         {
-            return System.IO.File.ReadAllBytes(Path);
+            var rLock = _threadingLocks.GetOrCreateValue(Path);
+            rLock.AcquireReaderLock(5_000);
+            try
+            {
+                return System.IO.File.ReadAllBytes(Path);
+            }
+            finally
+            {
+                rLock.ReleaseReaderLock();
+            }
+        }
+
+        /// <summary> Wrapper for <see cref="System.IO.File.Move"/> </summary>
+        /// <param name="destFileName"></param>
+        /// <exception cref="System.ApplicationException">timeout expires before the lock request is granted.</exception>
+        /// <inheritdoc cref="System.IO.File.Move(string, string)" path="/exception" />
+        public void Move(string destFileName)
+        {
+            var rLockFrom = _threadingLocks.GetOrCreateValue(Path);
+            var wLockTo = _threadingLocks.GetOrCreateValue(destFileName);
+            rLockFrom.AcquireReaderLock(5_000);
+            wLockTo.AcquireWriterLock(5_000);
+            try
+            {
+                System.IO.File.Move(Path, destFileName);
+            }
+            finally
+            {
+                rLockFrom.ReleaseReaderLock();
+                wLockTo.ReleaseWriterLock();
+            }
         }
 
         /// <summary>Get a <see cref="File"/> with a temporary file path. The file is not created.</summary>
@@ -167,5 +271,27 @@ namespace HXE
         ///   Object representation of the inbound string.
         /// </returns>
         public static explicit operator File(string name) => new() { Path = name };
+    }
+
+    internal static class DictionaryExtensions
+    {
+        [return: NotNull]
+        public static T2 GetOrCreateValue<T1, T2>(this IDictionary<T1, T2> dictionary, T1 key) where T2 : new()
+        {
+            try
+            {
+                lock (dictionary)
+                {
+                    if (!dictionary.TryGetValue(key, out var value))
+                        dictionary.Add(key, value ??= new());
+                    return value!;
+                }
+            }
+            catch (System.Exception e)
+            {
+                Console.Error(e.ToString());
+                throw;
+            }
+        }
     }
 }
