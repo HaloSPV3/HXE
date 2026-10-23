@@ -46,6 +46,11 @@
           "MSTest.Analyzers": "4.5.1"
         }
       },
+      "BinToss.XmlSourceGenerator": {
+        "type": "Transitive",
+        "resolved": "2.0.0",
+        "contentHash": "Rjr6Adu1GNzjl+DMB0hHWB1QYqRkwxeTgPK7WEblHHEeiiPbH1S0E76YuZ079NraD9no6+X5zuCwHXrBLRgprw=="
+      },
       "LinuxDesktopUtils.XDGDesktopPortal": {
         "type": "Transitive",
         "resolved": "1.0.2",
@@ -134,13 +139,10 @@
       "hxe": {
         "type": "Project",
         "dependencies": {
+          "BinToss.XmlSourceGenerator": "[2.0.0, )",
           "LinuxDesktopUtils.XDGDesktopPortal": "[1.0.2, )",
-          "Tmds.DBus.Protocol": "[0.95.1, )",
-          "XmlSourceGenerator.Abstractions": "[1.0.0, )"
+          "Tmds.DBus.Protocol": "[0.95.1, )"
         }
-      },
-      "xmlsourcegenerator.abstractions": {
-        "type": "Project"
       }
     }
   }
