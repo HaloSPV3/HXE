@@ -21,6 +21,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -1441,6 +1442,81 @@ namespace HXE.HCE
                 { GamePadMenu.GP3_MenuAccept, DIButtons_Values.Button0 },
                 { GamePadMenu.GP3_MenuBack  , DIButtons_Values.Button1 },
             };
+
+            public static class Presets
+            {
+                /// <summary>
+                ///     Loosely based on <see cref="ProfileInput">ProfileInput</see><br/>
+                ///     In TypeScript terms, it would be an Interface where all of <see cref="ProfileInput"/>'s fields/properties are Optional (i.e. may be undefined)
+                /// </summary>
+                public class InputProfilePreset
+                {
+                    public ReadOnlyDictionary<GamePadMenu, DIButtons_Values>? Gamepads_Menu { get; init; }
+                    public ReadOnlyDictionary<Action, GP0_Input>? GP0_Mapping { get; init; }
+                    public ReadOnlyDictionary<Action, GP1_Input>? GP1_Mapping { get; init; }
+                    public ReadOnlyDictionary<Action, GP2_Input>? GP2_Mapping { get; init; }
+                    public ReadOnlyDictionary<Action, GP3_Input>? GP3_Mapping { get; init; }
+                    public ReadOnlyDictionary<Action, Keyboard>? KeyboardMapping { get; init; }
+                    public ReadOnlyDictionary<Action, Mouse>? MouseMapping { get; init; }
+                }
+
+                public static InputProfilePreset SPV3Gamepad { get; } = new()
+                {
+                    GP0_Mapping = new Dictionary<Action, GP0_Input> {
+                        { Action.MoveForward, GP0_Input.Axis_1_n },
+                        { Action.MoveBackward, GP0_Input.Axis_1_p },
+                        { Action.MoveLeft, GP0_Input.Axis_2_n },
+                        { Action.MoveRight, GP0_Input.Axis_2_p },
+                        { Action.Crouch, GP0_Input.Button_8 },
+                        { Action.Reload, GP0_Input.DPU },
+                        { Action.Jump, GP0_Input.Button_0 },
+                        { Action.SwitchGrenade, GP0_Input.Button_1 },
+                        { Action.Action, GP0_Input.Button_2 },
+                        { Action.SwitchWeapon, GP0_Input.Button_3 },
+                        { Action.LookUp, GP0_Input.Axis_3_n },
+                        { Action.LookDown, GP0_Input.Axis_3_p },
+                        { Action.LookLeft, GP0_Input.Axis_4_n },
+                        { Action.LookRight, GP0_Input.Axis_4_p },
+                        { Action.ScopeZoom, GP0_Input.Button_9 },
+                        { Action.ThrowGrenade, GP0_Input.Button_4 },
+                        { Action.Flashlight, GP0_Input.Axis_5_p },
+                        { Action.MeleeAttack, GP0_Input.Button_5 },
+                        { Action.FireWeapon, GP0_Input.Axis_5_n }
+                    }.AsReadOnly(),
+                    Gamepads_Menu = new Dictionary<GamePadMenu, DIButtons_Values> {
+                        { GamePadMenu.GP0_MenuAccept, DIButtons_Values.Button0 },
+                        { GamePadMenu.GP0_MenuBack, DIButtons_Values.Button1 },
+                        { GamePadMenu.GP1_MenuAccept, DIButtons_Values.Button0 },
+                        { GamePadMenu.GP1_MenuBack, DIButtons_Values.Button1 },
+                        { GamePadMenu.GP2_MenuAccept, DIButtons_Values.Button0 },
+                        { GamePadMenu.GP2_MenuBack, DIButtons_Values.Button1 },
+                        { GamePadMenu.GP3_MenuAccept, DIButtons_Values.Button0 },
+                        { GamePadMenu.GP3_MenuBack, DIButtons_Values.Button1 },
+                    }.AsReadOnly()
+                };
+            }
+
+            public void ApplyPreset(Presets.InputProfilePreset preset)
+            {
+#pragma warning disable IDE0028 // Simplify collection initialization; error CS8652: The feature 'collection expression arguments' is currently in Preview and *unsupported*.
+                if (preset.Gamepads_Menu != null)
+                    Gamepads_Menu = new(preset.Gamepads_Menu);
+                if (preset.GP0_Mapping != null)
+                    GP0_Mapping = new(preset.GP0_Mapping);
+                if (preset.GP1_Mapping != null)
+                    GP1_Mapping = new(preset.GP1_Mapping);
+                if (preset.GP2_Mapping != null)
+                    GP2_Mapping = new(preset.GP2_Mapping);
+                if (preset.GP3_Mapping != null)
+                    GP3_Mapping = new(preset.GP3_Mapping);
+                if (preset.KeyboardMapping != null)
+                    KeyboardMapping = new(preset.KeyboardMapping);
+                if (preset.MouseMapping != null)
+                    MouseMapping = new(preset.MouseMapping);
+#pragma warning restore IDE0028 // Simplify collection initialization; error CS8652: The feature 'collection expression arguments' is currently in Preview and *unsupported*. To use Preview features, use the 'preview' language version.
+
+                Core("BLAM.INPUT: Input overrides have been applied accordingly.");
+            }
         }
     }
 }
