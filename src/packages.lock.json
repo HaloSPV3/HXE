@@ -49,6 +49,15 @@
           "Microsoft.Windows.WDK.Win32Metadata": "0.13.25-experimental"
         }
       },
+      "StandardSocketsHttpHandler": {
+        "type": "Direct",
+        "requested": "[2.2.0.10, )",
+        "resolved": "2.2.0.10",
+        "contentHash": "tlnMfWuT043rvyVQTGCm9049SZcDpe9oeLwLTVWRLw0s5ijjCdNYdxfOCMejtsUBFdWQ00boZSJHcNB2GZKBCw==",
+        "dependencies": {
+          "System.Memory": "4.5.1"
+        }
+      },
       "System.Memory": {
         "type": "Direct",
         "requested": "[4.6.3, )",
@@ -208,6 +217,15 @@
           "Microsoft.Windows.SDK.Win32Docs": "0.1.42-alpha",
           "Microsoft.Windows.SDK.Win32Metadata": "71.0.30-preview",
           "Microsoft.Windows.WDK.Win32Metadata": "0.13.25-experimental"
+        }
+      },
+      "StandardSocketsHttpHandler": {
+        "type": "Direct",
+        "requested": "[2.2.0.10, )",
+        "resolved": "2.2.0.10",
+        "contentHash": "tlnMfWuT043rvyVQTGCm9049SZcDpe9oeLwLTVWRLw0s5ijjCdNYdxfOCMejtsUBFdWQ00boZSJHcNB2GZKBCw==",
+        "dependencies": {
+          "System.Memory": "4.5.1"
         }
       },
       "System.Memory": {
