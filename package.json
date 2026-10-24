@@ -20,6 +20,7 @@
     "lint": "eslint --cache",
     "release": "semantic-release --debug",
     "restore": "dotnet restore -p:Configuration=Debug && dotnet restore -p:Configuration=Release",
+    "sdks": "yarn dlx @yarnpkg/sdks@2 vscode",
     "test": "dotnet test"
   },
   "devDependencies": {
