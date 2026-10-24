@@ -57,14 +57,16 @@
     <PublisherName>Halo SPV3 Team</PublisherName>
     <EnableNETAnalyzers>true</EnableNETAnalyzers>
     <ToolCommandName>hxe</ToolCommandName>
-    <UseWPF Condition="!$(_TargetingLinux)">true</UseWPF>
+    <UseWPF>true</UseWPF>
+    <UseWPF Condition="'$(_TargetingLinux)' == true">false</UseWPF>
+    <UseWindowsForms>$(UseWPF)</UseWindowsForms>
     <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
     <!-- Changing this to "true" will cause a crash when loading any GUI -->
     <InvariantGlobalization>false</InvariantGlobalization>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
     <!-- T:System.Runtime.CompilerServices.OverloadResolutionPriorityAttribute is polyfilled by CsWin32 -->
-    <MeziantouPolyfill_ExcludedPolyfills>T:System.Runtime.CompilerServices.OverloadResolutionPriorityAttribute</MeziantouPolyfill_ExcludedPolyfills>
+    <MeziantouPolyfill_ExcludedPolyfills>T:System.Runtime.CompilerServices.OverloadResolutionPriorityAttribute;T:System.Diagnostics.CodeAnalysis.UnscopedRefAttribute</MeziantouPolyfill_ExcludedPolyfills>
     <!-- If true, use XmlSourceGenerator by ProjectReference via git submodule instead of by PackageReference -->
     <UseBleedingEdgeXSGen>false</UseBleedingEdgeXSGen>
     <CheckEolTargetFramework>false</CheckEolTargetFramework>
