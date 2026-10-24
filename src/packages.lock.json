@@ -4,9 +4,19 @@
     ".NETFramework,Version=v4.6.2": {
       "BinToss.XmlSourceGenerator": {
         "type": "Direct",
-        "requested": "[2.0.0, )",
-        "resolved": "2.0.0",
-        "contentHash": "Rjr6Adu1GNzjl+DMB0hHWB1QYqRkwxeTgPK7WEblHHEeiiPbH1S0E76YuZ079NraD9no6+X5zuCwHXrBLRgprw=="
+        "requested": "[2.0.1, )",
+        "resolved": "2.0.1",
+        "contentHash": "bzX09wnW3zz/t+iCs+yrfiLwa198wYt5bdG21hLHiaEtYDHuyYzzRyoLwh6u4BkJlcF5Hzv6hxVVhb9gdRsDEg=="
+      },
+      "BinToss.XmlSourceGenerator.Abstractions": {
+        "type": "Direct",
+        "requested": "[2.0.1, )",
+        "resolved": "2.0.1",
+        "contentHash": "48eQcciijv8h8NX4/Y92gSU0c2q0y2SWNf02/DvmECDBFI2XO4e4Ct4bEA5m9KT+f3G099Ywf4CqUf83NJMlZA==",
+        "dependencies": {
+          "System.Text.Json": "10.0.13",
+          "System.ValueTuple": "4.6.2"
+        }
       },
       "Costura.Fody": {
         "type": "Direct",
@@ -174,9 +184,18 @@
     ".NETFramework,Version=v4.8": {
       "BinToss.XmlSourceGenerator": {
         "type": "Direct",
-        "requested": "[2.0.0, )",
-        "resolved": "2.0.0",
-        "contentHash": "Rjr6Adu1GNzjl+DMB0hHWB1QYqRkwxeTgPK7WEblHHEeiiPbH1S0E76YuZ079NraD9no6+X5zuCwHXrBLRgprw=="
+        "requested": "[2.0.1, )",
+        "resolved": "2.0.1",
+        "contentHash": "bzX09wnW3zz/t+iCs+yrfiLwa198wYt5bdG21hLHiaEtYDHuyYzzRyoLwh6u4BkJlcF5Hzv6hxVVhb9gdRsDEg=="
+      },
+      "BinToss.XmlSourceGenerator.Abstractions": {
+        "type": "Direct",
+        "requested": "[2.0.1, )",
+        "resolved": "2.0.1",
+        "contentHash": "48eQcciijv8h8NX4/Y92gSU0c2q0y2SWNf02/DvmECDBFI2XO4e4Ct4bEA5m9KT+f3G099Ywf4CqUf83NJMlZA==",
+        "dependencies": {
+          "System.Text.Json": "10.0.13"
+        }
       },
       "Costura.Fody": {
         "type": "Direct",
@@ -344,9 +363,15 @@
     "net10.0": {
       "BinToss.XmlSourceGenerator": {
         "type": "Direct",
-        "requested": "[2.0.0, )",
-        "resolved": "2.0.0",
-        "contentHash": "Rjr6Adu1GNzjl+DMB0hHWB1QYqRkwxeTgPK7WEblHHEeiiPbH1S0E76YuZ079NraD9no6+X5zuCwHXrBLRgprw=="
+        "requested": "[2.0.1, )",
+        "resolved": "2.0.1",
+        "contentHash": "bzX09wnW3zz/t+iCs+yrfiLwa198wYt5bdG21hLHiaEtYDHuyYzzRyoLwh6u4BkJlcF5Hzv6hxVVhb9gdRsDEg=="
+      },
+      "BinToss.XmlSourceGenerator.Abstractions": {
+        "type": "Direct",
+        "requested": "[2.0.1, )",
+        "resolved": "2.0.1",
+        "contentHash": "48eQcciijv8h8NX4/Y92gSU0c2q0y2SWNf02/DvmECDBFI2XO4e4Ct4bEA5m9KT+f3G099Ywf4CqUf83NJMlZA=="
       },
       "GitVersion.MsBuild": {
         "type": "Direct",
@@ -427,9 +452,15 @@
     "net6.0-windows7.0": {
       "BinToss.XmlSourceGenerator": {
         "type": "Direct",
-        "requested": "[2.0.0, )",
-        "resolved": "2.0.0",
-        "contentHash": "Rjr6Adu1GNzjl+DMB0hHWB1QYqRkwxeTgPK7WEblHHEeiiPbH1S0E76YuZ079NraD9no6+X5zuCwHXrBLRgprw=="
+        "requested": "[2.0.1, )",
+        "resolved": "2.0.1",
+        "contentHash": "bzX09wnW3zz/t+iCs+yrfiLwa198wYt5bdG21hLHiaEtYDHuyYzzRyoLwh6u4BkJlcF5Hzv6hxVVhb9gdRsDEg=="
+      },
+      "BinToss.XmlSourceGenerator.Abstractions": {
+        "type": "Direct",
+        "requested": "[2.0.1, )",
+        "resolved": "2.0.1",
+        "contentHash": "48eQcciijv8h8NX4/Y92gSU0c2q0y2SWNf02/DvmECDBFI2XO4e4Ct4bEA5m9KT+f3G099Ywf4CqUf83NJMlZA=="
       },
       "GitVersion.MsBuild": {
         "type": "Direct",

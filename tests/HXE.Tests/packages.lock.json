@@ -48,8 +48,13 @@
       },
       "BinToss.XmlSourceGenerator": {
         "type": "Transitive",
-        "resolved": "2.0.0",
-        "contentHash": "Rjr6Adu1GNzjl+DMB0hHWB1QYqRkwxeTgPK7WEblHHEeiiPbH1S0E76YuZ079NraD9no6+X5zuCwHXrBLRgprw=="
+        "resolved": "2.0.1",
+        "contentHash": "bzX09wnW3zz/t+iCs+yrfiLwa198wYt5bdG21hLHiaEtYDHuyYzzRyoLwh6u4BkJlcF5Hzv6hxVVhb9gdRsDEg=="
+      },
+      "BinToss.XmlSourceGenerator.Abstractions": {
+        "type": "Transitive",
+        "resolved": "2.0.1",
+        "contentHash": "48eQcciijv8h8NX4/Y92gSU0c2q0y2SWNf02/DvmECDBFI2XO4e4Ct4bEA5m9KT+f3G099Ywf4CqUf83NJMlZA=="
       },
       "LinuxDesktopUtils.XDGDesktopPortal": {
         "type": "Transitive",
@@ -139,7 +144,8 @@
       "hxe": {
         "type": "Project",
         "dependencies": {
-          "BinToss.XmlSourceGenerator": "[2.0.0, )",
+          "BinToss.XmlSourceGenerator": "[2.0.1, )",
+          "BinToss.XmlSourceGenerator.Abstractions": "[2.0.1, )",
           "LinuxDesktopUtils.XDGDesktopPortal": "[1.0.2, )",
           "Tmds.DBus.Protocol": "[0.95.1, )"
         }
