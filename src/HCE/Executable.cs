@@ -70,7 +70,8 @@ namespace HXE.HCE
             catch (System.Exception e)
             {
                 var log = (File)Paths.Exception;
-                log.AppendAllText("The inferred executable path was probably malformed or incomplete.\n Error: " + e + "\n");
+                var msg = "The inferred executable path was probably malformed or incomplete.\n Error: " + e;
+                log.AppendAllText(msg + "\n");
 
 #if LINUX
                 Task<string?> task = System.Threading.Tasks.Task.Run(static async Task<string?>? () =>

@@ -205,9 +205,9 @@ namespace HXE
                 }
                 catch (Exception e)
                 {
-                    var msg = " -- MAIN.INIT HALTED.\n Error:  " + e.ToString() + "\n";
+                    var msg = " -- MAIN.INIT HALTED.\n Error: " + e;
                     var log = (File)Paths.Exception;
-                    log.AppendAllText(msg);
+                    log.AppendAllText(msg + "\n");
                     Error(msg);
                 }
 
@@ -314,10 +314,10 @@ namespace HXE
                     }
                     catch (Exception e)
                     {
-                        var msg = " -- INIT.RESUME HALTED\n Error:  " + e.ToString() + "\n";
+                        var msg = " -- INIT.RESUME HALTED\n Error: " + e;
                         var log = (File)Paths.Exception;
-                        log.AppendAllText(msg);
-                        Error(e.Message + " -- INIT.RESUME HALTED");
+                        log.AppendAllText(msg + "\n");
+                        Error(msg);
                     }
                 }
 
@@ -443,9 +443,9 @@ namespace HXE
                 }
                 catch (Exception e)
                 {
-                    var msg = " -- MAIN.BLAM HALTED\n Error:  " + e.ToString() + "\n";
+                    var msg = " -- MAIN.BLAM HALTED\n Error: " + e;
                     var log = (File)Paths.Exception;
-                    log.AppendAllText(msg);
+                    log.AppendAllText(msg + "\n");
                     Error(msg);
                 }
 
@@ -648,9 +648,9 @@ namespace HXE
                 }
                 catch (Exception e)
                 {
-                    var msg = " -- MAIN.OPEN\n Error:  " + e.ToString() + "\n";
+                    var msg = " -- MAIN.OPEN\n Error: " + e;
                     var log = (File)Paths.Exception;
-                    log.AppendAllText(msg);
+                    log.AppendAllText(msg + "\n");
                     Error(msg);
                 }
             }
@@ -688,9 +688,9 @@ namespace HXE
                     }
                     catch (Exception e)
                     {
-                        var msg = " -- MAIN.BLAM HALTED\n Error:  " + e.ToString() + "\n";
+                        var msg = " -- MAIN.BLAM HALTED\n Error: " + e;
                         var log = (File)Paths.Exception;
-                        log.AppendAllText(msg);
+                        log.AppendAllText(msg + "\n");
                         Info(msg);
                     }
 
@@ -726,9 +726,9 @@ namespace HXE
                     }
                     catch (Exception e)
                     {
-                        var msg = " -- EXEC.PATCH HALTED\n Error:  " + e.ToString() + "\n";
+                        var msg = " -- EXEC.PATCH HALTED\n Error: " + e;
                         var log = (File)Paths.Exception;
-                        log.AppendAllText(msg);
+                        log.AppendAllText(msg + "\n");
                         Error(msg);
                     }
                 }
@@ -746,9 +746,9 @@ namespace HXE
                     }
                     catch (Exception e)
                     {
-                        var msg = " -- EXEC.START HALTED\n Error:  " + e.ToString() + "\n";
+                        var msg = " -- EXEC.START HALTED\n Error: " + e;
                         var log = (File)Paths.Exception;
-                        log.AppendAllText(msg);
+                        log.AppendAllText(msg + "\n");
                         Error(msg);
                     }
                 }
@@ -822,9 +822,9 @@ namespace HXE
                     }
                     catch (Exception e)
                     {
-                        var msg = " -- EXEC.START HALTED\n Error:  " + e.ToString() + "\n";
+                        var msg = " -- EXEC.START HALTED\n Error: " + e;
                         var log = (File)Paths.Exception;
-                        log.AppendAllText(msg);
+                        log.AppendAllText(msg + "\n");
                         Error(msg);
                     }
                 }

@@ -199,10 +199,11 @@ namespace HXE
 
         private static void ErrorOutput(System.Exception e, string msg2)
         {
+            var log = (File)Paths.Exception;
             string msg = ExceptionHeader + NewLine
                 + msg2 + NewLine
-                + "Error:  " + e.ToString();
-            ((File)Paths.Exception).AppendAllText(msg + NewLine);
+                + "Error:  " + e;
+            log.AppendAllText(msg + NewLine);
             Console.Error(msg);
         }
 

@@ -276,7 +276,7 @@ HXE can be invoked with the following arguments:
                              " -- Looked in working directory, Program Files, and Registry." + NewLine +
                              " -- The working directory is " + CurrentDirectory + NewLine +
                              " -- Error:  " + NewLine +
-                             e.ToString();
+                             e;
                 var log = (File)Paths.Exception;
                 log.AppendAllText(msg + NewLine);
                 Error(msg);
@@ -344,9 +344,9 @@ HXE can be invoked with the following arguments:
                 }
                 catch (Exception e)
                 {
-                    var msg = " -- EXEC.START HALTED\n Error:  " + e.ToString() + "\n";
+                    var msg = " -- EXEC.START HALTED\n Error: " + e;
                     var log = (File)Paths.Exception;
-                    log.AppendAllText(msg);
+                    log.AppendAllText(msg + "\n");
                     Error(msg);
                     System.Console.Error.WriteLine("\n\n" + e.StackTrace);
                     WithCode(Code.Exception);

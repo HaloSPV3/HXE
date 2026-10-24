@@ -52,9 +52,9 @@ namespace HXE.HCE
             catch (System.Exception e) when (e is FileNotFoundException or System.IndexOutOfRangeException)
             {
                 var msg = " -- LASTPROFILE.LOAD FAILED" + NewLine
-                        + " Error:  " + e.ToString() + NewLine;
+                        + " Error:  " + e;
                 var log = (File)Exception;
-                log.AppendAllText(msg);
+                log.AppendAllText(msg + "\n");
                 Error(e.Message + " -- LASTPROFILE.LOAD FAILED");
 
                 Core("Recreating LastProf.txt...");

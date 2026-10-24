@@ -148,7 +148,8 @@ namespace HXE.HCE
             catch (Exception e)
             {
                 var file = (File)Paths.Exception;
-                file.AppendAllText($"Error -- {e}");
+                file.AppendAllText($"Error -- {e}\n");
+                HXE.Console.Error(e.ToString());
                 throw;
             }
 
