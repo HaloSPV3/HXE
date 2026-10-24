@@ -147,6 +147,7 @@ namespace HXE
             }
         }
 
+        /// <remarks>Reminder: a newline character is <i>not</i> auto-appended to <paramref name="contents"/>. This allows for single-line appends.</remarks>
         public void AppendAllText(string contents)
         {
             CreateDirectory();
@@ -154,7 +155,7 @@ namespace HXE
             wLock.AcquireWriterLock(5_000);
             try
             {
-                System.IO.File.AppendAllText(Path, contents + '\n');
+                System.IO.File.AppendAllText(Path, contents);
             }
             finally
             {
