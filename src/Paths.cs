@@ -21,7 +21,6 @@
 
 using static System.Environment;
 using static System.Environment.SpecialFolder;
-using static System.IO.File;
 using static System.IO.Path;
 
 namespace HXE
