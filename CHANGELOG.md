@@ -1,3 +1,28 @@
+## [3.1.0](https://github.com/HaloSPV3/HXE/compare/v3.0.1...v3.1.0) (2026-10-24)
+
+### Features
+
+* **Common:** add extension method `System.Windows.Forms.Screen.DeviceFriendlyName()` ([1b3bd09](https://github.com/HaloSPV3/HXE/commit/1b3bd094e9af435cf94a3d555b5dff3182a4844d))
+* **HCE:** add static class `ProfileInput.Presets`, class `ProfileInput.Presets.InputProfilePreset`, preset `SPV3Gamepad`, and method `ProfileInput.ApplyPreset(Presets.InputProfilePreset)` ([a1dad39](https://github.com/HaloSPV3/HXE/commit/a1dad39ff0709a43fc1d835ebeee17aabcbccf9e))
+
+### Bug Fixes
+
+* **deps, Net:** force minimum HTTP version to HTTP 2 via `SocketsHttpHandler` (or `StandardSocketsHttpHandler` on .NET 4) ([c5464ba](https://github.com/HaloSPV3/HXE/commit/c5464baeb6ec33e795e206b425e61644a8dc61eb))
+* **deps:** fix dependency graph issues linked to 385e4e9 ([fb625a4](https://github.com/HaloSPV3/HXE/commit/fb625a410b4773745f75f45c10f647a6c734ff90))
+* **deps:** upgrade BinToss.XmlSourceGenerator to v2.0.1; add BinToss.XmlSourceGenerator.Abstractions separately for multi-targeting ([513bd3b](https://github.com/HaloSPV3/HXE/commit/513bd3bcc86087729a72f6b7c86b51230cb3b7b7))
+* **deps:** upgrade Microsoft.Windows.CsWin32 to v0.3.367 ([c947674](https://github.com/HaloSPV3/HXE/commit/c9476741663074aa0db3ce436adfdd1e64377c16))
+* **deps:** upgrade System.Text.Json to v10.0.13 ([5b85c4e](https://github.com/HaloSPV3/HXE/commit/5b85c4e559c4bbf8df82c4a5de3730bed673f86c))
+* do not override gamepad bindings by default; only do so when explicitly enabled ([7156ba1](https://github.com/HaloSPV3/HXE/commit/7156ba1b2328c2a15bee64c3c584a8514960da81))
+* ensure all file logging ends with a newline character; ensure errors are logged to both file _and_ console ([76a29fb](https://github.com/HaloSPV3/HXE/commit/76a29fb852d9f158528fcc4a78c18e3dd6d4471e))
+* **File:** rework File wrappers for thread safety; reduce crashes caused by simultaneous operations to a single file ([9b67da8](https://github.com/HaloSPV3/HXE/commit/9b67da842f7a7d3e0815e1183c0ce8a6d227eda1))
+* **HCE:** handle both IndexOutOfRange and FileNotFound exceptions thrown when loading lastprof.txt ([e950c73](https://github.com/HaloSPV3/HXE/commit/e950c73884ceee8cfa7fb47c64d48556ca38a206))
+* **HCE:** when loading lastprof.txt, do not create new profile when the haloce's default profiles path is empty and a custom path is in use ([e2c2303](https://github.com/HaloSPV3/HXE/commit/e2c23035700926fa0a0212386ac5b3cc5b448ac5))
+* **Kernel:** rotate exception.log files to exception.2.log and greater ([37a9a51](https://github.com/HaloSPV3/HXE/commit/37a9a51cc70b2ccae1c6ad5d9888a9df4be2e524))
+
+### Reverts
+
+* **File:** do not add newline to `File.AppendAllText`, `File.WriteAllText` contents; Note this behavior in `remarks` xml docs; inherit `System.IO.File` methods' docs ([08c6279](https://github.com/HaloSPV3/HXE/commit/08c627923843e62c6ff5c426ff84fd5577b90324))
+
 ## [3.0.2-alpha.1](https://github.com/HaloSPV3/HXE/compare/v3.0.1...v3.0.2-alpha.1) (2026-10-20)
 
 ### Bug Fixes
