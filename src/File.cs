@@ -60,23 +60,35 @@ namespace HXE
 
         public string Name { get => field ??= GetFileName(Path); set; }
 
-        /// <summary> Creates all parent directories of <see cref="Path"/>. </summary>
-        /// <exception cref="ArgumentException">Thrown by <see cref="GetDirectoryName(string?)"/></exception>
-        /// <exception cref="PathTooLongException">Thrown by <see cref="GetDirectoryName(string?)"/></exception>
-        ///
-        /// <exception cref="ArgumentException">Thrown by <see cref="GetFullPath(string)"/></exception>
-        /// <exception cref="System.Security.SecurityException">Thrown by <see cref="GetFullPath(string)"/></exception>
-        /// <exception cref="ArgumentNullException">Thrown by <see cref="GetFullPath(string)"/></exception>
-        /// <exception cref="NotSupportedException">Thrown by <see cref="GetFullPath(string)"/></exception>
-        /// <exception cref="PathTooLongException">Thrown by <see cref="GetFullPath(string)"/></exception>
-        ///
-        /// <exception cref="IOException">Thrown by <see cref="Directory.CreateDirectory(string)"/></exception>
-        /// <exception cref="UnauthorizedAccessException">Thrown by <see cref="Directory.CreateDirectory(string)"/></exception>
-        /// <exception cref="ArgumentException">Thrown by <see cref="Directory.CreateDirectory(string)"/></exception>
-        /// <exception cref="ArgumentNullException">Thrown by <see cref="Directory.CreateDirectory(string)"/></exception>
-        /// <exception cref="PathTooLongException">Thrown by <see cref="Directory.CreateDirectory(string)"/></exception>
-        /// <exception cref="DirectoryNotFoundException">Thrown by <see cref="Directory.CreateDirectory(string)"/></exception>
-        /// <exception cref="NotSupportedException">Thrown by <see cref="Directory.CreateDirectory(string)"/></exception>
+        /// <summary> Creates all parent directories of <see cref="Path"/> </summary>
+        /// <exception cref="System.ArgumentException">
+        ///     <inheritdoc cref="GetDirectoryName(string?)" path="/exception[@cref='System.ArgumentException']"/><br/>
+        ///     -OR-<br/>
+        ///     <inheritdoc cref="GetFullPath(string)" path="/exception[@cref='System.ArgumentException']"/><br/>
+        ///     -OR-<br/>
+        ///     <inheritdoc cref="Directory.CreateDirectory(string)" path="/exception[@cref='System.ArgumentException']"/>
+        /// </exception>
+        /// <exception cref="PathTooLongException">
+        ///     <inheritdoc cref="GetDirectoryName(string?)" path="/exception[@cref='System.IO.PathTooLongException']"/><br/>
+        ///     -OR-<br/>
+        ///     <inheritdoc cref="GetFullPath(string)" path="/exception[@cref='System.IO.PathTooLongException']"/><br/>
+        ///     -OR-<br/>
+        ///     <inheritdoc cref="Directory.CreateDirectory(string)" path="/exception[@cref='System.IO.PathTooLongException']"/>
+        /// </exception>
+        /// <exception cref="System.Security.SecurityException"><inheritdoc cref="GetFullPath(string)" path="/exception[@cref='System.Security.Exception']"/></exception>
+        /// <exception cref="System.ArgumentNullException">
+        ///     <inheritdoc cref="GetFullPath(string)" path="/exception[@cref='System.ArgumentNullException']"/><br/>
+        ///     -OR-<br/>
+        ///     <inheritdoc cref="Directory.CreateDirectory(string)" path="/exception[@cref='System.ArgumentNullException']"/>
+        /// </exception>
+        /// <exception cref="System.NotSupportedException">
+        ///     <inheritdoc cref="GetFullPath(string)" path="/exception[@cref='System.NotSupportedException']"/><br/>
+        ///     -OR-<br/>
+        ///     <inheritdoc cref="Directory.CreateDirectory(string)" path="/exception[@cref='System.NotSupportedException']"/>
+        /// </exception>
+        /// <exception cref="IOException"><inheritdoc cref="Directory.CreateDirectory(string)" path="/exception[@cref='System.IO.IOException']"/></exception>
+        /// <exception cref="System.UnauthorizedAccessException"><inheritdoc cref="Directory.CreateDirectory(string)" path="/exception[@'System.UnauthorizedAccessException']"/></exception>
+        /// <exception cref="DirectoryNotFoundException"><inheritdoc cref="Directory.CreateDirectory(string)" path="exception[@cref='System.IO.DirectoryNotFoundException']"/></exception>
         public void CreateDirectory()
         {
             var baseDirectory = GetDirectoryName(Path) ?? /* root dir */ Path;
@@ -99,6 +111,10 @@ namespace HXE
         /// Wrapper for <see cref="FileInfo.Length"/>. Measures the size of the current file in bytes.<br/>
         /// Bulk calls of this method can be slow.
         /// </summary>
+        /// <inheritdoc cref="DictionaryExtensions.GetOrCreateValue{T1, T2}(IDictionary{T1, T2}, T1)" path="/exception" />
+        /// <inheritdoc cref="ReaderWriterLock.AcquireReaderLock(int)" path="/exception" />
+        /// <inheritdoc cref="FileInfo(string)" path="/exception" />
+        /// <inheritdoc cref="ReaderWriterLock.ReleaseReaderLock" path="/exception" />
         public ulong Size()
         {
             var rLock = _threadingLocks.GetOrCreateValue(Path);
@@ -114,6 +130,10 @@ namespace HXE
             }
         }
 
+        /// <inheritdoc cref="DictionaryExtensions.GetOrCreateValue{T1, T2}(IDictionary{T1, T2}, T1)" path="/exception"/>
+        /// <inheritdoc cref="ReaderWriterLock.AcquireWriterLock(int)" path="/exception"/>
+        /// <inheritdoc cref="System.IO.File.Delete(string)" path="/exception"/>
+        /// <inheritdoc cref="ReaderWriterLock.ReleaseWriterLock()" path="/exception"/>
         public void Delete()
         {
             var wLock = _threadingLocks.GetOrCreateValue(Path);
@@ -129,6 +149,16 @@ namespace HXE
             }
         }
 
+        /// <summary>Copies the current file to the <paramref name="target"/> directory. Overwriting a file of the same name is not allowed. The current file must exist.</summary>
+        /// <exception cref="System.ApplicationException">timeout expires before the lock request is granted.</exception>
+        /// <param name="target">The name of the destination <i>directory</i>. An item with the current file's name cannot exist in the target directory.</param>
+        /// <inheritdoc cref="Combine(string, string)" path="/exception"/>
+        /// <inheritdoc cref="DictionaryExtensions.GetOrCreateValue{T1, T2}(IDictionary{T1, T2}, T1)" path="/exception"/>
+        /// <inheritdoc cref="ReaderWriterLock.AcquireReaderLock(int)" path="/exception" />
+        /// <inheritdoc cref="ReaderWriterLock.AcquireWriterLock(int)" path="/exception"/>
+        /// <inheritdoc cref="ReaderWriterLock.ReleaseReaderLock()" path="/exception"/>
+        /// <inheritdoc cref="ReaderWriterLock.ReleaseWriterLock()" path="/exception"/>
+        /// <inheritdoc cref="System.IO.File.Copy(string, string)"/>
         public void CopyTo(string target)
         {
             var destFileName = Combine(target, Name);
@@ -147,7 +177,13 @@ namespace HXE
             }
         }
 
+        /// <inheritdoc cref="System.IO.File.AppendAllText(string, string?)"/>
         /// <remarks>Reminder: a newline character is <i>not</i> auto-appended to <paramref name="contents"/>. This allows for single-line appends.</remarks>
+        /// <inheritdoc cref="CreateDirectory" path="/exception"/>
+        /// <inheritdoc cref="DictionaryExtensions.GetOrCreateValue{T1, T2}(IDictionary{T1, T2}, T1)" path="/exception"/>
+        /// <inheritdoc cref="ReaderWriterLock.AcquireWriterLock(int)" path="/exception"/>
+        /// <inheritdoc cref="ReaderWriterLock.ReleaseWriterLock()" path="/exception"/>
+
         public void AppendAllText(string contents)
         {
             CreateDirectory();
@@ -164,6 +200,13 @@ namespace HXE
             }
         }
 
+        /// <exception cref="System.ApplicationException">timeout expires before the lock request is granted.</exception>
+        /// <remarks>If the current file or any of its parent directories do not exist, they are created.<br/>Reminder: a newline character is _not_ auto-appended to <paramref name="contents"/>. This allows for single-line appends.</remarks>
+        /// <inheritdoc cref="System.IO.File.WriteAllText(string, string?)"/>
+        /// <inheritdoc cref="CreateDirectory" path="/exception"/>
+        /// <inheritdoc cref="DictionaryExtensions.GetOrCreateValue{T1, T2}(IDictionary{T1, T2}, T1)" path="/exception"/>
+        /// <inheritdoc cref="ReaderWriterLock.AcquireWriterLock(int)" path="/exception"/>
+        /// <inheritdoc cref="ReaderWriterLock.ReleaseWriterLock()" path="/exception"/>
         public void WriteAllText(string contents)
         {
             CreateDirectory();
@@ -180,6 +223,13 @@ namespace HXE
             }
         }
 
+        /// <exception cref="System.ApplicationException">timeout expires before the lock request is granted.</exception>
+        /// <remarks>If the current file or any of its parent directories do not exist, they are created.</remarks>
+        /// <inheritdoc cref="System.IO.File.WriteAllBytes(string, byte[])"/>
+        /// <inheritdoc cref="CreateDirectory" path="/exception"/>
+        /// <inheritdoc cref="DictionaryExtensions.GetOrCreateValue{T1, T2}(IDictionary{T1, T2}, T1)" path="/exception"/>
+        /// <inheritdoc cref="ReaderWriterLock.AcquireWriterLock(int)" path="/exception"/>
+        /// <inheritdoc cref="ReaderWriterLock.ReleaseWriterLock()" path="/exception"/>
         public void WriteAllBytes(byte[] bytes)
         {
             CreateDirectory();
@@ -198,6 +248,9 @@ namespace HXE
 
         /// <exception cref="System.ApplicationException">timeout expires before the lock request is granted.</exception>
         /// <inheritdoc cref="System.IO.File.ReadAllText(string)" path="/exception"/>
+        /// <inheritdoc cref="DictionaryExtensions.GetOrCreateValue{T1, T2}(IDictionary{T1, T2}, T1)" path="/exception"/>
+        /// <inheritdoc cref="ReaderWriterLock.AcquireReaderLock(int)" path="/exception"/>
+        /// <inheritdoc cref="ReaderWriterLock.ReleaseReaderLock()" path="/exception"/>
         public string ReadAllText()
         {
             var rLock = _threadingLocks.GetOrCreateValue(Path);
@@ -212,6 +265,10 @@ namespace HXE
             }
         }
 
+        /// <inheritdoc cref="System.IO.File.ReadAllBytes(string)" path="/exception"/>
+        /// <inheritdoc cref="DictionaryExtensions.GetOrCreateValue{T1, T2}(IDictionary{T1, T2}, T1)" path="/exception"/>
+        /// <inheritdoc cref="ReaderWriterLock.AcquireReaderLock(int)" path="/exception"/>
+        /// <inheritdoc cref="ReaderWriterLock.ReleaseReaderLock()" path="/exception"/>
         public byte[] ReadAllBytes()
         {
             var rLock = _threadingLocks.GetOrCreateValue(Path);
@@ -226,10 +283,13 @@ namespace HXE
             }
         }
 
-        /// <summary> Wrapper for <see cref="System.IO.File.Move"/> </summary>
-        /// <param name="destFileName"></param>
         /// <exception cref="System.ApplicationException">timeout expires before the lock request is granted.</exception>
-        /// <inheritdoc cref="System.IO.File.Move(string, string)" path="/exception" />
+        /// <inheritdoc cref="System.IO.File.Move(string, string)" />
+        /// <inheritdoc cref="DictionaryExtensions.GetOrCreateValue{T1, T2}(IDictionary{T1, T2}, T1)" path="/exception"/>
+        /// <inheritdoc cref="ReaderWriterLock.AcquireReaderLock(int)" path="/exception"/>
+        /// <inheritdoc cref="ReaderWriterLock.AcquireWriterLock(int)" path="/exception"/>
+        /// <inheritdoc cref="ReaderWriterLock.ReleaseReaderLock()" path="/exception"/>
+        /// <inheritdoc cref="ReaderWriterLock.ReleaseWriterLock()" path="/exception"/>
         public void Move(string destFileName)
         {
             var rLockFrom = _threadingLocks.GetOrCreateValue(Path);
@@ -249,6 +309,9 @@ namespace HXE
 
         /// <summary>Get a <see cref="File"/> with a temporary file path. The file is not created.</summary>
         /// <returns>A <see cref="File"/> whose path doesn't exist.</returns>
+        /// <inheritdoc cref="Combine(string, string)" path="/exception"/>
+        /// <inheritdoc cref="GetTempPath" path="/exception"/>
+        /// <inheritdoc cref="GetTempFileName" path="/exception"/>
         internal static File GetTemporary() => new() { Path = Combine(GetTempPath(), GetTempFileName()) };
 
         /// <summary>
@@ -276,6 +339,8 @@ namespace HXE
 
     internal static class DictionaryExtensions
     {
+        /// <inheritdoc cref="IDictionary{TKey, TValue}.TryGetValue(TKey, out TValue)" path="/exception" />
+        /// <inheritdoc cref="IDictionary{TKey, TValue}.Add(TKey, TValue)" path="/exception" />
         [return: NotNull]
         public static T2 GetOrCreateValue<T1, T2>(this IDictionary<T1, T2> dictionary, T1 key) where T2 : new()
         {
