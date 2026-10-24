@@ -18,6 +18,6 @@ export default defineConfig(
     ],
   },
   {
-    ignores: ['**/.yarn/**'],
+    ignores: ['**/.yarn/**', 'ext/'],
   },
 );
