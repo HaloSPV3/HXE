@@ -85,10 +85,12 @@ namespace HXE
     }
 
     private static void Output(
+#pragma warning disable IDE0055 // Use explicit type
       string       prefix, ConsoleColor color,
       string       message,
       ConsoleColor messageColor,
       bool         writeLine = true
+#pragma warning restore IDE0055 // Use explicit type
     )
     {
       if (Program.SuppressConsoleOutput) return;
