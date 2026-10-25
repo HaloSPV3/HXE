@@ -82,7 +82,8 @@
   </ItemGroup>
 
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-    <!--  -->
+    <DebugType>embedded</DebugType>
+    <DebugType Condition="'$(CI)' != true">portable</DebugType>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
