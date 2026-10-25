@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Runtime.Versioning;
 
 namespace HXE.Common;
@@ -19,7 +20,12 @@ internal partial class DisplayOutput
     float PrimaryScreenRefreshRate
     ) GetTriplet()
   {
-    var xrandr = System.Diagnostics.Process.Start("xrandr", "--query")
+    var startInfo = new ProcessStartInfo("xrandr", "--query")
+    {
+      RedirectStandardError = true,
+      RedirectStandardOutput = true
+    };
+    var xrandr = System.Diagnostics.Process.Start(startInfo)
       ?? throw new NullReferenceException("Failed to run xrandr!");
     xrandr.WaitForExit();
     if (xrandr.ExitCode != 0)
