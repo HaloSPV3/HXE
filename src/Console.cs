@@ -33,7 +33,7 @@ namespace HXE
 
     public static void Error(string value)
     {
-      var decoration = new string('*', value.Length);
+      var decoration = new string('*', Math.Min(value.Length, Math.Min(BufferWidth, WindowWidth)));
 
       Output("!!!!", Red, decoration);
       Output("!!!!", Red, value);
