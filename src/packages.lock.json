@@ -35,9 +35,9 @@
       },
       "Meziantou.Polyfill": {
         "type": "Direct",
-        "requested": "[1.0.157, )",
-        "resolved": "1.0.157",
-        "contentHash": "LUmzYqhB9Ho0QxOzWomIr3TjAQI4kZNSJ8Xf4lL4jVahggVU2cujlAI6OhbKJJF9GsRzqmph7C0OhPDNU3fs/Q=="
+        "requested": "[1.0.169, )",
+        "resolved": "1.0.169",
+        "contentHash": "odhH4GKSBaYvuIfwgPB5tQDtlhwOtO0+ObaZHfkZlMP820F6YxvVRcPft5PzOU2V2NLitr5l7SQEUjEbk3wj/Q=="
       },
       "Microsoft.NETFramework.ReferenceAssemblies": {
         "type": "Direct",
@@ -214,9 +214,9 @@
       },
       "Meziantou.Polyfill": {
         "type": "Direct",
-        "requested": "[1.0.157, )",
-        "resolved": "1.0.157",
-        "contentHash": "LUmzYqhB9Ho0QxOzWomIr3TjAQI4kZNSJ8Xf4lL4jVahggVU2cujlAI6OhbKJJF9GsRzqmph7C0OhPDNU3fs/Q=="
+        "requested": "[1.0.169, )",
+        "resolved": "1.0.169",
+        "contentHash": "odhH4GKSBaYvuIfwgPB5tQDtlhwOtO0+ObaZHfkZlMP820F6YxvVRcPft5PzOU2V2NLitr5l7SQEUjEbk3wj/Q=="
       },
       "Microsoft.NETFramework.ReferenceAssemblies": {
         "type": "Direct",
@@ -392,9 +392,9 @@
       },
       "Meziantou.Polyfill": {
         "type": "Direct",
-        "requested": "[1.0.157, )",
-        "resolved": "1.0.157",
-        "contentHash": "LUmzYqhB9Ho0QxOzWomIr3TjAQI4kZNSJ8Xf4lL4jVahggVU2cujlAI6OhbKJJF9GsRzqmph7C0OhPDNU3fs/Q=="
+        "requested": "[1.0.169, )",
+        "resolved": "1.0.169",
+        "contentHash": "odhH4GKSBaYvuIfwgPB5tQDtlhwOtO0+ObaZHfkZlMP820F6YxvVRcPft5PzOU2V2NLitr5l7SQEUjEbk3wj/Q=="
       },
       "Microsoft.NET.ILLink.Tasks": {
         "type": "Direct",
@@ -470,9 +470,9 @@
       },
       "Meziantou.Polyfill": {
         "type": "Direct",
-        "requested": "[1.0.157, )",
-        "resolved": "1.0.157",
-        "contentHash": "LUmzYqhB9Ho0QxOzWomIr3TjAQI4kZNSJ8Xf4lL4jVahggVU2cujlAI6OhbKJJF9GsRzqmph7C0OhPDNU3fs/Q=="
+        "requested": "[1.0.169, )",
+        "resolved": "1.0.169",
+        "contentHash": "odhH4GKSBaYvuIfwgPB5tQDtlhwOtO0+ObaZHfkZlMP820F6YxvVRcPft5PzOU2V2NLitr5l7SQEUjEbk3wj/Q=="
       },
       "Microsoft.NET.ILLink.Analyzers": {
         "type": "Direct",
