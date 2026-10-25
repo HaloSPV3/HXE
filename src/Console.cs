@@ -94,21 +94,25 @@ namespace HXE
     )
     {
       if (Program.SuppressConsoleOutput) return;
+      var console = color == Red ? System.Console.Error : Out;
 
-      if (writeLine)
-        WriteLine();
+      lock (console)
+      {
+        if (writeLine)
+          console.WriteLine();
 
-      ForegroundColor = Gray;
-      Write("> [ ");
+        ForegroundColor = Gray;
+        console.Write("> [ ");
 
-      ForegroundColor = color;
-      Write(prefix);
+        ForegroundColor = color;
+        console.Write(prefix);
 
-      ForegroundColor = Gray;
-      Write(" ] - ");
+        ForegroundColor = Gray;
+        console.Write(" ] - ");
 
-      ForegroundColor = messageColor;
-      Write(message);
+        ForegroundColor = messageColor;
+        console.Write(message);
+      }
     }
   }
 }
