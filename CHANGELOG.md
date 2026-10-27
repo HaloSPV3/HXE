@@ -1,3 +1,12 @@
+## [3.1.1](https://github.com/HaloSPV3/HXE/compare/v3.1.0...v3.1.1) (2026-10-27)
+
+### Bug Fixes
+
+* **Common:** redirect xrandr's stdout/stderr streams; fix "System.InvalidOperationException: StandardOut has not been redirected" ([af6213d](https://github.com/HaloSPV3/HXE/commit/af6213d33cde59a4dc3c41523d3ac7fd9ca561bd))
+* **Console:** limit error decorations length to terminal/console width ([6ceb6dc](https://github.com/HaloSPV3/HXE/commit/6ceb6dc18be727e5a58f74dca4179d0d45f62475))
+* **Console:** write errors to StandardError; thread-sync console output so separate messages are not written simultaneously ([02b97c5](https://github.com/HaloSPV3/HXE/commit/02b97c52cc90869ea3ec6686e7b933b9e2d3e4e5))
+* **deps:** upgrade Meziantou.Polyfill to v1.0.169 ([4e7efb0](https://github.com/HaloSPV3/HXE/commit/4e7efb0009b06770598f62239b1080d12126dc4e))
+
 ## [3.1.0](https://github.com/HaloSPV3/HXE/compare/v3.0.1...v3.1.0) (2026-10-24)
 
 ### Features
