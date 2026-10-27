@@ -1,3 +1,9 @@
+## [3.1.2](https://github.com/HaloSPV3/HXE/compare/v3.1.1...v3.1.2) (2026-10-27)
+
+### Bug Fixes
+
+* truncate nupkg release notes to 2048 characters ([ddd0e2b](https://github.com/HaloSPV3/HXE/commit/ddd0e2b2f3bfd624e2f75e4911662244d8a246bb))
+
 ## [3.1.1](https://github.com/HaloSPV3/HXE/compare/v3.1.0...v3.1.1) (2026-10-27)
 
 ### Bug Fixes
