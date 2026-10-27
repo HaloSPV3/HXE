@@ -1,4 +1,4 @@
-﻿<Project Sdk="MSTest.Sdk/4.5.1">
+﻿<Project Sdk="MSTest.Sdk/4.5.2">
 
   <PropertyGroup>
     <!-- If this is changed to TargetFramework, the build will fail because HXE won't be copied to the output directory -->
