@@ -108,7 +108,9 @@
     <PackageLicenseExpression>Zlib</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/HaloSPV3/HXE</PackageProjectUrl>
     <PackageReadmeFile>readme.md</PackageReadmeFile>
-    <PackageReleaseNotes Condition="Exists($(_changelogPath))">$([System.IO.File]::ReadAllText($(_changelogPath)))</PackageReleaseNotes>
+    <PackageReleaseNotes Condition="Exists($(_changelogPath))">$([System.IO.File]::ReadAllText($(_changelogPath)).Substring(0, 2048))
+
+(TRUNCATED)</PackageReleaseNotes>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageTags>Halo</PackageTags>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
