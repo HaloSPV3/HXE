@@ -37,7 +37,6 @@
     "tobias-sekan.solutionextension",
     "mpontus.tab-cycle",
     "yamachu.targetframeworksswitcher",
-    "wayou.vscode-todo-highlight",
     "xsyetopz.versionlens-redux",
     "rstm-sf.view-avalonia-preview",
     "fullstackspider.visual-nuget",
@@ -49,6 +48,7 @@
     "rogalmic.vscode-xml-complete",
     "dotjoshjohnson.xml",
     "arcanis.vscode-zipfs",
-    "dbaeumer.vscode-eslint"
+    "dbaeumer.vscode-eslint",
+    "jgclark.vscode-todo-highlight"
   ]
 }
