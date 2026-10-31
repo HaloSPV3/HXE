@@ -1,3 +1,14 @@
+## [3.2.0](https://github.com/HaloSPV3/HXE/compare/v3.1.2...v3.2.0) (2026-10-31)
+
+### Features
+
+* **SPV3:** add FPS limit for Chimera v0.40 ([14a7651](https://github.com/HaloSPV3/HXE/commit/14a765102b6c75eb1addfce508f17a800ce5838c)), closes [#301](https://github.com/HaloSPV3/HXE/issues/301)
+
+### Bug Fixes
+
+* **deps:** use central package version management; bump System.Text.Json to 10.0.14; bump Tmds.DBus.Protocol to 0.95.2 ([de4dd86](https://github.com/HaloSPV3/HXE/commit/de4dd860d8d561655448fc2ca10aeab2d7ace6bb))
+* **SPV3:** disable Chimera 0.40-202 April Fools "Gathering Exception Data" Easter Egg by default; unsure if this also affects the "cartridge tilt" easter egg ([9651511](https://github.com/HaloSPV3/HXE/commit/96515116528b423199fbd3fa892fc4170f844b0b))
+
 ## [3.2.0-alpha.1](https://github.com/HaloSPV3/HXE/compare/v3.1.2...v3.2.0-alpha.1) (2026-10-31)
 
 ### Features
