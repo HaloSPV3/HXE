@@ -59,6 +59,11 @@ namespace HXE.SPV3
                 ms.Position = 0x1F;
                 bw.Write(BlockLOD ? (byte)1 : (byte)0);
 
+                // Disable April Fools Easter Egg
+                // We set this fucker as high as possible. If (1900 + YearsSince1900) < CurrentYear, shit crashes on April 1st.
+                ms.Position = 0x30;
+                bw.Write(ushort.MaxValue);
+
                 // float 1.0 == 0x3F_80_00_00; Written little-endian as 00 00 80 3F
                 ms.Position = 0x34;
                 bw.Write(Throttle);
