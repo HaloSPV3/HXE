@@ -48,7 +48,7 @@
   "resolutions": {
     "@semantic-release/release-notes-generator@npm:^14.1.0": "npm:15.0.0-beta.3",
     "@semantic-release/release-notes-generator@npm:^14.1.1": "npm:15.0.0-beta.3",
-    "@yarnpkg/core@npm:^4.9.1": "npm:4.9.1",
+    "@yarnpkg/core@npm:^4.9.1": "npm:@yarnpkg/core@4.9.2",
     "import-from-esm@npm:^2.0.0": "patch:import-from-esm@npm%3A2.0.0#~/.yarn/patches/import-from-esm-npm-2.0.0-8866147795.patch"
   },
   "allowScripts": {
