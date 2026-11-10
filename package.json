@@ -26,7 +26,7 @@
     "@commitlint/config-conventional": "^21.2.4",
     "@commitlint/types": "^21.2.3",
     "@dotenvx/dotenvx": "^2.38.2",
-    "@halospv3/hce.shared-config": "^3.13.1",
+    "@halospv3/hce.shared-config": "^3.14.3",
     "@semantic-release/changelog": "^7.0.0",
     "@semantic-release/exec": "^7.1.0",
     "@semantic-release/git": "^11.0.1",
@@ -36,13 +36,13 @@
     "@yarnpkg/sdks": "^3.3.1",
     "commitlint": "^21.2.4",
     "conventional-changelog-conventionalcommits": "^10.4.1",
-    "eslint": "^10.13.0",
+    "eslint": "^10.14.0",
     "eslint-plugin-unicorn": "^79.0.0",
     "husky": "^9.1.7",
     "jiti": "^2.7.0",
-    "semantic-release": "^26.0.0-beta.5",
+    "semantic-release": "^26.0.0-beta.6",
     "semantic-release-export-data": "^1.2.0",
-    "typescript": "^6.0.3"
+    "typescript": "^7.0.2"
   },
   "packageManager": "yarn@4.18.1+sha512.b2e1e7524f654f2749d32b4ebcb4622473cb5bcbc485df2007e12a154e50162a4d795526768bc5f5b8f81717bfd79deb2472813d86fb5ae2eb551fa9c872b08f",
   "resolutions": {
