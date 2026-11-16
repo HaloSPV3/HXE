@@ -30,7 +30,7 @@
     "@semantic-release/changelog": "^7.0.0",
     "@semantic-release/exec": "^7.1.0",
     "@semantic-release/git": "^11.0.1",
-    "@tsconfig/node24": "^24.0.5",
+    "@tsconfig/node26": "^26.0.0",
     "@types/debug": "^4.1.13",
     "@types/node": "^24.19.2",
     "@yarnpkg/sdks": "^3.3.1",

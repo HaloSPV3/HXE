@@ -1632,10 +1632,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tsconfig/node24@npm:^24.0.5":
-  version: 24.0.5
-  resolution: "@tsconfig/node24@npm:24.0.5"
-  checksum: 10c0/cea0c13ac00121e210f69823104d69081c99cf98c801a0772b6df5b51b3412e188084d74b6d2a42b33f29e3cf99298faf02c0baed41d336f5ef8828cc04d458f
+"@tsconfig/node26@npm:^26.0.0":
+  version: 26.0.2
+  resolution: "@tsconfig/node26@npm:26.0.2"
+  checksum: 10c0/8ffd2ad1a67cf804c553e82da6422c544d2d047eb6a40b9a0cd9066440291b1472da2aa53c3ae6957e4f7f3d8d0b181461918e078ac0a689271e8bfd10f94406
   languageName: node
   linkType: hard
 
@@ -4131,7 +4131,7 @@ __metadata:
     "@semantic-release/changelog": "npm:^7.0.0"
     "@semantic-release/exec": "npm:^7.1.0"
     "@semantic-release/git": "npm:^11.0.1"
-    "@tsconfig/node24": "npm:^24.0.5"
+    "@tsconfig/node26": "npm:^26.0.0"
     "@types/debug": "npm:^4.1.13"
     "@types/node": "npm:^24.19.2"
     "@yarnpkg/sdks": "npm:^3.3.1"
