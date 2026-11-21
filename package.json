@@ -44,11 +44,11 @@
     "semantic-release-export-data": "^1.2.0",
     "typescript": "^6.0.3"
   },
-  "packageManager": "yarn@4.18.1+sha512.b2e1e7524f654f2749d32b4ebcb4622473cb5bcbc485df2007e12a154e50162a4d795526768bc5f5b8f81717bfd79deb2472813d86fb5ae2eb551fa9c872b08f",
+  "packageManager": "yarn@4.19.0+sha512.2cb9e5a36f7f11f2bc6ff444830d87368d419e0d83b6a0fb6077d3e6fed0f476c9514dff4ba4d84b049bd34ef32954e550f264ad2fbbfebcba6c89e869530bba",
   "resolutions": {
     "@semantic-release/release-notes-generator@npm:^14.1.0": "npm:15.0.0-beta.3",
     "@semantic-release/release-notes-generator@npm:^14.1.1": "npm:15.0.0-beta.3",
-    "@yarnpkg/core@npm:^4.9.1": "npm:4.9.1",
+    "@yarnpkg/core@npm:^4.9.1": "npm:@yarnpkg/core@4.9.3",
     "import-from-esm@npm:^2.0.0": "patch:import-from-esm@npm%3A2.0.0#~/.yarn/patches/import-from-esm-npm-2.0.0-8866147795.patch"
   },
   "allowScripts": {
